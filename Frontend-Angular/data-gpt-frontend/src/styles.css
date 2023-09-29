@@ -1,0 +1,9 @@
+@font-face {
+    font-family: opendyslexic;
+    src: url(./assets/Font/OpenDyslexic-Regular.otf);
+  }
+  
+  *{
+    font-family: opendyslexic;
+    font-size: x-large;
+  }
