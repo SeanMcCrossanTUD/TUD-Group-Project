@@ -10,7 +10,10 @@ data = {
 }
 
 # Expected result for missing values count
-expected_result = {'A': 1, 'B': 1, 'C': 0}
+expected_missing_values_result = {'A': 1, 'B': 1, 'C': 0}
+
+# Expected result for number of records count
+expected_records_count = 4
 
 # Fixture to initialize DataQualityChecker with sample data
 @pytest.fixture
@@ -20,4 +23,8 @@ def checker():
 
 # Test function to check count_missing_values method
 def test_count_missing_values(checker):
-    assert checker.count_missing_values() == expected_result
+    assert checker.count_missing_values() == expected_missing_values_result
+
+# Test function to check count_number_of_records method
+def test_count_number_of_records(checker):
+    assert checker.count_number_of_records() == expected_records_count
