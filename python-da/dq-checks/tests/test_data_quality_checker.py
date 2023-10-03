@@ -116,12 +116,9 @@ def outlier_checker():
 
 # Test function to check z_score_outliers method
 def test_z_score_outliers(outlier_checker):
-    actual_result = outlier_checker.z_score_outliers(threshold=2)
     assert outlier_checker.z_score_outliers(threshold=2) == expected_z_outliers_result
 
 # Test function to check iqr_outliers method
 def test_iqr_outliers(outlier_checker):
-    actual_result = outlier_checker.iqr_outliers(k=1.5)
-    print(actual_result)  # Print the actual result
-    print(expected_iqr_outliers_result)
     assert outlier_checker.iqr_outliers(k=1.5) == expected_iqr_outliers_result
+
