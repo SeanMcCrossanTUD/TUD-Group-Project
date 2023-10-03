@@ -10,3 +10,6 @@ class DataQualityChecker:
     def count_missing_values(self) -> dict:
         missing_values = self.dataset.isnull().sum()
         return missing_values.to_dict()
+    
+    def count_duplicate_values(self) -> int:
+        return self.dataset.duplicated().sum()
