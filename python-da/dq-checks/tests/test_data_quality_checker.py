@@ -24,6 +24,9 @@ expected_duplicate_values_count = 1
 # Expected result for unique values count in text fields
 expected_unique_values_result = {'D': 3, 'E': 4}
 
+# Expected result for number of fields count
+expected_fields_count = 5
+
 # Fixture to initialize DataQualityChecker with sample data
 @pytest.fixture
 def checker():
@@ -45,3 +48,7 @@ def test_count_duplicate_values(checker):
 # Test function to check count_unique_values_in_text_fields method
 def test_count_unique_values_in_text_fields(checker):
     assert checker.count_unique_values_in_text_fields() == expected_unique_values_result
+
+# Test function to check count_number_of_fields method
+def test_count_number_of_fields(checker):
+    assert checker.count_number_of_fields() == expected_fields_count
