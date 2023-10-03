@@ -21,3 +21,6 @@ class DataQualityChecker:
                 unique_count = self.dataset[col].nunique()  # Counting number of unique values
                 unique_values[col] = unique_count
         return unique_values
+
+    def count_number_of_fields(self) -> int:
+        return len(self.dataset.columns)
