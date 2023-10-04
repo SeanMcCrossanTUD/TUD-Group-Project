@@ -59,14 +59,14 @@ class DataQualityChecker:
         """
         outliers = {}
         for col in self.dataset.select_dtypes(include=[np.number]).columns: # Only works on numeric columns
-            col_values = self.dataset[col].dropna()
+            col_values = self.dataset[col].dropna().reset_index(drop=True)  # FIXED: Resetting index after dropping NaN values - had to reset index
             z_scores = np.abs(stats.zscore(col_values))
             outlier_indices = np.where(z_scores > threshold)
         
             # Extracting detailed information for each outlier
             outlier_info = [
                 {
-                    "row": idx,
+                    "row": col_values.index[idx],  # Getting the original index of the outlier
                     "field": col,
                     "value": col_values.iloc[idx],
                     "z_score": z_scores[idx],
@@ -107,7 +107,7 @@ class DataQualityChecker:
         """
         outliers = {}
         for col in self.dataset.select_dtypes(include=[np.number]).columns: # Only works on numeric columns
-            col_values = self.dataset[col].dropna()
+            col_values = self.dataset[col].dropna().reset_index(drop=True)
             Q1 = col_values.quantile(0.25)
             Q3 = col_values.quantile(0.75)
             IQR = Q3 - Q1
