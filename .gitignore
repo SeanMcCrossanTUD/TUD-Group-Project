@@ -1,0 +1,33 @@
+# .gitignore
+
+# Ignore compiled python files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Ignore virtual environment
+venv/
+*.venv
+venv.bak/
+
+# Ignore fab-5 virtual environment
+fab-5/
+*.fab-5
+fab-5.bak/
+
+# Ignore IDE-specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore log files
+*.log
+
+# Ignore build and distribution directories
+build/
+dist/
+*.egg-info/
+
+**/.DS_Store
