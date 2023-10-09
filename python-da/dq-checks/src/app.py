@@ -2,11 +2,11 @@ import os
 import io
 import logging
 from flask import Flask, jsonify
+import json
 import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
-#from data_quality_checker import DataQualityChecker
-from data_quality_checker import DataQualityChecker
+from .data_quality_checker import DataQualityChecker
 
 # Set up logging
 logger = logging.getLogger('data-quality-check')
@@ -153,12 +153,28 @@ def perform_data_quality_checks(data):
 
     return result
 
+def save_results_to_json(result):
+    
+    result_path = "/Users/seanmccrossan/group_project/TUD-Group-Project/python-da/results"
+    # Create the directory if it does not exist
+    os.makedirs(result_path, exist_ok=True)
+    
+    # Define the name of the result file
+    result_file = os.path.join(result_path, 'data_quality_result.json')
+    
+    # Write the result into a JSON file
+    with open(result_file, 'w') as outfile:
+        json.dump(result, outfile, indent=4)
+
+
 @app.route('/data-quality-check', methods=['GET'])
 def data_quality_check():
     try:
         logger.info('Running Data Profile module!')
         data = download_blob_csv_data()
         result = perform_data_quality_checks(data)
+        # Save the result to a JSON file
+        save_results_to_json(result)
         return jsonify(result), 200
 
     except AzureError as ae:
@@ -173,3 +189,5 @@ def data_quality_check():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
+
