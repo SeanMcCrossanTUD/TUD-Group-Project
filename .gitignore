@@ -25,9 +25,15 @@ fab-5.bak/
 # Ignore log files
 *.log
 
+# Ingnore angular node modlles and build
+Frontend-Angular/data-gpt-frontend/.angular
+Frontend-Angular/data-gpt-frontend/dist
+Frontend-Angular/data-gpt-frontend/node_modules
+
 # Ignore build and distribution directories
 build/
 dist/
 *.egg-info/
 
 **/.DS_Store
+Frontend-Angular/data-gpt-frontend/node_modules
