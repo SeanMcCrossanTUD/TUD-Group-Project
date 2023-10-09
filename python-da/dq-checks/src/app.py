@@ -3,6 +3,7 @@ import io
 import logging
 from flask import Flask, jsonify
 import json
+import time
 import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
@@ -153,7 +154,7 @@ def perform_data_quality_checks(data):
 
     return result
 
-def save_results_to_json(result):
+def save_results_to_json_folder(result):
     
     result_path = "/Users/seanmccrossan/group_project/TUD-Group-Project/python-da/results"
     # Create the directory if it does not exist
@@ -166,6 +167,37 @@ def save_results_to_json(result):
     with open(result_file, 'w') as outfile:
         json.dump(result, outfile, indent=4)
 
+def upload_results_to_azure(result):
+    # Convert the result dictionary to a JSON string
+    result_json = json.dumps(result, indent=4)
+    
+    # Get the current time in epoch format and convert it to a string
+    timestamp = str(int(time.time()))
+    
+    # Define the name of the result blob with the epoch timestamp
+    result_blob_name = f'data_quality_result_{timestamp}.json'
+    
+    # Define the name of the container to upload the result
+    result_container_name = 'dataprofileoutput'
+    
+    try:
+        # Initialize BlobServiceClient
+        blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+        
+        # Get the blob client for the result
+        blob_client = blob_service_client.get_blob_client(result_container_name, result_blob_name)
+        
+        # Upload the result JSON string to Azure Blob Storage
+        blob_client.upload_blob(result_json, overwrite=True)
+        logger.info(f'Successfully uploaded {result_blob_name} to {result_container_name} in Azure Blob Storage')
+    
+    except AzureError as ae:
+        logger.error(f"AzureError while uploading result to Azure Blob Storage: {str(ae)}")
+        raise ae 
+    except Exception as e:
+        logger.error(f"Unexpected error while uploading result to Azure Blob Storage: {str(e)}")
+        raise e 
+
 
 @app.route('/data-quality-check', methods=['GET'])
 def data_quality_check():
@@ -173,8 +205,10 @@ def data_quality_check():
         logger.info('Running Data Profile module!')
         data = download_blob_csv_data()
         result = perform_data_quality_checks(data)
-        # Save the result to a JSON file
-        save_results_to_json(result)
+
+        # Upload the result to Azure Blob Storage
+        upload_results_to_azure(result)
+
         return jsonify(result), 200
 
     except AzureError as ae:
