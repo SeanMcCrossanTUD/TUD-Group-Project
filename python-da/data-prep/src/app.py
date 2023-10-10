@@ -4,6 +4,7 @@ import logging
 import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient
+from .data_prep import DataPrep
 
 # Set up logging
 logger = logging.getLogger('data-quality-prep')
@@ -80,3 +81,52 @@ def convert_outliers_dict_to_dataframe(outliers_dict):
     outliers_df = pd.DataFrame(all_outliers)
 
     return outliers_df
+
+
+def apply_transformations(dataset: pd.DataFrame) -> pd.DataFrame:
+    """
+    Apply transformations to the dataset using the functionalities defined in the DataPrep class.
+
+    Parameters:
+    dataset (pd.DataFrame): The dataset to transform.
+
+    Returns:
+    pd.DataFrame: The transformed dataset.
+    """
+    # Ensure dataset is of the right type
+    if not isinstance(dataset, pd.DataFrame):
+        logging.error('Provided dataset is not a pandas DataFrame')
+        raise TypeError('Expected dataset to be a pandas DataFrame')
+
+    try:
+        # Initialize DataPrep with the dataset
+        prep = DataPrep(dataset)
+
+        # Fill missing values (demonstrated for one column 'example_column' using mode)
+        # You can expand or loop through columns as needed
+        if 'example_column' in dataset.columns:
+            prep.fill_missing_values('example_column', method='mode')
+        else:
+            logging.warning("'example_column' is not found in the dataset")
+
+        # Remove duplicate rows
+        prep.remove_duplicates()
+
+        # Remove outliers based on z-score
+        prep.remove_z_score_outliers()
+
+        # Remove outliers based on IQR
+        prep.remove_iqr_outliers()
+
+    except Exception as e:
+        logging.error(f'Error occurred during transformation: {e}')
+        raise e
+
+    # If everything went fine, log the successful transformation
+    logging.info('Data transformations applied successfully')
+    
+    # Return the transformed dataset
+    return prep.dataframe
+
+
+
