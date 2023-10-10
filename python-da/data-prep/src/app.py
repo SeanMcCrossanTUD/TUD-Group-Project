@@ -59,3 +59,24 @@ def download_blob_json_data():
     except Exception as e:
         logger.error(f"Unexpected error while downloading blob data: {str(e)}")
         raise e 
+
+
+def convert_outliers_dict_to_dataframe(outliers_dict):
+    """
+    Converts the dictionary of outliers into a Pandas DataFrame.
+
+    Parameters:
+    outliers_dict (dict): The dictionary of outliers (z_scores_outliers_method).
+
+    Returns:
+    pd.DataFrame: A Pandas DataFrame containing the outliers information.
+    """
+    # Flatten the nested dictionaries and create a list of all outlier info
+    all_outliers = []
+    for col, outlier_info_list in outliers_dict.items():
+        all_outliers.extend(outlier_info_list)
+
+    # Convert the list of outlier info dictionaries into a Pandas DataFrame
+    outliers_df = pd.DataFrame(all_outliers)
+
+    return outliers_df
