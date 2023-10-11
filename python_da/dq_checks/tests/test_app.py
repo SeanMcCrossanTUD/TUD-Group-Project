@@ -1,9 +1,5 @@
 import pytest
-import sys
-import os
-sys.path.append(os.path.abspath('src'))
-from app import app
-#from src.app import app
+from dq_checks.src.app import app
 
 @pytest.fixture
 def client():
