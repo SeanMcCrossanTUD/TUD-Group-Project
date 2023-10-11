@@ -6,3 +6,5 @@ azure-storage-blob==12.9.*
 Flask==2.0.*
 Werkzeug==2.0.*
 azure-core==1.19.*
+matplotlib==3.4.*
+seaborn==0.11.*
