@@ -3,7 +3,7 @@ package com.datapolish.Data.Polish.Backend;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController()
 public class hi {
     @RequestMapping("/")
     public String msg() {
