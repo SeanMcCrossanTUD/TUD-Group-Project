@@ -140,27 +140,42 @@ def apply_transformations(dataset: pd.DataFrame) -> pd.DataFrame:
     # Return the transformed dataset
     return prep.dataframe
 
-@app.route('/data-prep', methods=['GET'])
-def data_quality_check():
+
+ # Define an endpoint accessible via the GET method
+@app.route('/data-prep', methods=['GET']) 
+def data_prep():
     try:
+        # Log the initiation of the data preparation process
         logger.info('Running Data Prep module!')
+
+        # Download CSV data from a storage
         data = download_blob_csv_data()
+
+        # Apply transformations to the downloaded data
         result = apply_transformations(data)
 
-        # Upload the result to Azure Blob Storage
+        # Upload the transformed result to Azure Blob Storage
         upload_result_csv_to_azure(result)
 
+        # Return a success message if everything goes well
         return 'Clean data uploaded in data prep'
 
+    # Handle Azure-specific errors
     except AzureError as ae:
         logger.error(f"AzureError: {str(ae)}")
         return jsonify({'error': str(ae), 'type': 'AzureError'}), 500
+
+    # Handle cases where the CSV data is empty
     except pd.errors.EmptyDataError as ede:
         logger.error(f"Pandas EmptyDataError: {str(ede)}")
         return jsonify({'error': str(ede), 'type': 'EmptyDataError'}), 500
+
+    # Handle all other unexpected errors
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
         return jsonify({'error': str(e), 'type': str(type(e).__name__)}), 500
 
+#run the application
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000)  # Start the app with debugging enabled on port 5000
+
