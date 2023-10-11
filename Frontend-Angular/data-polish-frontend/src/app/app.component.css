@@ -17,12 +17,12 @@ nav div{
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5% 0 2% 0;
-    border-bottom:solid white 2px ;
+    padding: 10% 0 10% 0;
+    border-bottom:solid rgb(52, 72, 122) 1px ;
 }
 nav div:hover{
 cursor: pointer;
-background-color: rgb(21, 102, 40);
+background-color: rgb(91, 23, 86);
 color: rgb(255, 255, 255);
 }
 .content-container{
