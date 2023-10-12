@@ -1,1 +1,30 @@
-<p>data-profile works!</p>
+<div class="data-profile-home-container">
+    <table id="data-profile-home-container-table">
+        <tr>
+            <td (click)="showDialog('../../assets/images/missing_values_plot_1697049816 (2).png','Missing values')">
+                Missing values                
+            </td>
+        </tr>
+        <tr>
+            <td (click)="showDialog('../../assets/images/outlier_scatter_1697109144.png','Outlier - Scatter')">
+                Outlier - Scatter
+            </td>
+        </tr>
+        <tr>
+            <td (click)="showDialog('../../assets/images/outlier_table_1697052009.png',' Outlier - Table')">
+                Outlier - Table
+            </td>
+        </tr>
+        <tr>
+            <td (click)="showDialog('../../assets/images/unique_values_plot_1697049816.png',' Unique Values')">
+               Unique Values
+            </td>
+        </tr>
+    </table>
+</div>
+
+<p-dialog [header]="header" [(visible)]="visible" [style]="{width: '90vw'}">
+    <p>
+     <img [src]="imgURL">    
+    </p>
+</p-dialog>

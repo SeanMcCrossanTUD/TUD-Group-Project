@@ -16,4 +16,11 @@ export class UploadFileComponent {
    
     this.BlobStorageService.uploadtoBlob(this.model);
   }
+  uploadedFiles: any[] = [];
+  onUpload(e:any){
+    for(let file of e.files) {
+      this.uploadedFiles.push(file);
+  }
+
+  }
 }

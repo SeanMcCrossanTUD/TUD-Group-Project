@@ -6,5 +6,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./data-profile.component.css']
 })
 export class DataProfileComponent {
+  visible: boolean = false;
+  seeimage(e:any){
+   alert(e)
+   window.open(e);
 
+   
+
+  }
+  imgURL=""
+  header=""
+  showDialog(e:any,c:any) {
+    this.imgURL=e;
+    this.header=c;
+    this.visible = true;
+}
 }
