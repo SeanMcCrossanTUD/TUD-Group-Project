@@ -1,0 +1,17 @@
+.data-profile-home-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+}
+
+#data-profile-home-container-table {
+    text-align: left;
+}
+#data-profile-home-container-table td{
+    padding: 10% 0 10% 0;
+}
+#data-profile-home-container-table td:hover{
+    transform: scale(1.5);
+    cursor: pointer;
+}
