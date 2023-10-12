@@ -7,6 +7,7 @@ import time
 import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from .data_quality_checker import DataQualityChecker
 from .data_profiling_visuals import DataProfilingVisuals
 
@@ -21,6 +22,9 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 app = Flask(__name__)
+
+SERVICE_BUS_CONNECTION_STRING = 'Endpoint=sb://fab5-mq.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=/i79GR2PUSm8IuWFqlgqCHP9BJ2+QYPm0+ASbDU8pRM='
+SERVICE_BUS_QUEUE_NAME = 'q1'
 
 connection_string = os.getenv('AZURE_CONNECTION_STRING')
 if connection_string is None:
@@ -192,6 +196,28 @@ def perform_data_quality_checks(data):
 
     return result
 
+def send_message_to_queue(message_body):
+    try:
+        with ServiceBusClient.from_connection_string(SERVICE_BUS_CONNECTION_STRING) as client:
+            with client.get_queue_sender(queue_name=SERVICE_BUS_QUEUE_NAME) as sender:
+                message = ServiceBusMessage(message_body)
+                sender.send_messages(message)
+                logger.info(f"Sent message to queue: {message_body}")
+    except Exception as e:
+        logger.error(f"Error sending message to queue: {str(e)}")
+        raise e
+
+def receive_message_from_queue():
+    try:
+        with ServiceBusClient.from_connection_string(SERVICE_BUS_CONNECTION_STRING) as client:
+            with client.get_queue_receiver(queue_name=SERVICE_BUS_QUEUE_NAME, max_wait_time=5) as receiver:
+                for msg in receiver:
+                    print(f"Received message: {str(msg)}")
+                    receiver.complete_message(msg)
+    except Exception as e:
+        logger.error(f"Error receiving message from queue: {str(e)}")
+        raise e
+
 
 def upload_results_to_azure(result):
     # Convert the result dictionary to a JSON string
@@ -272,6 +298,10 @@ def data_quality_check():
         # Upload the result to Azure Blob Storage
         upload_results_to_azure(result)
 
+        # Send a message to the queue after uploading
+        send_message_to_queue("Data quality check complete json results uploaded.")
+
+
         return jsonify(result), 200
 
     except AzureError as ae:
@@ -297,6 +327,8 @@ def data_profiling_images():
         
         # Run visuals and upload images to Azure Blob Storage
         run_visuals_and_upload(data_quality_checker, connection_string, container_name_images)
+
+        send_message_to_queue("Data profile visuals created plots uploaded.")
         
         return jsonify({'status': 'success', 'message': 'Data profiling images generated and uploaded successfully'}), 200
 
