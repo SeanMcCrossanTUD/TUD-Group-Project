@@ -7,6 +7,7 @@ import time
 import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from .data_prep import DataPrep
 
 
@@ -20,6 +21,9 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 app = Flask(__name__)
+
+SERVICE_BUS_CONNECTION_STRING = 'Endpoint=sb://fab5-mq.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=/i79GR2PUSm8IuWFqlgqCHP9BJ2+QYPm0+ASbDU8pRM='
+SERVICE_BUS_QUEUE_NAME = 'q1'
 
 connection_string = os.getenv('AZURE_CONNECTION_STRING')
 if connection_string is None:
@@ -82,6 +86,27 @@ def download_blob_csv_data():
         logger.error(f"Unexpected error while downloading blob data: {str(e)}")
         raise e 
 
+def send_message_to_queue(message_body):
+    try:
+        with ServiceBusClient.from_connection_string(SERVICE_BUS_CONNECTION_STRING) as client:
+            with client.get_queue_sender(queue_name=SERVICE_BUS_QUEUE_NAME) as sender:
+                message = ServiceBusMessage(message_body)
+                sender.send_messages(message)
+                logger.info(f"Sent message to queue: {message_body}")
+    except Exception as e:
+        logger.error(f"Error sending message to queue: {str(e)}")
+        raise e
+
+def receive_message_from_queue():
+    try:
+        with ServiceBusClient.from_connection_string(SERVICE_BUS_CONNECTION_STRING) as client:
+            with client.get_queue_receiver(queue_name=SERVICE_BUS_QUEUE_NAME, max_wait_time=5) as receiver:
+                for msg in receiver:
+                    print(f"Received message: {str(msg)}")
+                    receiver.complete_message(msg)
+    except Exception as e:
+        logger.error(f"Error receiving message from queue: {str(e)}")
+        raise e
 
 def upload_result_csv_to_azure(result):
     
@@ -157,6 +182,9 @@ def data_prep():
         # Upload the transformed result to Azure Blob Storage
         upload_result_csv_to_azure(result)
 
+        # Send a message to the queue after uploading
+        send_message_to_queue("Clean data uploaded.")
+        
         # Return a success message if everything goes well
         return 'Clean data uploaded in data prep'
 
