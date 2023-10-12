@@ -28,6 +28,8 @@ if connection_string is None:
 
 container_name = "csv"
 container_name_images = "imagesoutput"
+dirty_blob_name = "dirty_startup_dataset.csv" # Using for potential demo fail purposes
+
 @app.route('/health', methods=['GET'])
 def health_check():
     """
@@ -66,7 +68,7 @@ def download_blob_csv_data():
 
     This function initializes a BlobServiceClient using the connection credentials, retrieves the blob client for a specific
     container, and lists all blobs within that container. 
-    
+
     FOR TESTING PURPOSES!!!!!If the downloaded CSV data is empty or contains only whitespace,
     it will attempt to download 'dirty_startup_dataset.csv' instead. # CHANGE ASAP AFTER FRIDAY DEMO
 
@@ -99,7 +101,7 @@ def download_blob_csv_data():
 
         if not csv_data.strip(): 
             logger.warning("Downloaded CSV data is empty or contains only whitespace. Attempting to download 'dirty_startup_dataset.csv' instead.")
-            blob_name = "dirty_startup_dataset.csv"
+            blob_name = dirty_blob_name
             blob_client = blob_service_client.get_blob_client(container_name, blob_name)
             blob_data = blob_client.download_blob()
             csv_data = blob_data.readall().decode('utf-8')
