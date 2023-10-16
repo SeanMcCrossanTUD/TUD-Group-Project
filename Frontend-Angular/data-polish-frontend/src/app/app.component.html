@@ -1,7 +1,7 @@
 <div id="home-container">
   <nav>
     <div class="logo" (click)="navigate('')">
-        <strong>Da</strong>ta&nbsp;<strong>Pol</strong>ish
+        DataPolish
     </div>
     <div (click)="navigate('/UploadDataset')">
       Upload dataset
@@ -9,7 +9,7 @@
     <div (click)="navigate('/DataProfile')">
       Data Profile
     </div>
-    <div (click)="navigate('/UploadDataset')">
+    <div (click)="navigate('/DataCleaning')">
       Data Cleaning
     </div>
     <!-- <div (click)="navigate('/UploadDataset')">
@@ -21,9 +21,9 @@
     <!-- <div>
       Visualization
     </div> -->
-    <div (click)="navigate('/Logoff')">
+    <!-- <div (click)="navigate('/Logoff')">
       Log off
-    </div>
+    </div> -->
   </nav>
   <div class="content-container">
      <router-outlet></router-outlet> 

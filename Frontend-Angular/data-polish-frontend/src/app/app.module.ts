@@ -12,11 +12,16 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FileUploadModule } from 'primeng/fileupload';
+import { ToastModule } from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+import { DataCleaningComponent } from './data-cleaning/data-cleaning.component'
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'UploadDataset',component:UploadFileComponent},
     {path:'DataProfile',component:DataProfileComponent},
-    {path:'Export',component:ExportComponent}
+    {path:'Export',component:ExportComponent},
+    {path:'DataCleaning',component:DataCleaningComponent}
+
 ];
 @NgModule({
   declarations: [
@@ -24,7 +29,8 @@ const routes: Routes = [
     UploadFileComponent,
     DataProfileComponent,
     HomePageComponent,
-    ExportComponent
+    ExportComponent,
+    DataCleaningComponent
   ],
   imports: [
     BrowserModule,
@@ -34,10 +40,11 @@ const routes: Routes = [
     ButtonModule,
     DialogModule,
     BrowserAnimationsModule,
-    FileUploadModule
+    FileUploadModule,
+    ToastModule
     
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
