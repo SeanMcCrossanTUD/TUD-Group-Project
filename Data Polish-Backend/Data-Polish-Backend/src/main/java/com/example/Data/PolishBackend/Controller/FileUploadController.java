@@ -16,6 +16,7 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import java.io.IOException;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class FileUploadController {
     //storing the blob connection string in a 'string' variable
     @Value("${azure.storage.connection-string}")
