@@ -9,7 +9,10 @@ from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from .data_prep import DataPrep
-
+from azure_package.src.azure_functions import (download_blob_csv_data, 
+                                            upload_result_csv_to_azure,
+                                            send_message_to_queue,
+                                            receive_message_from_queue)
 
 # Set up logging
 logger = logging.getLogger('data-prep')
@@ -41,101 +44,6 @@ def health_check():
         "status": "healthy",
         "version": "1.0.0"
     }), 200
-
-
-def download_blob_csv_data():
-    """
-    Downloads the CSV from Azure Blob Storage, converts it into a Pandas DataFrame, and returns it.
-
-    This function initializes a BlobServiceClient using the connection credenitals, retrieves the blob client for a specific
-    container, and lists all blobs within that container. For now we assume only one blob in the container
-    (May be subject to change) and retrieves it's name.
-    The function then downloads this blob, decodes the CSV data from it, and reads this data into
-    a Pandas DataFrame which is then returned.
-
-    Logging and error handling is utilized to provide information about the process
-    and to provide specific errors. 
-
-    Returns:
-        pd.DataFrame: A Pandas DataFrame containing the CSV data downloaded from Azure Blob Storage.
-
-    Raises:
-        AzureError: If there is an Azure-specific error while trying to download the blob data.
-        Exception: For general exceptions that might occur while trying to download the blob data.
-    """
-
-    try:
-        logger.info('Initializing BlobServiceClient')
-        blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-        container_client = blob_service_client.get_container_client(container_name_csv)
-        blob_list = container_client.list_blobs()
-        blob_name = next(blob_list).name  # Assumes only one blob
-
-        logger.info(f'Downloading CSV data from Azure Blob Storage: {blob_name}')
-        blob_client = blob_service_client.get_blob_client(container_name_csv, blob_name)
-        blob_data = blob_client.download_blob()
-        csv_data = blob_data.readall().decode('utf-8')
-        data = pd.read_csv(io.StringIO(csv_data))
-
-        return data
-
-    except AzureError as ae:
-        logger.error(f"AzureError while downloading blob data: {str(ae)}")
-        raise ae 
-    except Exception as e:
-        logger.error(f"Unexpected error while downloading blob data: {str(e)}")
-        raise e 
-
-def send_message_to_queue(message_body):
-    try:
-        with ServiceBusClient.from_connection_string(SERVICE_BUS_CONNECTION_STRING) as client:
-            with client.get_queue_sender(queue_name=SERVICE_BUS_QUEUE_NAME) as sender:
-                message = ServiceBusMessage(message_body)
-                sender.send_messages(message)
-                logger.info(f"Sent message to queue: {message_body}")
-    except Exception as e:
-        logger.error(f"Error sending message to queue: {str(e)}")
-        raise e
-
-def receive_message_from_queue():
-    try:
-        with ServiceBusClient.from_connection_string(SERVICE_BUS_CONNECTION_STRING) as client:
-            with client.get_queue_receiver(queue_name=SERVICE_BUS_QUEUE_NAME, max_wait_time=5) as receiver:
-                for msg in receiver:
-                    print(f"Received message: {str(msg)}")
-                    receiver.complete_message(msg)
-    except Exception as e:
-        logger.error(f"Error receiving message from queue: {str(e)}")
-        raise e
-
-def upload_result_csv_to_azure(result):
-    
-    # Get the current time in epoch format and convert it to a string
-    timestamp = str(int(time.time()))
-    
-    # Define the name of the result blob with the epoch timestamp
-    result_blob_name = f'clean_data_{timestamp}.csv'
-    
-    # Define the name of the container to upload the result
-    result_container_name = 'flaskapi2output'
-    
-    try:
-        # Initialize BlobServiceClient
-        blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-        
-        # Get the blob client for the result
-        blob_client = blob_service_client.get_blob_client(result_container_name, result_blob_name)
-        
-        # Upload the result df to Azure Blob Storage
-        blob_client.upload_blob(result.to_csv(index=False), overwrite=True)
-        logger.info(f'Successfully uploaded {result_blob_name} to {result_container_name} in Azure Blob Storage')
-    
-    except AzureError as ae:
-        logger.error(f"AzureError while uploading result to Azure Blob Storage: {str(ae)}")
-        raise ae 
-    except Exception as e:
-        logger.error(f"Unexpected error while uploading result to Azure Blob Storage: {str(e)}")
-        raise e 
 
 
 def apply_transformations(dataset: pd.DataFrame) -> pd.DataFrame:
@@ -174,16 +82,16 @@ def data_prep():
         logger.info('Running Data Prep module!')
 
         # Download CSV data from a storage
-        data = download_blob_csv_data()
+        data = download_blob_csv_data(connection_string=connection_string)
 
         # Apply transformations to the downloaded data
         result = apply_transformations(data)
 
         # Upload the transformed result to Azure Blob Storage
-        upload_result_csv_to_azure(result)
+        upload_result_csv_to_azure(result,connection_string=connection_string)
 
         # Send a message to the queue after uploading
-        send_message_to_queue("Clean data uploaded.")
+        send_message_to_queue("Clean data uploaded.", service_bus_connection_string=SERVICE_BUS_CONNECTION_STRING)
         
         # Return a success message if everything goes well
         return 'Clean data uploaded in data prep'
