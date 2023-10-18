@@ -1,14 +1,17 @@
+import matplotlib
+matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+import io
 from .data_quality_checker import DataQualityChecker
-
 
 class DataProfilingVisuals:
     def __init__(self, data_quality_checker: DataQualityChecker):
         self.dqc = data_quality_checker
 
-    def plot_missing_values(self, output_file: str = "missing_values_plot.png"):
+    def plot_missing_values(self):
         missing_values = self.dqc.count_missing_values()
         
         if not missing_values:  # Check if the dictionary is empty
@@ -23,10 +26,14 @@ class DataProfilingVisuals:
         plt.xticks(rotation=45, fontsize=12)
         plt.yticks(fontsize=12)
         plt.tight_layout()
-        plt.savefig(output_file)  # Save the plot as a PNG file
-        plt.show()
+        
+        img_data = io.BytesIO()
+        plt.savefig(img_data, format='png')
+        img_data.seek(0)
+        plt.close()
+        return img_data
 
-    def plot_unique_values_in_text_fields(self, output_file: str = "unique_values_plot.png"):
+    def plot_unique_values_in_text_fields(self):
         unique_values = self.dqc.count_unique_values_in_text_fields()
         
         if not unique_values:  # Check if the dictionary is empty
@@ -41,10 +48,15 @@ class DataProfilingVisuals:
         plt.xticks(rotation=45, fontsize=12)
         plt.yticks(fontsize=12)
         plt.tight_layout()
-        plt.savefig(output_file)  # Save the plot as a PNG file
-        plt.show()
+        
+        img_data = io.BytesIO()
+        plt.savefig(img_data, format='png')
+        img_data.seek(0)
+        plt.close()
+        return img_data
 
-    def plot_outlier_table(self, threshold: float = 3.0, output_file: str = "outlier_table.png"):
+
+    def plot_outlier_table(self, threshold: float = 3.0):
         outliers = self.dqc.z_score_outliers(threshold)
         if not outliers:
             print("No outliers found.")
@@ -66,11 +78,14 @@ class DataProfilingVisuals:
                  colLabels=outlier_df.columns,
                  cellLoc='center', loc='center', colWidths=[0.1, 0.2, 0.2, 0.2, 0.1, 0.1, 0.1])
         plt.title('Table of Top 20 Extreme Outliers')
-        plt.savefig(output_file)  # Save the plot as a PNG file
-        plt.show()
-        print(f"Plot saved as {output_file}")
+        
+        img_data = io.BytesIO()
+        plt.savefig(img_data, format='png')
+        img_data.seek(0)
+        plt.close()
+        return img_data
 
-    def plot_outlier_scatter(self, threshold: float = 3.0, output_file: str = "outlier_scatter.png"):
+    def plot_outlier_scatter(self, threshold: float = 3.0):
         outliers = self.dqc.z_score_outliers(threshold)
         if not outliers:
             print("No outliers found.")
@@ -96,6 +111,9 @@ class DataProfilingVisuals:
             ax.set_ylabel(col)
         
         plt.tight_layout()
-        plt.savefig(output_file)  # Save the plot as a PNG file
-        plt.show()
-        print(f"Plot saved as {output_file}")
+        
+        img_data = io.BytesIO()
+        plt.savefig(img_data, format='png')
+        img_data.seek(0)
+        plt.close()
+        return img_data

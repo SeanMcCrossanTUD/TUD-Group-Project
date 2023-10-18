@@ -1,6 +1,6 @@
 <div id="file-upload-home-container">
-    <div id="file-upload-home-container-modal">
-        <div class="notbr-text" style="--fixation-opac: 1; --fixation-size: 16px; --fixation-height: 64px; --fixation-spacing: 0px; --fixation-weight1: 700; --fixation-weight2: 300;"><p><span class="notbr-fixation">Upl</span>oad <span class="notbr-fixation">on</span>ly <span class="notbr-fixation">CS</span>V <span class="notbr-fixation">fi</span>le </p>
+    <!-- <div id="file-upload-home-container-modal"> -->
+        <!-- <div class="notbr-text" style="--fixation-opac: 1; --fixation-size: 16px; --fixation-height: 64px; --fixation-spacing: 0px; --fixation-weight1: 700; --fixation-weight2: 300;"><p><span class="notbr-fixation">Upl</span>oad <span class="notbr-fixation">on</span>ly <span class="notbr-fixation">CS</span>V <span class="notbr-fixation">fi</span>le </p>
         <div>
             <input  type="file"
             (change)="uploadFile($event)">
@@ -9,7 +9,19 @@
         <br/>
        <div id="upload-file-button" (click)="upload()">
         Upload <strong>Dat</strong>aset
-       </div>      
+       </div>       -->
 
+       <div class="card flex justify-content-center">
+       
+        <p-fileUpload  #fileupload [customUpload]="true" (uploadHandler)="Upload($event)" (onUpload)="onUpload($event)" >
+            <ng-template pTemplate="content">
+                <ul *ngIf="uploadedFiles.length">
+                    <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                </ul>
+            </ng-template>
+        </p-fileUpload>
     </div>
+
+    <!-- </div> -->
 </div>
+<p-toast></p-toast>
