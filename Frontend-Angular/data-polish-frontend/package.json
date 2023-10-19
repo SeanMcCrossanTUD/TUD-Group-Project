@@ -22,6 +22,8 @@
     "@coreui/angular": "^4.5.25",
     "file-saver": "^2.0.5",
     "materialize-css": "^1.0.0-rc.2",
+    "ng-accessibility-bar": "^1.2.3",
+    "primeicons": "^6.0.1",
     "primeng": "^16.5.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

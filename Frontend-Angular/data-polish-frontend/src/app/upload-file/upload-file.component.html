@@ -15,7 +15,12 @@
        
         <p-fileUpload  #fileupload [customUpload]="true" (uploadHandler)="Upload($event)" (onUpload)="onUpload($event)" >
             <ng-template pTemplate="content">
-                <img src=".././../assets/images/draganddrop-icon.png" width="100px" alt="">
+                <div id=fileupload>
+                     <img src=".././../assets/images/draganddrop-icon.png" > 
+                     <label>Drag & Drop file here</label>    
+                   
+                </div>
+               
                 <ul *ngIf="uploadedFiles.length">
                     <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
                 </ul>

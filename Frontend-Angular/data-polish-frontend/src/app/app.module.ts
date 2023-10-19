@@ -17,6 +17,7 @@ import {MessageService} from 'primeng/api';
 import { DataCleaningComponent } from './data-cleaning/data-cleaning.component'
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
+
 const routes: Routes = [
     {path:'',component:HomePageComponent},
     {path:'UploadDataset',component:UploadFileComponent},
@@ -45,7 +46,8 @@ const routes: Routes = [
     FileUploadModule,
     ToastModule,
     ConfirmDialogModule,
-    ContextMenuModule
+    ContextMenuModule,
+    
     
   ],
   providers: [MessageService],

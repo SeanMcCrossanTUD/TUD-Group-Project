@@ -1,10 +1,10 @@
 table{
-    width: 50vw;
-    height: 50vh;
+    width: max-content;
+    height: max-content;
     overflow: scroll;
 }
 table tr{
-    padding: 2vh;
+    padding: 0.5em;
     color: white;
     border-right:0 ;
 }
@@ -15,7 +15,7 @@ table tr:hover{
 }
  td {
     border-bottom: 1px  dotted;
-    padding: 2vh;
+    padding: 0.5em;
     text-align: center;
   }
   th{
@@ -23,6 +23,8 @@ table tr:hover{
     padding: 2vh;
     border-right:0 ;
   }
-
+i:hover{
+  transform: scale(1.1);
+}
 
  
