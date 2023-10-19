@@ -25,6 +25,9 @@
 
 <p-dialog [header]="header" [(visible)]="visible" [style]="{width: '90vw'}">
     <p>
-     <img [src]="imgURL">    
+     <img #img [src]="imgURL">    
     </p>
 </p-dialog>
+
+<p-contextMenu [target]="img" [model]="items"></p-contextMenu>
+<a target="_blank" #newwindow hidden ></a>

@@ -1,0 +1,26 @@
+table{
+    width: 50vw;
+    height: 50vh;
+    overflow: scroll;
+}
+table tr{
+    padding: 2vh;
+    color: white;
+}
+table tr:hover{
+    cursor: pointer;
+    background-color: rgb(26, 15, 79);
+    border-radius: 5px;
+}
+ td {
+    border-bottom: 1px  dotted;
+    padding: 2vh;
+    text-align: center;
+  }
+  th{
+    border-bottom: 2px solid black;
+    padding: 2vh;
+  }
+
+
+ 

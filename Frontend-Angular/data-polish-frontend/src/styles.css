@@ -6,10 +6,32 @@
   }
   body{
     margin: 0px;
+    /* background: rgb(2,0,36);
+background: linear-gradient(153deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 26%, rgba(0,142,143,1) 100%); */
+/* background: rgb(46,84,17);
+background: linear-gradient(43deg, rgba(46,84,17,1) 0%, rgba(9,9,121,1) 39%, rgba(0,142,143,1) 87%); */
+/* background: rgb(255,255,255);
+background: linear-gradient(152deg, rgba(255,255,255,1) 0%, rgba(199,199,230,0.5) 26%, 
+rgba(64,72,215,0.5) 100%); */
+
+background-image: linear-gradient( 180.4deg,  rgba(238,113,113,1) 1%, rgba(246,215,148,1) 100% );
   }
   .router-content-center{
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100%;
+
+    
+  }
+
+  .glass-card{
+    /* From https://css.glass */
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(255, 255, 255, 0.3);
+padding: 2vh;
   }
