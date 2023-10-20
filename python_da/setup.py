@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 def read_requirements():
     with open('requirements.txt', 'r') as req_file:
-        return [line.strip() for line in req_file if line and not line.startswith('#')]
+        return [line.strip() for line in req_file if line.strip() and not line.startswith('#')]
 
 found_packages = find_packages(include=['dq_checks*', 'data_prep*', 'azure_package*'])
 print("Found packages:", found_packages)

@@ -25,14 +25,18 @@ logger.addHandler(handler)
 
 app = Flask(__name__)
 
-SERVICE_BUS_CONNECTION_STRING = 'Endpoint=sb://fab5-mq.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=/i79GR2PUSm8IuWFqlgqCHP9BJ2+QYPm0+ASbDU8pRM='
-SERVICE_BUS_QUEUE_NAME = 'q1'
+# Load configuration from JSON file
+with open('python_da/pyconfigurations/azure_config.json', 'r') as file:
+    config = json.load(file)
 
-connection_string = os.getenv('AZURE_CONNECTION_STRING')
+SERVICE_BUS_CONNECTION_STRING = config["SERVICE_BUS_CONNECTION_STRING"]
+SERVICE_BUS_QUEUE_NAME = config["SERVICE_BUS_QUEUE_1_NAME"]
+connection_string = config["AZURE_CONNECTION_STRING"]
+
 if connection_string is None:
     raise Exception("Failed to get connection string from environment variable")
 
-container_name_csv = "csv"
+container_name_data_input = config["DATA_INPUT_CONTAINER"]
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -82,7 +86,7 @@ def data_prep():
         logger.info('Running Data Prep module!')
 
         # Download CSV data from a storage
-        data = download_blob_csv_data(connection_string=connection_string)
+        data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input)
 
         # Apply transformations to the downloaded data
         result = apply_transformations(data)
