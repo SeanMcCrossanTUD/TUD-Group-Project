@@ -29,7 +29,7 @@ public class FileUploadService {
     //storing service connection string and queueName
     @Value("${azure.servicebus.connection-string}")
     private String serviceBusConnectionString;
-    @Value("${azure.servicebus.queue-name}")
+    @Value("${azure.servicebus.queue-name-q1}")
     private String queueName;
 
     @Autowired
