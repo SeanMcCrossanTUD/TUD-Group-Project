@@ -58,3 +58,7 @@ width:max-content;
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
+
+  .accessiable-red-box:hover{
+    border: red 2px;
+  }
