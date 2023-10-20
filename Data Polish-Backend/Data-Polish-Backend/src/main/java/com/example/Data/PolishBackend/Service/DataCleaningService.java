@@ -10,7 +10,7 @@ public class DataCleaningService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private class DataResult {
+    private static class DataResult {
         String rawurl;
         String dataprofileoutput;
     }
