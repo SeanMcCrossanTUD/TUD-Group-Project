@@ -26,6 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: cd ./Frontend-Angular/data-polish-frontend
     - run: npm ci
-    - run: npm run prod --if-present
+    - run: npm run prod 
     
