@@ -1,21 +1,32 @@
 package com.example.Data.PolishBackend.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.azure.messaging.servicebus.*;
 import com.azure.core.util.BinaryData;
+import org.springframework.stereotype.Service;
+
+@Service
 public class DataCleaningService {
     //data clean - get jobid from user then query db get dataprofilingoutput then put it in q2.
+
+    //storing service connection string and queueName
+    @Value("${azure.servicebus.connection-string}")
+    private String serviceBusConnectionString;
+    @Value("${azure.servicebus.queue-name-q2}")
+    private String queueName;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
 
     private static class DataResult {
         String rawurl;
         String dataprofileoutput;
     }
-    public ResponseEntity<String> processDataCleaning(String jobID) {
+    public ResponseEntity<Void> processDataCleaning(String jobID) {
         try {
             DataResult dataResult = new DataResult();
 
@@ -28,18 +39,35 @@ public class DataCleaningService {
             });
 
             if (dataResult.rawurl == null || dataResult.dataprofileoutput == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Data not found for jobID: " + jobID);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
-            // Construct JSON data
+            // Connect to Azure Service Bus
+            ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
+                    .connectionString(serviceBusConnectionString)
+                    .sender()
+                    .queueName(queueName)
+                    .buildClient();
+
+            // Construct the JSON message to send
             String jsonData = "{\"jobID\":\"" + jobID + "\", \"rawurl\":\"" + dataResult.rawurl + "\", \"dataprofileoutput\":\"" + dataResult.dataprofileoutput + "\"}";
 
-            // Store JSON data in Azure Service Bus 'q2' (add your Azure Service Bus logic here)
+            // Convert the JSON to BinaryData
+            BinaryData messageData = BinaryData.fromString(jsonData);
 
-            // Return a success response
-            return ResponseEntity.ok("Data stored in Azure Service Bus 'q2': " + jsonData);
+            // Create a ServiceBusMessage with the JSON data
+            ServiceBusMessage message = new ServiceBusMessage(messageData);
+
+            // Send the message to the 'q2' queue
+            senderClient.sendMessage(message);
+
+            // Close the sender and the ServiceBusClient when done
+            senderClient.close();
+
+            // Return a success response with no body
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing data: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
