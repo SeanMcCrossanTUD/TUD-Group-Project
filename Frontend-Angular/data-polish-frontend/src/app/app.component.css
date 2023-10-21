@@ -1,18 +1,18 @@
 nav{
-    background: rgba( 255, 255, 255, 0.3 );
-    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     backdrop-filter: blur( 4px );
     -webkit-backdrop-filter: blur( 4px );
     border-radius: 10px;
-    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    border: 1px solid rgba( 255, 255, 255, 0.2 );
     min-width: 15vw;
-    min-height: 100vh;
+    max-height: 80vh;
     color: white;
 }
 #home-container{
 
     width: 99vw;
-    margin: 0px 0px 0px 0px;
+    margin: 1em 0.5em 0px 1em;
     padding: 0px;
     display: flex;
 
@@ -23,7 +23,7 @@ nav div{
     justify-content: center;
     align-items: center;
     padding: 10% 0 10% 0;
-    border-bottom:solid rgb(52, 72, 122) 1px ;
+    border-bottom:solid rgb(71, 94, 151) 1px ;
 }
 nav div:hover{
 cursor: pointer;
@@ -31,7 +31,7 @@ background-color: rgb(91, 23, 86);
 color: rgb(255, 255, 255);
 }
 .content-container{
-    min-height: 100vh;
+    min-height: 90vh;
     min-width: 85vw;
     max-width: 100%;
     max-height: 100vh;

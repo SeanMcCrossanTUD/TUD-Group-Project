@@ -14,4 +14,6 @@ export class AppComponent {
     this.router.navigate([e]);
        // this.location.replaceState(e);
   }
+
+ 
 }
