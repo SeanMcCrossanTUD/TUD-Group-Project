@@ -22,6 +22,7 @@
     "@coreui/angular": "^4.5.25",
     "@google-cloud/text-to-speech": "^5.0.1",
     "file-saver": "^2.0.5",
+    "material-icons": "^1.13.12",
     "materialize-css": "^1.0.0-rc.2",
     "primeicons": "^6.0.1",
     "primeng": "^16.5.0",

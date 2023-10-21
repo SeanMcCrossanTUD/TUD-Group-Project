@@ -18,9 +18,7 @@
     <div (click)="navigate('/Export')">
       Export
     </div>
-    <!-- <div>
-      Visualization
-    </div> -->
+  
 
 
   </nav>
@@ -29,4 +27,13 @@
   </div>
   
 </div>
+<div id="mobile" hidden>Please use computer to access the webpage</div>
+<div id="folating-button-container">
+  <div (click)="showsidebar()">   <span class="material-icons">accessibility</span> </div>
+ 
+</div>
+
+<p-sidebar [(visible)]="sidebarVisible" position="right">
+  <h3>Bottom Sidebar</h3>
+</p-sidebar>
 

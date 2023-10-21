@@ -28,7 +28,7 @@ nav div{
 nav div:hover{
 cursor: pointer;
 background-color: rgb(91, 23, 86);
-color: rgb(255, 255, 255);
+border: 2px red solid;
 }
 .content-container{
     min-height: 90vh;
@@ -39,4 +39,27 @@ color: rgb(255, 255, 255);
 }
 .logo img{
     border-radius: 10px;
+}
+#folating-button-container{
+    position: fixed;
+     
+    bottom: 10em;
+ 
+right: 1em;
+width: 3em;
+min-height: 3em;
+background-color: rgb(14, 79, 210);
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 3em;
+color: wheat;
+
+
+}
+#folating-button-container:hover{
+    cursor: pointer;
+    background-color: rgb(91, 23, 86);
+border: 2px red solid;
+
 }

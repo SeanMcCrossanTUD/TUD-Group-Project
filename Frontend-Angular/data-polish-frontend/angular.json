@@ -29,10 +29,11 @@
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/material-icons/iconfont/material-icons.css"
              
             ],
             "scripts": [
-              "src/assets/Scripts/azure-storage.blob.js",
+              "src/assets/Scripts/azure-storage.blob.js"
               
             ]
           },

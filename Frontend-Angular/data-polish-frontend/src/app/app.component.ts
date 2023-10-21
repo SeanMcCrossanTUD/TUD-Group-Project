@@ -1,6 +1,8 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MenuItem,MessageService  } from 'primeng/api';
+
 
 @Component({
   selector: 'app-root',
@@ -9,10 +11,23 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'dataPolish';
-  constructor( private location: Location, private router: Router ){}
+  items: any | null;
+  radius:any =100;
+  constructor( private location: Location,
+     private router: Router,
+     private messageService :MessageService  ){}
+
+  ngOnInit() {
+ 
+}
   navigate(e:any){
     this.router.navigate([e]);
-       // this.location.replaceState(e);
+      
+  }
+
+  sidebarVisible: boolean = false;
+  showsidebar(){
+    this.sidebarVisible=true;
   }
 
  

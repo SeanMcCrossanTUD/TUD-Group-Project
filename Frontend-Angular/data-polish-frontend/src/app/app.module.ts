@@ -17,6 +17,7 @@ import {MessageService} from 'primeng/api';
 import { DataCleaningComponent } from './data-cleaning/data-cleaning.component'
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { SidebarModule } from 'primeng/sidebar';
 
 const routes: Routes = [
     {path:'',component:HomePageComponent},
@@ -47,6 +48,7 @@ const routes: Routes = [
     ToastModule,
     ConfirmDialogModule,
     ContextMenuModule,
+    SidebarModule
     
     
   ],
