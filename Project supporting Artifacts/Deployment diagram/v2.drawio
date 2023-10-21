@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2023-10-20T22:16:54.148Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="aIfeR4Qv8Dd_IpjrBla_" version="22.0.3" type="device">
+<mxfile host="Electron" modified="2023-10-21T22:43:55.237Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="lyBhORR__NBVx7PsDgRK" version="22.0.3" type="device">
   <diagram name="Page-1" id="oRc73oDu4O_750UgrFYW">
     <mxGraphModel dx="993" dy="675" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -31,16 +31,16 @@
         <mxCell id="ZZKGM_gCjTzit4cdfr4o-27" value="Ubuntu server" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="100" y="160" width="230.32" height="240" as="geometry" />
         </mxCell>
-        <mxCell id="X-PeoLG5OUu86r7JCEKI-3" value="Daemon Services" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="ZZKGM_gCjTzit4cdfr4o-27">
+        <mxCell id="X-PeoLG5OUu86r7JCEKI-3" value="Daemon Services" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" parent="ZZKGM_gCjTzit4cdfr4o-27" vertex="1">
           <mxGeometry x="45.16000000000001" y="150" width="140" height="78" as="geometry" />
         </mxCell>
-        <mxCell id="X-PeoLG5OUu86r7JCEKI-4" value="Python Service 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="X-PeoLG5OUu86r7JCEKI-3">
+        <mxCell id="X-PeoLG5OUu86r7JCEKI-4" value="Python Service 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="X-PeoLG5OUu86r7JCEKI-3" vertex="1">
           <mxGeometry y="26" width="140" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="X-PeoLG5OUu86r7JCEKI-5" value="Python Service 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="X-PeoLG5OUu86r7JCEKI-3">
+        <mxCell id="X-PeoLG5OUu86r7JCEKI-5" value="Python Service 2" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="X-PeoLG5OUu86r7JCEKI-3" vertex="1">
           <mxGeometry y="52" width="140" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="X-PeoLG5OUu86r7JCEKI-1" value="Vertical Container" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="ZZKGM_gCjTzit4cdfr4o-27">
+        <mxCell id="X-PeoLG5OUu86r7JCEKI-1" value="Tomcat" style="swimlane;whiteSpace=wrap;html=1;" parent="ZZKGM_gCjTzit4cdfr4o-27" vertex="1">
           <mxGeometry x="10" y="30" width="210" height="110" as="geometry" />
         </mxCell>
         <mxCell id="ZZKGM_gCjTzit4cdfr4o-28" value="&lt;ul&gt;&lt;li&gt;Angular Frontend Application&lt;/li&gt;&lt;li&gt;Springboot Backend Application&lt;/li&gt;&lt;/ul&gt;" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;" parent="X-PeoLG5OUu86r7JCEKI-1" vertex="1">
