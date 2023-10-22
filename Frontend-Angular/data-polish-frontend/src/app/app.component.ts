@@ -13,6 +13,7 @@ export class AppComponent {
   title = 'dataPolish';
   items: any | null;
   radius:any =100;
+  navclass='nav';
   constructor( private location: Location,
      private router: Router,
      private messageService :MessageService  ){}
@@ -28,6 +29,11 @@ export class AppComponent {
   sidebarVisible: boolean = false;
   showsidebar(){
     this.sidebarVisible=true;
+  }
+  blackwhite(){
+    this.navclass='nav-2'
+    document.body.style.backgroundColor = "black";
+    document.body.style.backgroundImage='none';
   }
 
  

@@ -1,5 +1,5 @@
 <div id="home-container">
-  <nav>
+  <nav [class]="navclass">
     <div class="logo" (click)="navigate('')" title="Home">
        <img src="assets/images/logo.png" width="50px">
     </div>
@@ -34,6 +34,14 @@
 </div>
 
 <p-sidebar [(visible)]="sidebarVisible" position="right">
-  <h3>Bottom Sidebar</h3>
+  <h2>Accessibility Bar</h2>
+  <div>
+    <div class="Accessibility-buttons">Default</div>
+    <div class="Accessibility-buttons">off-white / Black</div>
+    <div class="Accessibility-buttons" (click)="blackwhite()">Black / White</div>
+    <div class="Accessibility-buttons">Bluel / Yellow</div>
+    <hr/>
+    <div class="Accessibility-buttons">Audio Desc</div>
+  </div>
 </p-sidebar>
 
