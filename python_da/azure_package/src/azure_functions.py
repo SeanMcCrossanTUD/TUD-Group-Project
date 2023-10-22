@@ -146,14 +146,25 @@ def upload_result_csv_to_azure(result, connection_string):
         logger.error(f"Unexpected error while uploading result to Azure Blob Storage: {str(e)}")
         raise e 
 
-def send_message_to_queue(message_body, service_bus_connection_string, service_bus_queue_name='q1'):
+def send_message_to_queue(job_id, filename, process, message, service_bus_connection_string, service_bus_queue_name='q1'):
     """Send a message to Azure Service Bus queue.
 
     Args:
-    - message_body (str): The message to be sent.
+    - job_id (str): The job ID associated with the process.
+    - filename (str): The name of the file being processed.
+    - process (str): The process being performed (e.g., "Data quality check").
+    - message (str): The main message or result.
     - service_bus_connection_string (str): The Azure Service Bus connection string.
     - service_bus_queue_name (str, optional): Name of the Service Bus queue. Defaults to 'q1'.
     """
+
+    # Constructing the JSON message body
+    message_body = json.dumps({
+        "jobID": job_id,
+        "filename": filename,
+        "process": process,
+        "message": message
+    })
 
     try:
         with ServiceBusClient.from_connection_string(service_bus_connection_string) as client:
@@ -173,12 +184,14 @@ def receive_message_from_queue(service_bus_connection_string, service_bus_queue_
     - service_bus_connection_string (str): The Azure Service Bus connection string.
     - service_bus_queue_name (str, optional): Name of the Service Bus queue. Defaults to 'q1'.
     """
-        
+
     try:
         with ServiceBusClient.from_connection_string(service_bus_connection_string) as client:
             with client.get_queue_receiver(queue_name=service_bus_queue_name, max_wait_time=5) as receiver:
                 for msg in receiver:
-                    logger.info(f"Received message from queue: {str(msg)}")
+                    # Parse the message body as JSON
+                    message_content = json.loads(str(msg))
+                    logger.info(f"Received message from queue: {message_content}")
                     receiver.complete_message(msg)
 
     except Exception as e:

@@ -1,18 +1,19 @@
 import os
 import logging
-from flask import Flask, jsonify
 import json
 import time
 import pandas as pd
 from azure.core.exceptions import AzureError
 
-from .data_quality_checker import DataQualityChecker
-from .data_profiling_visuals import DataProfilingVisuals
-from azure_package.src.azure_functions import (download_blob_csv_data, 
-                                            upload_results_to_azure,
-                                            upload_image_to_azure, 
-                                            send_message_to_queue,
-                                            receive_message_from_queue)
+from dq_checks.src.data_quality_checker import DataQualityChecker
+from dq_checks.src.data_profiling_visuals import DataProfilingVisuals
+from azure_package.src.azure_functions import (
+    download_blob_csv_data, 
+    upload_results_to_azure,
+    upload_image_to_azure, 
+    send_message_to_queue,
+    receive_message_from_queue
+)
 
 # Set up logging
 logger = logging.getLogger('data-quality-check')
@@ -23,8 +24,6 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-app = Flask(__name__)
-
 # Load configuration from JSON file
 with open('python_da/pyconfigurations/azure_config.json', 'r') as file:
     config = json.load(file)
@@ -33,25 +32,12 @@ SERVICE_BUS_CONNECTION_STRING = config["SERVICE_BUS_CONNECTION_STRING"]
 SERVICE_BUS_QUEUE_NAME = config["SERVICE_BUS_QUEUE_1_NAME"]
 connection_string = config["AZURE_CONNECTION_STRING"]
 
-
 if connection_string is None:
     raise Exception("Failed to get connection string from environment variable")
 
 container_name_images = config["IMAGE_OUTPUT_CONTAINER"]
 container_name_data_input = config["DATA_INPUT_CONTAINER"]
 
-
-
-@app.route('/health', methods=['GET'])
-def health_check():
-    """
-    Serves as a health check endpoint for the application.
-    If it returns a 200 then we know that the application is working as expected.
-    """
-    return jsonify({
-        "status": "healthy",
-        "version": "1.0.0"
-    }), 200
 def perform_data_quality_checks(data):
     """
     Perform data quality checks on the given data.
@@ -145,64 +131,58 @@ def run_visuals_and_upload(data_quality_checker, connection_string, container_na
             blob_name = f'{blob_name_template}_{timestamp}.png'    
             upload_image_to_azure(img_data, blob_name, connection_string, container_name_images)
 
+def main(test_iterations=None):
+    counter = 0
 
+    while True:
+        # If test_iterations is set and counter has reached it, break the loop
+        if test_iterations and counter >= test_iterations:
+            break
+        # Wait for 60 seconds before checking the queue again
+        time.sleep(60)
 
-@app.route('/data-quality-check', methods=['GET'])
-def data_quality_check():
-    try:
-        logger.info('Running Data Profile module!')
-        data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input)
-        result = perform_data_quality_checks(data)
+        # Check Azure queue for a new message
+        try:
+            msg = receive_message_from_queue(SERVICE_BUS_CONNECTION_STRING, SERVICE_BUS_QUEUE_NAME)
+            if msg:
+                logger.info('Received a new message, processing...')
+                message_content = json.loads(str(msg))
+                
+                filename = message_content['filename']
+                jobID = message_content['jobID']
 
-        # Upload the result to Azure Blob Storage
-        upload_results_to_azure(result, connection_string=connection_string)
+                data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input, blob_name=filename)
+                logger.info(f'Download data complete for: {filename} - {jobID}')
 
-        # Send a message to the queue after uploading
-        send_message_to_queue("Data quality check complete json results uploaded.", service_bus_connection_string=SERVICE_BUS_CONNECTION_STRING)
+                result = perform_data_quality_checks(data)
+                logger.info(f'Data Quality checks complete for: {filename} - {jobID}')
 
+                upload_results_to_azure(result, connection_string=connection_string)
+                logger.info(f'Data Quality checks uploaded for: {filename} - {jobID}')
 
-        return jsonify(result), 200
+                send_message_to_queue(jobID, filename, "dq_check", "Complete DQ JSON results uploaded.",
+                service_bus_connection_string=SERVICE_BUS_CONNECTION_STRING)
+                logger.info(f'Data Quality checks nessage sent to service bus queue: {filename} - {jobID}')
 
-    except AzureError as ae:
-        logger.error(f"AzureError: {str(ae)}")
-        return jsonify({'error': str(ae), 'type': 'AzureError'}), 500
-    except pd.errors.EmptyDataError as ede:
-        logger.error(f"Pandas EmptyDataError: {str(ede)}")
-        return jsonify({'error': str(ede), 'type': 'EmptyDataError'}), 500
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-        return jsonify({'error': str(e), 'type': str(type(e).__name__)}), 500
+                data_quality_checker = DataQualityChecker(data)
+                run_visuals_and_upload(data_quality_checker, connection_string, container_name_images)
+                logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
 
-@app.route('/data-profiling-images', methods=['GET'])
-def data_profiling_images():
-    try:
-        logger.info('Running Data Profiling Images module!')
-        
-        # Download CSV data from Azure Blob Storage and convert it to a Pandas DataFrame
-        data = download_blob_csv_data(connection_string=connection_string)
-        
-        # Initialize the DataQualityChecker with the downloaded data
-        data_quality_checker = DataQualityChecker(data)
-        
-        # Run visuals and upload images to Azure Blob Storage
-        run_visuals_and_upload(data_quality_checker, connection_string, container_name_images)
+                send_message_to_queue(jobID, filename, "data_profile_images", "Data profile images uploaded.",
+                service_bus_connection_string=SERVICE_BUS_CONNECTION_STRING)
 
-        send_message_to_queue("Data profile visuals created plots uploaded.", service_bus_connection_string=SERVICE_BUS_CONNECTION_STRING)
-        
-        return jsonify({'status': 'success', 'message': 'Data profiling images generated and uploaded successfully'}), 200
+                logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
 
-    except AzureError as ae:
-        logger.error(f"AzureError: {str(ae)}")
-        return jsonify({'error': str(ae), 'type': 'AzureError'}), 500
-    except pd.errors.EmptyDataError as ede:
-        logger.error(f"Pandas EmptyDataError: {str(ede)}")
-        return jsonify({'error': str(ede), 'type': 'EmptyDataError'}), 500
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-        return jsonify({'error': str(e), 'type': str(type(e).__name__)}), 500
+                # Increment the counter
+                counter += 1
+
+        except AzureError as ae:
+            logger.error(f"AzureError for {filename}: {str(ae)}")
+        except pd.errors.EmptyDataError as ede:
+            logger.error(f"Pandas EmptyDataError for {filename}: {str(ede)}")
+        except Exception as e:
+            logger.error(f"Unexpected error for {filename}: {str(e)}")
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
-
-
+    main()
