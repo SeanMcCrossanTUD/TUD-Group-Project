@@ -1,7 +1,7 @@
 <div id="home-container">
-  <nav>
-    <div class="logo" (click)="navigate('')">
-        DataPolish
+  <nav [class]="navclass">
+    <div class="logo" (click)="navigate('')" title="Home">
+       <img src="assets/images/logo.png" width="50px">
     </div>
     <div (click)="navigate('/UploadDataset')">
       Upload dataset
@@ -18,16 +18,30 @@
     <div (click)="navigate('/Export')">
       Export
     </div>
-    <!-- <div>
-      Visualization
-    </div> -->
-    <!-- <div (click)="navigate('/Logoff')">
-      Log off
-    </div> -->
+  
+
+
   </nav>
   <div class="content-container">
      <router-outlet></router-outlet> 
   </div>
   
 </div>
+<div id="mobile" hidden>Please use computer to access the webpage</div>
+<div id="folating-button-container">
+  <div (click)="showsidebar()">   <span class="material-icons">accessibility</span> </div>
+ 
+</div>
+
+<p-sidebar [(visible)]="sidebarVisible" position="right">
+  <h2>Accessibility Bar</h2>
+  <div>
+    <div class="Accessibility-buttons">Default</div>
+    <div class="Accessibility-buttons">off-white / Black</div>
+    <div class="Accessibility-buttons" (click)="blackwhite()">Black / White</div>
+    <div class="Accessibility-buttons">Bluel / Yellow</div>
+    <hr/>
+    <div class="Accessibility-buttons">Audio Desc</div>
+  </div>
+</p-sidebar>
 

@@ -1,3 +1,11 @@
 <div class="router-content-center">
-    <p-button label="Export as CSV" [rounded]="true" (onClick)="download()"></p-button>
+    <div class="glass-card download-container">
+        <div id="div1">
+            <input type="text" placeholder="Enter Job id" />
+            <div id=checkstatus> Check status</div>
+        </div>
+        
+        <p-button label="Export as CSV" [rounded]="true" (onClick)="download()"></p-button>
+    </div>
+   
 </div>
