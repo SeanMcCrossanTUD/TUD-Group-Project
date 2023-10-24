@@ -112,7 +112,7 @@ def perform_data_quality_checks(data):
     return result
 
 
-def run_visuals_and_upload(data_quality_checker, connection_string, container_name_images):
+def run_visuals_and_upload(data_quality_checker, connection_string, container_name_images, jobId):
     visuals = DataProfilingVisuals(data_quality_checker)
 
     # Define the methods to run and the corresponding blob names
@@ -128,7 +128,8 @@ def run_visuals_and_upload(data_quality_checker, connection_string, container_na
         img_data = method()
         if img_data is not None:  # Check if the method returned image data
             timestamp = str(int(time.time()))
-            blob_name = f'{blob_name_template}_{timestamp}.png'    
+            blob_name = f'{blob_name_template}_{timestamp}.png'
+            container_name_images = f'{container_name_images}/{jobId}'    
             upload_image_to_azure(img_data, blob_name, connection_string, container_name_images)
 
 def main(test_iterations=None):
@@ -138,20 +139,21 @@ def main(test_iterations=None):
         # If test_iterations is set and counter has reached it, break the loop
         if test_iterations and counter >= test_iterations:
             break
-        # Wait for 60 seconds before checking the queue again
-        time.sleep(60)
 
         # Check Azure queue for a new message
         try:
             msg = receive_message_from_queue(SERVICE_BUS_CONNECTION_STRING, SERVICE_BUS_QUEUE_NAME)
-            if msg:
+            logger.info(msg)
+            logger.info(msg)
+            if msg is not None:
                 logger.info('Received a new message, processing...')
-                message_content = json.loads(str(msg))
+                cleaned_msg = str(msg).replace("'", "\"")
+                message_content = json.loads(cleaned_msg)
                 
-                filename = message_content['filename']
-                jobID = message_content['jobID']
+                filename = message_content.get('filename', 'Unknown Filename') 
+                jobID = message_content.get('jobID', 'Unknown JobID')
 
-                data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input, blob_name=filename)
+                data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input)
                 logger.info(f'Download data complete for: {filename} - {jobID}')
 
                 result = perform_data_quality_checks(data)
@@ -160,18 +162,12 @@ def main(test_iterations=None):
                 upload_results_to_azure(result, connection_string=connection_string)
                 logger.info(f'Data Quality checks uploaded for: {filename} - {jobID}')
 
-                send_message_to_queue(jobID, filename, "dq_check", "Complete DQ JSON results uploaded.",
-                service_bus_connection_string=SERVICE_BUS_CONNECTION_STRING)
-                logger.info(f'Data Quality checks nessage sent to service bus queue: {filename} - {jobID}')
-
                 data_quality_checker = DataQualityChecker(data)
-                run_visuals_and_upload(data_quality_checker, connection_string, container_name_images)
+                run_visuals_and_upload(data_quality_checker, connection_string, container_name_images,jobID)
                 logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
 
-                send_message_to_queue(jobID, filename, "data_profile_images", "Data profile images uploaded.",
-                service_bus_connection_string=SERVICE_BUS_CONNECTION_STRING)
-
                 logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
+                time.sleep(60)
 
                 # Increment the counter
                 counter += 1

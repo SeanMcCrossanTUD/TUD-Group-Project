@@ -183,18 +183,27 @@ def receive_message_from_queue(service_bus_connection_string, service_bus_queue_
     Args:
     - service_bus_connection_string (str): The Azure Service Bus connection string.
     - service_bus_queue_name (str, optional): Name of the Service Bus queue. Defaults to 'q1'.
+    
+    Returns:
+    dict or None: The received message as a dictionary or None if no message is received.
     """
 
     try:
         with ServiceBusClient.from_connection_string(service_bus_connection_string) as client:
             with client.get_queue_receiver(queue_name=service_bus_queue_name, max_wait_time=5) as receiver:
-                for msg in receiver:
+                # Get the first message
+                msg = next(receiver, None)
+                if msg:
                     # Parse the message body as JSON
                     message_content = json.loads(str(msg))
                     logger.info(f"Received message from queue: {message_content}")
                     receiver.complete_message(msg)
+                    return message_content  # Return the parsed message content
 
     except Exception as e:
         logger.error(f"Error receiving message from queue: {str(e)}")
         raise e
+
+    return None  # Return None if no message was received
+
 
