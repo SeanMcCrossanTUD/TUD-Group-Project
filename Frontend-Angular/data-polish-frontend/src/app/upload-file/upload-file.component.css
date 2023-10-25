@@ -28,3 +28,19 @@
  box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.4);
 }
 .notbr-text { white-space: pre-wrap; font-size: var(--fixation-size); letter-spacing: var(--fixation-spacing); } .notbr-text p { font-weight: var(--fixation-weight2); line-height: var(--fixation-height); } .notbr-fixation { font-weight: var(--fixation-weight1); opacity: var(--fixation-opac); }
+
+#fileupload{
+    border: 2px black dotted;
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2em;
+
+}
+
+#fileupload img{
+    max-width: 20%;
+}

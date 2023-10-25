@@ -15,8 +15,13 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import { DataCleaningComponent } from './data-cleaning/data-cleaning.component'
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { SidebarModule } from 'primeng/sidebar';
+import {CookieService} from 'ngx-cookie-service';
+
 const routes: Routes = [
-    {path:'',component:UploadFileComponent},
+    {path:'',component:HomePageComponent},
     {path:'UploadDataset',component:UploadFileComponent},
     {path:'DataProfile',component:DataProfileComponent},
     {path:'Export',component:ExportComponent},
@@ -41,10 +46,17 @@ const routes: Routes = [
     DialogModule,
     BrowserAnimationsModule,
     FileUploadModule,
-    ToastModule
+    ToastModule,
+    ConfirmDialogModule,
+    ContextMenuModule,
+    SidebarModule
+    
     
   ],
-  providers: [MessageService],
+  providers: [
+    MessageService,
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

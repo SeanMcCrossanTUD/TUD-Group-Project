@@ -1,0 +1,30 @@
+table{
+    width: max-content;
+    height: max-content;
+    overflow: scroll;
+}
+table tr{
+    padding: 0.5em;
+    
+    border-right:0 ;
+}
+table tr:hover{
+    cursor: pointer;
+    border: 5px solid red;
+    
+}
+ td {
+    border-bottom: 1px  dotted;
+    padding: 0.5em;
+    text-align: center;
+  }
+  th{
+    border-bottom: 2px solid black;
+    padding: 2vh;
+    border-right:0 ;
+  }
+i:hover{
+  transform: scale(1.1);
+}
+
+ 
