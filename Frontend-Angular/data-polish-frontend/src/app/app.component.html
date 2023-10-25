@@ -43,6 +43,18 @@
     <hr/>
     <!-- <h3>Font</h3>
     <div class="Accessibility-buttons" (click)="changeOpenDyslexicFont()">OpenDyslexic </div> -->
+    <h3>
+      <div class="Accessibility-buttons" (click)="adhd()">ADHD Friendly </div> 
+    </h3>
   </div>
 </p-sidebar>
 
+<div class="card flex justify-content-center">
+ 
+  <p-dialog header="ADHD" [modal]="true" [(visible)]="adhdmodal" [style]="{width: '80vw'}" [maximizable]="true">
+    <p-terminal welcomeMessage="DataPolish command line" prompt="asking Datapolish to do ... "></p-terminal>
+  </p-dialog>
+</div>
+
+
+<input hidden type="file" id="uploadadhd" (change)="adhdfile($event)"/>
