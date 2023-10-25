@@ -4,7 +4,7 @@ def read_requirements():
     with open('requirements.txt', 'r') as req_file:
         return [line.strip() for line in req_file if line.strip() and not line.startswith('#')]
 
-found_packages = find_packages(include=['dq_checks*', 'data_prep*', 'azure_package*'])
+found_packages = find_packages(include=['dq_checks*', 'data_prep*', 'azure_package*', 'rds_sql_package*'])
 
 setup(
     name='python_da',
