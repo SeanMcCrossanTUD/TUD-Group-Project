@@ -23,14 +23,19 @@ export class AppComponent {
   ){}
   ngOnInit() {
     let cookieValue:string = this.cookieService.get('ACCESSIBILITY');
-    if(cookieValue=='TRUE'){
+    if(cookieValue!='' && cookieValue!="DEFAULT"){
       this.accessibilityset();
    }
 
 }
 accessibilityset(){
-  this.navclass='nav-2';
-  this.accessibilityServiceService.basicsetting();
+  if(this.cookieService.get('ACCESSIBILITY')=="DEFAULT"){
+    location.reload();
+  }else{
+    this.navclass='nav-2';
+    this.accessibilityServiceService.basicsetting();
+  }
+  
       
 
 }
@@ -43,17 +48,15 @@ accessibilityset(){
   showsidebar(){
     this.sidebarVisible=true;
   }
-  blackwhite(){
+  changeBG(color:any){    
+    this.cookieService.set('ACCESSIBILITY',color);
     this.accessibilityset();
-    document.body.style.backgroundColor = "black";
-    document.body.style.backgroundImage='none';
+  }
   
-  }
 
-  changeOpenDyslexicFont(){
-    alert('hi')
-    document.body.style.fontFamily="OpenDyslexic";
-  }
 
+Default(){
+  
+}
  
 }
