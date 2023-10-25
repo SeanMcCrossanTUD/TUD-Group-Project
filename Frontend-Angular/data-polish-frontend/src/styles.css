@@ -32,6 +32,11 @@ body {
 
 }
 
+@font-face {
+  font-family: OpenDyslexic;
+  src: url('assets/Font/OpenDyslexic-Regular.otf');
+}
+
 .glass-card {
   /* From https://css.glass */
   background: rgba(255, 255, 255, 0.502);
@@ -41,8 +46,18 @@ body {
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 2vh;
-
+color: white;
   width: max-content;
+}
+.no-glass-card {
+  /* From https://css.glass */
+  background: rgb(252, 252, 252);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 2vh;
+  color: black;
+  width:50vw;
+  display: flex;
+  justify-content: center;
 }
 
 ::-webkit-scrollbar {

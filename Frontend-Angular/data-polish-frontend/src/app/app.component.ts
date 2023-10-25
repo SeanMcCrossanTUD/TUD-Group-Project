@@ -1,8 +1,9 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { MenuItem,MessageService  } from 'primeng/api';
-
+import { AccessibilityServiceService } from './Services/accessibility/accessibility-service.service';
 
 @Component({
   selector: 'app-root',
@@ -16,10 +17,27 @@ export class AppComponent {
   navclass='nav';
   constructor( private location: Location,
      private router: Router,
-     private messageService :MessageService  ){}
-
+     private messageService :MessageService,
+     private cookieService: CookieService,
+     private accessibilityServiceService:AccessibilityServiceService
+  ){}
   ngOnInit() {
- 
+    let cookieValue:string = this.cookieService.get('ACCESSIBILITY');
+    if(cookieValue!='' && cookieValue!="DEFAULT"){
+      this.accessibilityset();
+   }
+
+}
+accessibilityset(){
+  if(this.cookieService.get('ACCESSIBILITY')=="DEFAULT"){
+    location.reload();
+  }else{
+    this.navclass='nav-2';
+    this.accessibilityServiceService.basicsetting();
+  }
+  
+      
+
 }
   navigate(e:any){
     this.router.navigate([e]);
@@ -30,11 +48,15 @@ export class AppComponent {
   showsidebar(){
     this.sidebarVisible=true;
   }
-  blackwhite(){
-    this.navclass='nav-2'
-    document.body.style.backgroundColor = "black";
-    document.body.style.backgroundImage='none';
+  changeBG(color:any){    
+    this.cookieService.set('ACCESSIBILITY',color);
+    this.accessibilityset();
   }
+  
 
+
+Default(){
+  
+}
  
 }

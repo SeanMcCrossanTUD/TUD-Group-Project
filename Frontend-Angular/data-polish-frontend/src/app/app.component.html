@@ -36,12 +36,13 @@
 <p-sidebar [(visible)]="sidebarVisible" position="right">
   <h2>Accessibility Bar</h2>
   <div>
-    <div class="Accessibility-buttons">Default</div>
-    <div class="Accessibility-buttons">off-white / Black</div>
-    <div class="Accessibility-buttons" (click)="blackwhite()">Black / White</div>
-    <div class="Accessibility-buttons">Bluel / Yellow</div>
+    <div class="Accessibility-buttons" (click)="changeBG('DEFAULT')">Default</div>
+    <div class="Accessibility-buttons" (click)="changeBG('WHEAT')">off-white / Black</div>
+    <div class="Accessibility-buttons" (click)="changeBG('BLACK')">Black / White</div>
+    <div class="Accessibility-buttons" (click)="changeBG('BLUE')">Blue / Yellow</div>
     <hr/>
-    <div class="Accessibility-buttons">Audio Desc</div>
+    <!-- <h3>Font</h3>
+    <div class="Accessibility-buttons" (click)="changeOpenDyslexicFont()">OpenDyslexic </div> -->
   </div>
 </p-sidebar>
 
