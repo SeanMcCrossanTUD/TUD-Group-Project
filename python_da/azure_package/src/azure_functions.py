@@ -7,6 +7,7 @@ import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
+from rds_sql_package.src.rds_sql_functions import update_rds_data_profile
 
 # Set up logging
 logger = logging.getLogger('azure-package')
@@ -62,7 +63,7 @@ def download_blob_csv_data(connection_string, container_name="csv", dirty_blob_n
         logger.error(f"Unexpected error while downloading blob data: {str(e)}")
         raise e
 
-def upload_results_to_azure(data, connection_string, result_container_name='dataprofileoutput'):
+def upload_results_to_azure(data, connection_string, job_id, result_container_name='dataprofileoutput'):
     """Upload data as a JSON to Azure Blob Storage.
 
     Args:
@@ -78,6 +79,8 @@ def upload_results_to_azure(data, connection_string, result_container_name='data
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
         blob_client = blob_service_client.get_blob_client(result_container_name, result_blob_name)
         blob_client.upload_blob(result_json, overwrite=True)
+
+        update_rds_data_profile(result_blob_name, job_id)
         logger.info(f'Successfully uploaded {result_blob_name} to {result_container_name} in Azure Blob Storage')
 
     except AzureError as ae:

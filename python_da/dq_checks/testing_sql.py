@@ -13,6 +13,7 @@ from azure_package.src.azure_functions import (
     upload_image_to_azure,
     receive_message_from_queue
 )
+from rds_sql_package.src.rds_sql_functions import insert_into_rds_data_profile, select_all_from_rds
 
 # Set up logging
 logger = logging.getLogger('data-quality-check')
@@ -128,54 +129,19 @@ def run_visuals_and_upload(data_quality_checker, connection_string, container_na
         img_data = method()
         if img_data is not None:  # Check if the method returned image data
             timestamp = str(int(time.time()))
-            blob_name = f'{blob_name_template}_{timestamp}.png'  
+            blob_name = f'{blob_name_template}_{timestamp}.png'
+            insert_into_rds_data_profile(blob_name)  
             upload_image_to_azure(img_data, blob_name, connection_string, container_name_images)
 
-def main(test_iterations=None):
-    counter = 0
-
-    while True:
-        # If test_iterations is set and counter has reached it, break the loop
-        if test_iterations and counter >= test_iterations:
-            break
-
-        # Check Azure queue for a new message
-        try:
-            msg = receive_message_from_queue(SERVICE_BUS_CONNECTION_STRING, SERVICE_BUS_QUEUE_NAME)
-            logger.info(msg)
-            if msg is not None:
-                logger.info('Received a new message, processing...')
-                cleaned_msg = str(msg).replace("'", "\"")
-                message_content = json.loads(cleaned_msg)
-                
-                filename = message_content.get('filename', 'Unknown Filename') 
-                jobID = message_content.get('jobID', 'Unknown JobID')
-
-                data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input)
-                logger.info(f'Download data complete for: {filename} - {jobID}')
-
-                result = perform_data_quality_checks(data)
-                logger.info(f'Data Quality checks complete for: {filename} - {jobID}')
-
-                upload_results_to_azure(result, connection_string=connection_string, job_id=jobID)
-                logger.info(f'Data Quality checks uploaded for: {filename} - {jobID}')
-
-                data_quality_checker = DataQualityChecker(data)
-                run_visuals_and_upload(data_quality_checker, connection_string, container_name_images,jobID)
-                logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
-
-                logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
-                time.sleep(60)
-
-                # Increment the counter
-                counter += 1
-
-        except AzureError as ae:
-            logger.error(f"AzureError for {filename}: {str(ae)}")
-        except pd.errors.EmptyDataError as ede:
-            logger.error(f"Pandas EmptyDataError for {filename}: {str(ede)}")
-        except Exception as e:
-            logger.error(f"Unexpected error for {filename}: {str(e)}")
+def main():
+ 
+    try:
+        select_all_from_rds()
+        
+    except pd.errors.EmptyDataError as ede:
+        logger.error(f"Pandas EmptyDataError for test: {str(ede)}")
+    except Exception as e:
+        logger.error(f"Unexpected error for test: {str(e)}")
 
 
 if __name__ == '__main__':
