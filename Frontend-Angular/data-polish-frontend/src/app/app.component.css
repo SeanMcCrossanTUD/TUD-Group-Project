@@ -1,34 +1,91 @@
-nav{
-    background-color: #123;
+.nav{
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.2 );
     min-width: 15vw;
-    min-height: 100vh;
+    max-height: 80vh;
     color: white;
 }
 #home-container{
 
     width: 99vw;
-    margin: 0px 0px 0px 0px;
+    margin: 1em 0.5em 0px 1em;
     padding: 0px;
     display: flex;
 
 }
-nav div{
+.nav div,.nav-2 div{
     min-width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10% 0 10% 0;
-    border-bottom:solid rgb(52, 72, 122) 1px ;
+    border-bottom:solid rgb(71, 94, 151) 1px ;
 }
-nav div:hover{
+.nav div:hover{
 cursor: pointer;
 background-color: rgb(91, 23, 86);
-color: rgb(255, 255, 255);
+border: 2px red solid;
 }
 .content-container{
-    min-height: 100vh;
+    min-height: 90vh;
     min-width: 85vw;
     max-width: 100%;
     max-height: 100vh;
     overflow: scroll;
+}
+.logo img{
+    border-radius: 10px;
+}
+#folating-button-container{
+    position: fixed;
+     
+    bottom: 10em;
+ 
+right: 1em;
+width: 3em;
+min-height: 3em;
+background-color: rgb(14, 79, 210);
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 3em;
+color: wheat;
+
+
+}
+#folating-button-container:hover{
+    cursor: pointer;
+    background-color: rgb(91, 23, 86);
+border: 2px red solid;
+
+}
+
+.Accessibility-buttons{
+    text-align: left;
+    padding: 1.5em;
+
+}
+.Accessibility-buttons:hover{
+    cursor: pointer;
+    border: 2px solid red;
+}
+
+.background-black{
+    background-color: black;
+}
+
+.nav-2{
+    min-width: 15vw;
+    max-height: 80vh;
+    background-color: white;
+}
+
+.nav-2 div:hover{
+    cursor: pointer;
+  
+border: 5px red solid;
 }
