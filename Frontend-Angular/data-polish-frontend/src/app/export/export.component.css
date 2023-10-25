@@ -1,0 +1,25 @@
+.download-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2vh;
+}
+#checkstatus{
+    border-radius: 57px;
+background: #b46a6a;
+box-shadow:  27px 27px 79px #9e5d5d,
+             -27px -27px 79px #ca7777;
+             padding: 2px;
+             width: 10vw;
+            text-align: center;
+}
+#checkstatus:hover{
+    cursor: pointer;
+}
+#div1{
+    display: flex;
+    justify-content:space-around;
+
+    gap:2vw
+}

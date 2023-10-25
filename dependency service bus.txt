@@ -1,0 +1,16 @@
+<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-messaging-servicebus</artifactId>
+			<version>7.13.3</version>
+		</dependency>
+
+ @PostMapping("/push-2-q")
+    public String add2q(@RequestParam("name") String name) {
+        ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
+                .connectionString("Endpoint=sb://fab5-mq.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=/i79GR2PUSm8IuWFqlgqCHP9BJ2+QYPm0+ASbDU8pRM=")
+                .sender()
+                .queueName("q1")
+                .buildClient();
+        senderClient.sendMessage(new ServiceBusMessage(name));
+        return "hi";
+    }

@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from src.data_prep import DataPrep  
+from data_prep.src.data_prep import DataPrep
 
 # Test: fill_missing_values() method
 def test_fill_missing_values():

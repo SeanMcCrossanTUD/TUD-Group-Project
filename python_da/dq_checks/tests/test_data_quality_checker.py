@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from src.data_quality_checker import DataQualityChecker
+from dq_checks.src.data_quality_checker import DataQualityChecker
 
 # Sample data for testing
 data = {
