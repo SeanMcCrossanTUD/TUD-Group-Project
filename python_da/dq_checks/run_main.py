@@ -122,14 +122,14 @@ def run_visuals_and_upload(data_quality_checker, connection_string, container_na
         (visuals.plot_outlier_table, 'outlier_table'),
         (visuals.plot_outlier_scatter, 'outlier_scatter')
     ]
-
+    
+    container_name_images = f'{container_name_images}/{jobId}'
     # Run methods and upload images to Azure
     for method, blob_name_template in methods_and_blob_names:
         img_data = method()
         if img_data is not None:  # Check if the method returned image data
             timestamp = str(int(time.time()))
-            blob_name = f'{blob_name_template}_{timestamp}.png'
-            container_name_images = f'{container_name_images}/{jobId}'    
+            blob_name = f'{blob_name_template}_{timestamp}.png'    
             upload_image_to_azure(img_data, blob_name, connection_string, container_name_images)
 
 def main(test_iterations=None):
