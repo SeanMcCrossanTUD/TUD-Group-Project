@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DataPolishBackendApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(DataPolishBackendApplication.class, args);
+
 	}
 
 }
