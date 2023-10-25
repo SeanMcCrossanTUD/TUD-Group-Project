@@ -18,6 +18,7 @@ import { DataCleaningComponent } from './data-cleaning/data-cleaning.component'
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { SidebarModule } from 'primeng/sidebar';
+import {CookieService} from 'ngx-cookie-service';
 
 const routes: Routes = [
     {path:'',component:HomePageComponent},
@@ -52,7 +53,10 @@ const routes: Routes = [
     
     
   ],
-  providers: [MessageService],
+  providers: [
+    MessageService,
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

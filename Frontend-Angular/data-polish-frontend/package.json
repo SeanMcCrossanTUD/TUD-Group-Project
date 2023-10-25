@@ -24,6 +24,7 @@
     "file-saver": "^2.0.5",
     "material-icons": "^1.13.12",
     "materialize-css": "^1.0.0-rc.2",
+    "ngx-cookie-service": "^16.0.1",
     "primeicons": "^6.0.1",
     "primeng": "^16.5.0",
     "rxjs": "~7.8.0",
