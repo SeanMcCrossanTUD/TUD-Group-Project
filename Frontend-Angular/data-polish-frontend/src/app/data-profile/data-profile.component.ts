@@ -1,5 +1,7 @@
 import { Component ,ViewChild} from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { CookieService } from 'ngx-cookie-service';
+import { AccessibilityServiceService } from '../Services/accessibility/accessibility-service.service';
 
 @Component({
   selector: 'app-data-profile',
@@ -26,11 +28,22 @@ export class DataProfileComponent {
     this.visible = true;
 }
 
+constructor(
+  private cookieService: CookieService,
+  private accessibilityServiceService: AccessibilityServiceService
+  ){}
+
+
 ngOnInit() {
+  let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
+  if (cookieValue != '' && cookieValue != 'DEFAULT') {
+    this.accessibilityServiceService.basicsetting();
+  }
+
   this.items = [
-      { label: 'Download',command:()=>this.funcc() }
-     // { label: 'Delete', icon: 'pi pi-fw pi-trash' }
-  ];
+    { label: 'Download',command:()=>this.funcc() }
+   // { label: 'Delete', icon: 'pi pi-fw pi-trash' }
+];
 }
 
 funcc(){
