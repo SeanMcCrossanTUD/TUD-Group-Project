@@ -7,7 +7,7 @@ import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
-from rds_sql_package.src.rds_sql_functions import update_rds_data_profile
+from rds_sql_package.src.rds_sql_functions import update_rds_data_profile, update_rds_data_clean
 
 # Set up logging
 logger = logging.getLogger('azure-package')
@@ -114,7 +114,7 @@ def upload_image_to_azure(img_data, blob_name, connection_string, container_name
         logger.error(f"Error while uploading image to Azure Blob Storage: {str(e)}")
         raise e
 
-def upload_result_csv_to_azure(result, connection_string):
+def upload_result_csv_to_azure(result, connection_string, job_id):
     """Upload a DataFrame as a CSV to Azure Blob Storage.
 
     Args:
@@ -141,6 +141,8 @@ def upload_result_csv_to_azure(result, connection_string):
         # Upload the result df to Azure Blob Storage
         blob_client.upload_blob(result.to_csv(index=False), overwrite=True)
         logger.info(f'Successfully uploaded {result_blob_name} to {result_container_name} in Azure Blob Storage')
+        update_rds_data_clean(result_blob_name, job_id=job_id)
+        logger.info(f'{result_blob_name} added to RDS SQL table')
     
     except AzureError as ae:
         logger.error(f"AzureError while uploading result to Azure Blob Storage: {str(ae)}")
