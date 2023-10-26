@@ -2,6 +2,6 @@
 
 export class AppSettings {
     
-    public static javaapiurl="http://localhost:8080";
+    public static javaapiurl="http://localhost:8082";
 
 }

@@ -13,12 +13,12 @@
             </div> -->
         </div>
         
+
    
-   
-                    <div>
-                        <label>756cbbf0-6ec7-11ee-8790-0ea9e1003c50</label>
+                    <div *ngFor="let job of jobids">
+                        <label>{{job}}</label>
                         &nbsp;
-                        <i class="pi pi-copy" (click)="copytoclipboard('756cbbf0-6ec7-11ee-8790-0ea9e1003c50')"></i>
+                        <i class="pi pi-copy" (click)="copytoclipboard(job)"></i>
                       
                     </div>
                 </div>
