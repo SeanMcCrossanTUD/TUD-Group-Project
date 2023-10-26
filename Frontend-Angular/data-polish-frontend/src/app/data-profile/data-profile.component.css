@@ -1,17 +1,15 @@
-.data-profile-home-container{
+#data-profile-home-container-table {
     display: flex;
+    flex-direction: column;
+    gap: 1em;
     justify-content: center;
     align-items: center;
-    min-height: 100%;
-}
 
-#data-profile-home-container-table {
-    text-align: left;
 }
-#data-profile-home-container-table td{
-    padding: 10% 0 10% 0;
+#data-profile-home-container-table div{
+    padding: 1em 1em 1em 1em;
 }
-#data-profile-home-container-table td:hover{
-    transform: scale(1.5);
+#data-profile-home-container-table div:hover{
+    border:  red solid;
     cursor: pointer;
 }

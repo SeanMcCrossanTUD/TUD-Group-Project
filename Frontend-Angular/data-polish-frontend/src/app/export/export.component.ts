@@ -8,7 +8,7 @@ import { AccessibilityServiceService } from '../Services/accessibility/accessibi
   styleUrls: ['./export.component.css']
 })
 export class ExportComponent {
-  
+  checkStatusString='';
 constructor(
   private cookieService: CookieService,
   private accessibilityServiceService: AccessibilityServiceService
@@ -19,8 +19,16 @@ constructor(
       this.accessibilityServiceService.basicsetting();
     }
   }
+  checkStatus(e:any){
+    this.checkStatusString=e;
+    console.log(e);
+  }
+  checkstatusbutton(){
+    alert('you Data has been cleaned...');
+  }
   download(){
-    var url="https://fab5storage.blob.core.windows.net/flaskapi2output/clean_data_1697040726.csv"
-    window.open(url);
+   
+    // var url="https://fab5storage.blob.core.windows.net/flaskapi2output/clean_data_1697040726.csv"
+    // window.open(url);
   }
 }

@@ -1,11 +1,11 @@
 <div class="router-content-center">
     <div class="glass-card download-container">
         <div id="div1">
-            <input type="text" placeholder="Enter Job id" />
-            <div id=checkstatus> Check status</div>
+            <input type="text" placeholder="Enter Job id" (onchange)="checkStatus($event)" />
+            <div id=checkstatus (click)="checkstatusbutton()"> Check status</div>
         </div>
         
-        <p-button label="Export as CSV" [rounded]="true" (onClick)="download()"></p-button>
+        <p-button label="Export as CSV" severity="warning" [rounded]="true" (onClick)="download()"></p-button>
     </div>
    
 </div>
