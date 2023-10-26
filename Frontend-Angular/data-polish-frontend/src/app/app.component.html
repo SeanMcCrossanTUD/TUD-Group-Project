@@ -2,6 +2,9 @@
   <nav [class]="navclass">
     <div class="logo" (click)="navigate('')" title="Home">
        <img src="assets/images/logo.png" width="50px">
+        &nbsp;
+        DataPolish
+     
     </div>
     <div (click)="navigate('/UploadDataset')">
       Upload Dataset
@@ -30,7 +33,7 @@
 <div id="mobile" hidden>Please use computer to access the webpage</div>
 <div id="folating-button-container">
   <div (click)="showsidebar()">   <span class="material-icons">accessibility</span> </div>
- 
+  
 </div>
 
 <p-sidebar [(visible)]="sidebarVisible" position="right">
@@ -46,7 +49,18 @@
     <h3>
       <div class="Accessibility-buttons" (click)="adhd()">ADHD Friendly </div> 
     </h3>
+    <hr/>
+    <!-- <div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+        
+      </label>
+      Audio Description
+    </div> -->
+    
   </div>
+
 </p-sidebar>
 
 <div class="card flex justify-content-center">

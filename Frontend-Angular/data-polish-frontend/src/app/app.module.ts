@@ -21,6 +21,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import {CookieService} from 'ngx-cookie-service';
 import { TerminalModule, TerminalService } from 'primeng/terminal';
 import { DockModule } from 'primeng/dock';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
     {path:'',component:HomePageComponent},
@@ -53,7 +54,8 @@ const routes: Routes = [
     ContextMenuModule,
     SidebarModule,
     TerminalModule,
-    DockModule
+    DockModule,
+    FormsModule
     
     
   ],

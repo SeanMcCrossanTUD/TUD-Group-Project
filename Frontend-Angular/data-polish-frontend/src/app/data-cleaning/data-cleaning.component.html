@@ -1,6 +1,19 @@
 <div class="router-content-center">
-    <p-button label="Start Data cleaning"     
-    [style]="buttonstyle"
-    [rounded]="true" 
-    (onClick)="StartCleaning()"></p-button>
+<div class="glass-card">
+    <div>
+        <input type="text" pInputText 
+        placeholder="Enter your Job ID here"
+        [(ngModel)]="checkStatusString" />
+        <div>&nbsp;</div>
+
+        
+        <p-button label="Start Data cleaning"     
+        severity="warning"
+         [rounded]="true" 
+         (onClick)="StartCleaning()"></p-button>
+    </div> 
+
+   
+</div>
+   
 </div>

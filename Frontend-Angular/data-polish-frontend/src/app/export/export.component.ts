@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { AccessibilityServiceService } from '../Services/accessibility/accessibility-service.service';
-
+import { FileExportService } from '../Services/fileExport/file-export.service';
 @Component({
   selector: 'app-export',
   templateUrl: './export.component.html',
@@ -11,7 +11,8 @@ export class ExportComponent {
   checkStatusString='';
 constructor(
   private cookieService: CookieService,
-  private accessibilityServiceService: AccessibilityServiceService
+  private accessibilityServiceService: AccessibilityServiceService,
+  private fileExportService:FileExportService
   ){}
   ngOnInit() {
     let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
@@ -19,16 +20,33 @@ constructor(
       this.accessibilityServiceService.basicsetting();
     }
   }
-  checkStatus(e:any){
-    this.checkStatusString=e;
-    console.log(e);
+  outputURI='';
+  checkstatusbutton(){   
+    
+    this.fileExportService
+    .checkStatus(this.checkStatusString)
+    .subscribe((Response:any)=>{
+     
+      if(Response.datacleaningoutput='null'){
+        alert("your data is not cleaned yet");
+      }else{
+        this.outputURI=Response.datacleaningoutput;
+      }
+    },
+    (err)=>{
+      alert("something went wrong checkyour JobID");
+    });
   }
-  checkstatusbutton(){
-    alert('you Data has been cleaned...');
-  }
+
+
   download(){
-   
-    // var url="https://fab5storage.blob.core.windows.net/flaskapi2output/clean_data_1697040726.csv"
-    // window.open(url);
+   if(this.outputURI=='' || this.outputURI==undefined ){
+      alert('Error check status first');
+
+   }else{
+    var url="https://fab5storage.blob.core.windows.net/flaskapi2output/"+this.outputURI;
+    window.open(url);
+   }
+    
   }
 }
