@@ -8,6 +8,8 @@ import { AccessibilityServiceService } from '../Services/accessibility/accessibi
   styleUrls: ['./data-cleaning.component.css']
 })
 export class DataCleaningComponent {
+
+  buttonstyle={'background-color':'red'}
   constructor(
     private router: Router,
     private cookieService: CookieService,

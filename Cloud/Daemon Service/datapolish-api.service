@@ -1,0 +1,15 @@
+[Unit]
+Description=Email service
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/deploy-artifacts/Java-springboot
+ExecStart=/usr/bin/java -jar /home/ubuntu/deploy-artifacts/Java-springboot/Data-Polish-Backend-0.0.1-SNAPSHOT.jar
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

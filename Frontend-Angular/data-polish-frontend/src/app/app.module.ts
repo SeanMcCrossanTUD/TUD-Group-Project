@@ -19,6 +19,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { SidebarModule } from 'primeng/sidebar';
 import {CookieService} from 'ngx-cookie-service';
+import { TerminalModule, TerminalService } from 'primeng/terminal';
+import { DockModule } from 'primeng/dock';
 
 const routes: Routes = [
     {path:'',component:HomePageComponent},
@@ -49,13 +51,16 @@ const routes: Routes = [
     ToastModule,
     ConfirmDialogModule,
     ContextMenuModule,
-    SidebarModule
+    SidebarModule,
+    TerminalModule,
+    DockModule
     
     
   ],
   providers: [
     MessageService,
-    CookieService
+    CookieService,
+    TerminalService
   ],
   bootstrap: [AppComponent]
 })
