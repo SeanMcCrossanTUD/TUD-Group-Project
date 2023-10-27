@@ -42,7 +42,7 @@ export class AppComponent {
 }
 accessibilityset(){
   if(this.cookieService.get('ACCESSIBILITY')=="DEFAULT"){
-    this.router.navigate(['/']);
+    alert('Please reload the page to set theme');
   }else{
     this.navclass='nav-2';
     this.accessibilityServiceService.basicsetting();
