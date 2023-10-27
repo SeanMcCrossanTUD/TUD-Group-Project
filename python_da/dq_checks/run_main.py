@@ -7,7 +7,7 @@ from azure.core.exceptions import AzureError
 
 from dq_checks.src.data_quality_checker import DataQualityChecker
 from dq_checks.src.data_profiling_visuals import DataProfilingVisuals
-from azure_package.src.azure_functions import (
+from dq_checks.azure_package.src.azure_functions import (
     download_blob_csv_data, 
     upload_results_to_azure,
     upload_image_to_azure,
@@ -23,8 +23,11 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-# Load configuration from JSON file
-with open('python_da/pyconfigurations/azure_config.json', 'r') as file:
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_PATH = os.path.join(BASE_DIR, 'pyconfigurations', 'azure_config.json')
+
+
+with open(CONFIG_PATH, 'r') as file:
     config = json.load(file)
 
 SERVICE_BUS_CONNECTION_STRING = config["SERVICE_BUS_CONNECTION_STRING"]
@@ -127,8 +130,7 @@ def run_visuals_and_upload(data_quality_checker, connection_string, container_na
     for method, blob_name_template in methods_and_blob_names:
         img_data = method()
         if img_data is not None:  # Check if the method returned image data
-            timestamp = str(int(time.time()))
-            blob_name = f'{blob_name_template}_{timestamp}.png'  
+            blob_name = f'{blob_name_template}.png'  
             upload_image_to_azure(img_data, blob_name, connection_string, container_name_images)
 
 def main(test_iterations=None):
@@ -151,7 +153,7 @@ def main(test_iterations=None):
                 filename = message_content.get('filename', 'Unknown Filename') 
                 jobID = message_content.get('jobID', 'Unknown JobID')
 
-                data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input)
+                data = download_blob_csv_data(connection_string=connection_string, file_name=filename, container_name=container_name_data_input)
                 logger.info(f'Download data complete for: {filename} - {jobID}')
 
                 result = perform_data_quality_checks(data)

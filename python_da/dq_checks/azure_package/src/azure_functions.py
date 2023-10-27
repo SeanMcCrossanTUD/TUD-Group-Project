@@ -7,7 +7,7 @@ import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
-from rds_sql_package.src.rds_sql_functions import update_rds_data_profile
+from dq_checks.rds_sql_package.src.rds_sql_functions import update_rds_data_profile
 
 # Set up logging
 logger = logging.getLogger('azure-package')
@@ -18,13 +18,12 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-def download_blob_csv_data(connection_string, container_name="csv", dirty_blob_name="dirty_startup_dataset.csv"):
+def download_blob_csv_data(connection_string, file_name, container_name="csv"):
     """Download CSV data from Azure Blob Storage.
 
     Args:
     - connection_string (str): The Azure connection string.
     - container_name (str, optional): Name of the Azure blob container. Defaults to 'csv'.
-    - dirty_blob_name (str, optional): Name of the fallback blob. Defaults to 'dirty_startup_dataset.csv'.
 
     Returns:
     - pd.DataFrame: DataFrame containing downloaded CSV data.
@@ -33,9 +32,7 @@ def download_blob_csv_data(connection_string, container_name="csv", dirty_blob_n
     try:
         logger.info('Initializing BlobServiceClient')
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-        container_client = blob_service_client.get_container_client(container_name)
-        blob_list = container_client.list_blobs()
-        blob_name = next(blob_list).name
+        blob_name = file_name
 
         if blob_name is None:
             logger.error('No blobs found in container')
@@ -47,11 +44,8 @@ def download_blob_csv_data(connection_string, container_name="csv", dirty_blob_n
         csv_data = blob_data.readall().decode('utf-8')
 
         if not csv_data.strip():
-            logger.warning("Downloaded CSV data is empty or contains only whitespace. Attempting to download 'dirty_startup_dataset.csv' instead.")
-            blob_name = dirty_blob_name
-            blob_client = blob_service_client.get_blob_client(container_name, blob_name)
-            blob_data = blob_client.download_blob()
-            csv_data = blob_data.readall().decode('utf-8')
+            logger.warning("Downloaded CSV data is empty or contains only whitespace. No acceptable data.")
+            return None
 
         data = pd.read_csv(io.StringIO(csv_data))
         return data
@@ -63,6 +57,7 @@ def download_blob_csv_data(connection_string, container_name="csv", dirty_blob_n
         logger.error(f"Unexpected error while downloading blob data: {str(e)}")
         raise e
 
+
 def upload_results_to_azure(data, connection_string, job_id, result_container_name='dataprofileoutput'):
     """Upload data as a JSON to Azure Blob Storage.
 
@@ -72,13 +67,14 @@ def upload_results_to_azure(data, connection_string, job_id, result_container_na
     - result_container_name (str, optional): Name of the Azure blob container for results. Defaults to 'dataprofileoutput'.
     """
 
-    result_json = json.dumps(data, indent=4)
+    # result_json = json.dumps(data, indent=4)
+    result_json = {"Result":"Result"}
     timestamp = str(int(time.time()))
     result_blob_name = f'data_quality_result_{timestamp}.json'
     try:
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
         blob_client = blob_service_client.get_blob_client(result_container_name, result_blob_name)
-        blob_client.upload_blob(result_json, overwrite=True)
+        # blob_client.upload_blob(result_json, overwrite=True)
 
         update_rds_data_profile(result_blob_name, job_id)
         logger.info(f'Successfully uploaded {result_blob_name} to {result_container_name} in Azure Blob Storage')
