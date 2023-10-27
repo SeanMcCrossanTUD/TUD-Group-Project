@@ -27,9 +27,10 @@ constructor(
     .checkStatus(this.checkStatusString)
     .subscribe((Response:any)=>{
      
-      if(Response.datacleaningoutput='null'){
+      if(Response.datacleaningoutput=='null'){
         alert("your data is not cleaned yet");
       }else{
+        alert("your Data has been cleaned");
         this.outputURI=Response.datacleaningoutput;
       }
     },

@@ -42,7 +42,7 @@ export class AppComponent {
 }
 accessibilityset(){
   if(this.cookieService.get('ACCESSIBILITY')=="DEFAULT"){
-    location.reload();
+    this.router.navigate(['/']);
   }else{
     this.navclass='nav-2';
     this.accessibilityServiceService.basicsetting();

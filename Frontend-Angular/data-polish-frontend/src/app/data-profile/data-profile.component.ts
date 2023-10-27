@@ -64,10 +64,12 @@ checkstatusbutton(){
 
   this.fileExportService.checkStatus(this.checkStatusString).subscribe(
     (Response:any)=>{
-      if(Response.datacleaningoutput='null'){
-        alert("your data is not cleaned yet");
+      console.log(Response);
+      if(Response.dataprofileoutput=='null'){
+        alert("your data is not Profiled yet");
       }else{
         this.foldername=this.checkStatusString;
+        alert("Profile Complete");
       }
     },
     (error)=>{
