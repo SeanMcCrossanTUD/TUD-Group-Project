@@ -14,6 +14,10 @@ from dq_checks.azure_package.src.azure_functions import (
     receive_message_from_queue
 )
 
+print("Current Directory:", os.getcwd())
+print("Directory Contents:", os.listdir('.'))
+
+
 # Set up logging
 logger = logging.getLogger('data-quality-check')
 logger.setLevel(logging.DEBUG)

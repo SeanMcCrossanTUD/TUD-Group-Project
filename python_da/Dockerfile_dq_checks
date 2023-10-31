@@ -1,0 +1,24 @@
+# Using the full python image (Change after d3 dashboard, problem with matplotlib)
+FROM python:3.10
+
+# Set environment variable for Python path
+ENV PYTHONPATH "${PYTHONPATH}:/app"
+
+# Set the working directory in the Docker image.
+WORKDIR /app
+
+# Copy only the requirements.txt first to leverage Docker cache
+COPY requirements.txt /app/
+
+# Upgrade pip and install the required packages.
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+# Now, copy over the `setup.py`.
+COPY setup.py /app/
+
+# Copy the dq_checks module along with its subdirectories into the Docker image.
+COPY dq_checks /app/dq_checks
+
+# Set the command to run your application.
+CMD ["python", "dq_checks/run_main.py"]
