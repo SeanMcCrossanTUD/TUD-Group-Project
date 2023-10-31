@@ -1,6 +1,7 @@
 import pymysql
 import json
 import logging
+import os
 
 # Set up logging
 logger = logging.getLogger('rds-sql-package')
@@ -11,8 +12,14 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-# Load configuration from JSON file
-with open('python_da/pyconfigurations/sql_config.json', 'r') as file:
+# Get the absolute path of the run_main.py file
+base_dir = os.path.dirname(os.path.abspath('run_main.py'))
+logger.info(base_dir)
+# Construct the path to the sql_config.json file
+config_path = os.path.join(base_dir, 'dq_checks', 'pyconfigurations', 'sql_config.json')
+
+# Load the configuration file
+with open(config_path, 'r') as file:
     config = json.load(file)
 
 RDS_HOST = config["RDS_HOST"]
