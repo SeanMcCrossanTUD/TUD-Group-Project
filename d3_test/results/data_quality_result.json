@@ -1,0 +1,32 @@
+{
+    "number_of_records": 60000,
+    "number_of_fields": 15,
+    "number_of_duplicate_values": 2,
+    "missing_values": {
+        "ID": 580,
+        "name": 595,
+        "category": 583,
+        "main_category": 595,
+        "currency": 586,
+        "deadline": 623,
+        "goal": 613,
+        "launched": 582,
+        "pledged": 614,
+        "state": 635,
+        "backers": 615,
+        "country": 582,
+        "usd pledged": 1162,
+        "usd_pledged_real": 571,
+        "usd_goal_real": 592
+    },
+    "unique_values_in_text_fields": {
+        "name": 59325,
+        "category": 159,
+        "main_category": 15,
+        "currency": 14,
+        "deadline": 3011,
+        "launched": 59407,
+        "state": 6,
+        "country": 23
+    }
+}
