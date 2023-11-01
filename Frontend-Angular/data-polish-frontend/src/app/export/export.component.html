@@ -1,8 +1,12 @@
 <div class="router-content-center">
     <div class="glass-card download-container">
         <div id="div1">
-            <input type="text" placeholder="Enter Job id" (onchange)="checkStatus($event)" />
-            <div id=checkstatus (click)="checkstatusbutton()"> Check status</div>
+          
+            <input type="text" pInputText 
+            placeholder="Enter your Job ID here"
+            [(ngModel)]="checkStatusString" />
+            <div id=checkstatus 
+            (click)="checkstatusbutton()" > Check status</div>
         </div>
         
         <p-button label="Export as CSV" severity="warning" [rounded]="true" (onClick)="download()"></p-button>
