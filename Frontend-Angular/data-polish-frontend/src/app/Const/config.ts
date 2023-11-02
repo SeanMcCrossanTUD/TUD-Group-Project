@@ -1,7 +1,11 @@
 
 
 export class AppSettings {
-    
-    public static javaapiurl="http://16.16.187.39:8082";
+   
+    public static getBaseURL(){
+        var x=window.location.href;
+        var y=x.split('dev');
+        return y[0];
+    }
 
 }

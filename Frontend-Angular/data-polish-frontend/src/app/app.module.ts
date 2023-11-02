@@ -22,7 +22,7 @@ import {CookieService} from 'ngx-cookie-service';
 import { TerminalModule, TerminalService } from 'primeng/terminal';
 import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
-
+import { AppSettings } from './Const/config';
 const routes: Routes = [
     {path:'',component:HomePageComponent},
     {path:'UploadDataset',component:UploadFileComponent},
@@ -62,7 +62,8 @@ const routes: Routes = [
   providers: [
     MessageService,
     CookieService,
-    TerminalService
+    TerminalService,
+    AppSettings
   ],
   bootstrap: [AppComponent]
 })
