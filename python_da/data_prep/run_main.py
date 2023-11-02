@@ -1,5 +1,4 @@
 import os
-import io
 import logging
 import time
 import json
@@ -7,8 +6,8 @@ import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
-from data_prep import DataPrep
-from azure_package.src.azure_functions import (download_blob_csv_data, 
+from data_prep.src.data_prep import DataPrep
+from data_prep.azure_package.src.azure_functions import (download_blob_csv_data, 
                                                upload_result_csv_to_azure,
                                                receive_message_from_queue)
 
@@ -21,12 +20,15 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-# Load configuration from JSON file
-with open('python_da/pyconfigurations/azure_config.json', 'r') as file:
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_PATH = os.path.join(BASE_DIR, 'pyconfigurations', 'azure_config.json')
+
+
+with open(CONFIG_PATH, 'r') as file:
     config = json.load(file)
 
 SERVICE_BUS_CONNECTION_STRING = config["SERVICE_BUS_CONNECTION_STRING"]
-SERVICE_BUS_QUEUE_NAME = config["SERVICE_BUS_QUEUE_1_NAME"]
+SERVICE_BUS_QUEUE_NAME = config["SERVICE_BUS_QUEUE_2_NAME"]
 connection_string = config["AZURE_CONNECTION_STRING"]
 
 if connection_string is None:
@@ -66,13 +68,18 @@ def main():
             msg = receive_message_from_queue(SERVICE_BUS_CONNECTION_STRING, SERVICE_BUS_QUEUE_NAME)
             logger.info(msg)
             
+            logger.info(msg)
             if msg is not None:
-                filename = msg['filename']  # Adjust the key as per your message structure.
-                logger.info(f'Received message with filename: {filename}')
+                logger.info('Received a new message, processing...')
+                cleaned_msg = str(msg).replace("'", "\"")
+                message_content = json.loads(cleaned_msg)
 
-                data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input, blob_name=filename)
+                filename = message_content.get('rawurl', 'Unknown Filename') 
+                jobID = message_content.get('jobID', 'Unknown JobID')                
+
+                data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input, file_name=filename)
                 result = apply_transformations(data)
-                upload_result_csv_to_azure(result, connection_string=connection_string)
+                upload_result_csv_to_azure(result, connection_string=connection_string, job_id=jobID, file_name=filename)
                 
                 logger.info('Clean data uploaded in data prep')
             else:

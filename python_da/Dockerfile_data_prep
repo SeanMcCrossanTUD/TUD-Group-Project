@@ -1,0 +1,29 @@
+# Using the light python image
+FROM python:3.10-slim
+
+# Set environment variable for Python path
+ENV PYTHONPATH "${PYTHONPATH}:/app"
+
+# Set the working directory in the Docker image.
+WORKDIR /app
+
+# Copy only the requirements.txt first to leverage Docker cache
+COPY requirements.txt /app/
+
+# Install system dependencies (sometimes needed for certain Python packages in Alpine-based images)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential gcc && \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt && \
+    apt-get purge -y --auto-remove build-essential gcc && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Now, copy over the `setup.py`.
+COPY setup.py /app/
+
+# Copy the data_prep module along with its subdirectories into the Docker image.
+COPY data_prep /app/data_prep
+
+# Set the command to run your application.
+CMD ["python", "data_prep/run_main.py"]

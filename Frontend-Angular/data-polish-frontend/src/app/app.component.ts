@@ -1,10 +1,13 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { MenuItem,MessageService  } from 'primeng/api';
 import { AccessibilityServiceService } from './Services/accessibility/accessibility-service.service';
-
+import { TerminalService } from 'primeng/terminal';
+import { Subscription } from 'rxjs';
+import { InputType } from '@coreui/angular';
+import { BlobStorageService } from './Services/Fileupload/blob-storage.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,12 +18,21 @@ export class AppComponent {
   items: any | null;
   radius:any =100;
   navclass='nav';
+  subscription: Subscription | undefined;
   constructor( private location: Location,
      private router: Router,
      private messageService :MessageService,
      private cookieService: CookieService,
-     private accessibilityServiceService:AccessibilityServiceService
-  ){}
+     private accessibilityServiceService:AccessibilityServiceService,
+     private terminalService:TerminalService,
+     private BlobStorageService:BlobStorageService
+  ){
+
+    this.subscription = this.terminalService.commandHandler.subscribe((command) => {
+      this.terminalhandler(command);
+     
+  });
+  }
   ngOnInit() {
     let cookieValue:string = this.cookieService.get('ACCESSIBILITY');
     if(cookieValue!='' && cookieValue!="DEFAULT"){
@@ -30,7 +42,7 @@ export class AppComponent {
 }
 accessibilityset(){
   if(this.cookieService.get('ACCESSIBILITY')=="DEFAULT"){
-    location.reload();
+    alert('Please reload the page to set theme');
   }else{
     this.navclass='nav-2';
     this.accessibilityServiceService.basicsetting();
@@ -54,9 +66,30 @@ accessibilityset(){
   }
   
 
+  adhdmodal=false;
+  adhfilename:any = null; 
 
-Default(){
-  
+adhd(){
+this.adhdmodal=true;
 }
+terminalhandler(cmd:any){
+  cmd=cmd.toUpperCase();
+ if(cmd=="UPLOAD"){
+    document.getElementById('uploadadhd')?.click();
+    this.terminalService.sendResponse('File has been selected. use profile command to upload to cloud and start data profile');
+  }
+  if(cmd=="Profile"){
+   this.BlobStorageService.uploadtoBlob(this.adhfilename).subscribe((e)=>{
+    console.log(e);
+   });
+  }
+
+ 
+}
+adhdfile(e:any){
+  this.adhfilename=e.target.files[0];
+  console.log(this.adhfilename)
+}
+
  
 }

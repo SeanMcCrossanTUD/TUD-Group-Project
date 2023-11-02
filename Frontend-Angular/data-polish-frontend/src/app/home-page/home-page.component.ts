@@ -9,6 +9,7 @@ import { AccessibilityServiceService } from '../Services/accessibility/accessibi
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent {
+  jobids=[];
   constructor(
     private messageService: MessageService,
     private cookieService: CookieService,
@@ -20,6 +21,12 @@ export class HomePageComponent {
     if (cookieValue != '' && cookieValue != 'DEFAULT') {
       this.accessibilityServiceService.basicsetting();
     }
+
+    try{
+      this.jobids=JSON.parse(this.cookieService.get('jobsid'))
+    }catch{}
+
+    console.log(this.jobids)
   }
 
   copytoclipboard(e: any) {

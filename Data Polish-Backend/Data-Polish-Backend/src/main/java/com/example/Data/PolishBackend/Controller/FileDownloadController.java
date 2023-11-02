@@ -11,13 +11,13 @@ import com.example.Data.PolishBackend.Service.FileDownloadService; // Import the
 
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin
 public class FileDownloadController {
     @Autowired
     private FileDownloadService fileDownloadService;
 
     @GetMapping("/download-csv")
-    public ResponseEntity<String> downloadFile(@RequestParam String jobID) {
+        public ResponseEntity<String> downloadFile(@RequestParam String jobID) {
         // Call the service to get the file details as a JSON string
         return fileDownloadService.getFileDetails(jobID);
     }
