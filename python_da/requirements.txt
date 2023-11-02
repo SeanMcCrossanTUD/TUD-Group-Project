@@ -11,3 +11,4 @@ seaborn==0.11.*
 pytest-mock==3.*
 azure-servicebus==7.*
 typing-extensions>=4.6.0
+pymysql==1.*

@@ -1,39 +1,28 @@
 <div class="router-content-center">
 <div class="glass-card">
-    <table>
+    <div id="table">
+        <div id="header">
+            <div>
+                Job ID
+            </div>
+            <!-- <div>
+                Start Date
+            </div>
+            <div>
+                Last update Date
+            </div> -->
+        </div>
         
-           <tr>
 
-    
-                <th>
-                    Job ID
-                </th>
-                <th>
-                    Start Date
-                </th>
-                <th>
-                    Last update Date
-                </th>
-            
-            </tr>
-        
-        <tbody>
-            <tr>
-                <td>
-                    <div>
-                        <label>756cbbf0-6ec7-11ee-8790-0ea9e1003c50</label>
+   
+                    <div *ngFor="let job of jobids">
+                        <label>{{job}}</label>
                         &nbsp;
-                        <i class="pi pi-copy" (click)="copytoclipboard('756cbbf0-6ec7-11ee-8790-0ea9e1003c50')"></i>
+                        <i class="pi pi-copy" (click)="copytoclipboard(job)"></i>
                       
                     </div>
-                </td>
-                <td>11-11-1111</td>
-                <td>11-11-1111</td>
-            </tr>
-            
-        </tbody>
-        
-    </table>
+                </div>
+                
 </div>
 </div>
 

@@ -2,7 +2,7 @@ import { Component ,ViewChild} from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
 import { AccessibilityServiceService } from '../Services/accessibility/accessibility-service.service';
-
+import { FileExportService } from '../Services/fileExport/file-export.service';
 @Component({
   selector: 'app-data-profile',
   templateUrl: './data-profile.component.html',
@@ -23,14 +23,21 @@ export class DataProfileComponent {
   imgURL=""
   header=""
   showDialog(e:any,c:any) {
-    this.imgURL=e;
-    this.header=c;
-    this.visible = true;
+    if(this.foldername==''){
+      alert('Check status First');
+    }else{
+      let baseurl='https://fab5storage.blob.core.windows.net/imagesoutput/'+this.foldername+'/';
+      this.imgURL=baseurl+e;
+      this.header=c;
+      this.visible = true;
+    }
+    
 }
 
 constructor(
   private cookieService: CookieService,
-  private accessibilityServiceService: AccessibilityServiceService
+  private accessibilityServiceService: AccessibilityServiceService,
+  private fileExportService:FileExportService
   ){}
 
 
@@ -49,5 +56,25 @@ ngOnInit() {
 funcc(){
   
   window.open(this.imgURL);
+}
+
+checkStatusString=''
+foldername='';
+checkstatusbutton(){
+
+  this.fileExportService.checkStatus(this.checkStatusString).subscribe(
+    (Response:any)=>{
+      console.log(Response);
+      if(Response.dataprofileoutput=='null'){
+        alert("your data is not Profiled yet");
+      }else{
+        this.foldername=this.checkStatusString;
+        alert("Profile Complete");
+      }
+    },
+    (error)=>{
+
+    }
+  )
 }
 }

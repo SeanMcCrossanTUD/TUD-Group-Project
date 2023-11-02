@@ -1,7 +1,7 @@
 * {
-  font-family: "Roboto Flex", sans-serif;
-  font-size: medium;
-  font-weight: 100;
+  font-family:"Verdana";
+  font-size: 12;
+
 }
 
 body {
@@ -46,8 +46,8 @@ body {
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 2vh;
-color: white;
-  width: max-content;
+  color: rgb(0, 0, 0);
+  width: 30vw;
 }
 .no-glass-card {
   /* From https://css.glass */

@@ -2,9 +2,12 @@
   <nav [class]="navclass">
     <div class="logo" (click)="navigate('')" title="Home">
        <img src="assets/images/logo.png" width="50px">
+        &nbsp;
+        DataPolish
+     
     </div>
     <div (click)="navigate('/UploadDataset')">
-      Upload dataset
+      Upload Dataset
     </div>
     <div (click)="navigate('/DataProfile')">
       Data Profile
@@ -30,7 +33,7 @@
 <div id="mobile" hidden>Please use computer to access the webpage</div>
 <div id="folating-button-container">
   <div (click)="showsidebar()">   <span class="material-icons">accessibility</span> </div>
- 
+  
 </div>
 
 <p-sidebar [(visible)]="sidebarVisible" position="right">
@@ -43,6 +46,29 @@
     <hr/>
     <!-- <h3>Font</h3>
     <div class="Accessibility-buttons" (click)="changeOpenDyslexicFont()">OpenDyslexic </div> -->
+    <h3>
+      <div class="Accessibility-buttons" (click)="adhd()">ADHD Friendly </div> 
+    </h3>
+    <hr/>
+    <!-- <div>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+        
+      </label>
+      Audio Description
+    </div> -->
+    
   </div>
+
 </p-sidebar>
 
+<div class="card flex justify-content-center">
+ 
+  <p-dialog header="ADHD" [modal]="true" [(visible)]="adhdmodal" [style]="{width: '80vw'}" [maximizable]="true">
+    <p-terminal welcomeMessage="DataPolish command line" prompt="asking Datapolish to do ... "></p-terminal>
+  </p-dialog>
+</div>
+
+
+<input hidden type="file" id="uploadadhd" (change)="adhdfile($event)"/>

@@ -1,0 +1,4 @@
+/etc/systemd/system
+/home/ubuntu/deploy-artifacts/Java-springboot/Data-Polish-Backend-0.0.1-SNAPSHOT.jar
+
+sudo journalctl -u datapolish-api -f --no-pager
