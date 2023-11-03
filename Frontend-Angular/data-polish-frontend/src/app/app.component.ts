@@ -54,15 +54,12 @@ export class AppComponent {
    const div2 = document.querySelector('#div-2');
    const div3 = document.querySelector('#div-3');
    const div4 = document.querySelector('#div-4');
-//    startSocketGravity: [0, 0],
-// endSocketGravity: [-192, -172]
 this.line1 = new LeaderLine(div1, div2,{color:'white',hide:true})
 this.line2 = new LeaderLine(div2, div3,{color:'white',hide:true})
 this.line3 = new LeaderLine(div3, div4,{color:'white',hide:true})
 this.line1active = new LeaderLine(div1, div2,{color:'white',dash: {animation: true}})
 this.line2active = new LeaderLine(div2, div3,{color:'white',dash: {animation: true},hide:true})
 this.line3active = new LeaderLine(div3, div4,{color:'white',dash: {animation: true},hide:true})
-
 }
 toggleLine(line:any){
   if(line==11){
@@ -70,7 +67,11 @@ toggleLine(line:any){
     this.line1active.show();
   }
   if(line==12){
-    this.line1.show();
+    this.line1.show('draw', {
+      animOptions: {
+        duration: 3000,
+        timing: [0.5, 0, 1, 0.42]
+      }});
     this.line1active.hide();
   }
   if(line==13){
@@ -83,7 +84,11 @@ toggleLine(line:any){
     this.line2active.show();
   }
   if(line==22){
-    this.line2.show();
+    this.line2.show('draw', {
+      animOptions: {
+        duration: 3000,
+        timing: [0.5, 0, 1, 0.42]
+      }});
     this.line2active.hide();
   }
   if(line==23){
@@ -96,7 +101,11 @@ toggleLine(line:any){
     this.line3active.show();
   }
   if(line==32){
-    this.line3.show();
+    this.line3.show('draw', {
+      animOptions: {
+        duration: 3000,
+        timing: [0.5, 0, 1, 0.42]
+      }});;
     this.line3active.hide();
   }
   if(line==33){
