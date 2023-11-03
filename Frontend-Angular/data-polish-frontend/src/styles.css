@@ -22,7 +22,29 @@ body {
 /* background: linear-gradient(14deg, rgba(142,143,170,1) 0%, rgba(27,2,41,1) 14%, rgba(27,2,41,1) 81%, rgba(142,143,170,1) 100%); */
 
 }
+/* Move this to Frontend-Angular/data-polish-frontend/src/app/D3/missing-values-chart/missing-values-chart.component.css but it is currently being overidden */
+.bar {
+  fill: steelblue;
+}
 
+.bar:hover {
+  fill: orange;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: white;
+  padding: 5px;
+  border: 1.5px solid black;
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.smc-section {
+  width: 100%;
+  margin-bottom: 20px; /* Adjust as needed for spacing between sections */
+}
+/* Move this to Frontend-Angular/data-polish-frontend/src/app/D3/missing-values-chart/missing-values-chart.component.css but it is currently being overidden */
 .router-content-center {
   display: flex;
   justify-content: center;
