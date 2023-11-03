@@ -1,35 +1,54 @@
+
+<video autoplay muted loop >
+  <!-- <source src="assets/bg-video.mp4" type="video/mp4"/> -->
+  <!-- <source src="assets/background.mp4" type="video/mp4"/> -->
+  <source src="assets\blue_partcles_futuristic.mov" type="video/mp4"/>
+  <!-- assets\blue_partcles_futuristic.mov -->
+</video>
+
 <div id="home-container">
-  <nav [class]="navclass">
-    <div class="logo" (click)="navigate('')" title="Home">
-       <img src="assets/images/logo.png" width="50px">
-        &nbsp;
-        DataPolish
-     
-    </div>
-    <div (click)="navigate('/UploadDataset')">
-      Upload Dataset
-    </div>
-    <div (click)="navigate('/DataProfile')">
-      Data Profile
-    </div>
-    <div (click)="navigate('/DataCleaning')">
-      Data Cleaning
-    </div>
-    <!-- <div (click)="navigate('/UploadDataset')">
-      Job Status
-    </div> -->
-    <div (click)="navigate('/Export')">
-      Export
-    </div>
-  
+ <div class="content-container">
 
-
-  </nav>
-  <div class="content-container">
-     <router-outlet></router-outlet> 
+  <div class="nav-bar">
+    <div (click)="navigate('1')"
+    class="highlight" id="div-1">1 - Import</div>
+    <div (click)="navigate('2')"class="highlight" id="div-2">2 - Profile</div>
+    <div class="highlight" id="div-3">3 - Cleaning</div>
+    <div class="highlight" id="div-4">4 - Export</div>
   </div>
-  
+  <div class="contents">
+<router-outlet/>
+  </div>
+  <div class="bottom-bar">
+    <div (click)="moveback()" [style]="backStyle">
+      Back
+    </div>
+    <div (click)="movenext()" [style]="nextStyle">
+      Next
+    </div>
+  </div>
+
+ </div>
+
 </div>
+
+
+
+<!-- 
+<div class="content-container">
+  <router-outlet></router-outlet> 
+</div>
+
+
+
+ -->
+
+
+
+
+ <p-toast></p-toast>
+
+
 <div id="mobile" hidden>Please use computer to access the webpage</div>
 <div id="folating-button-container">
   <div (click)="showsidebar()">   <span class="material-icons">accessibility</span> </div>
@@ -46,10 +65,7 @@
     <hr/>
     <!-- <h3>Font</h3>
     <div class="Accessibility-buttons" (click)="changeOpenDyslexicFont()">OpenDyslexic </div> -->
-    <h3>
-      <div class="Accessibility-buttons" (click)="adhd()">ADHD Friendly </div> 
-    </h3>
-    <hr/>
+    
     <!-- <div>
       <label class="switch">
         <input type="checkbox">

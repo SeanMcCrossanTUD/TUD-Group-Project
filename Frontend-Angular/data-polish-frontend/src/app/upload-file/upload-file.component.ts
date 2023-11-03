@@ -3,6 +3,7 @@ import { BlobStorageService } from '../Services/Fileupload/blob-storage.service'
 import { FileUpload } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-upload-file',
   templateUrl: './upload-file.component.html',
@@ -12,16 +13,14 @@ export class UploadFileComponent {
   constructor(
     private BlobStorageService:BlobStorageService,
     private messageService: MessageService,
-    private CookieService:CookieService
+    private CookieService:CookieService,
+    private router:Router
     ) { }
   model:any={};
   uploadedFiles: any[] = [];
   @ViewChild('fileupload') dropdown!: FileUpload;
   Upload(e:any){
-    var jobids: any[]=[];
-    try{
-      jobids=JSON.parse(this.CookieService.get('jobsid'));
-    }catch{    }
+ 
     this.dropdown.progress=30;
     for(let file of e.files) {
      
@@ -29,11 +28,12 @@ export class UploadFileComponent {
   
       this.BlobStorageService.uploadtoBlob(file).subscribe((respose:any)=>{     
 
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
-          this.dropdown.clear();
-          jobids.push(respose.jobID);
-          this.CookieService.set('jobsid',JSON.stringify(jobids));         
-          alert('your job id : ' + respose.jobID);
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Your File has been uploaded' });
+          this.dropdown.clear();         
+          this.CookieService.set('jobsid',respose.jobID);  
+       
+          this.router.navigate([2]);
+              
       },(err)=>{
         console.log(err);
         alert('error uploading file');

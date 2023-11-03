@@ -23,12 +23,18 @@ import { TerminalModule, TerminalService } from 'primeng/terminal';
 import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
 import { AppSettings } from './Const/config';
+import { NewHomeComponent } from './new-home/new-home.component';
+import { SetpsHomeComponent } from './setps-home/setps-home.component';
+import { NavigatationService } from './Services/navigate/navigatation.service';
+import { TabViewModule } from 'primeng/tabview';
+import { StepsModule } from 'primeng/steps';
 const routes: Routes = [
-    {path:'',component:HomePageComponent},
-    {path:'UploadDataset',component:UploadFileComponent},
-    {path:'DataProfile',component:DataProfileComponent},
-    {path:'Export',component:ExportComponent},
-    {path:'DataCleaning',component:DataCleaningComponent}
+    {path:'',component:UploadFileComponent},
+    {path:'newjob',component:SetpsHomeComponent},
+    {path:'1',component:UploadFileComponent},
+    {path:'2',component:DataProfileComponent},
+    {path:'4',component:ExportComponent},
+    {path:'3',component:DataCleaningComponent}
 
 ];
 @NgModule({
@@ -38,7 +44,9 @@ const routes: Routes = [
     DataProfileComponent,
     HomePageComponent,
     ExportComponent,
-    DataCleaningComponent
+    DataCleaningComponent,
+    NewHomeComponent,
+    SetpsHomeComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +63,9 @@ const routes: Routes = [
     SidebarModule,
     TerminalModule,
     DockModule,
-    FormsModule
+    FormsModule,
+    TabViewModule,
+    StepsModule
     
     
   ],
@@ -63,7 +73,7 @@ const routes: Routes = [
     MessageService,
     CookieService,
     TerminalService,
-    AppSettings
+    NavigatationService
   ],
   bootstrap: [AppComponent]
 })

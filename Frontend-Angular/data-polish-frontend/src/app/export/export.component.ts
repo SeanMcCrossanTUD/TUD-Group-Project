@@ -15,6 +15,7 @@ constructor(
   private fileExportService:FileExportService
   ){}
   ngOnInit() {
+    this.checkStatusString=this.cookieService.get('jobsid');
     let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
     if (cookieValue != '' && cookieValue != 'DEFAULT') {
       this.accessibilityServiceService.basicsetting();

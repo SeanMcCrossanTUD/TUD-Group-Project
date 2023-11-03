@@ -24,7 +24,7 @@ export class DataProfileComponent {
   header=""
   showDialog(e:any,c:any) {
     if(this.foldername==''){
-      alert('Check status First');
+      alert("your data is not Profiled yet");
     }else{
       let baseurl='https://fab5storage.blob.core.windows.net/imagesoutput/'+this.foldername+'/';
       this.imgURL=baseurl+e;
@@ -40,8 +40,25 @@ constructor(
   private fileExportService:FileExportService
   ){}
 
-
+jobid=''
 ngOnInit() {
+
+  this.jobid=this.cookieService.get('jobsid');
+  this.fileExportService.checkStatus(this.jobid).subscribe(
+    (Response:any)=>{
+      console.log(Response);
+      if(Response.dataprofileoutput=='null'){
+        alert("your data is not Profiled yet");
+      }else{
+        this.foldername=this.checkStatusString;
+        alert("Profile Complete");
+      }
+    },
+    (error)=>{
+
+    }
+  )
+  
   let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
   if (cookieValue != '' && cookieValue != 'DEFAULT') {
     this.accessibilityServiceService.basicsetting();
@@ -62,19 +79,6 @@ checkStatusString=''
 foldername='';
 checkstatusbutton(){
 
-  this.fileExportService.checkStatus(this.checkStatusString).subscribe(
-    (Response:any)=>{
-      console.log(Response);
-      if(Response.dataprofileoutput=='null'){
-        alert("your data is not Profiled yet");
-      }else{
-        this.foldername=this.checkStatusString;
-        alert("Profile Complete");
-      }
-    },
-    (error)=>{
-
-    }
-  )
+  
 }
 }
