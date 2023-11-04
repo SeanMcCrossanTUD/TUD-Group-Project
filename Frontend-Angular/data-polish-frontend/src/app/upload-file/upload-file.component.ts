@@ -4,10 +4,13 @@ import { FileUpload } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { fadeInAnimation } from '../Animations/animation';
 @Component({
   selector: 'app-upload-file',
   templateUrl: './upload-file.component.html',
-  styleUrls: ['./upload-file.component.css']
+  styleUrls: ['./upload-file.component.css'],
+  animations: [fadeInAnimation],
+  host: { '[@fadeInAnimation]': '' }
 })
 export class UploadFileComponent {
   constructor(

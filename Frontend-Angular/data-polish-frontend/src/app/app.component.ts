@@ -9,10 +9,12 @@ import { Subscription } from 'rxjs';
 import { InputType } from '@coreui/angular';
 import { BlobStorageService } from './Services/Fileupload/blob-storage.service';
 declare var LeaderLine: any;
+import { fadeInAnimation } from './Animations/animation';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  
 })
 export class AppComponent {
   

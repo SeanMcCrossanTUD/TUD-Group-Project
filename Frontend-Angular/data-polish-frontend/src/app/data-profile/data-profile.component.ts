@@ -3,10 +3,13 @@ import { MenuItem } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
 import { AccessibilityServiceService } from '../Services/accessibility/accessibility-service.service';
 import { FileExportService } from '../Services/fileExport/file-export.service';
+import { fadeInAnimation } from '../Animations/animation';
 @Component({
   selector: 'app-data-profile',
   templateUrl: './data-profile.component.html',
-  styleUrls: ['./data-profile.component.css']
+  styleUrls: ['./data-profile.component.css'],
+  animations: [fadeInAnimation],
+  host: { '[@fadeInAnimation]': '' }
 })
 export class DataProfileComponent {
   visible: boolean = false;
