@@ -62,6 +62,52 @@ this.line3 = new LeaderLine(div3, div4,{color:'white',hide:true})
 this.line1active = new LeaderLine(div1, div2,{color:'white',dash: {animation: true}})
 this.line2active = new LeaderLine(div2, div3,{color:'white',dash: {animation: true},hide:true})
 this.line3active = new LeaderLine(div3, div4,{color:'white',dash: {animation: true},hide:true})
+
+
+
+
+this.tooltipItems = [
+  {
+      tooltipOptions: {
+          tooltipLabel: 'Add'
+      },
+      icon: 'pi pi-pencil',
+      command: () => {
+          this.messageService.add({ severity: 'info', summary: 'Add', detail: 'Data Added' });
+      }
+  },
+  {
+      tooltipOptions: {
+          tooltipLabel: 'Update'
+      },
+      icon: 'pi pi-refresh',
+      command: () => {
+          this.messageService.add({ severity: 'success', summary: 'Update', detail: 'Data Updated' });
+      }
+  },
+  {
+      tooltipOptions: {
+          tooltipLabel: 'Delete'
+      },
+      icon: 'pi pi-trash',
+      command: () => {
+          this.messageService.add({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
+      }
+  },
+  {
+      tooltipOptions: {
+          tooltipLabel: 'Upload'
+      },
+      icon: 'pi pi-upload'
+  },
+  {
+      tooltipOptions: {
+          tooltipLabel: 'Angular Website'
+      },
+      icon: 'pi pi-external-link',
+      url: 'http://angular.io'
+  }
+];
 }
 toggleLine(line:any){
   if(line==11){
@@ -229,5 +275,8 @@ moveback(){
   }
  
 }
+
+  tooltipItems!: MenuItem[] | null;
+
  
 }

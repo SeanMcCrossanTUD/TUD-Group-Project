@@ -28,6 +28,7 @@ import { SetpsHomeComponent } from './setps-home/setps-home.component';
 import { NavigatationService } from './Services/navigate/navigatation.service';
 import { TabViewModule } from 'primeng/tabview';
 import { StepsModule } from 'primeng/steps';
+import { SpeedDialModule } from 'primeng/speeddial';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -65,7 +66,8 @@ const routes: Routes = [
     DockModule,
     FormsModule,
     TabViewModule,
-    StepsModule
+    StepsModule,
+    SpeedDialModule
     
     
   ],
