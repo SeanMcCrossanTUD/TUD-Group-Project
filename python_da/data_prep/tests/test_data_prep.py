@@ -89,5 +89,39 @@ def test_rename_column_invalid_new_name(test_dataframe):
     with pytest.raises(ValueError):
         dp.rename_column(old_name, new_name)
 
+# Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe():
+    return pd.DataFrame({
+        'Text': ['Hello@World!', 'Test123', 'No$Special#Characters'],
+        'Numbers': [1, 2, 3]
+    })
+
+# Test successful removal of special characters
+def test_remove_special_characters_success(text_dataframe):
+    dp = DataPrep(text_dataframe)
+    column_name = 'Text'
+    dp.remove_special_characters(column_name)
+    assert dp.dataframe[column_name].equals(pd.Series(['HelloWorld', 'Test123', 'NoSpecialCharacters']))
+
+# Test removing special characters from a non-existent column
+def test_remove_special_characters_non_existent_column(text_dataframe):
+    dp = DataPrep(text_dataframe)
+    with pytest.raises(ValueError):
+        dp.remove_special_characters('NonExistentColumn')
+
+# Test removing special characters from a non-text column
+def test_remove_special_characters_non_text_column(text_dataframe):
+    dp = DataPrep(text_dataframe)
+    with pytest.raises(ValueError):
+        dp.remove_special_characters('Numbers')
+
+# Test removing special characters when no dataframe is loaded
+def test_remove_special_characters_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.remove_special_characters('Text')
+
+
 
 
