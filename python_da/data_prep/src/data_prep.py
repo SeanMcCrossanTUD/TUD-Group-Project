@@ -9,24 +9,6 @@ class DataPrep:
     def __init__(self, dataset: pd.DataFrame):
         self.dataframe = dataset
 
-    # def load_dataframe(self, file_path):
-    #     # Check if the file path is valid from OS
-    #     if not os.path.exists(file_path):
-    #         raise FileNotFoundError(f'File {file_path} not found')
-    #     try:
-    #         # Try to load the file as a CSV
-    #         dataframe = pd.read_csv(file_path)
-    #         # Check if the dataframe is empty or incorrectly formatted (CSV only now)
-    #         if dataframe.empty:
-    #             raise ValueError(f'File {file_path} is empty or not in the correct format')
-    #         return dataframe
-    #     except pd.errors.ParserError as e:
-    #         # Handle CSV parsing errors
-    #         raise ValueError(f'Failed to parse {file_path} as a CSV file: {e}')
-    #     except Exception as e:
-    #         # Catch any other exceptions that may occur
-    #         raise Exception(f'An unexpected error occurred: {e}')
-
 
     # Function 1.
     def fill_missing_values(self, column_name, method='mode', specific_value=None):

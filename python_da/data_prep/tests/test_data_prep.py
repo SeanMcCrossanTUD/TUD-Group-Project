@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from data_prep import DataPrep  # Replace 'your_module' with the name of your actual module
+from data_prep.src.data_prep import DataPrep 
 import pytest
 
 # Sample dataframe for testing
