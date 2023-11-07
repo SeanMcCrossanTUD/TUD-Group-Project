@@ -31,6 +31,8 @@ import { StepsModule } from 'primeng/steps';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { DataPreviewComponent } from './data-preview/data-preview.component';
 import { SplitterModule } from 'primeng/splitter';
+import { AgGridModule } from 'ag-grid-angular';
+import 'ag-grid-enterprise';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -72,7 +74,8 @@ const routes: Routes = [
     TabViewModule,
     StepsModule,
     SpeedDialModule,
-    SplitterModule
+    SplitterModule,
+    AgGridModule
     
     
   ],
