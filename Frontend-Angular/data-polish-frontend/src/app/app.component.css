@@ -48,17 +48,17 @@ border: 1px solid rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
 
 }
 
 .contents {
-  margin-top: 5px;
+  margin-top: 4px;
   min-height: 80vh;
   min-width: 99%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex: auto auto 4;
 
 }

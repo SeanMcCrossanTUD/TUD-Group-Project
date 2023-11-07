@@ -31,13 +31,7 @@ export class AppComponent {
      private accessibilityServiceService:AccessibilityServiceService,
      private terminalService:TerminalService,
      private BlobStorageService:BlobStorageService
-  ){
-
-    this.subscription = this.terminalService.commandHandler.subscribe((command) => {
-      this.terminalhandler(command);
-     
-  });
-  }
+  ){ }
   line1active:any
   line2active:any
   line3active:any
@@ -167,30 +161,6 @@ accessibilityset(){
   }
   
 
-  adhdmodal=false;
-  adhfilename:any = null; 
-
-adhd(){
-this.adhdmodal=true;
-}
-terminalhandler(cmd:any){
-  cmd=cmd.toUpperCase();
- if(cmd=="UPLOAD"){
-    document.getElementById('uploadadhd')?.click();
-    this.terminalService.sendResponse('File has been selected. use profile command to upload to cloud and start data profile');
-  }
-  if(cmd=="Profile"){
-   this.BlobStorageService.uploadtoBlob(this.adhfilename).subscribe((e)=>{
-    console.log(e);
-   });
-  }
-
- 
-}
-adhdfile(e:any){
-  this.adhfilename=e.target.files[0];
-  console.log(this.adhfilename)
-}
 
 
 
