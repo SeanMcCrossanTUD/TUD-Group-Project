@@ -171,7 +171,7 @@ def main(test_iterations=None):
                 logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
 
                 logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
-                time.sleep(600)
+                time.sleep(6000)
 
                 # Increment the counter
                 counter += 1
