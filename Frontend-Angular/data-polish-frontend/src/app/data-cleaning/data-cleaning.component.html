@@ -1,14 +1,23 @@
-<div class="router-content-center">
-<div class="glass-card">
-    <div>
-              
-        <p-button label="Start Data cleaning"     
-        severity="warning"
-         [rounded]="true" 
-         (onClick)="StartCleaning()"></p-button>
-    </div> 
+<!-- <div style="width: 10vm;display: flex;justify-content: center; align-items: center;">
+    <div class="card">
+    <p-splitter [style]="{ 'max-height': '300px' }" styleClass="mb-5" layout="vertical">
+        <ng-template pTemplate>
+            <div class="col flex align-items-center justify-content-center"><div>
+                abc
+            </div></div>
+        </ng-template>
+        <ng-template pTemplate>
+            <div class="col flex align-items-center justify-content-center"> 
+                <div>
+                    <app-data-preview/>
+                </div>
+            </div>
+        </ng-template>
+    </p-splitter>
+</div>
+   
+</div>
 
-   
-</div>
-   
-</div>
+ -->
+
+ <app-data-preview/>

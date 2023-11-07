@@ -34,7 +34,6 @@
              
             ],
             "scripts": [
-              "src/assets/Scripts/azure-storage.blob.js",
               "node_modules/leader-line/leader-line.min.js"
               
             ]

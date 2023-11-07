@@ -41,9 +41,11 @@ export class AppComponent {
   line1active:any
   line2active:any
   line3active:any
+  line4active:any
   line1:any
   line2:any
   line3:any
+  line4:any
   
   ngOnInit() {
     let cookieValue:string = this.cookieService.get('ACCESSIBILITY');
@@ -56,58 +58,19 @@ export class AppComponent {
    const div2 = document.querySelector('#div-2');
    const div3 = document.querySelector('#div-3');
    const div4 = document.querySelector('#div-4');
+   const div5 = document.querySelector('#div-5');
 this.line1 = new LeaderLine(div1, div2,{color:'white',hide:true})
 this.line2 = new LeaderLine(div2, div3,{color:'white',hide:true})
 this.line3 = new LeaderLine(div3, div4,{color:'white',hide:true})
+this.line4 = new LeaderLine(div4, div5,{color:'white',hide:true})
 this.line1active = new LeaderLine(div1, div2,{color:'white',dash: {animation: true}})
 this.line2active = new LeaderLine(div2, div3,{color:'white',dash: {animation: true},hide:true})
 this.line3active = new LeaderLine(div3, div4,{color:'white',dash: {animation: true},hide:true})
+this.line4active = new LeaderLine(div4, div5,{color:'white',dash: {animation: true},hide:true})
 
 
 
 
-this.tooltipItems = [
-  {
-      tooltipOptions: {
-          tooltipLabel: 'Add'
-      },
-      icon: 'pi pi-pencil',
-      command: () => {
-          this.messageService.add({ severity: 'info', summary: 'Add', detail: 'Data Added' });
-      }
-  },
-  {
-      tooltipOptions: {
-          tooltipLabel: 'Update'
-      },
-      icon: 'pi pi-refresh',
-      command: () => {
-          this.messageService.add({ severity: 'success', summary: 'Update', detail: 'Data Updated' });
-      }
-  },
-  {
-      tooltipOptions: {
-          tooltipLabel: 'Delete'
-      },
-      icon: 'pi pi-trash',
-      command: () => {
-          this.messageService.add({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
-      }
-  },
-  {
-      tooltipOptions: {
-          tooltipLabel: 'Upload'
-      },
-      icon: 'pi pi-upload'
-  },
-  {
-      tooltipOptions: {
-          tooltipLabel: 'Angular Website'
-      },
-      icon: 'pi pi-external-link',
-      url: 'http://angular.io'
-  }
-];
 }
 toggleLine(line:any){
   if(line==11){
@@ -159,6 +122,23 @@ toggleLine(line:any){
   if(line==33){
     this.line3.hide();
     this.line3active.hide();
+  }
+  if(line==41){
+    
+    this.line4.hide();
+    this.line4active.show();
+  }
+  if(line==42){
+    this.line4.show('draw', {
+      animOptions: {
+        duration: 3000,
+        timing: [0.5, 0, 1, 0.42]
+      }});;
+    this.line4active.hide();
+  }
+  if(line==43){
+    this.line4.hide();
+    this.line4active.hide();
   }
 }
 accessibilityset(){
@@ -220,7 +200,7 @@ adhdfile(e:any){
 backStyle='visibility: collapse;'
 nextStyle='visibility: visible;'
 movenext(){
-  if(this.currentpage<4){
+  if(this.currentpage<5){
     this.currentpage++;
     this.router.navigate([this.currentpage]);
     if(this.currentpage==2){
@@ -233,16 +213,24 @@ movenext(){
     }
     if(this.currentpage==3){
       this.toggleLine(31);
+      
+
 
     }
     if(this.currentpage==4){
-      this.toggleLine(32);
 
+      this.toggleLine(32);
+      this.toggleLine(41);
+
+    }
+    if(this.currentpage==5){
+     
+      this.toggleLine(42);
     }
     if(this.currentpage!=1){
       this.backStyle='visibility: visible;'
     }
-    if(this.currentpage==4){
+    if(this.currentpage==5){
       this.nextStyle='visibility: collapse;'
     }
     
@@ -257,12 +245,15 @@ moveback(){
     if(this.currentpage==1){
       this.backStyle='visibility: collapse;'
     }
-    if(this.currentpage!=4){
+    if(this.currentpage!=5){
       this.nextStyle='visibility: visible;'
     }
-
+    if(this.currentpage==4){
+      this.toggleLine(41);
+    }
     if(this.currentpage==3){
       this.toggleLine(31);
+      this.toggleLine(43);
     }
     if(this.currentpage==2){
       this.toggleLine(21);

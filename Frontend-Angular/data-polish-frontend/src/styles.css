@@ -15,10 +15,7 @@ background: black;
 
 }
 
-@font-face {
-  font-family: OpenDyslexic;
-  src: url('assets/Font/OpenDyslexic-Regular.otf');
-}
+
 
 .glass-card {
   /* From https://css.glass */
@@ -43,7 +40,7 @@ background: black;
   justify-content: center;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 0px;
   height: 0px;
 }
@@ -61,7 +58,7 @@ background: black;
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
-}
+} */
 
 .accessiable-red-box:hover {
   border: red 2px;

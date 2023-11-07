@@ -29,13 +29,16 @@ import { NavigatationService } from './Services/navigate/navigatation.service';
 import { TabViewModule } from 'primeng/tabview';
 import { StepsModule } from 'primeng/steps';
 import { SpeedDialModule } from 'primeng/speeddial';
+import { DataPreviewComponent } from './data-preview/data-preview.component';
+import { SplitterModule } from 'primeng/splitter';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
     {path:'1',component:UploadFileComponent},
-    {path:'2',component:DataProfileComponent},
-    {path:'4',component:ExportComponent},
-    {path:'3',component:DataCleaningComponent}
+    {path:'2',component:DataPreviewComponent},
+    {path:'3',component:DataProfileComponent},
+    {path:'4',component:DataCleaningComponent},
+    {path:'5',component:ExportComponent},
 
 ];
 @NgModule({
@@ -47,7 +50,8 @@ const routes: Routes = [
     ExportComponent,
     DataCleaningComponent,
     NewHomeComponent,
-    SetpsHomeComponent
+    SetpsHomeComponent,
+    DataPreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +71,8 @@ const routes: Routes = [
     FormsModule,
     TabViewModule,
     StepsModule,
-    SpeedDialModule
+    SpeedDialModule,
+    SplitterModule
     
     
   ],

@@ -1,23 +1,15 @@
 import { Injectable } from '@angular/core';
-
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class DataPreviewDataService {
 
-  constructor() { }
+  constructor(private HttpClient:HttpClient) { }
 
-  mockData={
-    "coloumnNames":['a','b'],
-    "data":[
-      {
-        'a':123,
-        'b':342
-      }
-    ]
-  }
 
   public getData(){
-    return this.mockData
+    return this.HttpClient.get("http://localhost:3000/getdatapreviewdata1");
+
   }
 }
