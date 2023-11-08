@@ -178,3 +178,32 @@ class DataPrep:
         return self.dataframe
 
     
+    #Function 5.
+    def remove_special_characters(self, column_name):
+        """
+        Removes special characters from a text column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the column from which to remove special characters.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Check if the column data type is string
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the removal of special characters
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].apply(lambda x: re.sub(r'[^A-Za-z0-9 ]+', '', x) if isinstance(x, str) else x)
+        except Exception as e:
+            raise Exception(f'An error occurred while removing special characters: {e}')
+
+        return self.dataframe
+    
