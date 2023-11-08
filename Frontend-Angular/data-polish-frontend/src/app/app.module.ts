@@ -33,6 +33,7 @@ import { DataPreviewComponent } from './data-preview/data-preview.component';
 import { SplitterModule } from 'primeng/splitter';
 import { AgGridModule } from 'ag-grid-angular';
 import 'ag-grid-enterprise';
+import { RulesComponent } from './data-cleaning/rules/rules.component';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -53,7 +54,8 @@ const routes: Routes = [
     DataCleaningComponent,
     NewHomeComponent,
     SetpsHomeComponent,
-    DataPreviewComponent
+    DataPreviewComponent,
+    RulesComponent
   ],
   imports: [
     BrowserModule,
