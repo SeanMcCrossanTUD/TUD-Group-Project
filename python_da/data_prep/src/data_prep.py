@@ -9,6 +9,7 @@ class DataPrep:
     def __init__(self, dataset: pd.DataFrame):
         self.dataframe = dataset
 
+
     # def load_dataframe(self, file_path):
     #     # Check if the file path is valid from OS
     #     if not os.path.exists(file_path):
@@ -26,6 +27,7 @@ class DataPrep:
     #     except Exception as e:
     #         # Catch any other exceptions that may occur
     #         raise Exception(f'An unexpected error occurred: {e}')
+
 
 
     # Function 1.
@@ -138,6 +140,40 @@ class DataPrep:
                 raise ValueError('Invalid method. Supported methods are "min-max" and "z-score".')
         except Exception as e:
             raise Exception(f'An error occurred while normalizing data: {e}')
+
+        return self.dataframe
+
+
+ #Function 4.
+    def rename_column(self, old_name, new_name):
+        """
+        Renames a column in the DataFrame.
+
+        Args:
+        old_name (str): The current name of the column.
+        new_name (str): The new name for the column. Must be a string.
+
+        Raises:
+        ValueError: If new_name is not a string.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Ensure that new_name is a string
+        if not isinstance(new_name, str):
+            raise ValueError('new_name must be a string')
+
+        # Check if the old column name exists
+        if old_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {old_name} not found in dataframe')
+
+        # Perform the renaming
+        try:
+            self.dataframe.rename(columns={old_name: new_name}, inplace=True)
+        except Exception as e:
+            raise Exception(f'An error occurred while renaming the column: {e}')
 
         return self.dataframe
 
