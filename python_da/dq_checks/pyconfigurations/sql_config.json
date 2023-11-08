@@ -6,5 +6,6 @@
     "RDS_PASSWORD": "api",
     "RDS_TABLE": "jobsandblobs",
     "RDS_COLUMN_DATA_PROFILE": "dataprofileoutput",
-    "RDS_COLUMN_DATA_CLEAN": "datacleaningoutput"
+    "RDS_COLUMN_DATA_CLEAN": "datacleaningoutput",
+    "RDS_COLUMN_DATA_PREVIEW": "datapreview"
 }
