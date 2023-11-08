@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
+
+from data_prep import DataPrep  # Replace 'your_module' with the name of your actual module
+
 from data_prep.src.data_prep import DataPrep 
+
 import pytest
 
 # Sample dataframe for testing
@@ -55,6 +59,27 @@ def test_remove_outliers(test_dataframe):
     # Apply the remove_outliers method
     dp.remove_outliers(sd=2)  # Assuming 2 SD removes the outlier 100
 
+
+    # Check if the dataframe has changed after removing outliers
+    assert not dp.dataframe.equals(original_df), "Dataframe should have changed after outlier removal"
+
+# Tests for normalize_data method
+def test_normalize_data_min_max(test_dataframe):
+    dp = DataPrep(test_dataframe)
+    result = dp.normalize_data('C', method='min-max')
+    min_val, max_val = test_dataframe['C'].min(), test_dataframe['C'].max()
+    expected = (test_dataframe['C'] - min_val) / (max_val - min_val)
+    pd.testing.assert_series_equal(result['C'], expected, check_dtype=False)
+
+
+def test_normalize_data_z_score(test_dataframe):
+    dp = DataPrep(test_dataframe)
+    result = dp.normalize_data('C', method='z-score')
+    mean_val, std_val = test_dataframe['C'].mean(), test_dataframe['C'].std()
+    expected = (test_dataframe['C'] - mean_val) / std_val
+    pd.testing.assert_series_equal(result['C'], expected, check_dtype=False)
+=======
+
     # Check if the dataframe has changed after removing outliers
     assert not dp.dataframe.equals(original_df), "Dataframe should have changed after outlier removal"
 
@@ -91,3 +116,5 @@ def test_rename_column_invalid_new_name(test_dataframe):
 
 
 
+
+# You can add more tests for edge cases and error handling.
