@@ -23,6 +23,7 @@ import { TerminalModule, TerminalService } from 'primeng/terminal';
 import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
 import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
+import { DataTypesChartComponent } from './D3/data-types-chart/data-types-chart.component';
 
 const routes: Routes = [
     {path:'',component:HomePageComponent},
@@ -40,7 +41,8 @@ const routes: Routes = [
     HomePageComponent,
     ExportComponent,
     DataCleaningComponent,
-    MissingValuesChartComponent
+    MissingValuesChartComponent,
+    DataTypesChartComponent
   ],
   imports: [
     BrowserModule,
