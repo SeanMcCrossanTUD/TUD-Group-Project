@@ -22,6 +22,7 @@ import {CookieService} from 'ngx-cookie-service';
 import { TerminalModule, TerminalService } from 'primeng/terminal';
 import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
+import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
 
 const routes: Routes = [
     {path:'',component:HomePageComponent},
@@ -38,7 +39,8 @@ const routes: Routes = [
     DataProfileComponent,
     HomePageComponent,
     ExportComponent,
-    DataCleaningComponent
+    DataCleaningComponent,
+    MissingValuesChartComponent
   ],
   imports: [
     BrowserModule,
