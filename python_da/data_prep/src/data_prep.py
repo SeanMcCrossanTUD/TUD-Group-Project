@@ -207,3 +207,29 @@ class DataPrep:
 
         return self.dataframe
     
+     #Function 6
+    def change_column_type(self, column_name, new_type):
+        """
+        Changes the data type of a specified column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the column to change the data type of.
+        new_type: The new data type for the column. This should be a valid pandas data type.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Perform the data type change
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].astype(new_type)
+        except Exception as e:
+            raise Exception(f'An error occurred while changing the data type of the column: {e}')
+
+        return self.dataframe
+    

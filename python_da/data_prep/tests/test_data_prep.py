@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
-
-from data_prep import DataPrep  # Replace 'your_module' with the name of your actual module
-
+import re
 from data_prep.src.data_prep import DataPrep 
 
 import pytest
@@ -58,27 +56,6 @@ def test_remove_outliers(test_dataframe):
 
     # Apply the remove_outliers method
     dp.remove_outliers(sd=2)  # Assuming 2 SD removes the outlier 100
-
-
-    # Check if the dataframe has changed after removing outliers
-    assert not dp.dataframe.equals(original_df), "Dataframe should have changed after outlier removal"
-
-# Tests for normalize_data method
-def test_normalize_data_min_max(test_dataframe):
-    dp = DataPrep(test_dataframe)
-    result = dp.normalize_data('C', method='min-max')
-    min_val, max_val = test_dataframe['C'].min(), test_dataframe['C'].max()
-    expected = (test_dataframe['C'] - min_val) / (max_val - min_val)
-    pd.testing.assert_series_equal(result['C'], expected, check_dtype=False)
-
-
-def test_normalize_data_z_score(test_dataframe):
-    dp = DataPrep(test_dataframe)
-    result = dp.normalize_data('C', method='z-score')
-    mean_val, std_val = test_dataframe['C'].mean(), test_dataframe['C'].std()
-    expected = (test_dataframe['C'] - mean_val) / std_val
-    pd.testing.assert_series_equal(result['C'], expected, check_dtype=False)
-=======
 
     # Check if the dataframe has changed after removing outliers
     assert not dp.dataframe.equals(original_df), "Dataframe should have changed after outlier removal"
@@ -147,8 +124,74 @@ def test_remove_special_characters_no_dataframe():
     with pytest.raises(ValueError):
         dp.remove_special_characters('Text')
 
+# Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe2():
+    return pd.DataFrame({
+        'Numeric': [1, 2, 3],
+        'Text': ['a', 'b', 'c']
+    })
 
+# Test successful data type change
+def test_change_column_type_success(test_dataframe2):
+    dp = DataPrep(test_dataframe2)
+    dp.change_column_type('Numeric', 'float')
+    assert dp.dataframe['Numeric'].dtype == 'float64'
 
+# Test changing type of non-existent column
+def test_change_column_type_non_existent_column(test_dataframe2):
+    dp = DataPrep(test_dataframe2)
+    with pytest.raises(ValueError):
+        dp.change_column_type('NonExistent', 'float')
 
+# Test changing to an invalid data type
+def test_change_column_type_invalid_conversion(test_dataframe2):
+    dp = DataPrep(test_dataframe2)
+    with pytest.raises(Exception):
+        dp.change_column_type('Numeric', 'invalid_type')
 
-# You can add more tests for edge cases and error handling.
+# Test changing column type when no dataframe is loaded
+def test_change_column_type_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.change_column_type('Numeric', 'float')
+
+# Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe3():
+    return pd.DataFrame({
+        'Numeric': [1, 2, 3],
+        'Text': ['a', 'b', 'c'],
+        'Mixed': [1, 'two', 3.0],
+        'WithMissing': [1, pd.NA, 3]
+    })
+
+# Test changing type with potential data loss (e.g., numeric to string)
+def test_change_column_type_with_data_loss(test_dataframe3):
+    dp = DataPrep(test_dataframe3)
+    dp.change_column_type('Numeric', 'str')
+    assert dp.dataframe['Numeric'].dtype == 'object'
+    assert all(isinstance(x, str) for x in dp.dataframe['Numeric'])
+
+# Test changing type of column with mixed types
+def test_change_column_type_mixed_types(test_dataframe3):
+    dp = DataPrep(test_dataframe3)
+    with pytest.raises(Exception):
+        dp.change_column_type('Mixed', 'int')
+
+# Test changing type of column with missing values
+def test_change_column_type_with_missing_values(test_dataframe3):
+    dp = DataPrep(test_dataframe3)
+    # Replace pd.NA with np.nan for float conversion
+    dp.dataframe['WithMissing'] = dp.dataframe['WithMissing'].replace({pd.NA: np.nan})
+    dp.change_column_type('WithMissing', 'float')
+    assert dp.dataframe['WithMissing'].dtype == 'float64'
+
+# Test changing type to a complex type (datetime)
+def test_change_column_type_to_datetime():
+    df = pd.DataFrame({
+        'Date': ['2021-01-01', '2021-01-02', '2021-01-03']
+    })
+    dp = DataPrep(df)
+    dp.change_column_type('Date', 'datetime64[ns]')
+    assert dp.dataframe['Date'].dtype == 'datetime64[ns]'
