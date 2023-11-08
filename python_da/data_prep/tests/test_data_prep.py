@@ -195,3 +195,36 @@ def test_change_column_type_to_datetime():
     dp = DataPrep(df)
     dp.change_column_type('Date', 'datetime64[ns]')
     assert dp.dataframe['Date'].dtype == 'datetime64[ns]'
+
+# Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe4():
+    return pd.DataFrame({
+        'Text': ['  hello  ', 'world', '  pandas  '],
+        'Mixed': ['  text ', 123, pd.NA],
+        'Numeric': [1, 2, 3]
+    })
+
+# Test successful trimming of whitespace
+def test_trim_whitespace_success(test_dataframe4):
+    dp = DataPrep(test_dataframe4)
+    dp.trim_whitespace('Text')
+    assert dp.dataframe['Text'].equals(pd.Series(['hello', 'world', 'pandas']))
+
+# Test trimming whitespace from a non-existent column
+def test_trim_whitespace_non_existent_column(test_dataframe4):
+    dp = DataPrep(test_dataframe4)
+    with pytest.raises(ValueError):
+        dp.trim_whitespace('NonExistentColumn')
+
+# Test trimming whitespace from a non-text column
+def test_trim_whitespace_non_text_column(test_dataframe4):
+    dp = DataPrep(test_dataframe4)
+    with pytest.raises(ValueError):
+        dp.trim_whitespace('Numeric')
+
+# Test trimming whitespace when no dataframe is loaded
+def test_trim_whitespace_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.trim_whitespace('Text')
