@@ -1,0 +1,41 @@
+<div class="new-job">
+    
+    <div class="card">
+        <p-tabView [(activeIndex)]="activeIndex">
+            <p-tabPanel header="1 - Upload Dataset">
+              <app-upload-file/>
+              <div class="bottom-buttons">
+                
+                <button (click)="moveBack()" style="visibility: collapse;">back</button>
+                <button (click)="movenext()">Next</button>
+              </div>
+            </p-tabPanel>
+            <p-tabPanel header="2 - Data Profile" >
+                <app-data-profile/>
+                <div class="bottom-buttons">
+                
+                    <button (click)="moveBack()">back</button>
+                    <button (click)="movenext()">Next</button>
+                  </div>
+            </p-tabPanel>
+            <p-tabPanel header="3 - Data cleanning">
+             <app-data-cleaning/>
+             <div class="bottom-buttons">
+                
+                <button (click)="moveBack()">back</button>
+                <button (click)="movenext()">Next</button>
+              </div>
+            </p-tabPanel>
+            <p-tabPanel header="4 - Export Dataset">
+             <app-export/>
+             <div class="bottom-buttons">
+                
+                <button (click)="moveBack()">back</button>
+                <button (click)="movenext()" style="visibility: collapse;">Next</button>
+              </div>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+ 
+    
+</div> 

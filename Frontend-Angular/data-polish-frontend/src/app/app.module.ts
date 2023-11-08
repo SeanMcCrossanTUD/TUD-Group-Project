@@ -22,13 +22,25 @@ import {CookieService} from 'ngx-cookie-service';
 import { TerminalModule, TerminalService } from 'primeng/terminal';
 import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
-
+import { AppSettings } from './Const/config';
+import { NewHomeComponent } from './new-home/new-home.component';
+import { SetpsHomeComponent } from './setps-home/setps-home.component';
+import { NavigatationService } from './Services/navigate/navigatation.service';
+import { TabViewModule } from 'primeng/tabview';
+import { StepsModule } from 'primeng/steps';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { DataPreviewComponent } from './data-preview/data-preview.component';
+import { SplitterModule } from 'primeng/splitter';
+import { AgGridModule } from 'ag-grid-angular';
+import 'ag-grid-enterprise';
 const routes: Routes = [
-    {path:'',component:HomePageComponent},
-    {path:'UploadDataset',component:UploadFileComponent},
-    {path:'DataProfile',component:DataProfileComponent},
-    {path:'Export',component:ExportComponent},
-    {path:'DataCleaning',component:DataCleaningComponent}
+    {path:'',component:UploadFileComponent},
+    {path:'newjob',component:SetpsHomeComponent},
+    {path:'1',component:UploadFileComponent},
+    {path:'2',component:DataPreviewComponent},
+    {path:'3',component:DataProfileComponent},
+    {path:'4',component:DataCleaningComponent},
+    {path:'5',component:ExportComponent},
 
 ];
 @NgModule({
@@ -38,7 +50,10 @@ const routes: Routes = [
     DataProfileComponent,
     HomePageComponent,
     ExportComponent,
-    DataCleaningComponent
+    DataCleaningComponent,
+    NewHomeComponent,
+    SetpsHomeComponent,
+    DataPreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -55,14 +70,20 @@ const routes: Routes = [
     SidebarModule,
     TerminalModule,
     DockModule,
-    FormsModule
+    FormsModule,
+    TabViewModule,
+    StepsModule,
+    SpeedDialModule,
+    SplitterModule,
+    AgGridModule
     
     
   ],
   providers: [
     MessageService,
     CookieService,
-    TerminalService
+    TerminalService,
+    NavigatationService
   ],
   bootstrap: [AppComponent]
 })
