@@ -19,7 +19,11 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import java.io.IOException;
 
-
+/*  take file as param
+    Upload the file to Azure Blob Storage
+    call stored procedure to filename in DB and get jobid
+    publish json msg with filename and jobid to q1
+ */
 @Service
 public class FileUploadService {
     //storing the blob connection string in a 'string' variable
