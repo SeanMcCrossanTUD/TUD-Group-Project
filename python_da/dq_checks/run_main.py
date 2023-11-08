@@ -10,10 +10,11 @@ from dq_checks.src.data_profiling_visuals import DataProfilingVisuals
 from dq_checks.azure_package.src.azure_functions import (
     download_blob_csv_data, 
     upload_results_to_azure,
+    upload_meta_to_azure_data_preview,
     upload_image_to_azure,
     receive_message_from_queue
 )
-
+from dq_checks.src.meta_data_functions import dataframe_metadata_to_json
 print("Current Directory:", os.getcwd())
 print("Directory Contents:", os.listdir('.'))
 
@@ -117,6 +118,18 @@ def perform_data_quality_checks(data):
 
     return result
 
+def meta_data_to_blob(df):
+
+    try:
+        
+        metadata_json = dataframe_metadata_to_json(df)
+        logger.info("Meta data to json")
+        return metadata_json
+
+    except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+        raise
+        
 
 def run_visuals_and_upload(data_quality_checker, connection_string, container_name_images, jobId):
     visuals = DataProfilingVisuals(data_quality_checker)
@@ -160,6 +173,12 @@ def main(test_iterations=None):
                 data = download_blob_csv_data(connection_string=connection_string, file_name=filename, container_name=container_name_data_input)
                 logger.info(f'Download data complete for: {filename} - {jobID}')
 
+                meta_data_result = meta_data_to_blob(df=data)
+                logger.info(f'Meta data for Data Preview complete for: {filename} - {jobID}')
+
+                upload_meta_to_azure_data_preview(meta_data_result, connection_string=connection_string, job_id=jobID)
+                logger.info(f'Meta data for data preview uploaded for: {filename} - {jobID}')
+
                 result = perform_data_quality_checks(data)
                 logger.info(f'Data Quality checks complete for: {filename} - {jobID}')
 
@@ -171,7 +190,7 @@ def main(test_iterations=None):
                 logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
 
                 logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
-                time.sleep(60)
+                time.sleep(6000)
 
                 # Increment the counter
                 counter += 1
