@@ -9,10 +9,23 @@ import com.azure.messaging.servicebus.*;
 import com.azure.core.util.BinaryData;
 import org.springframework.stereotype.Service;
 
+/*
+    data clean - get jobid from user then query db get dataprofilingoutput
+    put it in q2.
+
+    take jobid and json object from frontend
+    query db with jobid to get dataprofilingoutput value
+
+    convert the json object to json file
+    store the json file in blob
+    store the json filename in DB under cleaningrules column for that jobid
+    publish to q2
+        - retrieved dataprofilingoutput value (to trigger datacleaning py microservice)
+        - json filename
+
+ */
 @Service
 public class DataCleaningService {
-    //data clean - get jobid from user then query db get dataprofilingoutput then put it in q2.
-
     //storing service connection string and queueName
     @Value("${azure.servicebus.connection-string}")
     private String serviceBusConnectionString;

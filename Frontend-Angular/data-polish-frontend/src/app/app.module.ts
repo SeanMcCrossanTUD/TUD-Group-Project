@@ -22,6 +22,7 @@ import {CookieService} from 'ngx-cookie-service';
 import { TerminalModule, TerminalService } from 'primeng/terminal';
 import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
+
 import { AppSettings } from './Const/config';
 import { NewHomeComponent } from './new-home/new-home.component';
 import { SetpsHomeComponent } from './setps-home/setps-home.component';
@@ -33,6 +34,11 @@ import { DataPreviewComponent } from './data-preview/data-preview.component';
 import { SplitterModule } from 'primeng/splitter';
 import { AgGridModule } from 'ag-grid-angular';
 import 'ag-grid-enterprise';
+import { RulesComponent } from './data-cleaning/rules/rules.component';
+
+import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
+
+
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -51,9 +57,13 @@ const routes: Routes = [
     HomePageComponent,
     ExportComponent,
     DataCleaningComponent,
+
     NewHomeComponent,
     SetpsHomeComponent,
-    DataPreviewComponent
+    DataPreviewComponent,
+    RulesComponent
+
+    MissingValuesChartComponent
   ],
   imports: [
     BrowserModule,

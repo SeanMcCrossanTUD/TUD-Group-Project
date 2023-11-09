@@ -9,6 +9,7 @@ class DataPrep:
     def __init__(self, dataset: pd.DataFrame):
         self.dataframe = dataset
 
+
     # def load_dataframe(self, file_path):
     #     # Check if the file path is valid from OS
     #     if not os.path.exists(file_path):
@@ -27,96 +28,237 @@ class DataPrep:
     #         # Catch any other exceptions that may occur
     #         raise Exception(f'An unexpected error occurred: {e}')
 
-    def fill_missing_values(self, column_name, method='mode'):
-        # Check if a dataframe is loaded or raise error
+
+
+    # Function 1.
+    def fill_missing_values(self, column_name, method='mode', specific_value=None):
+        """
+        Fills missing values in a specified column using various methods.
+
+        Args:
+        column_name (str): The name of the column to fill missing values in.
+        method (str): The method to use for filling missing values. Options are 'remove', 'mode', 'median', 'mean', or 'specific'.
+        specific_value (numeric, optional): A specific numeric value to use for filling missing values. This is used only if method='specific'.
+        """
+
+        # Check if a dataframe is loaded
         if self.dataframe is None:
             raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
-        
-        # Check if the specified column exists in the dataframe or raise error
+
+        # Check if the specified column exists
         if column_name not in self.dataframe.columns:
             raise ValueError(f'Column name {column_name} not found in dataframe')
-        
-        # Check if there are any missing values in the specified column or just return df
+
+        # Return if no missing values are found
         if self.dataframe[column_name].isnull().sum() == 0:
             print(f'No missing values found in column {column_name}. Returning original dataframe.')
             return self.dataframe
-        
-        if method not in ['mode', 'mean', 'median', 'interpolate']:
-            raise ValueError(f'Invalid method: {method}. Supported methods are "mode", "mean", "median", "interpolate".')
 
+        if method not in ['remove', 'mode', 'mean', 'median', 'specific']:
+            raise ValueError(f'Invalid method: {method}. Supported methods are "remove", "mode", "mean", "median", "specific".')
 
-        #Try-excpet block containing different functionalities for specific keywords
         try:
-            if method == 'mode':
+            if method == 'remove':
+                self.dataframe.dropna(subset=[column_name], inplace=True)
+            elif method == 'mode':
                 fill_value = self.dataframe[column_name].mode()[0]
+                self.dataframe[column_name].fillna(fill_value, inplace=True)
             elif method == 'mean':
                 fill_value = self.dataframe[column_name].mean()
+                self.dataframe[column_name].fillna(fill_value, inplace=True)
             elif method == 'median':
                 fill_value = self.dataframe[column_name].median()
-            elif method == 'interpolate':
-                self.dataframe[column_name].interpolate(inplace=True)
-                return self.dataframe
-            
-            # Fill missing values in the dataframe
-            self.dataframe[column_name].fillna(fill_value, inplace=True)
+                self.dataframe[column_name].fillna(fill_value, inplace=True)
+            elif method == 'specific':
+                if specific_value is None or not isinstance(specific_value, (int, float)):
+                    raise ValueError('A specific numeric value must be provided for the "specific" method.')
+                self.dataframe[column_name].fillna(specific_value, inplace=True)
         except Exception as e:
             raise Exception(f'An error occurred while filling missing values: {e}')
 
         return self.dataframe
     
+    # Function 2.
+    def remove_outliers(self, sd: float = 3.0) -> None:
+        """
+        Removes or modifies the outliers in the dataframe based on the specified standard deviation.
 
-    # Removes duplicate rows from the dataframe. Limited functionality for now, aim to add more 
-    def remove_duplicates(self):
-        
-        #File check
+        Args:
+        sd (float): The number of standard deviations to use for defining an outlier. 
+                    Defaults to 3.0.
+
+        """
+
         if self.dataframe is None:
             raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
 
-        # Remove duplicates using pandas drop_duplicates method
-        initial_rows = len(self.dataframe)
-        self.dataframe.drop_duplicates(inplace=True)
-        removed_rows = initial_rows - len(self.dataframe)
-
-        print(f'Removed {removed_rows} duplicate rows.')
-        return self.dataframe
-    
-    def remove_z_score_outliers(self, threshold: float = 3.0) -> None:
-    
-        #This function removes or modifies the outliers in the dataframe based on the z-score method.
-        
         # Iterate over each numeric column in the dataframe
         for col in self.dataframe.select_dtypes(include=[np.number]).columns:
             # Exclude null values from the column
             col_values = self.dataframe[col].dropna()
             
-            # Calculate the z-scores for each value in the column
-            z_scores = np.abs(stats.zscore(col_values))
+            # Calculate the mean and standard deviation for the column
+            mean, std = col_values.mean(), col_values.std()
             
-            # Identify indices of the values where the z-score is greater than the given threshold
-            outlier_indices = np.where(z_scores > threshold)
+            # Define the upper and lower bounds for outliers
+            lower_bound = mean - sd * std
+            upper_bound = mean + sd * std
 
             # Replace the outliers in the dataframe with NaN
-            self.dataframe.loc[self.dataframe.index[outlier_indices], col] = np.nan
-
-    def remove_iqr_outliers(self, k: float = 1.5) -> None:
-    
-         #This function removes or modifies the outliers in the dataframe based on the IQR method.
-    
-        # Iterate over each numeric column in the dataframe
-        for col in self.dataframe.select_dtypes(include=[np.number]).columns:
-            # Exclude null values from the column
-            col_values = self.dataframe[col].dropna()
-            
-            # Calculate the first and third quartiles of the column values
-            Q1 = col_values.quantile(0.25)
-            Q3 = col_values.quantile(0.75)
-            
-            # Compute the Interquartile Range (IQR)
-            IQR = Q3 - Q1
-
-            # Calculate the bounds for outliers using the provided coefficient, k
-            lower_bound = Q1 - k * IQR
-            upper_bound = Q3 + k * IQR
-
-            # Replace the values outside the bounds (outliers) in the dataframe with NaN
             self.dataframe.loc[(self.dataframe[col] < lower_bound) | (self.dataframe[col] > upper_bound), col] = np.nan
+
+
+    # Function 3.
+    def normalize_data(self, column_name, method='min-max'):
+        """
+        Normalizes the data in the specified column using either min-max scaling or z-score normalization.
+
+        Args:
+        column_name (str): The name of the column to normalize.
+        method (str): The normalization method to use. Options are 'min-max' or 'z-score'.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Normalization process
+        try:
+            if method == 'min-max':
+                min_val = self.dataframe[column_name].min()
+                max_val = self.dataframe[column_name].max()
+                self.dataframe[column_name] = (self.dataframe[column_name] - min_val) / (max_val - min_val)
+            elif method == 'z-score':
+                mean_val = self.dataframe[column_name].mean()
+                std_val = self.dataframe[column_name].std()
+                self.dataframe[column_name] = (self.dataframe[column_name] - mean_val) / std_val
+            else:
+                raise ValueError('Invalid method. Supported methods are "min-max" and "z-score".')
+        except Exception as e:
+            raise Exception(f'An error occurred while normalizing data: {e}')
+
+        return self.dataframe
+
+
+ #Function 4.
+    def rename_column(self, old_name, new_name):
+        """
+        Renames a column in the DataFrame.
+
+        Args:
+        old_name (str): The current name of the column.
+        new_name (str): The new name for the column. Must be a string.
+
+        Raises:
+        ValueError: If new_name is not a string.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Ensure that new_name is a string
+        if not isinstance(new_name, str):
+            raise ValueError('new_name must be a string')
+
+        # Check if the old column name exists
+        if old_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {old_name} not found in dataframe')
+
+        # Perform the renaming
+        try:
+            self.dataframe.rename(columns={old_name: new_name}, inplace=True)
+        except Exception as e:
+            raise Exception(f'An error occurred while renaming the column: {e}')
+
+        return self.dataframe
+
+    
+    #Function 5.
+    def remove_special_characters(self, column_name):
+        """
+        Removes special characters from a text column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the column from which to remove special characters.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Check if the column data type is string
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the removal of special characters
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].apply(lambda x: re.sub(r'[^A-Za-z0-9 ]+', '', x) if isinstance(x, str) else x)
+        except Exception as e:
+            raise Exception(f'An error occurred while removing special characters: {e}')
+
+        return self.dataframe
+    
+     #Function 6
+    def change_column_type(self, column_name, new_type):
+        """
+        Changes the data type of a specified column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the column to change the data type of.
+        new_type: The new data type for the column. This should be a valid pandas data type.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Perform the data type change
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].astype(new_type)
+        except Exception as e:
+            raise Exception(f'An error occurred while changing the data type of the column: {e}')
+
+        return self.dataframe
+    
+    #Function 7
+    def trim_whitespace(self, column_name):
+        """
+        Trims leading and trailing whitespace from a text column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column to trim whitespace from.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the trimming of whitespace
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].str.strip()
+        except Exception as e:
+            raise Exception(f'An error occurred while trimming whitespace: {e}')
+
+        return self.dataframe
+    

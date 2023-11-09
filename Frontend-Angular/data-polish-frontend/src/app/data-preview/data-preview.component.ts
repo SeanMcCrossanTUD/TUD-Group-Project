@@ -28,8 +28,9 @@ export class DataPreviewComponent {
   ngOnInit(){
     this.DataPreviewDataService.getData().subscribe(
       (response:any)=>{
-        this.DatapreviewColumnNames=response.coloumnNames;
+        this.DatapreviewColumnNames=response.columnNames;
         this.DatapreviewData=response.data;
+       
         this.makeHeaser();
         this.rowData=this.DatapreviewData;
       }
@@ -55,7 +56,7 @@ export class DataPreviewComponent {
 
    })
    this.columnDefs=temp;
-   console.log(this.columnDefs)
+  
   }
 
   public sideBar:any= ['columns','filters'];
