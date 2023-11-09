@@ -13,7 +13,7 @@ import java.io.IOException;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class FileUploadController {
     @Autowired
     private FileUploadService fileUploadService;
