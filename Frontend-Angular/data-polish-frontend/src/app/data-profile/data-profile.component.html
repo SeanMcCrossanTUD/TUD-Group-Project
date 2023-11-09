@@ -1,12 +1,7 @@
 <div class="router-content-center">
+
     <div class="glass-card">
-<div>
-    <input type="text" pInputText 
-    placeholder="Enter your Job ID here"
-    [(ngModel)]="checkStatusString" />
-    <div>&nbsp;</div>
-    <p-button label="Check Status" severity="warning" [rounded]="true" (onClick)="checkstatusbutton()"></p-button>
-</div>
+
 <br/>
         
         <div id="data-profile-home-container-table">
@@ -18,24 +13,29 @@
                 Outlier - Scatter
             </div>
 
-            <div (click)="showDialog('outlier_table.png',' Outlier - Table')">
-                Outlier - Table
-            </div>
 
-            <div (click)="showDialog('unique_values_plot.png',' Unique Values')">
-                Unique Values
-            </div>
+    <!-- First Section: Data Profile -->
+    <div class="smc-section">
+        <h2>Data Profile</h2>
+        <!-- Content for Data Profile can be added here -->
+    </div>
 
-        </div>
+    <!-- Second Section: Data Quality Analysis -->
+    <div class="smc-section">
+        <h2>Data Quality Analysis</h2>
+        <app-missing-values-chart/>
+    </div>
+
+    <!-- Third Section: Statistical Profiling -->
+    <div class="smc-section">
+        <h2>Statistical Profiling</h2>
+        <!-- Content for Statistical Profiling can be added here -->
     </div>
 
 </div>
 
 <p-dialog [header]="header" [(visible)]="visible" [style]="{width: '90vw'}">
     <p>
-     <img #img [src]="imgURL">    
+        <img #img [src]="imgURL">    
     </p>
 </p-dialog>
-
-<p-contextMenu [target]="img" [model]="items"></p-contextMenu>
-<a target="_blank" #newwindow hidden ></a>

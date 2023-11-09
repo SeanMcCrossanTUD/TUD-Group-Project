@@ -8,7 +8,7 @@ export class BlobStorageService {
 
   constructor(private http:HttpClient) { }
   uploadtoBlob(x:any){
-    var URL=AppSettings.javaapiurl+"/upload-csv";
+    var URL=AppSettings.getBaseURL()+"upload-csv";
     var formdata = new FormData();
     formdata.append("file", x, x.name)
     
@@ -17,7 +17,7 @@ export class BlobStorageService {
   }
 
   getOutputFileURL(x:any){
-    var URL=AppSettings.javaapiurl+"/download";
+    var URL=AppSettings.getBaseURL()+"download";
     var formdata=new FormData();
     formdata.append('jobid',x);
     return this.http.post(URL,formdata);

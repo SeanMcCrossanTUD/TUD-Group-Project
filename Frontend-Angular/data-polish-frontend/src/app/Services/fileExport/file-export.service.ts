@@ -13,13 +13,13 @@ export class FileExportService {
 
 
   checkStatus(x:any){
-    let url=AppSettings.javaapiurl+'/download-csv';
+    let url=AppSettings.getBaseURL()+'download-csv';
     let params = new HttpParams();
     params = params.append('jobID', x)
     return this.http.get(url,{params:params})
   }
   startDataCLeanning(x:any){
-    let url=AppSettings.javaapiurl+'/data-clean';
+    let url=AppSettings.getBaseURL()+'data-clean';
     let params = new HttpParams();
     params = params.append('jobID', x)
     return this.http.get(url,{params:params})

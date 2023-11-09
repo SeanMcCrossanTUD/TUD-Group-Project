@@ -7,7 +7,7 @@ import pandas as pd
 from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
-from dq_checks.rds_sql_package.src.rds_sql_functions import update_rds_data_profile
+from dq_checks.rds_sql_package.src.rds_sql_functions import update_rds_data_profile, update_rds_data_preview
 
 # Set up logging
 logger = logging.getLogger('azure-package')
@@ -85,6 +85,40 @@ def upload_results_to_azure(data, connection_string, job_id, result_container_na
     except Exception as e:
         logger.error(f"Unexpected error while uploading result to Azure Blob Storage: {str(e)}")
         raise e
+
+def upload_meta_to_azure_data_preview(data, connection_string, job_id, result_container_name='datapreview'):
+    """Upload data as a JSON file to Azure Blob Storage.
+
+    Args:
+    - data (dict): The data to be uploaded.
+    - connection_string (str): The Azure connection string.
+    - result_container_name (str, optional): Name of the Azure blob container for results. Defaults to 'datapreview'.
+    """
+    try:
+
+        # Convert JSON string to bytes
+        result_bytes = data.encode('utf-8')
+
+        blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+
+        timestamp = str(int(time.time()))
+        result_blob_name = f'data_preview_{timestamp}.json'
+
+        blob_client = blob_service_client.get_blob_client(container=result_container_name, blob=result_blob_name)
+
+        blob_client.upload_blob(io.BytesIO(result_bytes), blob_type="BlockBlob", overwrite=True)
+
+        update_rds_data_preview(result_blob_name, job_id)
+
+        logger.info(f'Successfully uploaded {result_blob_name} to {result_container_name} in Azure Blob Storage')
+
+    except AzureError as ae:
+        logger.error(f"AzureError while uploading result to Azure Blob Storage: {str(ae)}")
+        raise ae
+    except Exception as e:
+        logger.error(f"Unexpected error while uploading result to Azure Blob Storage: {str(e)}")
+        raise e
+
 
 def upload_image_to_azure(img_data, blob_name, connection_string, container_name_images):
     """Upload image data to Azure Blob Storage.

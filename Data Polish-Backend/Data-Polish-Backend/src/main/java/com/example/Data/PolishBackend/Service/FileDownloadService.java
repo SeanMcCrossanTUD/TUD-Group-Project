@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/*
+    take jobid as param
+    query db to get file details (every column)
+    return file details in json format to frontend
+ */
 @Service
 public class FileDownloadService {
     @Autowired

@@ -1,0 +1,28 @@
+.resize-2{
+    resize: vertical;
+    overflow: auto;
+    border: 1px solid;
+    display: inline-flex;
+    height: 30vh;
+    color:white;
+  }
+  .resize{
+    resize: vertical;
+    overflow: auto;
+    border: 1px solid;
+    display: inline-flex;
+    height: 50vh;
+    color:white;
+  }
+
+  .data-cleaning-home-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-width: 80vw;
+    min-height: 80vh;
+
+    color: white;
+    gap: 2px;
+  }

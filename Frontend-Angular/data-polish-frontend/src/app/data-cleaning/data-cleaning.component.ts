@@ -3,10 +3,13 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AccessibilityServiceService } from '../Services/accessibility/accessibility-service.service';
 import { FileExportService } from '../Services/fileExport/file-export.service';
+import { fadeInAnimation } from '../Animations/animation';
 @Component({
   selector: 'app-data-cleaning',
   templateUrl: './data-cleaning.component.html',
-  styleUrls: ['./data-cleaning.component.css']
+  styleUrls: ['./data-cleaning.component.css'],
+  animations: [fadeInAnimation],
+  host: { '[@fadeInAnimation]': '' }
 })
 export class DataCleaningComponent {
 
@@ -20,7 +23,9 @@ export class DataCleaningComponent {
     ){
 
   }
+  
   ngOnInit() {
+    this.checkStatusString=this.cookieService.get('jobsid');
     let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
     if (cookieValue != '' && cookieValue != 'DEFAULT') {
       this.accessibilityServiceService.basicsetting();

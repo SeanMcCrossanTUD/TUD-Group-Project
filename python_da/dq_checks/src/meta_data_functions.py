@@ -12,7 +12,7 @@ def dataframe_metadata_to_json(df):
     str: JSON string with metadata.
     """
     # Does not exceed the number of rows in the data
-    sample_size = min(20, len(df))
+    sample_size = min(200, len(df))
 
     metadata = {
         "columnNames": list(df.columns),
