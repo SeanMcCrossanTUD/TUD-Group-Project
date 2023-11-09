@@ -233,3 +233,32 @@ class DataPrep:
 
         return self.dataframe
     
+    #Function 7
+    def trim_whitespace(self, column_name):
+        """
+        Trims leading and trailing whitespace from a text column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column to trim whitespace from.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the trimming of whitespace
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].str.strip()
+        except Exception as e:
+            raise Exception(f'An error occurred while trimming whitespace: {e}')
+
+        return self.dataframe
+    
