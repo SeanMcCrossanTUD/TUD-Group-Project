@@ -1,35 +1,49 @@
+
+
 <div id="home-container">
-  <nav [class]="navclass">
-    <div class="logo" (click)="navigate('')" title="Home">
-       <img src="assets/images/logo.png" width="50px">
-        &nbsp;
-        DataPolish
-     
-    </div>
-    <div (click)="navigate('/UploadDataset')">
-      Upload Dataset
-    </div>
-    <div (click)="navigate('/DataProfile')">
-      Data Profile
-    </div>
-    <div (click)="navigate('/DataCleaning')">
-      Data Cleaning
-    </div>
-    <!-- <div (click)="navigate('/UploadDataset')">
-      Job Status
-    </div> -->
-    <div (click)="navigate('/Export')">
-      Export
-    </div>
-  
+ <div class="content-container">
 
-
-  </nav>
-  <div class="content-container">
-     <router-outlet></router-outlet> 
+  <div class="nav-bar">
+    <div (click)="navigate('1')"
+    class="highlight" id="div-1">1 - Import</div>
+    <div  id="div-2">2 - Preview</div>
+    <div class="highlight" id="div-3">3 - Profile</div>
+    <div class="highlight" id="div-4">4 - Cleaning</div>
+    <div class="highlight" id="div-5">5 - Export</div>
   </div>
-  
+  <div class="contents">
+<router-outlet/>
+  </div>
+  <div class="bottom-bar">
+    <div (click)="moveback()" [style]="backStyle">
+      Back
+    </div>
+    <div (click)="movenext()" [style]="nextStyle">
+      Next
+    </div>
+  </div>
+
+ </div>
+
 </div>
+
+
+
+<!-- 
+<div class="content-container">
+  <router-outlet></router-outlet> 
+</div>
+
+
+
+ -->
+
+
+
+
+ <p-toast></p-toast>
+
+
 <div id="mobile" hidden>Please use computer to access the webpage</div>
 <div id="folating-button-container">
   <div (click)="showsidebar()">   <span class="material-icons">accessibility</span> </div>
@@ -46,10 +60,7 @@
     <hr/>
     <!-- <h3>Font</h3>
     <div class="Accessibility-buttons" (click)="changeOpenDyslexicFont()">OpenDyslexic </div> -->
-    <h3>
-      <div class="Accessibility-buttons" (click)="adhd()">ADHD Friendly </div> 
-    </h3>
-    <hr/>
+    
     <!-- <div>
       <label class="switch">
         <input type="checkbox">
@@ -62,13 +73,22 @@
   </div>
 
 </p-sidebar>
-
-<div class="card flex justify-content-center">
- 
-  <p-dialog header="ADHD" [modal]="true" [(visible)]="adhdmodal" [style]="{width: '80vw'}" [maximizable]="true">
-    <p-terminal welcomeMessage="DataPolish command line" prompt="asking Datapolish to do ... "></p-terminal>
-  </p-dialog>
+<div class="menu-buttons">
+  <div class="menu-wrap">
+    <input type="checkbox" class="toggler">
+    <div class="hamburger"><div></div></div>
+    <div class="menu">
+      <div>
+        <div>
+          <ul>
+            <li><a href="#">Tasks</a></li>
+            <li><a href="#">New Task </a></li>
+            <li><a href="#">Log Out</a></li>
+            <!-- <li><a href="#">Contact</a></li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </div>
-
-
-<input hidden type="file" id="uploadadhd" (change)="adhdfile($event)"/>

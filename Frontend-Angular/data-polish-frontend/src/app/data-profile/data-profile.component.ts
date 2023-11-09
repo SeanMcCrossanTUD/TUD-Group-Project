@@ -3,10 +3,13 @@ import { MenuItem } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
 import { AccessibilityServiceService } from '../Services/accessibility/accessibility-service.service';
 import { FileExportService } from '../Services/fileExport/file-export.service';
+import { fadeInAnimation } from '../Animations/animation';
 @Component({
   selector: 'app-data-profile',
   templateUrl: './data-profile.component.html',
-  styleUrls: ['./data-profile.component.css']
+  styleUrls: ['./data-profile.component.css'],
+  animations: [fadeInAnimation],
+  host: { '[@fadeInAnimation]': '' }
 })
 export class DataProfileComponent {
   visible: boolean = false;
@@ -24,7 +27,7 @@ export class DataProfileComponent {
   header=""
   showDialog(e:any,c:any) {
     if(this.foldername==''){
-      alert('Check status First');
+      alert("your data is not Profiled yet");
     }else{
       let baseurl='https://fab5storage.blob.core.windows.net/imagesoutput/'+this.foldername+'/';
       this.imgURL=baseurl+e;
@@ -40,8 +43,25 @@ constructor(
   private fileExportService:FileExportService
   ){}
 
-
+jobid=''
 ngOnInit() {
+
+  this.jobid=this.cookieService.get('jobsid');
+  this.fileExportService.checkStatus(this.jobid).subscribe(
+    (Response:any)=>{
+      console.log(Response);
+      if(Response.dataprofileoutput=='null'){
+        alert("your data is not Profiled yet");
+      }else{
+        this.foldername=this.checkStatusString;
+        alert("Profile Complete");
+      }
+    },
+    (error)=>{
+
+    }
+  )
+  
   let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
   if (cookieValue != '' && cookieValue != 'DEFAULT') {
     this.accessibilityServiceService.basicsetting();
@@ -62,19 +82,6 @@ checkStatusString=''
 foldername='';
 checkstatusbutton(){
 
-  this.fileExportService.checkStatus(this.checkStatusString).subscribe(
-    (Response:any)=>{
-      console.log(Response);
-      if(Response.dataprofileoutput=='null'){
-        alert("your data is not Profiled yet");
-      }else{
-        this.foldername=this.checkStatusString;
-        alert("Profile Complete");
-      }
-    },
-    (error)=>{
-
-    }
-  )
+  
 }
 }
