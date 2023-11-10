@@ -53,14 +53,15 @@ export class AppComponent {
    const div3 = document.querySelector('#div-3');
    const div4 = document.querySelector('#div-4');
    const div5 = document.querySelector('#div-5');
-this.line1 = new LeaderLine(div1, div2,{color:'white',hide:true})
-this.line2 = new LeaderLine(div2, div3,{color:'white',hide:true})
-this.line3 = new LeaderLine(div3, div4,{color:'white',hide:true})
-this.line4 = new LeaderLine(div4, div5,{color:'white',hide:true})
-this.line1active = new LeaderLine(div1, div2,{color:'white',dash: {animation: true}})
-this.line2active = new LeaderLine(div2, div3,{color:'white',dash: {animation: true},hide:true})
-this.line3active = new LeaderLine(div3, div4,{color:'white',dash: {animation: true},hide:true})
-this.line4active = new LeaderLine(div4, div5,{color:'white',dash: {animation: true},hide:true})
+   const linecolor='white'
+this.line1 = new LeaderLine(div1, div2,{color:linecolor,hide:true})
+this.line2 = new LeaderLine(div2, div3,{color:linecolor,hide:true})
+this.line3 = new LeaderLine(div3, div4,{color:linecolor,hide:true})
+this.line4 = new LeaderLine(div4, div5,{color:linecolor,hide:true})
+this.line1active = new LeaderLine(div1, div2,{color:linecolor,dash: {animation: true}})
+this.line2active = new LeaderLine(div2, div3,{color:linecolor,dash: {animation: true},hide:true})
+this.line3active = new LeaderLine(div3, div4,{color:linecolor,dash: {animation: true},hide:true})
+this.line4active = new LeaderLine(div4, div5,{color:linecolor,dash: {animation: true},hide:true})
 
 
 

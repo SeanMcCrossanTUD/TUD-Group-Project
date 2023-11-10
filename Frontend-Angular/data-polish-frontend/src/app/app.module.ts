@@ -36,8 +36,6 @@ import { AgGridModule } from 'ag-grid-angular';
 import 'ag-grid-enterprise';
 import { RulesComponent } from './data-cleaning/rules/rules.component';
 
-import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
-
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -62,8 +60,6 @@ const routes: Routes = [
     SetpsHomeComponent,
     DataPreviewComponent,
     RulesComponent
-
-    MissingValuesChartComponent
   ],
   imports: [
     BrowserModule,
