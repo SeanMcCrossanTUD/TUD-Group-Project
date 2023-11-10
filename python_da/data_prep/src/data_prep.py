@@ -28,7 +28,9 @@ class DataPrep:
     #         # Catch any other exceptions that may occur
     #         raise Exception(f'An unexpected error occurred: {e}')
 
-
+    def remove_duplicates(self):
+        self.dataframe = self.dataframe.drop_duplicates()
+        return self.dataframe
 
     # Function 1.
     def fill_missing_values(self, column_name, method='mode', specific_value=None):
@@ -294,6 +296,40 @@ class DataPrep:
             self.dataframe[column_name] = self.dataframe[column_name].cat.codes
         except Exception as e:
             raise Exception(f'An error occurred while performing label encoding: {e}')
+
+        return self.dataframe
+    
+     #Function 9
+    def bin_numeric_to_categorical(self, column_name, bins, labels=None):
+        """
+        Converts a numeric column into categorical by binning values into specified ranges.
+
+        Args:
+        column_name (str): The name of the numeric column to convert.
+        bins (list): The edges defining the bins. Should be a list of numbers.
+        labels (list, optional): A list of labels for the bins. Length should be one less than the bins.
+
+        Raises:
+        ValueError: If the bins or labels are not correctly specified.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure the column is numeric
+        if not pd.api.types.is_numeric_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a numeric column.')
+
+        # Perform the binning
+        try:
+            self.dataframe[column_name] = pd.cut(self.dataframe[column_name], bins, labels=labels)
+        except Exception as e:
+            raise Exception(f'An error occurred while binning the column: {e}')
 
         return self.dataframe
     

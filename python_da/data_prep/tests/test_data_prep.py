@@ -281,3 +281,56 @@ def test_label_encode_already_encoded(test_dataframe5):
     dp.label_encode('Categorical')
     with pytest.raises(Exception):
         dp.label_encode('Categorical')  # Attempting to encode again
+
+
+ # Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe6():
+    return pd.DataFrame({
+        'Numeric': [1, 2, 3, 4, 5],
+        'Text': ['a', 'b', 'c', 'd', 'e']
+    })
+
+
+#Test if binning is a success
+def test_bin_numeric_to_categorical_success(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    bins = [0, 2, 5]  # Define bins
+    labels = ['Low', 'High']  # Define labels for bins
+    dp.bin_numeric_to_categorical('Numeric', bins, labels)
+
+    # Check if the column is now categorical
+    assert pd.api.types.is_categorical_dtype(dp.dataframe['Numeric'].dtype)
+
+
+# Test binning on non-existent column
+def test_bin_numeric_to_categorical_non_existent_column(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    with pytest.raises(ValueError):
+        dp.bin_numeric_to_categorical('NonExistent', [0, 1], ['A'])
+
+# Test binning on non-numeric column
+def test_bin_numeric_to_categorical_non_numeric_column(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    with pytest.raises(ValueError):
+        dp.bin_numeric_to_categorical('Text', [0, 1], ['A'])
+
+# Test binning when no dataframe is loaded
+def test_bin_numeric_to_categorical_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.bin_numeric_to_categorical('Numeric', [0, 1], ['A'])
+
+# Test incorrect bins specification
+def test_bin_numeric_to_categorical_incorrect_bins(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    with pytest.raises(Exception):
+        dp.bin_numeric_to_categorical('Numeric', 'incorrect', ['A'])
+
+# Test incorrect labels specification
+def test_bin_numeric_to_categorical_incorrect_labels(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    with pytest.raises(Exception):
+        dp.bin_numeric_to_categorical('Numeric', [0, 1, 2], 'incorrect')
+
+
