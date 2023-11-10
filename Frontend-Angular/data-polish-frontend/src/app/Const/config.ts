@@ -4,10 +4,10 @@ export class AppSettings {
    
     public static getBaseURL(){
         try{
-            // var x=window.location.href;
-            // var y=x.split('dev');
+            // let x=window.location.href;
+            // let y=x.split('v2');
             // return y[0];
-            return 'http://localhost:8082/';
+            return 'http://16.170.150.247:8090/';
         }catch{
             return 'http://localhost:8082/';
         }
