@@ -228,3 +228,56 @@ def test_trim_whitespace_no_dataframe():
     dp = DataPrep(None)  # No dataframe loaded
     with pytest.raises(ValueError):
         dp.trim_whitespace('Text')
+
+# Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe5():
+    return pd.DataFrame({
+        'Categorical': pd.Categorical(['apple', 'banana', 'apple']),
+        'Object': ['cat', 'dog', 'cat'],
+        'Numeric': [1, 2, 3],
+        'WithMissing': pd.Categorical(['apple', pd.NA, 'banana'])
+    })
+
+# Test successful label encoding on categorical column
+def test_label_encode_categorical(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    dp.label_encode('Categorical')
+    assert dp.dataframe['Categorical'].dtype == 'int8'
+
+# Test successful label encoding on object column
+def test_label_encode_object(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    dp.label_encode('Object')
+    assert dp.dataframe['Object'].dtype == 'int8'
+
+# Test label encoding on non-existent column
+def test_label_encode_non_existent_column(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    with pytest.raises(ValueError):
+        dp.label_encode('NonExistent')
+
+# Test label encoding on non-categorical column
+def test_label_encode_non_categorical_column(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    with pytest.raises(ValueError):
+        dp.label_encode('Numeric')
+
+# Test label encoding when no dataframe is loaded
+def test_label_encode_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.label_encode('Categorical')
+
+# Test label encoding with missing values
+def test_label_encode_with_missing_values(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    dp.label_encode('WithMissing')
+    assert dp.dataframe['WithMissing'].dtype == 'int8'
+
+# Test label encoding on already encoded column
+def test_label_encode_already_encoded(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    dp.label_encode('Categorical')
+    with pytest.raises(Exception):
+        dp.label_encode('Categorical')  # Attempting to encode again

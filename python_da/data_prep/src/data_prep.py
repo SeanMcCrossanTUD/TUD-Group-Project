@@ -262,3 +262,38 @@ class DataPrep:
 
         return self.dataframe
     
+     #Function 8
+    def label_encode(self, column_name):
+        """
+        Performs label encoding on a specified categorical column in the DataFrame,
+        replacing each unique category with a numerical value.
+
+        Args:
+        column_name (str): The name of the column to be label encoded.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is categorical
+        if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]) and not pd.api.types.is_object_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a categorical column.')
+
+        # Perform label encoding
+        try:
+            # Convert the column to category if it's not already
+            if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]):
+                self.dataframe[column_name] = self.dataframe[column_name].astype('category')
+
+            # Assign numerical labels
+            self.dataframe[column_name] = self.dataframe[column_name].cat.codes
+        except Exception as e:
+            raise Exception(f'An error occurred while performing label encoding: {e}')
+
+        return self.dataframe
+    
