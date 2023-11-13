@@ -1,41 +1,6 @@
-<div class="router-content-center">
+<!-- <app-missing-values-chart/>
+<app-duplicate-chart></app-duplicate-chart> -->
 
-    <div class="glass-card">
-
-<br/>
-        
-        <div id="data-profile-home-container-table">
-            <div (click)="showDialog('missing_values_plot.png','Missing values')">
-                Missing values
-            </div>
-
-            <div (click)="showDialog('outlier_scatter.png','Outlier - Scatter')">
-                Outlier - Scatter
-            </div>
-
-
-    <!-- First Section: Data Profile -->
-    <div class="smc-section">
-        <h2>Data Profile</h2>
-        <!-- Content for Data Profile can be added here -->
-    </div>
-
-    <!-- Second Section: Data Quality Analysis -->
-    <div class="smc-section">
-        <h2>Data Quality Analysis</h2>
-        <app-missing-values-chart/>
-    </div>
-
-    <!-- Third Section: Statistical Profiling -->
-    <div class="smc-section">
-        <h2>Statistical Profiling</h2>
-        <!-- Content for Statistical Profiling can be added here -->
-    </div>
-
-</div>
-
-<p-dialog [header]="header" [(visible)]="visible" [style]="{width: '90vw'}">
-    <p>
-        <img #img [src]="imgURL">    
-    </p>
-</p-dialog>
+<app-number-fields-chart/>
+<app-records-chart/>
+<app-cardinality/>
