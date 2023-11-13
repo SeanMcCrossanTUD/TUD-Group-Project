@@ -37,7 +37,6 @@ import { SplitterModule } from 'primeng/splitter';
 import { AgGridModule } from 'ag-grid-angular';
 import 'ag-grid-enterprise';
 import { RulesComponent } from './data-cleaning/rules/rules.component';
-
 import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
 import { CardinalityComponent } from './D3/cardinality/cardinality.component';
 import { DuplicateChartComponent } from './D3/duplicate-chart/duplicate-chart.component';
@@ -62,6 +61,13 @@ const routes: Routes = [
     DataProfileComponent,
     HomePageComponent,
     ExportComponent,
+    DataCleaningComponent,   
+    DataTypesChartComponent
+    NewHomeComponent,
+    SetpsHomeComponent,
+    DataPreviewComponent,
+    RulesComponent
+    MissingValuesChartComponent
     DataCleaningComponent,
     MissingValuesChartComponent,
     DataTypesChartComponent,
@@ -73,9 +79,8 @@ const routes: Routes = [
     NewHomeComponent,
     SetpsHomeComponent,
     DataPreviewComponent,
-    RulesComponent,
+    RulesComponent
 
-    MissingValuesChartComponent,
   ],
   imports: [
     BrowserModule,

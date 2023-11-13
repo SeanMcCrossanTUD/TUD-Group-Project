@@ -1,6 +1,7 @@
 * {
   font-family:"Verdana";
   font-size: 12;
+  
 
 }
 
@@ -11,6 +12,7 @@ body {
   /* background: rgb(26,22,64);
 background: linear-gradient(84deg, rgba(26,22,64,1) 0%, rgba(65,72,212,1) 48%, rgba(11,10,46,1) 100%); */
 background: black;
+
 /* background: radial-gradient(circle, rgb(66, 56, 151) 0%, rgb(86, 94, 247) 20%, rgb(159, 156, 224) 100%);  */
 
 }
@@ -45,7 +47,7 @@ background: black;
   align-items: center;
   min-height: 90vh;
 
-
+}
 
 .glass-card {
   /* From https://css.glass */
@@ -97,7 +99,8 @@ background: black;
   #home-container {
     visibility: hidden;
   }
-  #mobile{
+
+  #mobile {
     visibility: visible;
   }
 }
