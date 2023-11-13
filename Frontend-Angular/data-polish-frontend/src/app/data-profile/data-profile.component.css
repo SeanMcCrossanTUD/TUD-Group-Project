@@ -1,16 +1,22 @@
-#data-profile-home-container-table {
+.dashboard{
+    min-width: 80vw;
+   
+    min-height: 75vh;
+}
+.row1{
     display: flex;
-    flex-direction: column;
-    gap: 1em;
+    justify-content: baseline;
+    align-items:center;
+    gap: 2vw;
+
+}
+.row1 div{
+    background-color: white;
+    border-radius: 5px;
+    border: black 2px solid;
+    height: 10vh;
+    display: flex;
     justify-content: center;
     align-items: center;
-
+    padding: 1vw;
 }
-#data-profile-home-container-table div{
-    padding: 1em 1em 1em 1em;
-}
-#data-profile-home-container-table div:hover{
-    border:  red solid;
-    cursor: pointer;
-}
-

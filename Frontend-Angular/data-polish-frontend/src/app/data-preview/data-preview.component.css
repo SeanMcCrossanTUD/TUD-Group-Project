@@ -57,3 +57,24 @@ tbody tr td{
     cursor: pointer;
 }
 
+.refresh{
+    display: flex;
+    min-height: 100%;
+  
+    justify-content: end;
+    align-items: center;
+    padding: 5px;
+}
+.refresh span{
+    color: white;
+    transition: transform 0.5s ease-in-out;
+}
+.refresh span:hover{
+    cursor: pointer;
+    transform: rotateZ(90deg);
+    
+   
+}
+.refresh span:hover::after{
+    color: red;
+}

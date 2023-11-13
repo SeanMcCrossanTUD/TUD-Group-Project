@@ -392,3 +392,10 @@ input:checked+.slider:before {
   transition: color 0.4s ease;
 }
 
+.logo{
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
