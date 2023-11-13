@@ -26,15 +26,15 @@ export class DataProfileComponent {
   imgURL=""
   header=""
   showDialog(e:any,c:any) {
-    if(this.foldername==''){
-      alert("your data is not Profiled yet");
-    }else{
-      let baseurl='https://fab5storage.blob.core.windows.net/imagesoutput/'+this.foldername+'/';
-      this.imgURL=baseurl+e;
-      this.header=c;
-      this.visible = true;
-    }
-    
+    // if(this.foldername==''){
+    //   alert("your data is not Profiled yet");
+    // }else{
+    //   let baseurl='https://fab5storage.blob.core.windows.net/imagesoutput/'+this.foldername+'/';
+    //   this.imgURL=baseurl+e;
+    //   this.header=c;
+     
+    // }
+    this.visible = true;
 }
 
 constructor(
