@@ -39,6 +39,10 @@ import 'ag-grid-enterprise';
 import { RulesComponent } from './data-cleaning/rules/rules.component';
 
 import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
+import { CardinalityComponent } from './D3/cardinality/cardinality.component';
+import { DuplicateChartComponent } from './D3/duplicate-chart/duplicate-chart.component';
+import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fields-chart.component';
+import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
 
 
 const routes: Routes = [
@@ -59,18 +63,19 @@ const routes: Routes = [
     HomePageComponent,
     ExportComponent,
     DataCleaningComponent,
-<<<<<<< HEAD
     MissingValuesChartComponent,
-    DataTypesChartComponent
-=======
+    DataTypesChartComponent,
+    CardinalityComponent,
+    DuplicateChartComponent,
+    NumberFieldsChartComponent,
+    RecordsChartComponent,
 
     NewHomeComponent,
     SetpsHomeComponent,
     DataPreviewComponent,
-    RulesComponent
+    RulesComponent,
 
-    MissingValuesChartComponent
->>>>>>> develop
+    MissingValuesChartComponent,
   ],
   imports: [
     BrowserModule,
