@@ -19,8 +19,8 @@ export class RulesComponent {
     ){
 
   }
-  DatapreviewColumnNames=[{field:"naveen"}]
-  DatapreviewData=[{"naveen":123}];
+  DatapreviewColumnNames=[{field:"naveen"},{field:"naveen"}]
+  DatapreviewData=[{"naveen":123},{'naveen':'abc'}];
 
   ngOnInit(){
     // this.DataPreviewDataService.getData().subscribe(
