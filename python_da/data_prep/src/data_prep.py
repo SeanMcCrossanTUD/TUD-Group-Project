@@ -28,7 +28,9 @@ class DataPrep:
     #         # Catch any other exceptions that may occur
     #         raise Exception(f'An unexpected error occurred: {e}')
 
-
+    def remove_duplicates(self):
+        self.dataframe = self.dataframe.drop_duplicates()
+        return self.dataframe
 
     # Function 1.
     def fill_missing_values(self, column_name, method='mode', specific_value=None):
@@ -230,6 +232,104 @@ class DataPrep:
             self.dataframe[column_name] = self.dataframe[column_name].astype(new_type)
         except Exception as e:
             raise Exception(f'An error occurred while changing the data type of the column: {e}')
+
+        return self.dataframe
+    
+    #Function 7
+    def trim_whitespace(self, column_name):
+        """
+        Trims leading and trailing whitespace from a text column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column to trim whitespace from.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the trimming of whitespace
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].str.strip()
+        except Exception as e:
+            raise Exception(f'An error occurred while trimming whitespace: {e}')
+
+        return self.dataframe
+    
+     #Function 8
+    def label_encode(self, column_name):
+        """
+        Performs label encoding on a specified categorical column in the DataFrame,
+        replacing each unique category with a numerical value.
+
+        Args:
+        column_name (str): The name of the column to be label encoded.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is categorical
+        if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]) and not pd.api.types.is_object_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a categorical column.')
+
+        # Perform label encoding
+        try:
+            # Convert the column to category if it's not already
+            if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]):
+                self.dataframe[column_name] = self.dataframe[column_name].astype('category')
+
+            # Assign numerical labels
+            self.dataframe[column_name] = self.dataframe[column_name].cat.codes
+        except Exception as e:
+            raise Exception(f'An error occurred while performing label encoding: {e}')
+
+        return self.dataframe
+    
+     #Function 9
+    def bin_numeric_to_categorical(self, column_name, bins, labels=None):
+        """
+        Converts a numeric column into categorical by binning values into specified ranges.
+
+        Args:
+        column_name (str): The name of the numeric column to convert.
+        bins (list): The edges defining the bins. Should be a list of numbers.
+        labels (list, optional): A list of labels for the bins. Length should be one less than the bins.
+
+        Raises:
+        ValueError: If the bins or labels are not correctly specified.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure the column is numeric
+        if not pd.api.types.is_numeric_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a numeric column.')
+
+        # Perform the binning
+        try:
+            self.dataframe[column_name] = pd.cut(self.dataframe[column_name], bins, labels=labels)
+        except Exception as e:
+            raise Exception(f'An error occurred while binning the column: {e}')
 
         return self.dataframe
     

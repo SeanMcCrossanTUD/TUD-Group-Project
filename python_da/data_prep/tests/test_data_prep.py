@@ -195,3 +195,142 @@ def test_change_column_type_to_datetime():
     dp = DataPrep(df)
     dp.change_column_type('Date', 'datetime64[ns]')
     assert dp.dataframe['Date'].dtype == 'datetime64[ns]'
+
+# Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe4():
+    return pd.DataFrame({
+        'Text': ['  hello  ', 'world', '  pandas  '],
+        'Mixed': ['  text ', 123, pd.NA],
+        'Numeric': [1, 2, 3]
+    })
+
+# Test successful trimming of whitespace
+def test_trim_whitespace_success(test_dataframe4):
+    dp = DataPrep(test_dataframe4)
+    dp.trim_whitespace('Text')
+    assert dp.dataframe['Text'].equals(pd.Series(['hello', 'world', 'pandas']))
+
+# Test trimming whitespace from a non-existent column
+def test_trim_whitespace_non_existent_column(test_dataframe4):
+    dp = DataPrep(test_dataframe4)
+    with pytest.raises(ValueError):
+        dp.trim_whitespace('NonExistentColumn')
+
+# Test trimming whitespace from a non-text column
+def test_trim_whitespace_non_text_column(test_dataframe4):
+    dp = DataPrep(test_dataframe4)
+    with pytest.raises(ValueError):
+        dp.trim_whitespace('Numeric')
+
+# Test trimming whitespace when no dataframe is loaded
+def test_trim_whitespace_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.trim_whitespace('Text')
+
+# Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe5():
+    return pd.DataFrame({
+        'Categorical': pd.Categorical(['apple', 'banana', 'apple']),
+        'Object': ['cat', 'dog', 'cat'],
+        'Numeric': [1, 2, 3],
+        'WithMissing': pd.Categorical(['apple', pd.NA, 'banana'])
+    })
+
+# Test successful label encoding on categorical column
+def test_label_encode_categorical(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    dp.label_encode('Categorical')
+    assert dp.dataframe['Categorical'].dtype == 'int8'
+
+# Test successful label encoding on object column
+def test_label_encode_object(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    dp.label_encode('Object')
+    assert dp.dataframe['Object'].dtype == 'int8'
+
+# Test label encoding on non-existent column
+def test_label_encode_non_existent_column(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    with pytest.raises(ValueError):
+        dp.label_encode('NonExistent')
+
+# Test label encoding on non-categorical column
+def test_label_encode_non_categorical_column(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    with pytest.raises(ValueError):
+        dp.label_encode('Numeric')
+
+# Test label encoding when no dataframe is loaded
+def test_label_encode_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.label_encode('Categorical')
+
+# Test label encoding with missing values
+def test_label_encode_with_missing_values(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    dp.label_encode('WithMissing')
+    assert dp.dataframe['WithMissing'].dtype == 'int8'
+
+# Test label encoding on already encoded column
+def test_label_encode_already_encoded(test_dataframe5):
+    dp = DataPrep(test_dataframe5)
+    dp.label_encode('Categorical')
+    with pytest.raises(Exception):
+        dp.label_encode('Categorical')  # Attempting to encode again
+
+
+ # Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe6():
+    return pd.DataFrame({
+        'Numeric': [1, 2, 3, 4, 5],
+        'Text': ['a', 'b', 'c', 'd', 'e']
+    })
+
+
+#Test if binning is a success
+def test_bin_numeric_to_categorical_success(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    bins = [0, 2, 5]  # Define bins
+    labels = ['Low', 'High']  # Define labels for bins
+    dp.bin_numeric_to_categorical('Numeric', bins, labels)
+
+    # Check if the column is now categorical
+    assert pd.api.types.is_categorical_dtype(dp.dataframe['Numeric'].dtype)
+
+
+# Test binning on non-existent column
+def test_bin_numeric_to_categorical_non_existent_column(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    with pytest.raises(ValueError):
+        dp.bin_numeric_to_categorical('NonExistent', [0, 1], ['A'])
+
+# Test binning on non-numeric column
+def test_bin_numeric_to_categorical_non_numeric_column(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    with pytest.raises(ValueError):
+        dp.bin_numeric_to_categorical('Text', [0, 1], ['A'])
+
+# Test binning when no dataframe is loaded
+def test_bin_numeric_to_categorical_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.bin_numeric_to_categorical('Numeric', [0, 1], ['A'])
+
+# Test incorrect bins specification
+def test_bin_numeric_to_categorical_incorrect_bins(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    with pytest.raises(Exception):
+        dp.bin_numeric_to_categorical('Numeric', 'incorrect', ['A'])
+
+# Test incorrect labels specification
+def test_bin_numeric_to_categorical_incorrect_labels(test_dataframe6):
+    dp = DataPrep(test_dataframe6)
+    with pytest.raises(Exception):
+        dp.bin_numeric_to_categorical('Numeric', [0, 1, 2], 'incorrect')
+
+
