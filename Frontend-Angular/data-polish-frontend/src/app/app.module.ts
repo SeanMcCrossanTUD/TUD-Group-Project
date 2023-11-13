@@ -63,22 +63,19 @@ const routes: Routes = [
     HomePageComponent,
     ExportComponent,
     DataCleaningComponent,
-<<<<<<< HEAD
     MissingValuesChartComponent,
     DataTypesChartComponent,
     CardinalityComponent,
     DuplicateChartComponent,
     NumberFieldsChartComponent,
-    RecordsChartComponent
-=======
+    RecordsChartComponent,
 
     NewHomeComponent,
     SetpsHomeComponent,
     DataPreviewComponent,
-    RulesComponent
+    RulesComponent,
 
-    MissingValuesChartComponent
->>>>>>> develop
+    MissingValuesChartComponent,
   ],
   imports: [
     BrowserModule,
