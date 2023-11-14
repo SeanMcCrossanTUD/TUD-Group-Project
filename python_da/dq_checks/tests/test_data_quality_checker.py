@@ -122,9 +122,16 @@ def outlier_checker():
     dataset = pd.DataFrame(outlier_data)
     return DataQualityChecker(dataset)
 
-# Test function to check z_score_outliers method
 def test_z_score_outliers(outlier_checker):
-    assert outlier_checker.z_score_outliers(threshold=2) == expected_z_outliers_result
+    actual_outliers = outlier_checker.z_score_outliers(threshold=2)
+    
+    # Filtering actual_outliers to include only those marked as outliers
+    filtered_actual_outliers = {}
+    for col, outliers in actual_outliers.items():
+        filtered_actual_outliers[col] = [outlier for outlier in outliers if outlier['is_outlier']]
+
+    assert filtered_actual_outliers == expected_z_outliers_result
+
 
 # Test function to check iqr_outliers method
 def test_iqr_outliers(outlier_checker):

@@ -83,8 +83,8 @@ class DataQualityChecker:
                 }
                 for idx in outlier_indices[0]
             ]
-            if outlier_info:  # Adding to the result only if there are outliers for the column
-                outliers[col] = outlier_info
+            #if outlier_info:  # Adding to the result only if there are outliers for the column
+            outliers[col] = outlier_info #Add all values, needed for visuals
                 
         return outliers
 

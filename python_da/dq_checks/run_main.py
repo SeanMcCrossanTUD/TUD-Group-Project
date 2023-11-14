@@ -105,12 +105,12 @@ def perform_data_quality_checks(data):
         logger.error(f"KeyError accessing z_score_outliers: {e}")
         raise
     
-    try:
-        iqr_outliers = checker.iqr_outliers()
-        logger.info(f'Successfully retrieved iqr_outliers')
-    except KeyError as e:
-        logger.error(f"KeyError accessing iqr_outliers: {e}")
-        raise
+    # try:
+    #     iqr_outliers = checker.iqr_outliers()
+    #     logger.info(f'Successfully retrieved iqr_outliers')
+    # except KeyError as e:
+    #     logger.error(f"KeyError accessing iqr_outliers: {e}")
+    #     raise
     
     # Combine the results into a dictionary
     result = {
@@ -120,8 +120,8 @@ def perform_data_quality_checks(data):
         'missing_values': missing_values,
         'data_type_profile': data_type_profile_count,
         'unique_values_in_text_fields': unique_values,
-        'z_score_outliers': z_score_outliers,
-        'iqr_outliers': iqr_outliers
+        'z_score_outliers': z_score_outliers
+        # 'iqr_outliers': iqr_outliers
     }
 
     return result

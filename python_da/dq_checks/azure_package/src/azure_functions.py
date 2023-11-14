@@ -67,14 +67,15 @@ def upload_results_to_azure(data, connection_string, job_id, result_container_na
     - result_container_name (str, optional): Name of the Azure blob container for results. Defaults to 'dataprofileoutput'.
     """
 
-    # result_json = json.dumps(data, indent=4)
-    result_json = {"Result":"Result"}
+    result_bytes = data.encode('utf-8')
+
     timestamp = str(int(time.time()))
     result_blob_name = f'data_quality_result_{timestamp}.json'
     try:
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
         blob_client = blob_service_client.get_blob_client(result_container_name, result_blob_name)
-        # blob_client.upload_blob(result_json, overwrite=True)
+        
+        blob_client.upload_blob(io.BytesIO(result_bytes), blob_type="BlockBlob", overwrite=True)
 
         update_rds_data_profile(result_blob_name, job_id)
         logger.info(f'Successfully uploaded {result_blob_name} to {result_container_name} in Azure Blob Storage')
