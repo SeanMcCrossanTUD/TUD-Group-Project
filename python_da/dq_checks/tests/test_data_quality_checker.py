@@ -6,16 +6,14 @@ from dq_checks.src.data_quality_checker import DataQualityChecker
 data = {
     'A': [1, 2, None, 4, 1, 5, 5],  
     'B': [None, 2, 3.2, 4, 2, None, None],  
-    'C': [1, 2, 3, 4, 1, 5, 5],
+    'C': [1, 2.1, 3, 4, 1, 5, 5],
     'D': ['Cat', 'Dog', 'Cat', 'Cow', None, 'Dog', 'Dog'],
     'E': ['Bike', None, 'Bus', 'Car', None, 'Train', 'Train']
 }
 
-# Expected result for data type profile
 expected_data_type_profile = {
-    'int64': 3,
-    'float64': 1,
-    'object': 1
+    'float64': 3,
+    'object': 2
 }
 
 # Expected result for missing values count
@@ -33,11 +31,11 @@ expected_unique_values_result = {'D': 3, 'E': 4}
 # Expected result for number of fields count
 expected_fields_count = 5
 
-# Fixture to initialize DataQualityChecker with sample data
 @pytest.fixture
 def checker():
     dataset = pd.DataFrame(data)
     return DataQualityChecker(dataset)
+
 
 # Test function to check count_missing_values method
 def test_count_missing_values(checker):

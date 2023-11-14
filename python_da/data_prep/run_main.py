@@ -85,7 +85,7 @@ def main():
             else:
                 logger.info('No new messages. Waiting for next check...')
             
-            time.sleep(6000)  # waits for 60 seconds before checking again
+            time.sleep(600)  # waits for 60 seconds before checking again
 
         except AzureError as ae:
             logger.error(f"AzureError: {str(ae)}")

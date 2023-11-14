@@ -30,8 +30,8 @@ class DataQualityChecker:
     
     def data_type_profile(self) -> dict:
         data_type_count = {}
-        for col in self.dataframe.columns:
-            dtype = str(self.dataframe[col].dtype)
+        for col in self.dataset.columns:
+            dtype = str(self.dataset[col].dtype)
             data_type_count[dtype] = data_type_count.get(dtype, 0) + 1
         return data_type_count
 
