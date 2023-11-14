@@ -334,3 +334,180 @@ def test_bin_numeric_to_categorical_incorrect_labels(test_dataframe6):
         dp.bin_numeric_to_categorical('Numeric', [0, 1, 2], 'incorrect')
 
 
+# Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe7():
+    return pd.DataFrame({
+        'A': [1, 2, 3],
+        'B': [4, 5, 6],
+        'C': [7, 8, 9]
+    })
+
+# Test successful removal of columns
+def test_remove_columns_success(test_dataframe7):
+    dp = DataPrep(test_dataframe7)
+    dp.remove_columns(['A', 'B'])
+    assert 'A' not in dp.dataframe.columns and 'B' not in dp.dataframe.columns
+
+# Test removal of non-existent column
+def test_remove_columns_non_existent(test_dataframe7):
+    dp = DataPrep(test_dataframe7)
+    with pytest.raises(ValueError):
+        dp.remove_columns(['D'])
+
+# Test removal when no dataframe is loaded
+def test_remove_columns_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.remove_columns(['A'])
+
+# Test invalid columns list (not a list)
+def test_remove_columns_invalid_input(test_dataframe7):
+    dp = DataPrep(test_dataframe7)
+    with pytest.raises(ValueError):
+        dp.remove_columns('A')  # Passing a string instead of a list
+
+# Test removing non-existent and existing columns together
+def test_remove_columns_mixed_existence(test_dataframe7):
+    dp = DataPrep(test_dataframe7)
+    with pytest.raises(ValueError):
+        dp.remove_columns(['A', 'D'])  # 'A' exists, but 'D' does not
+
+# Fixture for a test dataframe
+@pytest.fixture
+def datetime_dataframe():
+    return pd.DataFrame({
+        'Datetime': pd.to_datetime(['2021-01-01 10:00:00', '2021-06-15 15:30:25'])
+    })
+
+# Test successful extraction of components
+def test_extract_datetime_components_success(datetime_dataframe):
+    dp = DataPrep(datetime_dataframe)
+    dp.extract_datetime_components('Datetime', ['year', 'month', 'day'])
+    assert 'Datetime_year' in dp.dataframe.columns
+    assert 'Datetime_month' in dp.dataframe.columns
+    assert 'Datetime_day' in dp.dataframe.columns
+    assert dp.dataframe['Datetime_year'].iloc[0] == 2021
+    assert dp.dataframe['Datetime_month'].iloc[1] == 'June'
+    assert dp.dataframe['Datetime_day'].iloc[0] == 'Friday'
+
+# Test extraction from non-existent column
+def test_extract_datetime_components_non_existent_column(datetime_dataframe):
+    dp = DataPrep(datetime_dataframe)
+    with pytest.raises(ValueError):
+        dp.extract_datetime_components('NonExistent', ['year'])
+
+# Test extraction from non-datetime column
+def test_extract_datetime_components_non_datetime_column(datetime_dataframe):
+    datetime_dataframe['NotDatetime'] = [1, 2]
+    dp = DataPrep(datetime_dataframe)
+    with pytest.raises(ValueError):
+        dp.extract_datetime_components('NotDatetime', ['year'])
+
+# Test extraction when no dataframe is loaded
+def test_extract_datetime_components_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.extract_datetime_components('Datetime', ['year'])
+
+# Test invalid component specification
+def test_extract_datetime_components_invalid_component(datetime_dataframe):
+    dp = DataPrep(datetime_dataframe)
+    with pytest.raises(ValueError):
+        dp.extract_datetime_components('Datetime', ['century'])
+
+# Test extracting multiple components
+def test_extract_datetime_components_multiple(datetime_dataframe):
+    dp = DataPrep(datetime_dataframe)
+    dp.extract_datetime_components('Datetime', ['hour', 'minute', 'second'])
+    assert 'Datetime_hour' in dp.dataframe.columns
+    assert 'Datetime_minute' in dp.dataframe.columns
+    assert 'Datetime_second' in dp.dataframe.columns
+    assert dp.dataframe['Datetime_hour'].iloc[0] == 10
+    assert dp.dataframe['Datetime_minute'].iloc[1] == 30
+    assert dp.dataframe['Datetime_second'].iloc[0] == 0
+
+# Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe2():
+    return pd.DataFrame({
+        'Text': ['Hello world', 'Hello Python', 'Goodbye world'],
+        'Numeric': [1, 2, 3]
+    })
+
+# Test successful substring replacement
+def test_replace_substring_success(text_dataframe2):
+    dp = DataPrep(text_dataframe2)
+    dp.replace_substring('Text', 'world', 'Earth')
+    assert dp.dataframe['Text'].equals(pd.Series(['Hello Earth', 'Hello Python', 'Goodbye Earth']))
+
+# Test replacement in non-existent column
+def test_replace_substring_non_existent_column(text_dataframe2):
+    dp = DataPrep(text_dataframe2)
+    with pytest.raises(ValueError):
+        dp.replace_substring('NonExistent', 'world', 'Earth')
+
+# Test replacement in non-text column
+def test_replace_substring_non_text_column(text_dataframe2):
+    dp = DataPrep(text_dataframe2)
+    with pytest.raises(ValueError):
+        dp.replace_substring('Numeric', '1', 'One')
+
+# Test replacement when no dataframe is loaded
+def test_replace_substring_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.replace_substring('Text', 'world', 'Earth')
+
+
+# Test no occurrence of substring
+def test_replace_substring_no_occurrence(text_dataframe):
+    dp = DataPrep(text_dataframe.copy())
+    original_text = dp.dataframe['Text'].copy()
+    dp.replace_substring('Text', 'universe', 'galaxy')
+
+    # Ensure no changes were made to the dataframe as 'universe' doesn't exist in 'Text'
+    pd.testing.assert_series_equal(dp.dataframe['Text'], original_text)
+
+# Fixture for a test dataframe
+@pytest.fixture
+def numeric_dataframe():
+    np.random.seed(0)
+    return pd.DataFrame(np.random.rand(10, 4), columns=['A', 'B', 'C', 'D'])
+
+# Test successful PCA application
+def test_apply_pca_success(numeric_dataframe):
+    dp = DataPrep(numeric_dataframe)
+    dp.apply_pca(['A', 'B', 'C', 'D'])
+    assert 'principal_component_1' in dp.dataframe.columns
+
+# Test PCA with non-existent columns
+def test_apply_pca_non_existent_column(numeric_dataframe):
+    dp = DataPrep(numeric_dataframe)
+    with pytest.raises(ValueError):
+        dp.apply_pca(['X', 'Y'])
+
+# Test PCA specifying number of components
+def test_apply_pca_specified_components(numeric_dataframe):
+    dp = DataPrep(numeric_dataframe)
+    n_components = 2
+    dp.apply_pca(['A', 'B', 'C', 'D'], n_components=n_components)
+    assert len([col for col in dp.dataframe.columns if 'principal_component' in col]) == n_components
+
+# Test PCA when no dataframe is loaded
+def test_apply_pca_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.apply_pca(['A', 'B'])
+
+# Test PCA on non-numeric columns
+def test_apply_pca_non_numeric_columns():
+    df = pd.DataFrame({
+        'A': ['a', 'b', 'c', 'd'],
+        'B': ['e', 'f', 'g', 'h']
+    })
+    dp = DataPrep(df)
+    with pytest.raises(Exception):
+        dp.apply_pca(['A', 'B'])
+
+
