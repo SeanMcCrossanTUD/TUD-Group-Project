@@ -55,7 +55,7 @@ border: 1px solid rgba(0, 0, 0, 0.6); */
 .contents {
   margin-top: 4px;
   min-height: 80vh;
-  min-width: 99%;
+  min-width: 90vw;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -392,3 +392,10 @@ input:checked+.slider:before {
   transition: color 0.4s ease;
 }
 
+.logo{
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}

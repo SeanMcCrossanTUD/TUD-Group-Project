@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 
 
 export class NumberFieldsChartComponent implements OnInit {
-
+  number=0;
   ngOnInit() {
     console.log('Component ngOnInit called');
     d3.json("assets/data_quality_result.json").then((data: any) => {
@@ -17,21 +17,7 @@ export class NumberFieldsChartComponent implements OnInit {
         console.error('Data is undefined');
         return;
       }
-
-      const numberToDisplay = data.number_of_fields; // Assuming this is the value you want to display
-
-      const svg = d3.select("#chart-number")
-          .append("svg")
-          .attr("width", 300) // Adjust width as needed
-          .attr("height", 200); // Adjust height as needed
-
-      // Add text to the SVG
-      svg.append("text")
-          .attr("x", 150) // Center the text (adjust as needed)
-          .attr("y", 100) // Adjust the position as needed
-          .attr("text-anchor", "middle")
-          .style("font-size", "48px") // Adjust font size as needed
-          .text(numberToDisplay);
+      this.number=data.number_of_fields;
     });
   }
 }
