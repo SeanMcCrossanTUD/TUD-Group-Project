@@ -27,6 +27,14 @@ class DataQualityChecker:
 
     def count_number_of_fields(self) -> int:
         return len(self.dataset.columns)
+    
+    def data_type_profile(self) -> dict:
+        data_type_count = {}
+        for col in self.dataset.columns:
+            dtype = str(self.dataset[col].dtype)
+            data_type_count[dtype] = data_type_count.get(dtype, 0) + 1
+        return data_type_count
+
 
     def z_score_outliers(self, threshold: float = 3.0) -> dict:
         """
@@ -75,8 +83,8 @@ class DataQualityChecker:
                 }
                 for idx in outlier_indices[0]
             ]
-            if outlier_info:  # Adding to the result only if there are outliers for the column
-                outliers[col] = outlier_info
+            #if outlier_info:  # Adding to the result only if there are outliers for the column
+            outliers[col] = outlier_info #Add all values, needed for visuals
                 
         return outliers
 
