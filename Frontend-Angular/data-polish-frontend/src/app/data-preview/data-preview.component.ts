@@ -51,7 +51,7 @@ export class DataPreviewComponent {
         )
       },
       (Error)=>{
-        this.MessageService.add({ severity: 'error', summary: 'Success', detail: "you file is still processing..." });
+        this.MessageService.add({ severity: 'error', summary: 'Try again ', detail: "you file is still processing..." });
      
       }
     )

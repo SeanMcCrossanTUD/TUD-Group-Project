@@ -16,9 +16,9 @@ export class CardinalityComponent implements OnInit {
         return;
       }
 
-      const margin = {top: 20, right: 20, bottom: 60, left: 80};
-      const width = 960 - margin.left - margin.right;
-      const height = 500 - margin.top - margin.bottom;
+      const margin = {top: 10, right: 10, bottom: 100, left: 55};
+      const width = 400 - margin.left - margin.right;
+      const height = 400 - margin.top - margin.bottom;
 
       const svg = d3.select("#chart")
           .append("svg")
@@ -76,7 +76,7 @@ export class CardinalityComponent implements OnInit {
           .attr("transform", "translate(0," + height + ")")
           .call(d3.axisBottom(x))
           .selectAll("text")
-          .attr("transform", "rotate(-45)")
+          .attr("transform", "rotate(-55)")
           .style("text-anchor", "end");
 
       // Add the y-axis

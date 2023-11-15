@@ -2,17 +2,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px; /* Adjust height as needed */
-  }
-  
-  #chart-number svg {
-    /* Styles for the SVG container */
-    border: 1px solid #ccc; /* Example: Add a border for visibility */
-  }
-  
-  #chart-number text {
-    /* Styles for the text element within the SVG */
-    fill: steelblue; /* Text color */
-    font-family: 'Arial', sans-serif; /* Font family */
+   font-size: 2em; /* Adjust height as needed */
   }
   
