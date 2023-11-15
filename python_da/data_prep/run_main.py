@@ -59,6 +59,71 @@ def apply_transformations(dataset: pd.DataFrame) -> pd.DataFrame:
     return prep.dataframe
 
 
+def apply_col_specific_transformations(dataset: pd.DataFrame, config_path: str) -> pd.DataFrame:
+    """
+    Apply column-specific transformations to the dataset based on the JSON configuration.
+
+    Parameters:
+    dataset (pd.DataFrame): The dataset to transform.
+    config_path (str): Path to the JSON configuration file.
+
+    Returns:
+    pd.DataFrame: The transformed dataset.
+    """
+    if not isinstance(dataset, pd.DataFrame):
+        logging.error('Provided dataset is not a pandas DataFrame')
+        raise TypeError('Expected dataset to be a pandas DataFrame')
+
+    try:
+        # Load JSON configuration
+        with open(config_path, 'r') as file:
+            config = json.load(file)
+
+        prep = DataPrep(dataset)
+
+        # Fill missing values
+        for col, params in config.get('fill_missing_values', {}).items():
+            prep.fill_missing_values(col, method=params['method'], specific_value=params.get('specific_value'))
+
+        # Normalize data
+        for col, params in config.get('normalize_data', {}).items():
+            prep.normalize_data(col, method=params['method'])
+
+        # Remove special characters
+        for col in config.get('remove_special_characters', []):
+            prep.remove_special_characters(col)
+
+        # Trim whitespace
+        for col in config.get('trim_whitespace', []):
+            prep.trim_whitespace(col)
+
+        # Change column type
+        for col, params in config.get('change_column_type', {}).items():
+            prep.change_column_type(col, new_type=params['new_type'])
+
+        # Label encode
+        for col in config.get('label_encode', []):
+            prep.label_encode(col)
+
+        # Bin numeric to categorical
+        for col, params in config.get('bin_numeric_to_categorical', {}).items():
+            prep.bin_numeric_to_categorical(col, bins=params['bins'], labels=params.get('labels'))
+
+        logging.info('Column-specific transformations applied successfully')
+        return prep.dataframe
+
+    except FileNotFoundError:
+        logging.error(f'Configuration file {config_path} not found')
+        raise
+    except json.JSONDecodeError:
+        logging.error(f'Error parsing JSON from {config_path}')
+        raise
+    except Exception as e:
+        logging.error(f'Error occurred during column-specific transformation: {e}')
+        raise e
+
+
+
 def main():
     while True:
         try:
