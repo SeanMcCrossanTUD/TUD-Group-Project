@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import re
 from data_prep.src.data_prep import DataPrep 
 
 import pytest
