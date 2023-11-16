@@ -1,16 +1,17 @@
-.bar {
-    fill: steelblue;
+.bar-1 {
+    fill:red;
 }
 
-.bar:hover {
-    fill: orange;
+.bar-1:hover {
+    fill: rgb(157, 0, 255);
 }
 
 .tooltip {
     position: absolute;
-    background-color: white;
-    padding: 5px;
-    border: 1.5px solid black;
+    background-color: rgb(156, 64, 64);
+    padding: 3px;
+    border: 1px solid black;
     border-radius: 5px;
     pointer-events: none;
+    
 }

@@ -1,0 +1,8 @@
+/* records-chart.component.css */
+
+#chart-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;  /* Adjust height as needed */
+  }

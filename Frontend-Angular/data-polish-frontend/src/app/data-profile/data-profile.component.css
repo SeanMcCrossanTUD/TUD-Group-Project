@@ -1,16 +1,63 @@
-#data-profile-home-container-table {
+.dashboard{
+    min-width: 80vw;
+   
+    min-height: 75vh;
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 1vh;
+
+}
+.row1{
+    display: flex;
+    justify-content: baseline;
+    align-items:center;
+    gap: 2vw;
+
+}
+.row1 div{
+    background-color: white;
+    border-radius: 5px;
+    border: black 2px solid;
+    height: max-content;
+    display: flex;
     justify-content: center;
     align-items: center;
-
-}
-#data-profile-home-container-table div{
-    padding: 1em 1em 1em 1em;
-}
-#data-profile-home-container-table div:hover{
-    border:  red solid;
-    cursor: pointer;
+    padding: 0.5vw;
 }
 
+.row2{
+    display: flex;
+    justify-content: baseline;
+    align-items:center;
+    gap: 1vw;
+}
+
+.row2 div{
+    background-color: white;
+    
+    /* min-height: 10vh; */
+    height: max-content;
+    display: flex;
+  
+    justify-content: center;
+    align-items: center;
+   
+}
+
+/***** grid*/
+.grid-container{
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    gap: 1vh;
+
+}
+.grid-container div{
+    background-color: white;
+    padding: 0.2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: black 2px solid;
+    
+}

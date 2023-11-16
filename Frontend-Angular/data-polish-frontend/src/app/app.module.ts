@@ -22,6 +22,8 @@ import {CookieService} from 'ngx-cookie-service';
 import { TerminalModule, TerminalService } from 'primeng/terminal';
 import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
+import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
+import { DataTypesChartComponent } from './D3/data-types-chart/data-types-chart.component';
 
 import { AppSettings } from './Const/config';
 import { NewHomeComponent } from './new-home/new-home.component';
@@ -35,8 +37,10 @@ import { SplitterModule } from 'primeng/splitter';
 import { AgGridModule } from 'ag-grid-angular';
 import 'ag-grid-enterprise';
 import { RulesComponent } from './data-cleaning/rules/rules.component';
-
-import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
+import { CardinalityComponent } from './D3/cardinality/cardinality.component';
+import { DuplicateChartComponent } from './D3/duplicate-chart/duplicate-chart.component';
+import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fields-chart.component';
+import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
 
 
 const routes: Routes = [
@@ -56,14 +60,21 @@ const routes: Routes = [
     DataProfileComponent,
     HomePageComponent,
     ExportComponent,
-    DataCleaningComponent,
-
+    DataCleaningComponent,   
+    DataTypesChartComponent,
     NewHomeComponent,
+    SetpsHomeComponent,
+    DataPreviewComponent,
+    RulesComponent,
+    MissingValuesChartComponent,
+    CardinalityComponent,
+    DuplicateChartComponent,
+    NumberFieldsChartComponent,
+    RecordsChartComponent,
     SetpsHomeComponent,
     DataPreviewComponent,
     RulesComponent
 
-    MissingValuesChartComponent
   ],
   imports: [
     BrowserModule,

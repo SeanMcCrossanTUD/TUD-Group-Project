@@ -36,12 +36,12 @@ backdrop-filter: blur(5.1px);
 border: 1px solid rgba(0, 0, 0, 0.3); */
 
 /* From https://css.glass */
-background: rgba(0, 0, 0, 0.34);
+/* background: rgba(0, 0, 0, 0.34);
 border-radius: 16px;
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(6.3px);
 -webkit-backdrop-filter: blur(6.3px);
-border: 1px solid rgba(0, 0, 0, 0.6);
+border: 1px solid rgba(0, 0, 0, 0.6); */
   
   min-width: 80vw;
   min-height: 95vh;
@@ -55,7 +55,7 @@ border: 1px solid rgba(0, 0, 0, 0.6);
 .contents {
   margin-top: 4px;
   min-height: 80vh;
-  min-width: 99%;
+  min-width: 90vw;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -89,17 +89,26 @@ box-shadow: rgb(252, 240, 169) 0px 0px 10px; */
 .bottom-bar{
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  min-width: 50%;
+  justify-content: flex-end;
+  gap: 2em;
+  min-width: 100%;
 }
 .bottom-bar div{
-  padding: 5px;
+  border-radius: 5px;
+  padding: 10px;
   color: white;
   border: 1px solid white;
 }
+.bottom-bar div:nth-child(even){
+  padding: 20px;
+
+  color: black;
+  background-color: white;
+
+}
 .bottom-bar div:hover{
   cursor: pointer;
-  box-shadow: white 0px 0px 5px;
+  box-shadow: white 0px 0px 10px;
   transition: box-shadow 0.2s ease-in-out;
 }
 
@@ -116,14 +125,17 @@ box-shadow: rgb(252, 240, 169) 0px 0px 10px; */
   right: 1em;
   width: 3em;
   min-height: 3em;
-  background-color: rgb(14, 79, 210);
+  background-color: rgb(255, 255, 255);
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 3em;
-  color: wheat;
+  color: black;
 
 
+}
+#folating-button-container span{
+  color: black;
 }
 
 #folating-button-container:hover {
@@ -132,22 +144,15 @@ box-shadow: rgb(252, 240, 169) 0px 0px 10px; */
   border: 2px red solid;
 
 }
-/* .menu-buttons{
-  position: fixed;
 
-  bottom: 10em;
-  display: flex;
-  align-items: start;
-  left: 1em;
-
-
-
-} */
-
+p-sidebar h2{
+  color: black;
+}
 
 .Accessibility-buttons {
   text-align: left;
   padding: 1.5em;
+  color: black;
 
 }
 
@@ -252,6 +257,7 @@ input:checked+.slider:before {
   width: 50px;
   height: 50px;
   opacity: 0;
+ 
 }
 
 .menu-wrap .hamburger {
@@ -262,10 +268,11 @@ input:checked+.slider:before {
   width: 60px;
   height: 60px;
   padding: 1rem;
-  background: var(--primary-color);
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 5px;
 }
 
 /* Hamburger Line */
@@ -274,7 +281,8 @@ input:checked+.slider:before {
   flex: none;
   width: 100%;
   height: 2px;
-  background: #fff;
+  background: #000000;
+ 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -290,17 +298,22 @@ input:checked+.slider:before {
   top: -10px;
   width: 100%;
   height: 2px;
-  background: inherit;
+  
+  color: black;
+  background-color: black;
 }
 
 /* Moves Line Down */
 .menu-wrap .hamburger > div::after {
   top: 10px;
+  color: black;
+  background-color: black;
 }
 
 /* Toggler Animation */
 .menu-wrap .toggler:checked + .hamburger > div {
   transform: rotate(135deg);
+ 
 }
 
 /* Turns Lines Into X */
@@ -379,3 +392,10 @@ input:checked+.slider:before {
   transition: color 0.4s ease;
 }
 
+.logo{
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}

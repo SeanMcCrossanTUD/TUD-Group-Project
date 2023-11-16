@@ -28,5 +28,10 @@
         "launched": 59407,
         "state": 6,
         "country": 23
+    },
+    "data_type": {
+        "Numeric": 14,
+        "Text": 8,
+        "Boolean": 3
     }
 }

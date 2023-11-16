@@ -1,0 +1,114 @@
+{
+    "columns_kept": [
+        "example_column1",
+        "example_column2",
+        "example_text_column1",
+        "example_text_column2",
+        "example_categorical_column1",
+        "example_categorical_column2",
+        "example_numeric_column1",
+        "example_numeric_column2"
+    ],
+    "columns_required_for_cleaning": [
+        "example_column1",
+        "example_column2",
+        "example_text_column1",
+        "example_text_column2",
+        "example_categorical_column1",
+        "example_categorical_column2",
+        "example_numeric_column1",
+        "example_numeric_column2"
+    ],
+    "fill_missing_values": {
+        "example_column1": {
+            "method": "mode",
+            "specific_value": 0
+        },
+        "example_column2": {
+            "method": "median",
+            "specific_value": null
+        }
+    },
+    "normalize_data": {
+        "example_column1": {
+            "method": "min-max"
+        },
+        "example_column2": {
+            "method": "z-score"
+        }
+    },
+    "remove_special_characters": [
+        "example_text_column1",
+        "example_text_column2"
+    ],
+    "trim_whitespace": [
+        "example_text_column1",
+        "example_text_column2"
+    ],
+    "change_column_type": {
+        "example_column1": {
+            "new_type": "float"
+        },
+        "example_column2": {
+            "new_type": "int"
+        }
+    },
+    "label_encode": [
+        "example_categorical_column1",
+        "example_categorical_column2"
+    ],
+    "bin_numeric_to_categorical": {
+        "example_numeric_column1": {
+            "bins": [
+                0,
+                10,
+                20,
+                30
+            ],
+            "labels": [
+                "Low",
+                "Medium",
+                "High"
+            ]
+        },
+        "example_numeric_column2": {
+            "bins": [
+                0,
+                50,
+                100
+            ],
+            "labels": [
+                "Low",
+                "High"
+            ]
+        }
+    }
+},
+
+"extract_datetime_components": {
+    "example_datetime_column": [
+        "year",
+        "month",
+        "day",
+        "hour",
+        "minute",
+        "second"
+    ]
+},
+"replace_substring": {
+    "example_text_column": {
+        "old_substring": "example_old_substring",
+        "new_substring": "example_new_substring"
+    }
+},
+
+"apply_pca": {
+    "columns": [
+        "example_column1",
+        "example_column2"
+    ],
+    "n_components": "example_number_of_components"
+}
+
+
+

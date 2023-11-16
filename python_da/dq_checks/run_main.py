@@ -90,6 +90,13 @@ def perform_data_quality_checks(data):
     except KeyError as e:
         logger.error(f"KeyError accessing count_unique_values_in_text_fields: {e}")
         raise
+
+    try:
+        data_type_profile_count = checker.data_type_profile()
+        logger.info(f'Successfully retrieved data_type_profile_count: {data_type_profile_count}')
+    except KeyError as e:
+        logger.error(f"KeyError accessing data_type_profile_count: {e}")
+        raise        
     
     try:
         z_score_outliers = checker.z_score_outliers()
@@ -98,12 +105,12 @@ def perform_data_quality_checks(data):
         logger.error(f"KeyError accessing z_score_outliers: {e}")
         raise
     
-    try:
-        iqr_outliers = checker.iqr_outliers()
-        logger.info(f'Successfully retrieved iqr_outliers')
-    except KeyError as e:
-        logger.error(f"KeyError accessing iqr_outliers: {e}")
-        raise
+    # try:
+    #     iqr_outliers = checker.iqr_outliers()
+    #     logger.info(f'Successfully retrieved iqr_outliers')
+    # except KeyError as e:
+    #     logger.error(f"KeyError accessing iqr_outliers: {e}")
+    #     raise
     
     # Combine the results into a dictionary
     result = {
@@ -111,9 +118,10 @@ def perform_data_quality_checks(data):
         'number_of_fields': number_of_fields,
         'number_of_duplicate_values': number_of_duplicate_values,
         'missing_values': missing_values,
+        'data_type_profile': data_type_profile_count,
         'unique_values_in_text_fields': unique_values,
-        'z_score_outliers': z_score_outliers,
-        'iqr_outliers': iqr_outliers
+        'z_score_outliers': z_score_outliers
+        # 'iqr_outliers': iqr_outliers
     }
 
     return result
@@ -190,8 +198,9 @@ def main(test_iterations=None):
                 logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
 
                 logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
-                time.sleep(6000)
-
+                
+                time.sleep(60)
+                logger.info("sleep finished")
                 # Increment the counter
                 counter += 1
 

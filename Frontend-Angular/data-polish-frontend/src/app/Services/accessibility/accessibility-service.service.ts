@@ -15,7 +15,9 @@ export class AccessibilityServiceService {
       document.body.style.backgroundImage='none';
       document.body.style.backgroundColor = bg;
     }
-
+    if(bg=='BLUE'){
+      // document.body.style.color='yellow'
+    }
     var glasscard:any= document.getElementsByClassName("glass-card");
       for (var i = 0; i < glasscard.length; i++) {
        glasscard[i].classList.add("no-glass-card");
