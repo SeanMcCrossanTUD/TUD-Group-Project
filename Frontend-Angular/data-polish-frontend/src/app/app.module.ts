@@ -41,6 +41,7 @@ import { CardinalityComponent } from './D3/cardinality/cardinality.component';
 import { DuplicateChartComponent } from './D3/duplicate-chart/duplicate-chart.component';
 import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fields-chart.component';
 import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
+import { OutliersComponent } from './outliers/outliers.component';
 
 
 const routes: Routes = [
@@ -73,7 +74,8 @@ const routes: Routes = [
     RecordsChartComponent,
     SetpsHomeComponent,
     DataPreviewComponent,
-    RulesComponent
+    RulesComponent,
+    OutliersComponent
 
   ],
   imports: [
