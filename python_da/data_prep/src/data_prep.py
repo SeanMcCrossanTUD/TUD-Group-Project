@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 from scipy import stats
-
+import re
+from sklearn.decomposition import PCA
 
 # Class to encapsulate data cleaning functionalities
 class DataPrep:
