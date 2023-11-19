@@ -43,7 +43,7 @@ import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fiel
 import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
 import { OutliersComponent } from './outliers/outliers.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -100,7 +100,8 @@ const routes: Routes = [
     SpeedDialModule,
     SplitterModule,
     AgGridModule,
-    ColorPickerModule
+    ColorPickerModule,
+    ProgressSpinnerModule
     
     
   ],

@@ -78,3 +78,11 @@ tbody tr td{
 .refresh span:hover::after{
     color: red;
 }
+.progress-bar{
+    min-width: 80vw;
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
