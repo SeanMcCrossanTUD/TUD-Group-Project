@@ -44,7 +44,7 @@ import { RecordsChartComponent } from './D3/records-chart/records-chart.componen
 import { OutliersComponent } from './outliers/outliers.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 
-
+import { ColorPickerModule } from 'primeng/colorpicker';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -99,7 +99,8 @@ const routes: Routes = [
     StepsModule,
     SpeedDialModule,
     SplitterModule,
-    AgGridModule
+    AgGridModule,
+    ColorPickerModule
     
     
   ],
