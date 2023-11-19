@@ -49,7 +49,7 @@ ngOnInit() {
   this.jobid=this.cookieService.get('jobsid');
   this.fileExportService.checkStatus(this.jobid).subscribe(
     (Response:any)=>{
-      console.log(Response);
+  
       if(Response.dataprofileoutput=='null'){
         alert("your data is not Profiled yet");
       }else{
