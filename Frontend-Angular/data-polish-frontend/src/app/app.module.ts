@@ -42,7 +42,7 @@ import { DuplicateChartComponent } from './D3/duplicate-chart/duplicate-chart.co
 import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fields-chart.component';
 import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -98,7 +98,8 @@ const routes: Routes = [
     SpeedDialModule,
     SplitterModule,
     AgGridModule,
-    ColorPickerModule
+    ColorPickerModule,
+    ProgressSpinnerModule
     
     
   ],

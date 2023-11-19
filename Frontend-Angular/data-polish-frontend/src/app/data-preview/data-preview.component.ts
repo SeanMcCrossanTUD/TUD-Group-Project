@@ -33,6 +33,7 @@ export class DataPreviewComponent {
     alert('hi')
    
   }
+  dataloaded=false;
 
   ngOnInit(){
     var id=this.CookieService.get('jobsid');
@@ -46,6 +47,7 @@ export class DataPreviewComponent {
 
             this.rowData=r2.data
             this.makeHeaser();
+           this.dataloaded=true
             
           }
         )
