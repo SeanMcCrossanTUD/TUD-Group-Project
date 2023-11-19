@@ -43,7 +43,7 @@ import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fiel
 import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 
-
+import { ColorPickerModule } from 'primeng/colorpicker';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -97,7 +97,8 @@ const routes: Routes = [
     StepsModule,
     SpeedDialModule,
     SplitterModule,
-    AgGridModule
+    AgGridModule,
+    ColorPickerModule
     
     
   ],
