@@ -18,9 +18,9 @@ export class OutliersScatterPlotComponent implements OnInit {
   }
 
   loadData() {
-    d3.json('assets/data.json').then(data => {
+    d3.json('assets/z_score_outliers.json').then(data => {
       this.data = data;
-      this.fields = Object.keys(this.data.z_score_outliers);
+      this.fields = this.data.outliers.fields;
       this.selectedField = this.fields[0];
       this.createScatterPlot(this.selectedField);
     });
@@ -40,13 +40,15 @@ export class OutliersScatterPlotComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+    const outlierData = this.data.outliers.outliers[field];
+
     const x = d3.scaleLinear()
       .range([0, width])
-      .domain(d3.extent(this.data.z_score_outliers[field], (d: any) => +d.row) as [number, number]);
+      .domain(d3.extent(outlierData, (d: any) => +d.row) as [number, number]);
 
     const y = d3.scaleLinear()
       .range([height, 0])
-      .domain([0, d3.max(this.data.z_score_outliers[field], (d: any) => +d.value) as number]);
+      .domain([0, d3.max(outlierData, (d: any) => +d.value) as number]);
 
     svg.append('g')
       .attr('transform', `translate(0, ${height})`)
@@ -60,7 +62,7 @@ export class OutliersScatterPlotComponent implements OnInit {
       .style('opacity', 0);
 
     svg.selectAll('.dot')
-      .data(this.data.z_score_outliers[field])
+      .data(outlierData)
       .enter().append('circle')
       .attr('class', 'dot')
       .attr('r', 5)
