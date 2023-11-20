@@ -42,6 +42,7 @@ import { DuplicateChartComponent } from './D3/duplicate-chart/duplicate-chart.co
 import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fields-chart.component';
 import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
 import { OutliersComponent } from './outliers/outliers.component';
+import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 
 
 const routes: Routes = [
@@ -106,7 +107,8 @@ const routes: Routes = [
     MessageService,
     CookieService,
     TerminalService,
-    NavigatationService
+    NavigatationService,
+    D3DashboardService
   ],
   bootstrap: [AppComponent]
 })

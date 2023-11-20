@@ -43,7 +43,7 @@ export class DataPreviewComponent {
           (r2:any)=>{
            
             this.DatapreviewColumnNames=r2.columnNames;
-            console.log( this.columnDefs);
+
             this.rowData=r2.data
             this.makeHeaser();
             
@@ -74,7 +74,7 @@ export class DataPreviewComponent {
           (r2:any)=>{
            
             this.DatapreviewColumnNames=r2.columnNames;
-            console.log( this.columnDefs);
+   
             this.rowData=r2.data
             this.makeHeaser();
             
