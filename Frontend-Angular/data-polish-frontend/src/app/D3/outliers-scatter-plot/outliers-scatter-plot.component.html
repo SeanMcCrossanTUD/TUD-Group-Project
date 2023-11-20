@@ -1,1 +1,7 @@
-<p>outliers-scatter-plot works!</p>
+<select (change)="onFieldChange($event)">
+    <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
+  </select>
+  
+  
+  <div id="scatter-plot"></div>
+  
