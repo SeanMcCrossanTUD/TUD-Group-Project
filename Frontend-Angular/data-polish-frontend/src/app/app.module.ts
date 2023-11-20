@@ -45,6 +45,7 @@ import { OutliersComponent } from './outliers/outliers.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -77,6 +78,7 @@ const routes: Routes = [
     DataPreviewComponent,
     RulesComponent,
     OutliersComponent
+    OutliersScatterPlotComponent
 
   ],
   imports: [
