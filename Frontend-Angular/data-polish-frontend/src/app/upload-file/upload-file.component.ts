@@ -38,7 +38,7 @@ export class UploadFileComponent {
           this.router.navigate([2]);
               
       },(err)=>{
-        console.log(err);
+
         alert('error uploading file');
        
       });

@@ -52,7 +52,6 @@ export class RulesComponent {
 
    })
    this.columnDefs=temp;
-   console.log(this.columnDefs)
   }
 
   public sideBar:any= ['columns'];

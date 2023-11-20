@@ -240,5 +240,9 @@ moveback(){
 
   tooltipItems!: MenuItem[] | null;
 
- 
+  color='red'
+  setcolor(){
+    this.cookieService.set('ACCESSIBILITY',this.color);
+    this.accessibilityset(); 
+  }
 }

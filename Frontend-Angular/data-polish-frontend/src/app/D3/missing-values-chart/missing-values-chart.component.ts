@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 @Component({
   selector: 'app-missing-values-chart',
   templateUrl: './missing-values-chart.component.html',
@@ -8,11 +8,14 @@ import * as d3 from 'd3';
 })
 export class MissingValuesChartComponent implements OnInit {
 
+  constructor(private D3DashboardService:D3DashboardService){
+
+  }
+
   ngOnInit() {
-    console.log('Component ngOnInit called');
-    d3.json("assets/data_quality_result.json").then((data: any) => {
+this.D3DashboardService.getData().subscribe((data: any) => {
       const totalRecords = data.number_of_records;
-      console.log(totalRecords);
+    
 
       const margin = {top: 10, right: 5, bottom: 100, left: 50};
       const width = 500 - margin.left - margin.right;
@@ -36,7 +39,7 @@ export class MissingValuesChartComponent implements OnInit {
       }
 
       const sortedData: [string, number][] = Object.entries(data.missing_values).map(([key, value]) => [key, Number(value)] as [string, number]).sort((a, b) => a[1] - b[1]);
-      console.log(sortedData);
+   
 
       const x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
       const y = d3.scaleLinear().rangeRound([height, 0]);

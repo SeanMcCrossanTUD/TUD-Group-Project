@@ -41,8 +41,9 @@ import { CardinalityComponent } from './D3/cardinality/cardinality.component';
 import { DuplicateChartComponent } from './D3/duplicate-chart/duplicate-chart.component';
 import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fields-chart.component';
 import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
-
-
+import { D3DashboardService } from './Services/D3/d3-dashboard.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ColorPickerModule } from 'primeng/colorpicker';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -96,7 +97,9 @@ const routes: Routes = [
     StepsModule,
     SpeedDialModule,
     SplitterModule,
-    AgGridModule
+    AgGridModule,
+    ColorPickerModule,
+    ProgressSpinnerModule
     
     
   ],
@@ -104,7 +107,8 @@ const routes: Routes = [
     MessageService,
     CookieService,
     TerminalService,
-    NavigatationService
+    NavigatationService,
+    D3DashboardService
   ],
   bootstrap: [AppComponent]
 })
