@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 from data_prep.src.data_prep import DataPrep 
 
 import pytest
@@ -509,4 +512,185 @@ def test_apply_pca_non_numeric_columns():
     with pytest.raises(Exception):
         dp.apply_pca(['A', 'B'])
 
+
+
+# Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe3():
+    return pd.DataFrame({
+        'DateStr': ['2021-01-01', '2021-01-02', '2021-01-03'],
+        'DateTime': pd.date_range(start='1/1/2021', periods=3, freq='D')
+    })
+
+# Test successful date-time parsing with known format
+def test_parse_datetime_success(text_dataframe3):
+    dp = DataPrep(text_dataframe3)
+    # Ensure the date format matches the format of the date strings in 'DateStr'
+    # Assuming 'DateStr' contains dates in 'YYYY-MM-DD' format
+    dp.parse_datetime('DateStr', datetime_format='%Y-%m-%d')
+    assert pd.api.types.is_datetime64_any_dtype(dp.dataframe['DateStr'])
+
+
+# Test inferring date-time format
+def test_parse_datetime_infer_format(text_dataframe3):
+    dp = DataPrep(text_dataframe3)
+    dp.parse_datetime('DateStr')
+    assert pd.api.types.is_datetime64_any_dtype(dp.dataframe['DateStr'])
+
+# Test parsing with non-existent column
+def test_parse_datetime_non_existent_column(text_dataframe3):
+    dp = DataPrep(text_dataframe3)
+    with pytest.raises(ValueError):
+        dp.parse_datetime('NonExistent')
+
+# Test parsing when no dataframe is loaded
+def test_parse_datetime_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.parse_datetime('DateStr')
+
+# Test parsing with incorrect date-time format
+def test_parse_datetime_incorrect_format(text_dataframe3):
+    dp = DataPrep(text_dataframe3)
+    with pytest.raises(Exception):
+        dp.parse_datetime('DateStr', datetime_format='%d-%m-%Y')
+
+# Test parsing non-date-time data
+def test_parse_datetime_non_datetime_data():
+    df = pd.DataFrame({'NotDateTime': ['a', 'b', 'c']})
+    dp = DataPrep(df)
+    dp.parse_datetime('NotDateTime')
+    # Check if parsing resulted in NaT (not a time) values due to coercion
+    assert all(pd.isna(dp.dataframe['NotDateTime']))
+
+    # Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe4():
+    return pd.DataFrame({
+        'Text': ['Hello World', 'goodbye moon', 'Python Programming'],
+        'Numeric': [1, 2, 3]
+    })
+
+# Test successful text case adjustment for each case format
+@pytest.mark.parametrize("case_format,expected", [
+    ('upper', ['HELLO WORLD', 'GOODBYE MOON', 'PYTHON PROGRAMMING']),
+    ('lower', ['hello world', 'goodbye moon', 'python programming']),
+    ('title', ['Hello World', 'Goodbye Moon', 'Python Programming'])
+])
+def test_adjust_text_case_success(text_dataframe4, case_format, expected):
+    dp = DataPrep(text_dataframe4)
+    dp.adjust_text_case('Text', case_format)
+    assert dp.dataframe['Text'].tolist() == expected
+
+# Test adjustment with non-existent column
+def test_adjust_text_case_non_existent_column(text_dataframe4):
+    dp = DataPrep(text_dataframe4)
+    with pytest.raises(ValueError):
+        dp.adjust_text_case('NonExistent', 'upper')
+
+# Test adjustment in non-text column
+def test_adjust_text_case_non_text_column(text_dataframe4):
+    dp = DataPrep(text_dataframe4)
+    with pytest.raises(ValueError):
+        dp.adjust_text_case('Numeric', 'upper')
+
+# Test adjustment when no dataframe is loaded
+def test_adjust_text_case_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.adjust_text_case('Text', 'upper')
+
+# Test invalid case format
+def test_adjust_text_case_invalid_format(text_dataframe4):
+    dp = DataPrep(text_dataframe4)
+    with pytest.raises(ValueError):  # Expecting a ValueError, not a generic Exception
+        dp.adjust_text_case('Text', 'invalid_format')
+
+# Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe5():
+    return pd.DataFrame({
+        'Text': ['This is a sample sentence.', 'Another example sentence with stop words.', 'Text with no stopwords'],
+        'Numeric': [1, 2, 3]
+    })
+
+# Test successful stop word removal
+def test_remove_stopwords_success(text_dataframe5):
+    dp = DataPrep(text_dataframe5)
+    dp.remove_stopwords('Text')
+    assert 'is' not in dp.dataframe['Text'].iloc[1]
+
+# Test removal with non-existent column
+def test_remove_stopwords_non_existent_column(text_dataframe5):
+    dp = DataPrep(text_dataframe5)
+    with pytest.raises(ValueError):
+        dp.remove_stopwords('NonExistent')
+
+# Test removal in non-text column
+def test_remove_stopwords_non_text_column(text_dataframe5):
+    dp = DataPrep(text_dataframe5)
+    with pytest.raises(ValueError):
+        dp.remove_stopwords('Numeric')
+
+# Test removal when no dataframe is loaded
+def test_remove_stopwords_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.remove_stopwords('Text')
+
+
+#Try a different language
+def test_remove_stopwords_different_language(text_dataframe5):
+    try:
+        # Download Spanish stop words, if not already present
+        nltk.download('stopwords', quiet=True)
+
+        dp = DataPrep(text_dataframe5)
+        dp.remove_stopwords('Text', language='spanish')
+        # Add an appropriate assertion here based on your test data
+    except LookupError:
+        pytest.skip("NLTK stop words for Spanish not available.")
+
+# Fixture for a test dataframe
+@pytest.fixture
+def categorical_dataframe():
+    return pd.DataFrame({
+        'Category': ['A', 'A', 'B', 'C', 'C', 'C', 'D', 'E', 'F', 'G']
+    })
+
+# Test successful collapse of rare categories
+def test_collapse_rare_categories_success(categorical_dataframe):
+    dp = DataPrep(categorical_dataframe)
+    dp.collapse_rare_categories('Category', 20.0)  # Setting threshold so that 'D', 'E', 'F', 'G' become 'Other'
+    assert set(dp.dataframe['Category'].unique()) == {'A', 'B', 'C', 'Other'}
+
+# Test collapse with non-existent column
+def test_collapse_rare_categories_non_existent_column(categorical_dataframe):
+    dp = DataPrep(categorical_dataframe)
+    with pytest.raises(ValueError):
+        dp.collapse_rare_categories('NonExistent', 5.0)
+
+# Test collapse in non-categorical column
+def test_collapse_rare_categories_non_categorical_column(categorical_dataframe):
+    dp = DataPrep(pd.DataFrame({'Numeric': [1, 2, 3, 4]}))
+    with pytest.raises(ValueError):
+        dp.collapse_rare_categories('Numeric', 5.0)
+
+# Test collapse when no dataframe is loaded
+def test_collapse_rare_categories_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.collapse_rare_categories('Category', 5.0)
+
+# Test different threshold percentages
+def test_collapse_rare_categories_different_thresholds(categorical_dataframe):
+    dp = DataPrep(categorical_dataframe)
+    dp.collapse_rare_categories('Category', 10.0)  # Setting a different threshold
+    assert 'Other' in dp.dataframe['Category'].unique()
+
+# Test when no categories are rare
+def test_collapse_rare_categories_no_rare(categorical_dataframe):
+    dp = DataPrep(categorical_dataframe)
+    dp.collapse_rare_categories('Category', 1.0)  # Setting a low threshold so no category is rare
+    assert 'Other' not in dp.dataframe['Category'].unique()
 
