@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { pointer } from 'd3';
+
+interface OutlierDataPoint {
+  row: number;
+  value: number;
+  is_outlier: boolean;
+  z_score: number;
+}
 
 @Component({
   selector: 'app-outliers-scatter-plot',
@@ -40,15 +46,15 @@ export class OutliersScatterPlotComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const outlierData = this.data.outliers.outliers[field];
+    const outlierData: OutlierDataPoint[] = this.data.outliers.outliers[field];
 
     const x = d3.scaleLinear()
       .range([0, width])
-      .domain(d3.extent(outlierData, (d: any) => +d.row) as [number, number]);
+      .domain(d3.extent(outlierData, d => d.row) as [number, number]);
 
     const y = d3.scaleLinear()
       .range([height, 0])
-      .domain([0, d3.max(outlierData, (d: any) => +d.value) as number]);
+      .domain([0, d3.max(outlierData, d => d.value) as number]);
 
     svg.append('g')
       .attr('transform', `translate(0, ${height})`)
@@ -57,31 +63,45 @@ export class OutliersScatterPlotComponent implements OnInit {
     svg.append('g')
       .call(d3.axisLeft(y));
 
-    const tooltip = d3.select('#scatter-plot').append('div')
+    const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
-      .style('opacity', 0);
+      .style('opacity', 0)
+      .style('position', 'absolute')
+      .style('background', 'white')
+      .style('border', '1px solid black')
+      .style('padding', '5px')
+      .style('pointer-events', 'none');
 
     svg.selectAll('.dot')
       .data(outlierData)
       .enter().append('circle')
       .attr('class', 'dot')
       .attr('r', 5)
-      .attr('cx', (d: any) => x(+d.row))
-      .attr('cy', (d: any) => y(+d.value))
-      .style('fill', (d: any) => d.is_outlier ? 'red' : 'blue')
-      .on('mouseover', (event, d: any) => {
-        const [x, y] = pointer(event);
+      .attr('cx', d => x(d.row))
+      .attr('cy', height)
+      .style('fill', d => d.is_outlier ? 'lightcoral' : 'lightblue')
+      .style('stroke', 'black')
+      .style('stroke-width', '1px')
+      .transition()
+      .duration(1000)
+      .attr('cy', d => y(d.value));
+
+    svg.selectAll('.dot')
+      .on('mouseover', function(event, d) {
+        const outlierPoint = d as OutlierDataPoint; // Cast the unknown type to OutlierDataPoint
+        const [px, py] = d3.pointer(event);
         tooltip.transition()
           .duration(200)
           .style('opacity', .9);
-        tooltip.html(`Row: ${d.row}<br/>Value: ${d.value}<br/>Z-Score: ${d.z_score}`)
-          .style('left', `${x}px`)
-          .style('top', `${y - 28}px`);
+        tooltip.html(`Row: ${outlierPoint.row}<br/>Value: ${outlierPoint.value}<br/>Z-Score: ${outlierPoint.z_score}`)
+          .style('left', `${px + window.scrollX + 10}px`)
+          .style('top', `${py + window.scrollY - 28}px`);
       })
       .on('mouseout', () => {
         tooltip.transition()
           .duration(500)
           .style('opacity', 0);
+        tooltip.remove();
       });
   }
 
