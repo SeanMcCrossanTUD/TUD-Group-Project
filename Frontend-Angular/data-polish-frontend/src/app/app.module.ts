@@ -44,6 +44,7 @@ import { RecordsChartComponent } from './D3/records-chart/records-chart.componen
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { AdvanceOptionsButtonComponent } from './data-cleaning/rules/nested-components/advance-options-button/advance-options-button.component';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -74,7 +75,8 @@ const routes: Routes = [
     RecordsChartComponent,
     SetpsHomeComponent,
     DataPreviewComponent,
-    RulesComponent
+    RulesComponent,
+    AdvanceOptionsButtonComponent
 
   ],
   imports: [
