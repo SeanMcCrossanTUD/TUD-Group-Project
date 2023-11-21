@@ -1,1 +1,12 @@
-<p>correlation-scatter-plot works!</p>
+<!-- Example template structure -->
+<select [(ngModel)]="selectedTarget" (change)="onFieldChange()">
+    <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
+  </select>
+  
+  <select [(ngModel)]="selectedPredictor" (change)="onFieldChange()">
+    <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
+  </select>
+  
+  <!-- SVG container for the plot -->
+  <div id="correlation-plot"></div>
+  

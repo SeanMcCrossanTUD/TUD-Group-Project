@@ -46,9 +46,6 @@ import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
-import { D3DashboardService } from './Services/D3/d3-dashboard.service';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ColorPickerModule } from 'primeng/colorpicker';
 import { AdvanceOptionsButtonComponent } from './data-cleaning/rules/nested-components/advance-options-button/advance-options-button.component';
 import { CorrelationScatterPlotComponent } from './D3/correlation-scatter-plot/correlation-scatter-plot.component';
 const routes: Routes = [
