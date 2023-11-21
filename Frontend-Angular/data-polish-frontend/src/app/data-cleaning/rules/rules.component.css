@@ -34,3 +34,18 @@
     display: flex;
     justify-content: center;
 }
+
+.save-button{
+    display: flex;
+    min-width: 100%;
+    justify-content: flex-end;
+}
+.save-button div{
+    background: black;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+.save-button div:hover{
+    cursor: pointer;
+}

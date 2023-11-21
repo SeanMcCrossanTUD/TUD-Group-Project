@@ -133,6 +133,7 @@ export class RulesComponent {
    cb_remove_special_characters=false
    cb_trim_whitespace=false
    cb_normalization=false
+   cb_outlierManagement=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false;
@@ -196,6 +197,15 @@ export class RulesComponent {
     ,{types:'z-score'}
   ]
    selectedNormalizationTypes:any;
+
+
+   //////outlier Management
+   outlierTypes:any=[{
+    types:'1 - SD'}
+    ,{types:'2 - SD'},
+    {types:'3 - SD'}
+  ]
+  selectedOutlier:any;
 
 
 }
