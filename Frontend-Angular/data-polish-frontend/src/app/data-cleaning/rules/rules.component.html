@@ -34,7 +34,7 @@
       Data Normalization
       <div>
         <p-checkbox  [(ngModel)]="cb_normalization" inputId="binary" [binary]="true"></p-checkbox>
-        <p-dropdown [hidden]="!cb_normalization" [options]="normalizationTypes" [(ngModel)]="selectedNormalizationTypes" optionLabel="types" [showClear]="true" placeholder="Select new Data type"></p-dropdown>
+        <p-dropdown [hidden]="!cb_normalization" [options]="normalizationTypes" [(ngModel)]="selectedNormalizationTypes" optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
   
      
       </div>
@@ -48,7 +48,7 @@
         Outlier Management
         <div>
           <p-checkbox  [(ngModel)]="cb_outlierManagement" inputId="binary" [binary]="true"></p-checkbox>
-          <p-dropdown [hidden]="!cb_outlierManagement" [options]="outlierTypes" [(ngModel)]="selectedOutlier" optionLabel="types" [showClear]="true" placeholder="Select new Data type"></p-dropdown>
+          <p-dropdown [hidden]="!cb_outlierManagement" [options]="outlierTypes" [(ngModel)]="selectedOutlier" optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
   
         </div>
           </div>
