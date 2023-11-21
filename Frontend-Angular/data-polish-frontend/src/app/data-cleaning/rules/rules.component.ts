@@ -30,11 +30,15 @@ export class RulesComponent {
     {
       field:"Keep column",
     editable: true,
-    width: 200
+    width: 200,
+    cellClass: 'your-custom-class'
+    
   }
     ,
     {
       field:"Advanced cleaning options",
+      width:300,
+      cellClass: 'your-custom-class', 
       cellRenderer: AdvanceOptionsButtonComponent,
       cellRendererParams: {
       clicked: (x:any)=>{
@@ -42,7 +46,7 @@ export class RulesComponent {
         this.visible=true;
           }
      },
-     width:300
+
 
     },
   ]
@@ -107,7 +111,8 @@ export class RulesComponent {
    rules:any={
     "columns_kept":[],
     "trim_whitespace":[],
-    "remove_special_characters":[]
+    "remove_special_characters":[],
+    "normalize_data":[]
    }
 
    setdata(){
@@ -127,10 +132,12 @@ export class RulesComponent {
 
    cb_remove_special_characters=false
    cb_trim_whitespace=false
+   cb_normalization=false
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false;
     this.cb_trim_whitespace=false;
+    this.cb_normalization=false;
    }
    savechangestorules(){
   
@@ -139,6 +146,9 @@ export class RulesComponent {
    }
    if(this.cb_trim_whitespace){
     this.setTrimWhiteSpaces(this.currentrow);
+   }
+   if(this.cb_normalization){
+    this.setNormalization(this.currentrow);
    }
    this.visible=false;
    this.currentrow='';
@@ -153,6 +163,41 @@ export class RulesComponent {
     this.rules["remove_special_characters"].push(x);
     console.log(this.rules)
    }
+   setNormalization(x:any){
+    var t1={
+      method:''
+    }
+
+    t1.method=this.selectedNormalizationTypes
+    let temp="{\""+x+"\":"+JSON.stringify(t1)+"}"
+
+    console.log(temp);
+    this.rules["normalize_data"].push(JSON.parse(temp));
+    console.log(this.rules)
+   }
+
+
+   //////////// data type change
+   allowedTypes:any=[{
+    types:'ab'}
+    ,{types:'bc'}
+  ]
+   selectedType:any='ab';
+
+
+
+
+
+
+
+   ////////// normalization
+   normalizationTypes:any=[{
+    types:'min-max'}
+    ,{types:'z-score'}
+  ]
+   selectedNormalizationTypes:any;
+
+
 }
   
 

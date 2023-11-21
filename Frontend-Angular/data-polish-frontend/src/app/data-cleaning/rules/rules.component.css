@@ -29,3 +29,8 @@
     grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
+
+:host ::ng-deep .your-custom-class .ag-cell-wrapper {
+    display: flex;
+    justify-content: center;
+}

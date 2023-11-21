@@ -29,8 +29,20 @@
     <p-checkbox  [(ngModel)]="cb_trim_whitespace" inputId="binary" [binary]="true"></p-checkbox>
 
     </div>
+
+    <div>
+      Data Normalization
+      <p-checkbox  [(ngModel)]="cb_normalization" inputId="binary" [binary]="true"></p-checkbox>
+      </div>
+      <div>
+        <span> </span>
+        <p-dropdown [hidden]="!cb_normalization" [options]="normalizationTypes" [(ngModel)]="selectedNormalizationTypes" optionLabel="types" [showClear]="true" placeholder="Select new Data type"></p-dropdown>
+
+      </div>
+      
+    </div>
     
-  </div>
+ 
   <br/>
   <div>
     <button (click)="savechangestorules()">Save</button>

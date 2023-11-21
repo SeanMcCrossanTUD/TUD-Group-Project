@@ -46,6 +46,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AdvanceOptionsButtonComponent } from './data-cleaning/rules/nested-components/advance-options-button/advance-options-button.component';
+import { DropdownModule } from 'primeng/dropdown';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -103,7 +104,8 @@ const routes: Routes = [
     AgGridModule,
     ColorPickerModule,
     ProgressSpinnerModule,
-    CheckboxModule
+    CheckboxModule,
+    DropdownModule
     
   ],
   providers: [
