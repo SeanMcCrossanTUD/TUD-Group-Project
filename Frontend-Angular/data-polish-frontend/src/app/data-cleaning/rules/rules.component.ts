@@ -21,10 +21,10 @@ export class RulesComponent {
 
   }
   visible=false;
-  DatapreviewColumnNames=[
+  DatapreviewColumnNames= [
     {field:"Field Names"},
-    {field:"Data Type"},
-    {field:"Keep column"},
+    // {field:"Data Type"},
+    {field:"Keep column",editable: true},
     {field:"Advanced options",cellRenderer: AdvanceOptionsButtonComponent,
     cellRendererParams: {
       clicked: (x:any)=>{
@@ -44,19 +44,33 @@ export class RulesComponent {
 },{'naveen':'abc'}];
 
   ngOnInit(){
-    // this.DataPreviewDataService.getData().subscribe(
-    //   (response:any)=>{
-    //     this.DatapreviewColumnNames=response.coloumnNames;
-    //     this.DatapreviewData=response.data;
-    //     this.makeHeaser();
-    //     this.rowData=this.DatapreviewData;
-    //   }
-    // )
+    this.DataPreviewDataService.getJsonData2().subscribe(
+      (response:any)=>{
+       
+        this.makedata(response.columnNames);
+       
+      }
+    )
 
  
     
    
   
+  }
+
+  makedata(columnNames:any){
+    var temp:any=[];
+    columnNames.forEach((item:any)=>{
+      temp.push(
+        {
+          "Field Names":item,
+          "Keep column":true,
+          "Advanced options":item
+        }
+      )
+    })
+    this.rowData=temp;
+
   }
 
   makeHeaser(){
@@ -76,14 +90,13 @@ export class RulesComponent {
   }
 
   public sideBar:any= ['columns'];
-  rowData=this.DatapreviewData;
-  columnDefs=this.DatapreviewColumnNames;
+  rowData:any=[]
+  columnDefs=[];
   public defaultColDef: ColDef = {
     initialWidth: 150,
     sortable: true,
     resizable: true,
     filter: true,
-    editable: true
     //enableValue: true,
     // allow every column to be grouped
     // enableRowGroup: true,
