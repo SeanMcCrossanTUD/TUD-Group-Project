@@ -46,6 +46,10 @@ import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
+import { D3DashboardService } from './Services/D3/d3-dashboard.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { AdvanceOptionsButtonComponent } from './data-cleaning/rules/nested-components/advance-options-button/advance-options-button.component';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -77,8 +81,9 @@ const routes: Routes = [
     SetpsHomeComponent,
     DataPreviewComponent,
     RulesComponent,
-    OutliersComponent
-    OutliersScatterPlotComponent
+    OutliersComponent,
+    OutliersScatterPlotComponent,
+    AdvanceOptionsButtonComponent
 
   ],
   imports: [

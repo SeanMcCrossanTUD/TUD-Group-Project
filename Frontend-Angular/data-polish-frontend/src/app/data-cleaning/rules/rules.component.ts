@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { DataPreviewDataService } from 'src/app/Services/Datacleaning/data-preview-data.service';
 import { AgGridAngular } from 'ag-grid-angular';
 import { CellClickedEvent, ColDef, GridReadyEvent } from 'ag-grid-community';
+import { AdvanceOptionsButtonComponent } from './nested-components/advance-options-button/advance-options-button.component';
 
 import 'ag-grid-enterprise';
 @Component({
@@ -19,8 +20,28 @@ export class RulesComponent {
     ){
 
   }
-  DatapreviewColumnNames=[{field:"naveen"},{field:"naveen"}]
-  DatapreviewData=[{"naveen":123},{'naveen':'abc'}];
+  visible=false;
+  DatapreviewColumnNames=[
+    {field:"Field Names"},
+    {field:"Data Type"},
+    {field:"Keep column"},
+    {field:"Advanced options",cellRenderer: AdvanceOptionsButtonComponent,
+    cellRendererParams: {
+      clicked: (x:any)=>{
+        this.visible=true;
+    }
+  }
+    },
+  ]
+
+  dummy(e:any){
+    alert(e);
+  }
+  DatapreviewData=[{"Field Names":123,"Data Type":"boolean",
+  "Keep column":true,
+  "Advanced options":"abc"
+
+},{'naveen':'abc'}];
 
   ngOnInit(){
     // this.DataPreviewDataService.getData().subscribe(
@@ -62,6 +83,7 @@ export class RulesComponent {
     sortable: true,
     resizable: true,
     filter: true,
+    editable: true
     //enableValue: true,
     // allow every column to be grouped
     // enableRowGroup: true,
