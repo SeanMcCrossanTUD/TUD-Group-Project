@@ -41,6 +41,11 @@ import { CardinalityComponent } from './D3/cardinality/cardinality.component';
 import { DuplicateChartComponent } from './D3/duplicate-chart/duplicate-chart.component';
 import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fields-chart.component';
 import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
+import { OutliersComponent } from './outliers/outliers.component';
+import { D3DashboardService } from './Services/D3/d3-dashboard.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
@@ -76,6 +81,8 @@ const routes: Routes = [
     SetpsHomeComponent,
     DataPreviewComponent,
     RulesComponent,
+    OutliersComponent,
+    OutliersScatterPlotComponent,
     AdvanceOptionsButtonComponent
 
   ],
