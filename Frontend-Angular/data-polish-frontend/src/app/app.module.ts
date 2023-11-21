@@ -48,6 +48,7 @@ import { ColorPickerModule } from 'primeng/colorpicker';
 import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 import { AdvanceOptionsButtonComponent } from './data-cleaning/rules/nested-components/advance-options-button/advance-options-button.component';
 import { CorrelationScatterPlotComponent } from './D3/correlation-scatter-plot/correlation-scatter-plot.component';
+import { HistogramComponent } from './D3/histogram/histogram.component';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -82,7 +83,8 @@ const routes: Routes = [
     OutliersComponent,
     OutliersScatterPlotComponent,
     AdvanceOptionsButtonComponent,
-    CorrelationScatterPlotComponent
+    CorrelationScatterPlotComponent,
+    HistogramComponent
 
   ],
   imports: [
