@@ -1,4 +1,8 @@
-
+<div class="remove-all-button">
+  <div (click)="removeAllFields()">
+    Remove All Columns
+  </div>
+</div>
 <ag-grid-angular
     style="width: 80vw;height: 70vh;"
     class="ag-theme-alpine"
@@ -7,7 +11,8 @@
     [sideBar]="sideBar"
     editable=true
     
-    [columnDefs]="DatapreviewColumnNames">
+    [columnDefs]="DatapreviewColumnNames"
+    (gridReady)="onGridReady($event)">
 </ag-grid-angular>
 
 

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { DataPreviewDataService } from 'src/app/Services/Datacleaning/data-preview-data.service';
 import { AgGridAngular } from 'ag-grid-angular';
-import { CellClickedEvent, ColDef, GridReadyEvent } from 'ag-grid-community';
+import { CellClickedEvent, ColDef, GridReadyEvent,GridApi } from 'ag-grid-community';
 import { AdvanceOptionsButtonComponent } from './nested-components/advance-options-button/advance-options-button.component';
 
 import 'ag-grid-enterprise';
@@ -11,9 +11,11 @@ import 'ag-grid-enterprise';
   styleUrls: ['./rules.component.css']
 })
 export class RulesComponent {
+  private gridApi!: GridApi;
 
-
-
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+  }
   constructor(
     private DataPreviewDataService:DataPreviewDataService,
  
@@ -203,6 +205,28 @@ export class RulesComponent {
   selectedOutlier:any;
 
 
+
+
+  removeAllFields(){
+    this.rowData.forEach((x:any)=>{
+      x["Keep column"]=false;
+       
+    })
+
+    // var params = {
+    //   force: this.isForceRefreshSelected(),
+    //   suppressFlash: this.isSuppressFlashSelected(),
+    // };
+    // this.gridApi.refreshCells(params);
+    this.gridApi.redrawRows();
+
+  }
+   isForceRefreshSelected() {
+    return (document.querySelector('#forceRefresh') as HTMLInputElement).checked;
+  }
+   isSuppressFlashSelected() {
+    return (document.querySelector('#suppressFlash') as HTMLInputElement).checked;
+  }
 }
   
 

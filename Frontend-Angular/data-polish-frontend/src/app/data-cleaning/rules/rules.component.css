@@ -49,3 +49,20 @@
 .save-button div:hover{
     cursor: pointer;
 }
+
+.remove-all-button{
+    display: flex;
+    min-width: 100%;
+    justify-content: flex-start;
+    margin-bottom: 5px;
+}
+.remove-all-button div{
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+}
+.remove-all-button div:hover{
+    cursor: pointer;
+}
+
