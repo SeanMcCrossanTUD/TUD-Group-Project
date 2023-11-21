@@ -24,7 +24,9 @@ export class RulesComponent {
   currentrow=''
   DatapreviewColumnNames= [
     {field:"Field Names",
-    width: 200
+    width: 200,
+     filter: true,
+     sortable: true,
   },
     // {field:"Data Type"},
     {
@@ -92,20 +94,13 @@ export class RulesComponent {
   inlineEdit(e:any){
    console.log(this.rowData);
   }
-  public sideBar:any= ['columns'];
+  public sideBar:any= ['filters'];
   rowData:any=[]
  
   public defaultColDef: ColDef = {
-    initialWidth: 150,
-    sortable: true,
+    initialWidth: 150, 
     resizable: true,
-    filter: true,
-    //onCellValueChanged: (event) => this.inlineEdit(event),
-    //enableValue: true,
-    // allow every column to be grouped
-    // enableRowGroup: true,
-    // // allow every column to be pivoted
-    // enablePivot: true,
+  
    };
 
    rules:any={
