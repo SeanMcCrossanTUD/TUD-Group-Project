@@ -12,3 +12,20 @@
 /* 
     --ag-foreground-color: rgb(126, 46, 132); */
 /* } */
+
+
+.pop-up-continer{
+    width: 100%;
+    min-height: 100%;
+    border: 2px black solid;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 20px; 
+    overflow-y: scroll ;
+}
+.pop-up-continer div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}

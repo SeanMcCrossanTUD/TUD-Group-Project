@@ -21,25 +21,36 @@ export class RulesComponent {
 
   }
   visible=false;
+  currentrow=''
   DatapreviewColumnNames= [
-    {field:"Field Names"},
+    {field:"Field Names",
+    width: 200
+  },
     // {field:"Data Type"},
-    {field:"Keep column",editable: true},
-    {field:"Advanced options",cellRenderer: AdvanceOptionsButtonComponent,
-    cellRendererParams: {
-      clicked: (x:any)=>{
-        this.visible=true;
-    }
+    {
+      field:"Keep column",
+    editable: true,
+    width: 200
   }
+    ,
+    {
+      field:"Advanced cleaning options",
+      cellRenderer: AdvanceOptionsButtonComponent,
+      cellRendererParams: {
+      clicked: (x:any)=>{
+        this.currentrow=x;      
+        this.visible=true;
+          }
+     },
+     width:300
+
     },
   ]
 
-  dummy(e:any){
-    alert(e);
-  }
+
   DatapreviewData=[{"Field Names":123,"Data Type":"boolean",
   "Keep column":true,
-  "Advanced options":"abc"
+  "Advanced cleaning options":"abc"
 
 },{'naveen':'abc'}];
 
@@ -65,7 +76,7 @@ export class RulesComponent {
         {
           "Field Names":item,
           "Keep column":true,
-          "Advanced options":item
+          "Advanced cleaning options":item
         }
       )
     })
@@ -73,30 +84,19 @@ export class RulesComponent {
 
   }
 
-  makeHeaser(){
-    var temp: any=[];
-   // var i=0;
-   this.DatapreviewColumnNames.forEach((element)=>{
-    // if(i<1){
-    //   temp.push({field:element,header:element,rowDrag: true})
-    //   i++
-      
-    // }else{
-      temp.push({field:element,header:element})
-    //}
-
-   })
-   this.columnDefs=temp;
+  
+  inlineEdit(e:any){
+   console.log(this.rowData);
   }
-
   public sideBar:any= ['columns'];
   rowData:any=[]
-  columnDefs=[];
+ 
   public defaultColDef: ColDef = {
     initialWidth: 150,
     sortable: true,
     resizable: true,
     filter: true,
+    //onCellValueChanged: (event) => this.inlineEdit(event),
     //enableValue: true,
     // allow every column to be grouped
     // enableRowGroup: true,
@@ -104,7 +104,55 @@ export class RulesComponent {
     // enablePivot: true,
    };
 
+   rules:any={
+    "columns_kept":[],
+    "trim_whitespace":[],
+    "remove_special_characters":[]
+   }
+
+   setdata(){
+    var temp:any=[];
+      this.rowData.forEach((x:any)=>{
+        if(x["Keep column"]==true){
+          temp.push(x["Field Names"]);
+        }
+      })
+
+      this.rules.columns_kept=temp;
+      console.log(this.rules);
+   }
+
    
+   ////// cbs
+
+   cb_remove_special_characters=false
+   cb_trim_whitespace=false
+
+   setallCBTOFalse(){
+    this.cb_remove_special_characters=false;
+    this.cb_trim_whitespace=false;
+   }
+   savechangestorules(){
+  
+   if(this.cb_remove_special_characters){
+    this.setRemoveSpecialCharacters(this.currentrow);
+   }
+   if(this.cb_trim_whitespace){
+    this.setTrimWhiteSpaces(this.currentrow);
+   }
+   this.visible=false;
+   this.currentrow='';
+   this.setallCBTOFalse();
+   }
+
+   setTrimWhiteSpaces(x:any){
+    this.rules["trim_whitespace"].push(x);
+    console.log(this.rules)
+   }
+   setRemoveSpecialCharacters(x:any){
+    this.rules["remove_special_characters"].push(x);
+    console.log(this.rules)
+   }
 }
   
 

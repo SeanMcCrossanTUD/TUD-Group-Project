@@ -44,6 +44,7 @@ import { RecordsChartComponent } from './D3/records-chart/records-chart.componen
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { CheckboxModule } from 'primeng/checkbox';
 import { AdvanceOptionsButtonComponent } from './data-cleaning/rules/nested-components/advance-options-button/advance-options-button.component';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -101,8 +102,8 @@ const routes: Routes = [
     SplitterModule,
     AgGridModule,
     ColorPickerModule,
-    ProgressSpinnerModule
-    
+    ProgressSpinnerModule,
+    CheckboxModule
     
   ],
   providers: [

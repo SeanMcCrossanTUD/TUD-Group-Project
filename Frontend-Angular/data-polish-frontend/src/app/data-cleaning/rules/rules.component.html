@@ -6,17 +6,38 @@
     [rowData]="rowData"
     [sideBar]="sideBar"
     editable=true
+    
     [columnDefs]="DatapreviewColumnNames">
 </ag-grid-angular>
 
 
-<p-dialog header="Header" 
+<p-dialog [header]="currentrow" 
 [(visible)]="visible" 
 [breakpoints]="{ '960px': '75vw' }" 
-[style]="{ width: '80vw',height:'80vh' }"
+[style]="{ width: '60vw',height:'80vh' }"
  [draggable]="true"
   [resizable]="true">
+  <div class="pop-up-continer">
+    <div>
+      Remove Special characters
+    <p-checkbox  [(ngModel)]="cb_remove_special_characters" inputId="binary" [binary]="true"></p-checkbox>
 
+    </div>
 
+    <div>
+      Trim Whitespace
+    <p-checkbox  [(ngModel)]="cb_trim_whitespace" inputId="binary" [binary]="true"></p-checkbox>
+
+    </div>
+    
+  </div>
+  <br/>
+  <div>
+    <button (click)="savechangestorules()">Save</button>
+  </div>
+ 
+
+  <!--  [binary]="true" -->
     
 </p-dialog>
+<button (click)="setdata()">set </button>
