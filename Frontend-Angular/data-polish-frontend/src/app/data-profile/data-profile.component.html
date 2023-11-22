@@ -1,53 +1,46 @@
-<!-- <app-missing-values-chart/>
-<app-duplicate-chart></app-duplicate-chart> -->
-
-<!-- <app-number-fields-chart/>
-<app-records-chart/>
-<app-cardinality/> -->
-
 <div class="dashboard">
-
-    <div class="row1">
-        
-        <div>
-            Total NO. Fields: 
+    <!-- Summary statistics -->
+    <div class="row1 stats-summary">
+        <div class="stat-item">
+            <label>Total NO. Fields:</label>
             <app-number-fields-chart/>
         </div>
-        <div>
-            Total NO. Records : 
-           <app-records-chart/>
+        <div class="stat-item">
+            <label>Total NO. Records:</label>
+            <app-records-chart/>
         </div>
-        <div>
-            Number of Duplicates : 
+        <div class="stat-item">
+            <label>Number of Duplicates:</label>
             <app-duplicate-chart/>
         </div>
-        
     </div>
-    <!-- <div class="row2">
-       <div>
-        <app-cardinality/>
-       </div>
-       <div>
-        <app-data-types-chart/>
-       </div>
-       <div >
-        <app-missing-values-chart />
-       </div>
-    </div> -->
+
+    <div class="chart-container">
+        <h2 class="chart-title">Data Quality Breakdown</h2>
+        <app-spider-chart></app-spider-chart>
+    </div>
+    <div class="chart-container">
+        <h2 class="chart-title">Data Quality Breakdown</h2>
+        <app-dq-chart></app-dq-chart>
+    </div>
+
+    <!-- Charts grid -->
     <div class="grid-container">
-        <div>
-            <app-cardinality/>
-           </div>
-           <div>
-            <app-data-types-chart/>
-           </div>
-           <div >
-            <app-missing-values-chart />
-           </div>
-           <div>
+        <div class="chart-container">
+            <h2 class="chart-title">Outliers Scatter Plot</h2>
             <app-outliers-scatter-plot/>
         </div>
-           
-
+        <div class="chart-container">
+            <h2 class="chart-title">Cardinality Distribution</h2>
+            <app-cardinality/>
+        </div>
+        <div class="chart-container">
+            <h2 class="chart-title">Data Types Distribution</h2>
+            <app-data-types-chart/>
+        </div>
+        <div class="chart-container">
+            <h2 class="chart-title">Missing Values Over Time</h2>
+            <app-missing-values-chart />
+        </div>
     </div>
 </div>
