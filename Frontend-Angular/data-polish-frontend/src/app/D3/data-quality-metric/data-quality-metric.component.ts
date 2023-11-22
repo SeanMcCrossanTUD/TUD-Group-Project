@@ -1,14 +1,12 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'app-dq-chart', // Updated selector
-  templateUrl: './data-quality-metric.component.html',
+  selector: 'app-data-quality-metric',
+  template: '<div id="dq-metric"></div>',
   styleUrls: ['./data-quality-metric.component.css']
 })
 export class DataQualityMetricComponent implements OnInit {
-  @ViewChild('chart', { static: true }) private chartContainer!: ElementRef; // Updated ViewChild selector
-
   private data = [
     { axis: "dq-metric", value: 77 },
   ];
@@ -18,44 +16,46 @@ export class DataQualityMetricComponent implements OnInit {
   }
 
   private createChart(): void {
-    const element = this.chartContainer.nativeElement;
-    const svg = d3.select(element).append('svg')
-      .attr('width', 200)
-      .attr('height', 200);
+    const dataset = this.data[0].value / 100;
+    const width = 200;
+    const height = 200;
+    const thickness = 20;
 
-    const margin = 10;
-    const width = +svg.attr('width') - margin * 2;
-    const height = +svg.attr('height') - margin * 2;
-    const radius = Math.min(width, height) / 2;
-    const percentComplete = this.data[0].value / 100; // Convert to a fraction
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    const progress = svg.append('g')
-      .attr('transform', `translate(${width / 2 + margin}, ${height / 2 + margin})`);
+    const svg = d3.select("#dq-metric")
+      .append('svg')
+      .attr('class', 'pie')
+      .attr('width', width)
+      .attr('height', height);
 
-    // Background circle
-    progress.append('circle')
-      .attr('cx', 0)
-      .attr('cy', 0)
-      .attr('r', radius)
-      .style('fill', '#e6e6e6');
+    const arc = d3.arc<d3.PieArcDatum<any>>()
+      .innerRadius((width / 2) - thickness)
+      .outerRadius(width / 2);
 
-    // Foreground arc
-    const endAngle = 2 * Math.PI * percentComplete;
-    const x1 = radius * Math.sin(endAngle);
-    const y1 = -radius * Math.cos(endAngle);
-    
-    const pathData = `M 0 -${radius} A ${radius} ${radius} 0 ${endAngle > Math.PI ? 1 : 0} 1 ${x1} ${y1}`;
-    
-    progress.append('path')
-      .attr('d', pathData)
-      .style('fill', '#00f');
+    // Correct the pie value function
+    const pie = d3.pie<{value: number}>() // Specify the data type for the pie generator
+      .value(d => d.value); // Access the 'value' property of each data object
 
-    // Text in the middle
-    progress.append('text')
+
+    const path = svg.append('g')
+      .attr('transform', `translate(${width / 2}, ${height / 2})`)
+      .selectAll('path')
+      .data(pie([{value: dataset}, {value: 1 - dataset}])) // Correctly structured data for the pie generator
+      .enter()
+      .append("path")
+      .attr("d", arc)
+      .attr("fill", (d, i) => i === 0 ? color('0') : '#ddd')
+      .attr("stroke", "white")
+      .attr("stroke-width", "6");
+
+
+    const text = svg.append("text")
       .text(`${this.data[0].value}%`)
-      .attr('text-anchor', 'middle')
-      .attr('dy', '0.35em')
-      .style('font-size', '20px')
-      .style('fill', '#000');
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .attr("transform", `translate(${width / 2}, ${height / 2})`)
+      .attr("font-size", "30")
+      .attr("fill", "#275478");
   }
 }
