@@ -42,7 +42,6 @@ import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fiel
 import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
 import { OutliersComponent } from './outliers/outliers.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
-import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { SpiderChartComponent } from './D3/spider-chart/spider-chart.component';
@@ -89,7 +88,7 @@ const routes: Routes = [
     OutliersScatterPlotComponent,
     AdvanceOptionsButtonComponent,
     SpiderChartComponent,
-    DataQualityMetricComponent
+    DataQualityMetricComponent,
     CorrelationScatterPlotComponent,
     HistogramComponent
 
