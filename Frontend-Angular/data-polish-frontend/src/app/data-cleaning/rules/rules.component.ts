@@ -193,7 +193,7 @@ export class RulesComponent {
    ////////// normalization
    normalizationTypes:any=[{
     types:'min-max'}
-    ,{types:'z-score'}
+    // ,{types:'z-score'}
   ]
    selectedNormalizationTypes:any;
 
