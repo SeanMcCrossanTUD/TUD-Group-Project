@@ -42,8 +42,11 @@ import { NumberFieldsChartComponent } from './D3/number-fields-chart/number-fiel
 import { RecordsChartComponent } from './D3/records-chart/records-chart.component';
 import { OutliersComponent } from './outliers/outliers.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
+import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { SpiderChartComponent } from './D3/spider-chart/spider-chart.component';
+import { DataQualityMetricComponent } from './D3/data-quality-metric/data-quality-metric.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AdvanceOptionsButtonComponent } from './data-cleaning/rules/nested-components/advance-options-button/advance-options-button.component';
 import { DropdownModule } from 'primeng/dropdown';
@@ -85,6 +88,8 @@ const routes: Routes = [
     OutliersComponent,
     OutliersScatterPlotComponent,
     AdvanceOptionsButtonComponent,
+    SpiderChartComponent,
+    DataQualityMetricComponent
     CorrelationScatterPlotComponent,
     HistogramComponent
 
