@@ -88,6 +88,46 @@ def download_blob_csv_data(connection_string, file_name, container_name="csv"):
         logger.error(f"Unexpected error while downloading blob data: {str(e)}")
         raise e
 
+
+def download_blob_excel_data(connection_string, file_name, container_name="excel"):
+    """Download Excel data from Azure Blob Storage.
+
+    Args:
+    - connection_string (str): The Azure connection string.
+    - container_name (str, optional): Name of the Azure blob container. Defaults to 'excel'.
+
+    Returns:
+    - pd.DataFrame: DataFrame containing downloaded Excel data.
+    """
+
+    try:
+        logger.info('Initializing BlobServiceClient')
+        blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+        blob_name = file_name
+
+        if not blob_name:
+            logger.error('No blobs found in container')
+            raise Exception('No blobs found in the container')
+
+        logger.info(f'Downloading Excel data from Azure Blob Storage: {blob_name}')
+        blob_client = blob_service_client.get_blob_client(container_name, blob_name)
+        blob_data = blob_client.download_blob().readall()
+
+        if not blob_data:
+            logger.warning("Downloaded Excel data is empty. No acceptable data.")
+            return None
+
+        data = pd.read_excel(io.BytesIO(blob_data))
+        return data
+
+    except AzureError as ae:
+        logger.error(f"AzureError while downloading blob data: {str(ae)}")
+        raise ae
+    except Exception as e:
+        logger.error(f"Unexpected error while downloading blob data: {str(e)}")
+        raise e
+
+
 def upload_results_to_azure(data, connection_string, job_id, result_container_name='dataprofileoutput'):
     """Upload data as a JSON to Azure Blob Storage.
 

@@ -7,9 +7,11 @@ from azure.core.exceptions import AzureError
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from data_prep.src.data_prep import DataPrep
-from data_prep.azure_package.src.azure_functions import (download_blob_csv_data, 
-                                               upload_result_csv_to_azure,
-                                               receive_message_from_queue)
+from data_prep.azure_package.src.azure_functions import (download_blob_csv_data,
+                                                upload_result_excel_to_azure,
+                                                download_blob_excel_data,
+                                                upload_result_csv_to_azure,
+                                                receive_message_from_queue)
 
 # Set up logging
 logger = logging.getLogger('data-prep')
@@ -124,15 +126,17 @@ def apply_col_specific_transformations(dataset: pd.DataFrame, config_path: str) 
 
 
 
-def main():
-    while True:
-        try:
-            logger.info('Checking for new messages...')
+def main(test_iterations=None):
+    counter = 0
 
-            # Receiving a message from the queue to get a new blob or file for processing.
+    while True:
+        # If test_iterations is set and counter has reached it, break the loop
+        if test_iterations and counter >= test_iterations:
+            break
+
+        # Check Azure queue for a new message
+        try:
             msg = receive_message_from_queue(SERVICE_BUS_CONNECTION_STRING, SERVICE_BUS_QUEUE_NAME)
-            logger.info(msg)
-            
             logger.info(msg)
             if msg is not None:
                 logger.info('Received a new message, processing...')
@@ -140,11 +144,27 @@ def main():
                 message_content = json.loads(cleaned_msg)
 
                 filename = message_content.get('rawurl', 'Unknown Filename') 
-                jobID = message_content.get('jobID', 'Unknown JobID')                
+                jobID = message_content.get('jobID', 'Unknown JobID')
 
-                data = download_blob_csv_data(connection_string=connection_string, container_name=container_name_data_input, file_name=filename)
+                file_extension = os.path.splitext(filename)[1].lower()
+                if file_extension == '.csv':
+                    data = download_blob_csv_data(connection_string, filename)
+                    logger.info(f'CSV data downloaded for {filename}')
+                elif file_extension == '.xlsx' or file_extension == '.xls':
+                    data = download_blob_excel_data(connection_string, filename)
+                    logger.info(f'Excel data downloaded for {filename}')
+                else:
+                    logger.error(f'Invalid file type for {filename}. Only CSV and Excel files are supported.')
+                    continue
+
                 result = apply_transformations(data)
-                upload_result_csv_to_azure(result, connection_string=connection_string, job_id=jobID, file_name=filename)
+                
+                if file_extension == '.csv':
+                    upload_result_csv_to_azure(result, connection_string, jobID, filename)
+                    logger.info(f'CSV result uploaded for {filename}')
+                elif file_extension == '.xlsx' or file_extension == '.xls':
+                    upload_result_excel_to_azure(result, connection_string, jobID, filename)
+                    logger.info(f'Excel result uploaded for {filename}')
                 
                 logger.info('Clean data uploaded in data prep')
             else:
