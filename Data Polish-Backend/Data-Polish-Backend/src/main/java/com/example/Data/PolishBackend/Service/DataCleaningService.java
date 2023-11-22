@@ -31,9 +31,9 @@ import java.util.UUID;
     query db with jobid to get dataprofilingoutput value
 
     convert the json object to json file
-    create json filename rawurl+cleaning rules+uuid.json
+    create json filename rules+uuid.json //uuid to make each file unique
     store the json filename in DB under cleaningrules column for that jobid
-    store the json file in blob -
+    store the json file in blob - rules
 
     publish to q2
         - retrieved dataprofilingoutput value (to trigger datacleaning py microservice)
@@ -65,13 +65,15 @@ public class DataCleaningService {
     //method to save a JSON object to a JSON file
     private String convertToJsonFile(JsonNode jsonNode, String rawurl) throws IOException, JsonProcessingException {
         // Generate a unique filename based on the 'rawurl' and a random UUID
-        String fileName = rawurl + "_cleaning_rules_" + UUID.randomUUID() + ".json";
+        String fileName = "rules_" + UUID.randomUUID() + ".json";
 
         // Create an ObjectMapper to convert the JSON object to bytes
         ObjectMapper objectMapper = new ObjectMapper();
 
         // Write the JSON bytes to a file with the generated filename
-        Files.write(new File(fileName).toPath(), objectMapper.writeValueAsBytes(jsonNode));
+        //Files.write(new File(fileName).toPath(), objectMapper.writeValueAsBytes(jsonNode));
+        File jsonFile = new File(fileName);
+        objectMapper.writeValue(jsonFile, jsonNode);
         return fileName;
     }
 
@@ -84,10 +86,10 @@ public class DataCleaningService {
                     .buildClient();
 
             // Get a reference to the container
-            BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient("your-container-name");
+            BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient("rules");
 
             // Get a reference to the blob
-            BlobClient blobClient = containerClient.getBlobClient("cleaningrules/" + jsonFilename);
+            BlobClient blobClient = containerClient.getBlobClient(jsonFilename);
 
             // Upload the file to Azure Blob Storage
             blobClient.uploadFromFile(jsonFilename, true);

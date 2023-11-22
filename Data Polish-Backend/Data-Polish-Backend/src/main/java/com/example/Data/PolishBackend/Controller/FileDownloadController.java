@@ -11,7 +11,7 @@ import com.example.Data.PolishBackend.Service.FileDownloadService; // Import the
 
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"*"})
 public class FileDownloadController {
     @Autowired
     private FileDownloadService fileDownloadService;
