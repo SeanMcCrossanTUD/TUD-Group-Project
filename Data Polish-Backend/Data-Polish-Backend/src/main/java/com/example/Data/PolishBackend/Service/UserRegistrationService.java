@@ -19,12 +19,12 @@ public class UserRegistrationService {
     public ResponseEntity<String> registerUser(String fullName, String email, String password) {
         // Validate email format
         if (!isValidEmail(email)) {
-            return new ResponseEntity<>("Invalid email address", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email address");
         }
 
         // Check if the email already exists in the database
         if (emailExists(email)) {
-            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
         }
 
         // Hash the password
@@ -34,10 +34,10 @@ public class UserRegistrationService {
         String sql = "INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)";
         try {
             jdbcTemplate.update(sql, fullName, email, hashedPassword);
-            return new ResponseEntity<>("New user successfully created", HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body("New user successfully created");
         } catch (DataIntegrityViolationException e) {
             // Handle potential data integrity violation (e.g., unique constraint violation)
-            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
         }
     }
 
