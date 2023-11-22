@@ -587,7 +587,7 @@ class DataPrep:
 
         return self.dataframe
 
-#Function 17
+    #Function 17
     def collapse_rare_categories(self, column_name, threshold_percentage=5.0):
         """
         Collapses rare categories in a specified column into an 'Other' category.
@@ -625,4 +625,74 @@ class DataPrep:
 
         return self.dataframe
        
+    #Function 18
+    def tokenize_text(self, column_name):
+        """
+        Performs text tokenization on a specified text column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column to tokenize.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the tokenization
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].apply(word_tokenize)
+        except Exception as e:
+            raise Exception(f'An error occurred while tokenizing text: {e}')
+
+        return self.dataframe
+    
+    #Function 19
+    def apply_regex(self, column_name, regex_pattern, replacement_string="", operation="replace"):
+        """
+        Applies a regular expression operation to a specified text column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column to apply the regex operation on.
+        regex_pattern (str): The regular expression pattern to apply.
+        replacement_string (str): The string to replace matches with, used in the 'replace' operation.
+        operation (str): The type of regex operation ('replace', 'extract'). Default is 'replace'.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the regex operation
+        if operation == "replace":
+            # Apply the replace operation
+            try:
+                self.dataframe[column_name] = self.dataframe[column_name].str.replace(regex_pattern, replacement_string, regex=True)
+            except Exception as e:
+                raise Exception(f'An error occurred while applying regex replace operation: {e}')
+        elif operation == "extract":
+            # Apply the extract operation
+            try:
+                self.dataframe[column_name] = self.dataframe[column_name].str.extract(regex_pattern)
+            except Exception as e:
+                raise Exception(f'An error occurred while applying regex extract operation: {e}')
+        else:
+            raise ValueError(f'Invalid operation: {operation}. Valid operations are "replace" and "extract".')
+
+        return self.dataframe 
     

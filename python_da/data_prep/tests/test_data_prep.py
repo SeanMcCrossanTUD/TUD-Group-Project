@@ -694,3 +694,84 @@ def test_collapse_rare_categories_no_rare(categorical_dataframe):
     dp.collapse_rare_categories('Category', 1.0)  # Setting a low threshold so no category is rare
     assert 'Other' not in dp.dataframe['Category'].unique()
 
+
+# Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe6():
+    return pd.DataFrame({
+        'Text': ['This is a sample sentence.', 'Another example sentence.', '', pd.NA],
+        'Numeric': [1, 2, 3, 4]
+    })
+
+# Test successful text tokenization
+def test_tokenize_text_success(text_dataframe):
+    # Assuming the first row of 'Text' in text_dataframe is "Hello @World!"
+    dp = DataPrep(text_dataframe)
+    dp.tokenize_text('Text')
+
+    # Adjust expected tokens based on the actual content of the first row in your dataframe
+    expected_tokens = ['Hello', '@', 'World', '!']
+    assert dp.dataframe['Text'].iloc[0] == expected_tokens
+
+# Test tokenization with non-existent column
+def test_tokenize_text_non_existent_column(text_dataframe6):
+    dp = DataPrep(text_dataframe6)
+    with pytest.raises(ValueError):
+        dp.tokenize_text('NonExistent')
+
+# Test tokenization in non-text column
+def test_tokenize_text_non_text_column(text_dataframe6):
+    dp = DataPrep(text_dataframe6)
+    with pytest.raises(ValueError):
+        dp.tokenize_text('Numeric')
+
+# Test tokenization when no dataframe is loaded
+def test_tokenize_text_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.tokenize_text('Text')
+
+# Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe7():
+    df = pd.DataFrame({
+        'Text': ['This is a sample sentence.', 'Another example.', '12345', '', pd.NA],
+        'Numeric': [1, 2, 3, 4, 5]
+    })
+    df['Text'] = df['Text'].astype('string')  # Cast to string type explicitly
+    return df
+
+# Test successful regex replace operation
+def test_apply_regex_replace(text_dataframe7):
+    dp = DataPrep(text_dataframe7)
+    dp.apply_regex('Text', r'\b\w{6}\b', 'word')  # Replaces 6-letter words with 'word'
+    assert dp.dataframe['Text'].iloc[0] == 'This is a word sentence.'
+
+# Test regex with non-existent column
+def test_apply_regex_non_existent_column(text_dataframe7):
+    dp = DataPrep(text_dataframe7)
+    with pytest.raises(ValueError):
+        dp.apply_regex('NonExistent', r'\d+', operation='replace')
+
+# Test regex in non-text column
+def test_apply_regex_non_text_column(text_dataframe7):
+    dp = DataPrep(text_dataframe7)
+    with pytest.raises(ValueError):
+        dp.apply_regex('Numeric', r'\d+', operation='replace')
+
+# Test regex when no dataframe is loaded
+def test_apply_regex_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.apply_regex('Text', r'\d+', operation='replace')
+
+# Test invalid regex operation
+def test_apply_regex_invalid_operation(text_dataframe7):
+    dp = DataPrep(text_dataframe7)
+    with pytest.raises(ValueError):  # Expecting ValueError for invalid operation
+        dp.apply_regex('Text', r'\b\w+\b', operation='invalid_operation')
+        
+def test_apply_regex_empty_or_null_values(text_dataframe7):
+    dp = DataPrep(text_dataframe7)
+    dp.apply_regex('Text', r'\d+', operation='replace')
+    assert dp.dataframe['Text'].iloc[3] == '' and pd.isna(dp.dataframe['Text'].iloc[4])
