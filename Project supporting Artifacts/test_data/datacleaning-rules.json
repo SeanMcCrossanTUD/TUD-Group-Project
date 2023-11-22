@@ -1,0 +1,85 @@
+{
+    "columns_kept": [
+        "fixed acidity",
+        "volatile acidity",
+        "citric acid",
+        "residual sugar",
+        "chlorides",
+        "free sulfur dioxide",
+        "total sulfur dioxide",
+        "density",
+        "pH",
+        "sulphates",
+        "alcohol",
+        "quality"
+    ],
+    "trim_whitespace": [
+        "fixed acidity",
+        "volatile acidity",
+        "residual sugar",
+        "total sulfur dioxide",
+        "density",
+        "alcohol",
+        "alcohol"
+    ],
+    "remove_special_characters": [
+        "fixed acidity",
+        "volatile acidity",
+        "residual sugar",
+        "total sulfur dioxide",
+        "density",
+        "alcohol",
+        "alcohol"
+    ],
+    "normalize_data": [
+        {
+            "fixed acidity": {
+                "method": {
+                    "types": "min-max"
+                }
+            }
+        },
+        {
+            "volatile acidity": {
+                "method": {
+                    "types": "min-max"
+                }
+            }
+        },
+        {
+            "residual sugar": {
+                "method": {
+                    "types": "min-max"
+                }
+            }
+        },
+        {
+            "total sulfur dioxide": {
+                "method": {
+                    "types": "min-max"
+                }
+            }
+        },
+        {
+            "density": {
+                "method": {
+                    "types": "min-max"
+                }
+            }
+        },
+        {
+            "alcohol": {
+                "method": {
+                    "types": "min-max"
+                }
+            }
+        },
+        {
+            "alcohol": {
+                "method": {
+                    "types": "min-max"
+                }
+            }
+        }
+    ]
+}

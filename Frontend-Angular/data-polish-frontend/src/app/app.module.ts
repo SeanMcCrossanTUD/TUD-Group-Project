@@ -24,7 +24,6 @@ import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
 import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
 import { DataTypesChartComponent } from './D3/data-types-chart/data-types-chart.component';
-
 import { AppSettings } from './Const/config';
 import { NewHomeComponent } from './new-home/new-home.component';
 import { SetpsHomeComponent } from './setps-home/setps-home.component';
@@ -45,10 +44,13 @@ import { OutliersComponent } from './outliers/outliers.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
+import { CheckboxModule } from 'primeng/checkbox';
 import { AdvanceOptionsButtonComponent } from './data-cleaning/rules/nested-components/advance-options-button/advance-options-button.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 import { CorrelationScatterPlotComponent } from './D3/correlation-scatter-plot/correlation-scatter-plot.component';
 import { HistogramComponent } from './D3/histogram/histogram.component';
+
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -109,8 +111,9 @@ const routes: Routes = [
     SplitterModule,
     AgGridModule,
     ColorPickerModule,
-    ProgressSpinnerModule
-    
+    ProgressSpinnerModule,
+    CheckboxModule,
+    DropdownModule
     
   ],
   providers: [
