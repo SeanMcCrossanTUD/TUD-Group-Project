@@ -1,0 +1,23 @@
+<div class="dropdown-container">
+    <div class="dropdown">
+      <label for="target-variable">Target Variable:</label>
+      <select id="target-variable" [(ngModel)]="selectedTarget" (change)="onFieldChange()">
+        <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
+      </select>
+    </div>
+  
+    <div class="dropdown">
+      <label for="predictor-variable">Predictor Variable:</label>
+      <select id="predictor-variable" [(ngModel)]="selectedPredictor" (change)="onFieldChange()">
+        <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
+      </select>
+    </div>
+  </div>
+  
+  <!-- Dynamic title for the scatter plot -->
+  <h2>{{ selectedTarget }} vs {{ selectedPredictor }} Correlation</h2>
+  
+  <!-- SVG container for the plot -->
+  <div id="correlation-plot"></div>
+  
+  

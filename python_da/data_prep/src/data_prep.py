@@ -1,7 +1,10 @@
 import pandas as pd
 import numpy as np
 from scipy import stats
-
+import re
+from sklearn.decomposition import PCA
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 # Class to encapsulate data cleaning functionalities
 class DataPrep:
@@ -332,4 +335,294 @@ class DataPrep:
             raise Exception(f'An error occurred while binning the column: {e}')
 
         return self.dataframe
+    
+     #Function 10
+    def remove_columns(self, columns_to_remove):
+        """
+        Removes specified columns from the DataFrame.
+
+        Args:
+        columns_to_remove (list): A list of column names to be removed from the DataFrame.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Ensure that columns_to_remove is a list
+        if not isinstance(columns_to_remove, list):
+            raise ValueError('columns_to_remove should be a list of column names.')
+
+        # Check if the specified columns exist
+        for col in columns_to_remove:
+            if col not in self.dataframe.columns:
+                raise ValueError(f'Column name {col} not found in dataframe')
+
+        # Remove the specified columns
+        try:
+            self.dataframe.drop(columns=columns_to_remove, inplace=True)
+        except Exception as e:
+            raise Exception(f'An error occurred while removing columns: {e}')
+
+        return self.dataframe
+    
+    #Function 11
+    def extract_datetime_components(self, column_name, components):
+        """
+        Extracts specified datetime components from a datetime column in the DataFrame,
+        converting month to text representation and replacing 'weekday' with 'day'.
+
+        Args:
+        column_name (str): The name of the datetime column.
+        components (list): A list of components to extract. Valid options are 'year', 'month', 'day', 'hour', 'minute', 'second'.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure the column is a datetime type
+        if not pd.api.types.is_datetime64_any_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a datetime column.')
+
+        # Extract the specified components
+        for component in components:
+            if component not in ['year', 'month', 'day', 'hour', 'minute', 'second']:
+                raise ValueError(f'Invalid component: {component}. Valid components are year, month, day, hour, minute, second.')
+
+            try:
+                if component == 'year':
+                    self.dataframe[f'{column_name}_year'] = self.dataframe[column_name].dt.year
+                elif component == 'month':
+                    self.dataframe[f'{column_name}_month'] = self.dataframe[column_name].dt.strftime('%B')
+                elif component == 'day':
+                    # 'day' now refers to the day of the week
+                    self.dataframe[f'{column_name}_day'] = self.dataframe[column_name].dt.strftime('%A')
+                elif component == 'hour':
+                    self.dataframe[f'{column_name}_hour'] = self.dataframe[column_name].dt.hour
+                elif component == 'minute':
+                    self.dataframe[f'{column_name}_minute'] = self.dataframe[column_name].dt.minute
+                elif component == 'second':
+                    self.dataframe[f'{column_name}_second'] = self.dataframe[column_name].dt.second
+            except Exception as e:
+                raise Exception(f'An error occurred while extracting {component}: {e}')
+
+        return self.dataframe
+    
+ #Function 12
+    def replace_substring(self, column_name, old_substring, new_substring):
+        """
+        Replaces a specified substring with a new substring in a text column of the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column in which to replace the substring.
+        old_substring (str): The substring to be replaced.
+        new_substring (str): The new substring to replace the old substring.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the replacement
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].str.replace(old_substring, new_substring, regex=False)
+        except Exception as e:
+            raise Exception(f'An error occurred while replacing substring: {e}')
+
+        return self.dataframe
+    
+#Function 13
+    def apply_pca(self, columns, n_components=None):
+        """
+        Performs principal component analysis (PCA) on specified columns.
+
+        Args:
+        columns (list): List of column names to apply PCA to.
+        n_components (int, optional): Number of principal components to keep. 
+                                      If None, all components are kept.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified columns exist
+        for col in columns:
+            if col not in self.dataframe.columns:
+                raise ValueError(f'Column name {col} not found in dataframe')
+
+        # Extract the specified columns
+        data_subset = self.dataframe[columns]
+
+        # Apply PCA
+        try:
+            pca = PCA(n_components=n_components)
+            principal_components = pca.fit_transform(data_subset)
+            
+            # Create a DataFrame with principal components
+            pc_df = pd.DataFrame(data=principal_components, 
+                                 columns=[f'principal_component_{i+1}' for i in range(principal_components.shape[1])])
+            
+            # Drop original columns and concatenate the principal components
+            self.dataframe = pd.concat([self.dataframe.drop(columns, axis=1), pc_df], axis=1)
+        except Exception as e:
+            raise Exception(f'An error occurred while performing PCA: {e}')
+
+        return self.dataframe
+
+#Function 14
+    def parse_datetime(self, column_name, datetime_format=None):
+        """
+        Parses a column into a datetime format, handling different date/time formats.
+
+        Args:
+        column_name (str): The name of the column to parse.
+        datetime_format (str, optional): The specific format of the datetime data if known. 
+                                         If None, pandas will attempt to infer the format.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Perform the parsing
+        try:
+            if datetime_format:
+                self.dataframe[column_name] = pd.to_datetime(self.dataframe[column_name], format=datetime_format)
+            else:
+                # Attempt to infer the format for each element
+                self.dataframe[column_name] = self.dataframe[column_name].apply(pd.to_datetime, errors='coerce', infer_datetime_format=True)
+        except Exception as e:
+            raise Exception(f'An error occurred while parsing the datetime column: {e}')
+
+        return self.dataframe
+    
+     #Function 15
+    def adjust_text_case(self, column_name, case_format):
+        """
+        Adjusts the text case of a specified column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column to adjust the case for.
+        case_format (str): Desired case format ('upper', 'lower', or 'title').
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the case adjustment
+        if case_format == 'upper':
+            self.dataframe[column_name] = self.dataframe[column_name].str.upper()
+        elif case_format == 'lower':
+            self.dataframe[column_name] = self.dataframe[column_name].str.lower()
+        elif case_format == 'title':
+            self.dataframe[column_name] = self.dataframe[column_name].str.title()
+        else:
+            raise ValueError(f'Invalid case format: {case_format}. Valid options are upper, lower, title.')
+
+        return self.dataframe
+    
+    #Function 16
+    def remove_stopwords(self, column_name, language='english'):
+        """
+        Removes stop words from a text column in the DataFrame for natural language processing.
+
+        Args:
+        column_name (str): The name of the text column to remove stop words from.
+        language (str): Language of the stop words. Default is 'english'.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Load stop words
+        stop_words = set(stopwords.words(language))
+
+        # Function to remove stop words from a sentence
+        def remove_stopwords_from_sentence(sentence):
+            word_tokens = word_tokenize(sentence)
+            filtered_sentence = [w for w in word_tokens if not w.lower() in stop_words]
+            return ' '.join(filtered_sentence)
+
+        # Apply the function to the column
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].apply(remove_stopwords_from_sentence)
+        except Exception as e:
+            raise Exception(f'An error occurred while removing stop words: {e}')
+
+        return self.dataframe
+
+#Function 17
+    def collapse_rare_categories(self, column_name, threshold_percentage=5.0):
+        """
+        Collapses rare categories in a specified column into an 'Other' category.
+        Categories with occurrences less than the threshold percentage are considered rare.
+
+        Args:
+        column_name (str): The name of the categorical column.
+        threshold_percentage (float): The percentage threshold under which a category is considered rare.
+                                      Defaults to 5.0. This should be a value between 0 and 100.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is categorical
+        if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]) and not pd.api.types.is_object_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a categorical column.')
+
+        # Calculate the frequency distribution of the categories
+        frequency = self.dataframe[column_name].value_counts(normalize=True) * 100
+
+        # Determine the rare categories
+        rare_categories = frequency[frequency < threshold_percentage].index
+
+        # Collapse rare categories into 'Other'
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].apply(lambda x: 'Other' if x in rare_categories else x)
+        except Exception as e:
+            raise Exception(f'An error occurred while collapsing rare categories: {e}')
+
+        return self.dataframe
+       
     

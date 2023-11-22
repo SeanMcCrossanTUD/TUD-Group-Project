@@ -1,5 +1,23 @@
 import pandas as pd
 import json
+import numpy as np
+
+def convert_numpy_to_python(data):
+    if isinstance(data, (np.int_, np.intc, np.intp, np.int8,
+                         np.int16, np.int32, np.int64, np.uint8,
+                         np.uint16, np.uint32, np.uint64)):
+        return int(data)
+    elif isinstance(data, (np.float_, np.float16, np.float32, np.float64)):
+        return float(data) if not np.isnan(data) else None
+    elif isinstance(data, (np.ndarray,)):
+        return data.tolist()
+    elif isinstance(data, dict):
+        return {k: convert_numpy_to_python(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [convert_numpy_to_python(item) for item in data]
+    else:
+        return data
+
 
 def dataframe_metadata_to_json(df):
     """
@@ -13,11 +31,12 @@ def dataframe_metadata_to_json(df):
     """
     # Does not exceed the number of rows in the data
     sample_size = min(200, len(df))
+    data_dict = df.head(sample_size).applymap(convert_numpy_to_python).to_dict(orient='records')
 
     metadata = {
         "columnNames": list(df.columns),
         "datatype": [str(df[col].dtype) for col in df.columns],
-        "data": df.head(sample_size).to_dict(orient='records'),
+        "data": data_dict,
         "type_conversion": {col: possible_conversions(str(df[col].dtype)) for col in df.columns}
     }
 

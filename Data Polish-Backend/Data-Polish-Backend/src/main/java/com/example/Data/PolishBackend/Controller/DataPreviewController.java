@@ -1,6 +1,6 @@
 package com.example.Data.PolishBackend.Controller;
 
-import com.example.Data.PolishBackend.Service.DataCleaningService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.Data.PolishBackend.Service.DataPreviewService; // Import the DataCleaningService
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"*"})
 public class DataPreviewController {
     @Autowired
     private DataPreviewService dataPreviewService;

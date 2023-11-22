@@ -83,4 +83,51 @@
             ]
         }
     }
+},
+
+"extract_datetime_components": {
+    "example_datetime_column": [
+        "year",
+        "month",
+        "day",
+        "hour",
+        "minute",
+        "second"
+    ]
+},
+"replace_substring": {
+    "example_text_column": {
+        "old_substring": "example_old_substring",
+        "new_substring": "example_new_substring"
+    }
+},
+
+"apply_pca": {
+    "columns": [
+        "example_column1",
+        "example_column2"
+    ],
+    "n_components": "example_number_of_components"
+},
+
+"parse_datetime": {
+    "example_datetime_column": {
+        "datetime_format": "example_datetime_format"
+    }
+},
+"adjust_text_case": {
+    "example_text_column": "example_case_format"
+},
+"remove_stopwords": {
+    "example_text_column": "example_language"
+},
+"collapse_rare_categories": {
+    "example_categorical_column": "example_threshold_percentage"
 }
+
+
+
+
+
+
+

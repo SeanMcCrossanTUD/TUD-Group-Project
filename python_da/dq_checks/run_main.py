@@ -8,7 +8,8 @@ from azure.core.exceptions import AzureError
 from dq_checks.src.data_quality_checker import DataQualityChecker
 from dq_checks.src.data_profiling_visuals import DataProfilingVisuals
 from dq_checks.azure_package.src.azure_functions import (
-    download_blob_csv_data, 
+    download_blob_csv_data,
+    download_blob_excel_data, 
     upload_results_to_azure,
     upload_meta_to_azure_data_preview,
     upload_image_to_azure,
@@ -90,6 +91,13 @@ def perform_data_quality_checks(data):
     except KeyError as e:
         logger.error(f"KeyError accessing count_unique_values_in_text_fields: {e}")
         raise
+
+    try:
+        data_type_profile_count = checker.data_type_profile()
+        logger.info(f'Successfully retrieved data_type_profile_count: {data_type_profile_count}')
+    except KeyError as e:
+        logger.error(f"KeyError accessing data_type_profile_count: {e}")
+        raise        
     
     try:
         z_score_outliers = checker.z_score_outliers()
@@ -98,12 +106,12 @@ def perform_data_quality_checks(data):
         logger.error(f"KeyError accessing z_score_outliers: {e}")
         raise
     
-    try:
-        iqr_outliers = checker.iqr_outliers()
-        logger.info(f'Successfully retrieved iqr_outliers')
-    except KeyError as e:
-        logger.error(f"KeyError accessing iqr_outliers: {e}")
-        raise
+    # try:
+    #     iqr_outliers = checker.iqr_outliers()
+    #     logger.info(f'Successfully retrieved iqr_outliers')
+    # except KeyError as e:
+    #     logger.error(f"KeyError accessing iqr_outliers: {e}")
+    #     raise
     
     # Combine the results into a dictionary
     result = {
@@ -111,9 +119,10 @@ def perform_data_quality_checks(data):
         'number_of_fields': number_of_fields,
         'number_of_duplicate_values': number_of_duplicate_values,
         'missing_values': missing_values,
+        'data_type_profile': data_type_profile_count,
         'unique_values_in_text_fields': unique_values,
-        'z_score_outliers': z_score_outliers,
-        'iqr_outliers': iqr_outliers
+        'z_score_outliers': z_score_outliers
+        # 'iqr_outliers': iqr_outliers
     }
 
     return result
@@ -170,8 +179,14 @@ def main(test_iterations=None):
                 filename = message_content.get('filename', 'Unknown Filename') 
                 jobID = message_content.get('jobID', 'Unknown JobID')
 
-                data = download_blob_csv_data(connection_string=connection_string, file_name=filename, container_name=container_name_data_input)
-                logger.info(f'Download data complete for: {filename} - {jobID}')
+                file_extension = os.path.splitext(filename)[1].lower()
+                if file_extension in ['.xlsx', '.xls']:
+                    data = download_blob_excel_data(connection_string=connection_string, file_name=filename, container_name=container_name_data_input)
+                elif file_extension == '.csv':
+                    data = download_blob_csv_data(connection_string=connection_string, file_name=filename, container_name=container_name_data_input)
+                else:
+                    logger.error(f'Unsupported file format for file: {filename}. Only CSV and Excel files are supported.')
+                    continue  # Skip to the next iteration
 
                 meta_data_result = meta_data_to_blob(df=data)
                 logger.info(f'Meta data for Data Preview complete for: {filename} - {jobID}')
@@ -190,8 +205,9 @@ def main(test_iterations=None):
                 logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
 
                 logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
-                time.sleep(6000)
-
+                
+                time.sleep(60)
+                logger.info("sleep finished")
                 # Increment the counter
                 counter += 1
 

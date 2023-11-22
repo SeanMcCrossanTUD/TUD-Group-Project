@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
-import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 from data_prep.src.data_prep import DataPrep 
 
 import pytest
@@ -333,4 +335,362 @@ def test_bin_numeric_to_categorical_incorrect_labels(test_dataframe6):
     with pytest.raises(Exception):
         dp.bin_numeric_to_categorical('Numeric', [0, 1, 2], 'incorrect')
 
+
+# Fixture for a test dataframe
+@pytest.fixture
+def test_dataframe7():
+    return pd.DataFrame({
+        'A': [1, 2, 3],
+        'B': [4, 5, 6],
+        'C': [7, 8, 9]
+    })
+
+# Test successful removal of columns
+def test_remove_columns_success(test_dataframe7):
+    dp = DataPrep(test_dataframe7)
+    dp.remove_columns(['A', 'B'])
+    assert 'A' not in dp.dataframe.columns and 'B' not in dp.dataframe.columns
+
+# Test removal of non-existent column
+def test_remove_columns_non_existent(test_dataframe7):
+    dp = DataPrep(test_dataframe7)
+    with pytest.raises(ValueError):
+        dp.remove_columns(['D'])
+
+# Test removal when no dataframe is loaded
+def test_remove_columns_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.remove_columns(['A'])
+
+# Test invalid columns list (not a list)
+def test_remove_columns_invalid_input(test_dataframe7):
+    dp = DataPrep(test_dataframe7)
+    with pytest.raises(ValueError):
+        dp.remove_columns('A')  # Passing a string instead of a list
+
+# Test removing non-existent and existing columns together
+def test_remove_columns_mixed_existence(test_dataframe7):
+    dp = DataPrep(test_dataframe7)
+    with pytest.raises(ValueError):
+        dp.remove_columns(['A', 'D'])  # 'A' exists, but 'D' does not
+
+# Fixture for a test dataframe
+@pytest.fixture
+def datetime_dataframe():
+    return pd.DataFrame({
+        'Datetime': pd.to_datetime(['2021-01-01 10:00:00', '2021-06-15 15:30:25'])
+    })
+
+# Test successful extraction of components
+def test_extract_datetime_components_success(datetime_dataframe):
+    dp = DataPrep(datetime_dataframe)
+    dp.extract_datetime_components('Datetime', ['year', 'month', 'day'])
+    assert 'Datetime_year' in dp.dataframe.columns
+    assert 'Datetime_month' in dp.dataframe.columns
+    assert 'Datetime_day' in dp.dataframe.columns
+    assert dp.dataframe['Datetime_year'].iloc[0] == 2021
+    assert dp.dataframe['Datetime_month'].iloc[1] == 'June'
+    assert dp.dataframe['Datetime_day'].iloc[0] == 'Friday'
+
+# Test extraction from non-existent column
+def test_extract_datetime_components_non_existent_column(datetime_dataframe):
+    dp = DataPrep(datetime_dataframe)
+    with pytest.raises(ValueError):
+        dp.extract_datetime_components('NonExistent', ['year'])
+
+# Test extraction from non-datetime column
+def test_extract_datetime_components_non_datetime_column(datetime_dataframe):
+    datetime_dataframe['NotDatetime'] = [1, 2]
+    dp = DataPrep(datetime_dataframe)
+    with pytest.raises(ValueError):
+        dp.extract_datetime_components('NotDatetime', ['year'])
+
+# Test extraction when no dataframe is loaded
+def test_extract_datetime_components_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.extract_datetime_components('Datetime', ['year'])
+
+# Test invalid component specification
+def test_extract_datetime_components_invalid_component(datetime_dataframe):
+    dp = DataPrep(datetime_dataframe)
+    with pytest.raises(ValueError):
+        dp.extract_datetime_components('Datetime', ['century'])
+
+# Test extracting multiple components
+def test_extract_datetime_components_multiple(datetime_dataframe):
+    dp = DataPrep(datetime_dataframe)
+    dp.extract_datetime_components('Datetime', ['hour', 'minute', 'second'])
+    assert 'Datetime_hour' in dp.dataframe.columns
+    assert 'Datetime_minute' in dp.dataframe.columns
+    assert 'Datetime_second' in dp.dataframe.columns
+    assert dp.dataframe['Datetime_hour'].iloc[0] == 10
+    assert dp.dataframe['Datetime_minute'].iloc[1] == 30
+    assert dp.dataframe['Datetime_second'].iloc[0] == 0
+
+# Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe2():
+    return pd.DataFrame({
+        'Text': ['Hello world', 'Hello Python', 'Goodbye world'],
+        'Numeric': [1, 2, 3]
+    })
+
+# Test successful substring replacement
+def test_replace_substring_success(text_dataframe2):
+    dp = DataPrep(text_dataframe2)
+    dp.replace_substring('Text', 'world', 'Earth')
+    assert dp.dataframe['Text'].equals(pd.Series(['Hello Earth', 'Hello Python', 'Goodbye Earth']))
+
+# Test replacement in non-existent column
+def test_replace_substring_non_existent_column(text_dataframe2):
+    dp = DataPrep(text_dataframe2)
+    with pytest.raises(ValueError):
+        dp.replace_substring('NonExistent', 'world', 'Earth')
+
+# Test replacement in non-text column
+def test_replace_substring_non_text_column(text_dataframe2):
+    dp = DataPrep(text_dataframe2)
+    with pytest.raises(ValueError):
+        dp.replace_substring('Numeric', '1', 'One')
+
+# Test replacement when no dataframe is loaded
+def test_replace_substring_no_dataframe():
+    dp = DataPrep(None)  # No dataframe loaded
+    with pytest.raises(ValueError):
+        dp.replace_substring('Text', 'world', 'Earth')
+
+
+# Test no occurrence of substring
+def test_replace_substring_no_occurrence(text_dataframe):
+    dp = DataPrep(text_dataframe.copy())
+    original_text = dp.dataframe['Text'].copy()
+    dp.replace_substring('Text', 'universe', 'galaxy')
+
+    # Ensure no changes were made to the dataframe as 'universe' doesn't exist in 'Text'
+    pd.testing.assert_series_equal(dp.dataframe['Text'], original_text)
+
+# Fixture for a test dataframe
+@pytest.fixture
+def numeric_dataframe():
+    np.random.seed(0)
+    return pd.DataFrame(np.random.rand(10, 4), columns=['A', 'B', 'C', 'D'])
+
+# Test successful PCA application
+def test_apply_pca_success(numeric_dataframe):
+    dp = DataPrep(numeric_dataframe)
+    dp.apply_pca(['A', 'B', 'C', 'D'])
+    assert 'principal_component_1' in dp.dataframe.columns
+
+# Test PCA with non-existent columns
+def test_apply_pca_non_existent_column(numeric_dataframe):
+    dp = DataPrep(numeric_dataframe)
+    with pytest.raises(ValueError):
+        dp.apply_pca(['X', 'Y'])
+
+# Test PCA specifying number of components
+def test_apply_pca_specified_components(numeric_dataframe):
+    dp = DataPrep(numeric_dataframe)
+    n_components = 2
+    dp.apply_pca(['A', 'B', 'C', 'D'], n_components=n_components)
+    assert len([col for col in dp.dataframe.columns if 'principal_component' in col]) == n_components
+
+# Test PCA when no dataframe is loaded
+def test_apply_pca_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.apply_pca(['A', 'B'])
+
+# Test PCA on non-numeric columns
+def test_apply_pca_non_numeric_columns():
+    df = pd.DataFrame({
+        'A': ['a', 'b', 'c', 'd'],
+        'B': ['e', 'f', 'g', 'h']
+    })
+    dp = DataPrep(df)
+    with pytest.raises(Exception):
+        dp.apply_pca(['A', 'B'])
+
+
+
+# Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe3():
+    return pd.DataFrame({
+        'DateStr': ['2021-01-01', '2021-01-02', '2021-01-03'],
+        'DateTime': pd.date_range(start='1/1/2021', periods=3, freq='D')
+    })
+
+# Test successful date-time parsing with known format
+def test_parse_datetime_success(text_dataframe3):
+    dp = DataPrep(text_dataframe3)
+    # Ensure the date format matches the format of the date strings in 'DateStr'
+    # Assuming 'DateStr' contains dates in 'YYYY-MM-DD' format
+    dp.parse_datetime('DateStr', datetime_format='%Y-%m-%d')
+    assert pd.api.types.is_datetime64_any_dtype(dp.dataframe['DateStr'])
+
+
+# Test inferring date-time format
+def test_parse_datetime_infer_format(text_dataframe3):
+    dp = DataPrep(text_dataframe3)
+    dp.parse_datetime('DateStr')
+    assert pd.api.types.is_datetime64_any_dtype(dp.dataframe['DateStr'])
+
+# Test parsing with non-existent column
+def test_parse_datetime_non_existent_column(text_dataframe3):
+    dp = DataPrep(text_dataframe3)
+    with pytest.raises(ValueError):
+        dp.parse_datetime('NonExistent')
+
+# Test parsing when no dataframe is loaded
+def test_parse_datetime_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.parse_datetime('DateStr')
+
+# Test parsing with incorrect date-time format
+def test_parse_datetime_incorrect_format(text_dataframe3):
+    dp = DataPrep(text_dataframe3)
+    with pytest.raises(Exception):
+        dp.parse_datetime('DateStr', datetime_format='%d-%m-%Y')
+
+# Test parsing non-date-time data
+def test_parse_datetime_non_datetime_data():
+    df = pd.DataFrame({'NotDateTime': ['a', 'b', 'c']})
+    dp = DataPrep(df)
+    dp.parse_datetime('NotDateTime')
+    # Check if parsing resulted in NaT (not a time) values due to coercion
+    assert all(pd.isna(dp.dataframe['NotDateTime']))
+
+    # Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe4():
+    return pd.DataFrame({
+        'Text': ['Hello World', 'goodbye moon', 'Python Programming'],
+        'Numeric': [1, 2, 3]
+    })
+
+# Test successful text case adjustment for each case format
+@pytest.mark.parametrize("case_format,expected", [
+    ('upper', ['HELLO WORLD', 'GOODBYE MOON', 'PYTHON PROGRAMMING']),
+    ('lower', ['hello world', 'goodbye moon', 'python programming']),
+    ('title', ['Hello World', 'Goodbye Moon', 'Python Programming'])
+])
+def test_adjust_text_case_success(text_dataframe4, case_format, expected):
+    dp = DataPrep(text_dataframe4)
+    dp.adjust_text_case('Text', case_format)
+    assert dp.dataframe['Text'].tolist() == expected
+
+# Test adjustment with non-existent column
+def test_adjust_text_case_non_existent_column(text_dataframe4):
+    dp = DataPrep(text_dataframe4)
+    with pytest.raises(ValueError):
+        dp.adjust_text_case('NonExistent', 'upper')
+
+# Test adjustment in non-text column
+def test_adjust_text_case_non_text_column(text_dataframe4):
+    dp = DataPrep(text_dataframe4)
+    with pytest.raises(ValueError):
+        dp.adjust_text_case('Numeric', 'upper')
+
+# Test adjustment when no dataframe is loaded
+def test_adjust_text_case_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.adjust_text_case('Text', 'upper')
+
+# Test invalid case format
+def test_adjust_text_case_invalid_format(text_dataframe4):
+    dp = DataPrep(text_dataframe4)
+    with pytest.raises(ValueError):  # Expecting a ValueError, not a generic Exception
+        dp.adjust_text_case('Text', 'invalid_format')
+
+# Fixture for a test dataframe
+@pytest.fixture
+def text_dataframe5():
+    return pd.DataFrame({
+        'Text': ['This is a sample sentence.', 'Another example sentence with stop words.', 'Text with no stopwords'],
+        'Numeric': [1, 2, 3]
+    })
+
+# Test successful stop word removal
+def test_remove_stopwords_success(text_dataframe5):
+    dp = DataPrep(text_dataframe5)
+    dp.remove_stopwords('Text')
+    assert 'is' not in dp.dataframe['Text'].iloc[1]
+
+# Test removal with non-existent column
+def test_remove_stopwords_non_existent_column(text_dataframe5):
+    dp = DataPrep(text_dataframe5)
+    with pytest.raises(ValueError):
+        dp.remove_stopwords('NonExistent')
+
+# Test removal in non-text column
+def test_remove_stopwords_non_text_column(text_dataframe5):
+    dp = DataPrep(text_dataframe5)
+    with pytest.raises(ValueError):
+        dp.remove_stopwords('Numeric')
+
+# Test removal when no dataframe is loaded
+def test_remove_stopwords_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.remove_stopwords('Text')
+
+
+#Try a different language
+def test_remove_stopwords_different_language(text_dataframe5):
+    try:
+        # Download Spanish stop words, if not already present
+        nltk.download('stopwords', quiet=True)
+
+        dp = DataPrep(text_dataframe5)
+        dp.remove_stopwords('Text', language='spanish')
+        # Add an appropriate assertion here based on your test data
+    except LookupError:
+        pytest.skip("NLTK stop words for Spanish not available.")
+
+# Fixture for a test dataframe
+@pytest.fixture
+def categorical_dataframe():
+    return pd.DataFrame({
+        'Category': ['A', 'A', 'B', 'C', 'C', 'C', 'D', 'E', 'F', 'G']
+    })
+
+# Test successful collapse of rare categories
+def test_collapse_rare_categories_success(categorical_dataframe):
+    dp = DataPrep(categorical_dataframe)
+    dp.collapse_rare_categories('Category', 20.0)  # Setting threshold so that 'D', 'E', 'F', 'G' become 'Other'
+    assert set(dp.dataframe['Category'].unique()) == {'A', 'B', 'C', 'Other'}
+
+# Test collapse with non-existent column
+def test_collapse_rare_categories_non_existent_column(categorical_dataframe):
+    dp = DataPrep(categorical_dataframe)
+    with pytest.raises(ValueError):
+        dp.collapse_rare_categories('NonExistent', 5.0)
+
+# Test collapse in non-categorical column
+def test_collapse_rare_categories_non_categorical_column(categorical_dataframe):
+    dp = DataPrep(pd.DataFrame({'Numeric': [1, 2, 3, 4]}))
+    with pytest.raises(ValueError):
+        dp.collapse_rare_categories('Numeric', 5.0)
+
+# Test collapse when no dataframe is loaded
+def test_collapse_rare_categories_no_dataframe():
+    dp = DataPrep(None)
+    with pytest.raises(ValueError):
+        dp.collapse_rare_categories('Category', 5.0)
+
+# Test different threshold percentages
+def test_collapse_rare_categories_different_thresholds(categorical_dataframe):
+    dp = DataPrep(categorical_dataframe)
+    dp.collapse_rare_categories('Category', 10.0)  # Setting a different threshold
+    assert 'Other' in dp.dataframe['Category'].unique()
+
+# Test when no categories are rare
+def test_collapse_rare_categories_no_rare(categorical_dataframe):
+    dp = DataPrep(categorical_dataframe)
+    dp.collapse_rare_categories('Category', 1.0)  # Setting a low threshold so no category is rare
+    assert 'Other' not in dp.dataframe['Category'].unique()
 

@@ -5,12 +5,16 @@ from dq_checks.src.data_quality_checker import DataQualityChecker
 # Sample data for testing
 data = {
     'A': [1, 2, None, 4, 1, 5, 5],  
-    'B': [None, 2, 3, 4, 2, None, None],  
-    'C': [1, 2, 3, 4, 1, 5, 5],
+    'B': [None, 2, 3.2, 4, 2, None, None],  
+    'C': [1, 2.1, 3, 4, 1, 5, 5],
     'D': ['Cat', 'Dog', 'Cat', 'Cow', None, 'Dog', 'Dog'],
     'E': ['Bike', None, 'Bus', 'Car', None, 'Train', 'Train']
 }
 
+expected_data_type_profile = {
+    'float64': 3,
+    'object': 2
+}
 
 # Expected result for missing values count
 expected_missing_values_result = {'A': 1, 'B': 3, 'C': 0, 'D': 1, 'E': 2}
@@ -27,11 +31,11 @@ expected_unique_values_result = {'D': 3, 'E': 4}
 # Expected result for number of fields count
 expected_fields_count = 5
 
-# Fixture to initialize DataQualityChecker with sample data
 @pytest.fixture
 def checker():
     dataset = pd.DataFrame(data)
     return DataQualityChecker(dataset)
+
 
 # Test function to check count_missing_values method
 def test_count_missing_values(checker):
@@ -52,6 +56,10 @@ def test_count_unique_values_in_text_fields(checker):
 # Test function to check count_number_of_fields method
 def test_count_number_of_fields(checker):
     assert checker.count_number_of_fields() == expected_fields_count
+
+# Test function for data_type_profile
+def test_data_type_profile(checker):
+    assert checker.data_type_profile() == expected_data_type_profile
 
 # Sample data for testing z_score_outliers
 outlier_data = {
@@ -114,9 +122,16 @@ def outlier_checker():
     dataset = pd.DataFrame(outlier_data)
     return DataQualityChecker(dataset)
 
-# Test function to check z_score_outliers method
 def test_z_score_outliers(outlier_checker):
-    assert outlier_checker.z_score_outliers(threshold=2) == expected_z_outliers_result
+    actual_outliers = outlier_checker.z_score_outliers(threshold=2)
+    
+    # Filtering actual_outliers to include only those marked as outliers
+    filtered_actual_outliers = {}
+    for col, outliers in actual_outliers.items():
+        filtered_actual_outliers[col] = [outlier for outlier in outliers if outlier['is_outlier']]
+
+    assert filtered_actual_outliers == expected_z_outliers_result
+
 
 # Test function to check iqr_outliers method
 def test_iqr_outliers(outlier_checker):

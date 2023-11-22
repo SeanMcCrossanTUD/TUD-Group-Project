@@ -27,58 +27,38 @@ class DataQualityChecker:
 
     def count_number_of_fields(self) -> int:
         return len(self.dataset.columns)
+    
+    def data_type_profile(self) -> dict:
+        data_type_count = {}
+        for col in self.dataset.columns:
+            dtype = str(self.dataset[col].dtype)
+            data_type_count[dtype] = data_type_count.get(dtype, 0) + 1
+        return data_type_count
 
     def z_score_outliers(self, threshold: float = 3.0) -> dict:
         """
-        This function identifies and returns the outliers in the dataset based on the z-score method.
-    
-        Parameters:
-        threshold (float): The z-score threshold to identify outliers. Default is 3.0.
-    
-        Returns:
-        dict: A dictionary containing detailed information about each outlier, including:
-            - row: The index of the outlier in the dataset.
-            - field: The column name where the outlier is located.
-            - value: The actual value of the outlier.
-            - z_score: The z-score of the outlier.
-            - is_outlier: Always True, as we are filtering by the threshold.
-            - threshold: The threshold used to determine the outlier.
-          
-        Instantiate the DataQualityChecker class with a pd.DataFrame and call the z_score_outliers method to get the outliers in the dataset based on the z-score method.
-
-        Thresholds:
-            - 1.0 means approximately 68% of the data falls within 1 standard deviation (1 z-score) of the mean.
-            - 1.0 means approximately 95% of the data falls within 2 standard deviation (2 z-score) of the mean.
-            - 3.0 means approximately 99.7% of the data falls within 3 standard deviation (2 z-score) of the mean.
-    
-        Example:
-        ```
-        checker = DataQualityChecker(dataset)
-        outliers = checker.z_score_outliers(threshold=3.0)
-        ```
+        Identifies and returns information about all values in the dataset,
+        indicating which ones are outliers based on the z-score method.
         """
-        outliers = {}
-        for col in self.dataset.select_dtypes(include=[np.number]).columns: # Only works on numeric columns
-            col_values = self.dataset[col].dropna().reset_index(drop=True)  # FIXED: Resetting index after dropping NaN values - had to reset index
+        result = {"fields": [], "outliers": {}}
+        for col in self.dataset.select_dtypes(include=[np.number]).columns:
+            result["fields"].append(col)
+            col_values = self.dataset[col].dropna()
             z_scores = np.abs(stats.zscore(col_values))
-            outlier_indices = np.where(z_scores > threshold)
-        
-            # Extracting detailed information for each outlier
-            outlier_info = [
+
+            result["outliers"][col] = [
                 {
-                    "row": col_values.index[idx],  # Getting the original index of the outlier
+                    "row": idx,
                     "field": col,
-                    "value": col_values.iloc[idx],
+                    "value": val,
                     "z_score": z_scores[idx],
-                    "is_outlier": True,  # Will always be true currently. 
-                    "threshold": threshold  # The threshold used to determine the outlier
+                    "is_outlier": bool(z_scores[idx] > threshold),  # Explicitly convert to Python bool
+                    "threshold": threshold
                 }
-                for idx in outlier_indices[0]
+                for idx, val in col_values.iteritems()
             ]
-            if outlier_info:  # Adding to the result only if there are outliers for the column
-                outliers[col] = outlier_info
-                
-        return outliers
+        return result
+
 
     def iqr_outliers(self, k: float = 1.5) -> dict:
         """
