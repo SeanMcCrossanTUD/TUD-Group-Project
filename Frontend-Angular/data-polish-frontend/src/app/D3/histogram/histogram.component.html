@@ -1,0 +1,10 @@
+<div class="filter">
+    <label for="field-select">Select Variable:</label>
+    <select id="field-select" [(ngModel)]="selectedField" (change)="onFieldChange()">
+      <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
+    </select>
+  </div>
+  
+  <h2>{{ selectedField }} Distribution</h2>
+  <div id="histogram"></div>
+  
