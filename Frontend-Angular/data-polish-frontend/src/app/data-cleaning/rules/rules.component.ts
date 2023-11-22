@@ -5,6 +5,7 @@ import { CellClickedEvent, ColDef, GridReadyEvent,GridApi } from 'ag-grid-commun
 import { AdvanceOptionsButtonComponent } from './nested-components/advance-options-button/advance-options-button.component';
 
 import 'ag-grid-enterprise';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -18,7 +19,7 @@ export class RulesComponent {
   }
   constructor(
     private DataPreviewDataService:DataPreviewDataService,
- 
+    private messageService: MessageService,
     ){
 
   }
@@ -122,6 +123,7 @@ export class RulesComponent {
 
       this.rules.columns_kept=temp;
       console.log(this.rules);
+      this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Your rules has been saved' })
    }
 
    
@@ -212,14 +214,16 @@ export class RulesComponent {
       x["Keep column"]=false;
        
     })
-
-    // var params = {
-    //   force: this.isForceRefreshSelected(),
-    //   suppressFlash: this.isSuppressFlashSelected(),
-    // };
-    // this.gridApi.refreshCells(params);
     this.gridApi.redrawRows();
 
+  }
+
+  addAllFields(){
+    this.rowData.forEach((x:any)=>{
+      x["Keep column"]=true;
+       
+    })
+    this.gridApi.redrawRows();
   }
    isForceRefreshSelected() {
     return (document.querySelector('#forceRefresh') as HTMLInputElement).checked;
