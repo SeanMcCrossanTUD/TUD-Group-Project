@@ -88,6 +88,26 @@ export class HistogramComponent implements OnInit {
         .attr("width", d => x(d.x1 as number) - x(d.x0 as number) - 1)
         .attr("height", d => height - y(d.length))
         .style("fill", "#69b3a2");
+    // Normal distribution curve
+    const mean = d3.mean(this.data, d => d.value) as number;
+    const deviation = d3.deviation(this.data, d => d.value) as number;
+    const normalLine = d3.line<HistogramDataPoint>()
+      .curve(d3.curveBasis)
+      .x(d => x(d.value))
+      .y(d => {
+        const pdf = (1 / (deviation * Math.sqrt(2 * Math.PI))) *
+                    Math.exp(-0.5 * Math.pow((d.value - mean) / deviation, 2));
+        return y(pdf * height); // Adjust pdf value to fit histogram's y scale
+      });
+
+    const normalData = x.ticks(100).map(val => ({ value: val }));
+
+    svg.append("path")
+      .datum(normalData)
+      .attr("fill", "none")
+      .attr("stroke", "green")
+      .attr("stroke-width", 2)
+      .attr("d", normalLine);
 
         const line = d3.line<d3.Bin<HistogramDataPoint, number>>()
         .curve(d3.curveBasis)
