@@ -42,9 +42,11 @@ public class UserRegistrationService {
     }
 
     private boolean isValidEmail(String email) {
-        // Add your email validation logic here (e.g., using regular expressions)
-        // For simplicity, let's assume any non-null, non-empty email is valid in this example.
-        return email != null && !email.isEmpty();
+        // Basic email format validation using a regular expression
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+        // Check if the provided email matches the regular expression
+        return email.matches(emailRegex);
     }
 
     private boolean emailExists(String email) {
