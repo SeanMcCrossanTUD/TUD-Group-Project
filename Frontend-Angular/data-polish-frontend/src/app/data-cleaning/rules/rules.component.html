@@ -1,10 +1,87 @@
-
+<div class="remove-all-button">
+  <div (click)="addAllFields()">
+    <span class="material-icons">add_circle</span> Add All Columns
+  </div>  &nbsp;
+  <div (click)="removeAllFields()">
+    <span class="material-icons">cancel</span> Remove All Columns
+  </div>
+  &nbsp;
+  <div (click)="setdata()">
+    <span class="material-icons">save</span> save cleaning rules </div>
+</div>
 <ag-grid-angular
     style="width: 80vw;height: 70vh;"
     class="ag-theme-alpine"
     [defaultColDef]="defaultColDef"
     [rowData]="rowData"
     [sideBar]="sideBar"
-
-    [columnDefs]="columnDefs">
+    editable=true
+    
+    [columnDefs]="DatapreviewColumnNames"
+    (gridReady)="onGridReady($event)">
 </ag-grid-angular>
+
+
+<p-dialog [header]="currentrow" 
+[(visible)]="visible" 
+[breakpoints]="{ '960px': '75vw' }" 
+[style]="{ width: '50vw',height:'70vh' }"
+ [draggable]="true"
+  [resizable]="true">
+  <div class="pop-up-continer">
+    <div>
+      Remove Special characters
+    <p-checkbox  [(ngModel)]="cb_remove_special_characters" inputId="binary" [binary]="true"></p-checkbox>
+
+    </div>
+
+    <div>
+      Trim Whitespace
+    <p-checkbox  [(ngModel)]="cb_trim_whitespace" inputId="binary" [binary]="true"></p-checkbox>
+
+    </div>
+
+    <div>
+      Data Normalization
+      <div>
+        <p-checkbox  [(ngModel)]="cb_normalization" inputId="binary" [binary]="true"></p-checkbox>
+        <p-dropdown [hidden]="!cb_normalization" [options]="normalizationTypes" [(ngModel)]="selectedNormalizationTypes" optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
+  
+     
+      </div>
+        </div>
+      <!-- <div>
+        <span> </span>
+        <p-dropdown [hidden]="!cb_normalization" [options]="normalizationTypes" [(ngModel)]="selectedNormalizationTypes" optionLabel="types" [showClear]="true" placeholder="Select new Data type"></p-dropdown>
+
+      </div> -->
+      <div>
+        Outlier Management
+        <div>
+          <p-checkbox  [(ngModel)]="cb_outlierManagement" inputId="binary" [binary]="true"></p-checkbox>
+          <p-dropdown [hidden]="!cb_outlierManagement" [options]="outlierTypes" [(ngModel)]="selectedOutlier" optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
+  
+        </div>
+          </div>
+       
+
+
+
+
+
+
+
+
+    </div>
+    
+    
+ 
+  <br/>
+  <div class="save-button">
+    <div (click)="savechangestorules()">Save</div>
+  </div>
+ 
+
+  <!--  [binary]="true" -->
+    
+</p-dialog>

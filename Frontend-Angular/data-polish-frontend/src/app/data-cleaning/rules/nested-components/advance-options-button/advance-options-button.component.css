@@ -1,0 +1,9 @@
+.in:hover{
+    cursor: pointer;
+}
+
+.head{
+    display: flex;
+    justify-content: center;
+    
+}

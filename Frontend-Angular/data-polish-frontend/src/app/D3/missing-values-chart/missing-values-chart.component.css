@@ -1,8 +1,8 @@
-.bar-1 {
+.bar {
     fill:red;
 }
 
-.bar-1:hover {
+.bar:hover {
     fill: rgb(157, 0, 255);
 }
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Test</title>
+</head>
+<body>
+<h1>CORS Test</h1>
+<script>
+    const url = 'http://localhost:8080/data-preview?jobID=0566e933-8250-11ee-bd07-0e663d1dd79c';
+
+    fetch(url)
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+</script>
+</body>
+</html>
+
+/*
+    how to test CORS from other ports (default for this app is 8080)
+Step 1- Create an HTML file with JavaScript to make a CORS request.(this file)
+Step 2- Save this html file in resources/static directory
+Step 3-Serve the HTML File from a Different Port
+    use a simple HTTP server to serve the HTML file from a different port.
+    One easy way is to use the http-server Node.js package.
+    install it using (from terminal): npm install -g http-server
+    navigate to the folder containing cors-test.html in the terminal and run:
+    http-server -p 3000
+    This command will start an HTTP server on port 3000.
+Step 4- from browser access http://localhost:3000/cors-test.html.
+    This will make a CORS request from port 3000 to Spring Boot application running
+    on port 8080.
+Step 5- Open the browser's developer tools and go to the "Console" tab.
+        Can see result of the CORS request in the console.
+*/

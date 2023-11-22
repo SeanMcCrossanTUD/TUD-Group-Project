@@ -8,7 +8,8 @@ from azure.core.exceptions import AzureError
 from dq_checks.src.data_quality_checker import DataQualityChecker
 from dq_checks.src.data_profiling_visuals import DataProfilingVisuals
 from dq_checks.azure_package.src.azure_functions import (
-    download_blob_csv_data, 
+    download_blob_csv_data,
+    download_blob_excel_data, 
     upload_results_to_azure,
     upload_meta_to_azure_data_preview,
     upload_image_to_azure,
@@ -178,8 +179,14 @@ def main(test_iterations=None):
                 filename = message_content.get('filename', 'Unknown Filename') 
                 jobID = message_content.get('jobID', 'Unknown JobID')
 
-                data = download_blob_csv_data(connection_string=connection_string, file_name=filename, container_name=container_name_data_input)
-                logger.info(f'Download data complete for: {filename} - {jobID}')
+                file_extension = os.path.splitext(filename)[1].lower()
+                if file_extension in ['.xlsx', '.xls']:
+                    data = download_blob_excel_data(connection_string=connection_string, file_name=filename, container_name=container_name_data_input)
+                elif file_extension == '.csv':
+                    data = download_blob_csv_data(connection_string=connection_string, file_name=filename, container_name=container_name_data_input)
+                else:
+                    logger.error(f'Unsupported file format for file: {filename}. Only CSV and Excel files are supported.')
+                    continue  # Skip to the next iteration
 
                 meta_data_result = meta_data_to_blob(df=data)
                 logger.info(f'Meta data for Data Preview complete for: {filename} - {jobID}')

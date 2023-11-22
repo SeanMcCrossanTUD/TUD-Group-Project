@@ -29,11 +29,10 @@ export class HomePageComponent {
       this.jobids=JSON.parse(this.cookieService.get('jobsid'))
     }catch{}
 
-    console.log(this.jobids)
+   
   }
 
   copytoclipboard(e: any) {
-   console.log( AppSettings.getBaseURL());
     navigator.clipboard.writeText(e);
     this.messageService.add({ severity: 'success', summary: 'ID copied ' });
 

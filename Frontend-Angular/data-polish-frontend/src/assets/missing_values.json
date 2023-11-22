@@ -1,0 +1,16 @@
+{
+    "missing_values": {
+        "fixed acidity": 0,
+        "volatile acidity": 0,
+        "citric acid": 0,
+        "residual sugar": 0,
+        "chlorides": 0,
+        "free sulfur dioxide": 0,
+        "total sulfur dioxide": 0,
+        "density": 0,
+        "pH": 0,
+        "sulphates": 0,
+        "alcohol": 0,
+        "quality": 0
+    }
+}

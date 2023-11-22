@@ -1,7 +1,7 @@
 .resize-2{
     resize: vertical;
     overflow: auto;
-    border: 1px solid;
+  
     display: inline-flex;
     height: 30vh;
     color:white;
@@ -9,9 +9,9 @@
   .resize{
     resize: vertical;
     overflow: auto;
-    border: 1px solid;
+
     display: inline-flex;
-    height: 50vh;
+    height: 40vh;
     color:white;
   }
 

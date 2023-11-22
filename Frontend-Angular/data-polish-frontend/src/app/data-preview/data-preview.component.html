@@ -2,8 +2,14 @@
     <span class="material-icons" (click)="refresh()">
         sync
         </span>
+        <div>Refresh</div>
 </div>
+<div class="progress-bar" *ngIf="!dataloaded">
+    <p-progressSpinner></p-progressSpinner>
+</div>
+
 <ag-grid-angular
+    *ngIf="dataloaded"
     style="width: 80vw;height: 70vh;"
     class="ag-theme-alpine"
     [defaultColDef]="defaultColDef"

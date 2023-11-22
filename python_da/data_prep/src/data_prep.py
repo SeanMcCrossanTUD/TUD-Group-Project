@@ -1,7 +1,10 @@
 import pandas as pd
 import numpy as np
 from scipy import stats
-
+import re
+from sklearn.decomposition import PCA
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 # Class to encapsulate data cleaning functionalities
 class DataPrep:
@@ -480,4 +483,146 @@ class DataPrep:
 
         return self.dataframe
 
+#Function 14
+    def parse_datetime(self, column_name, datetime_format=None):
+        """
+        Parses a column into a datetime format, handling different date/time formats.
+
+        Args:
+        column_name (str): The name of the column to parse.
+        datetime_format (str, optional): The specific format of the datetime data if known. 
+                                         If None, pandas will attempt to infer the format.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Perform the parsing
+        try:
+            if datetime_format:
+                self.dataframe[column_name] = pd.to_datetime(self.dataframe[column_name], format=datetime_format)
+            else:
+                # Attempt to infer the format for each element
+                self.dataframe[column_name] = self.dataframe[column_name].apply(pd.to_datetime, errors='coerce', infer_datetime_format=True)
+        except Exception as e:
+            raise Exception(f'An error occurred while parsing the datetime column: {e}')
+
+        return self.dataframe
+    
+     #Function 15
+    def adjust_text_case(self, column_name, case_format):
+        """
+        Adjusts the text case of a specified column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column to adjust the case for.
+        case_format (str): Desired case format ('upper', 'lower', or 'title').
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the case adjustment
+        if case_format == 'upper':
+            self.dataframe[column_name] = self.dataframe[column_name].str.upper()
+        elif case_format == 'lower':
+            self.dataframe[column_name] = self.dataframe[column_name].str.lower()
+        elif case_format == 'title':
+            self.dataframe[column_name] = self.dataframe[column_name].str.title()
+        else:
+            raise ValueError(f'Invalid case format: {case_format}. Valid options are upper, lower, title.')
+
+        return self.dataframe
+    
+    #Function 16
+    def remove_stopwords(self, column_name, language='english'):
+        """
+        Removes stop words from a text column in the DataFrame for natural language processing.
+
+        Args:
+        column_name (str): The name of the text column to remove stop words from.
+        language (str): Language of the stop words. Default is 'english'.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Load stop words
+        stop_words = set(stopwords.words(language))
+
+        # Function to remove stop words from a sentence
+        def remove_stopwords_from_sentence(sentence):
+            word_tokens = word_tokenize(sentence)
+            filtered_sentence = [w for w in word_tokens if not w.lower() in stop_words]
+            return ' '.join(filtered_sentence)
+
+        # Apply the function to the column
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].apply(remove_stopwords_from_sentence)
+        except Exception as e:
+            raise Exception(f'An error occurred while removing stop words: {e}')
+
+        return self.dataframe
+
+#Function 17
+    def collapse_rare_categories(self, column_name, threshold_percentage=5.0):
+        """
+        Collapses rare categories in a specified column into an 'Other' category.
+        Categories with occurrences less than the threshold percentage are considered rare.
+
+        Args:
+        column_name (str): The name of the categorical column.
+        threshold_percentage (float): The percentage threshold under which a category is considered rare.
+                                      Defaults to 5.0. This should be a value between 0 and 100.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is categorical
+        if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]) and not pd.api.types.is_object_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a categorical column.')
+
+        # Calculate the frequency distribution of the categories
+        frequency = self.dataframe[column_name].value_counts(normalize=True) * 100
+
+        # Determine the rare categories
+        rare_categories = frequency[frequency < threshold_percentage].index
+
+        # Collapse rare categories into 'Other'
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].apply(lambda x: 'Other' if x in rare_categories else x)
+        except Exception as e:
+            raise Exception(f'An error occurred while collapsing rare categories: {e}')
+
+        return self.dataframe
+       
     

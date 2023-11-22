@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 @Component({
   selector: 'app-number-fields-chart',
   templateUrl: './number-fields-chart.component.html',
@@ -10,9 +10,11 @@ import * as d3 from 'd3';
 
 export class NumberFieldsChartComponent implements OnInit {
   number=0;
+  constructor(private D3DashboardService:D3DashboardService){
+
+  }
   ngOnInit() {
-    console.log('Component ngOnInit called');
-    d3.json("assets/data_quality_result.json").then((data: any) => {
+    this.D3DashboardService.getData().subscribe((data: any) => {
       if (!data) {
         console.error('Data is undefined');
         return;

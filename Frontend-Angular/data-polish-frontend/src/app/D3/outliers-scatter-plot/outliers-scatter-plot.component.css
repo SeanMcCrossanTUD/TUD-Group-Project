@@ -1,0 +1,55 @@
+/* Outliers Scatter Plot Container */
+#scatter-plot {
+    font-family: 'Arial', sans-serif;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* SVG Styles */
+#scatter-plot svg {
+    display: block;
+    margin: auto;
+    max-width: 100%;
+}
+
+/* Tooltip Style */
+.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 6px;
+    font-size: 12px;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    color: #fff;
+}
+
+/* Scatter Plot Circles */
+.dot {
+    stroke: #000;
+    stroke-width: 1px;
+}
+
+.dot.outlier {
+    fill: red;
+}
+
+.dot.non-outlier {
+    fill: steelblue;
+}
+
+/* Axis Style */
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-size: 10px;
+}

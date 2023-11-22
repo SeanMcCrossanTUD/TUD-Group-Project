@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 @Component({
   selector: 'app-cardinality',
   templateUrl: './cardinality.component.html',
   styleUrls: ['./cardinality.component.css']
 })
 export class CardinalityComponent implements OnInit {
+ constructor(private D3DashboardService:D3DashboardService){
+
+ }
 
   ngOnInit() {
-    console.log('Component ngOnInit called');
-    d3.json("assets/data_quality_result.json").then((data: any) => {
+    this.D3DashboardService.getData().subscribe((data: any) => {
       if (!data) {
         console.error('Data is undefined');
         return;
@@ -38,7 +40,7 @@ export class CardinalityComponent implements OnInit {
       }
 
       const sortedData: [string, number][] = Object.entries(data.unique_values_in_text_fields).map(([key, value]) => [key, Number(value)] as [string, number]).sort((a, b) => b[1] - a[1]);
-      console.log(sortedData);
+    
 
       const x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
       const y = d3.scaleLinear().rangeRound([height, 0]);
