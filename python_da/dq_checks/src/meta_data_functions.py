@@ -34,7 +34,6 @@ def dataframe_metadata_to_json(df):
 
     df_filtered = df.head(sample_size).fillna(value="")
 
-    # Convert DataFrame to a format suitable for JSON serialization
     data_dict = df_filtered.to_dict(orient='records')
 
     metadata = {
