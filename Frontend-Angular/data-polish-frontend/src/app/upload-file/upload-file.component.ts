@@ -39,7 +39,8 @@ export class UploadFileComponent {
               
       },(err)=>{
 
-        alert('error uploading file');
+        this.messageService.add({ severity: 'error', summary: 'error', detail: 'Your File not uploaded' });
+      
        
       });
       this.dropdown.progress=100;

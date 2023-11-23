@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 interface CorrelationDataPoint {
   predictor: number;
   target: number;
@@ -21,12 +21,17 @@ export class CorrelationScatterPlotComponent implements OnInit {
   ngOnInit() {
     this.loadData();
   }
+  constructor(private D3DashboardService:D3DashboardService){
+
+  }
 
   loadData() {
-    d3.json('assets/z_score_outliers.json').then((data: any) => {
-      this.rawData = data.outliers.outliers;
-      this.fields = data.outliers.fields;
-
+    this.D3DashboardService.getoutlier().subscribe(
+      (data: any) => {
+        console.log(data)
+      this.rawData = data.outliers;
+      this.fields = data.fields;
+        console.log(this.fields)
       if (this.fields.length >= 2) {
         this.selectedTarget = this.fields[0];
         this.selectedPredictor = this.fields[1];
@@ -34,9 +39,11 @@ export class CorrelationScatterPlotComponent implements OnInit {
       } else {
         console.error('Insufficient numeric fields found');
       }
-    }).catch(error => {
+    },
+    (error)=>{
       console.error('Error loading data:', error);
-    });
+    }
+    );
   }
 
   createScatterPlot(): void {
@@ -52,8 +59,8 @@ export class CorrelationScatterPlotComponent implements OnInit {
 
     d3.select('#correlation-plot').selectAll('*').remove();
 
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 },
-          width = 660 - margin.left - margin.right,
+    const margin = { top: 20, right: 10, bottom: 30, left: 50 },
+          width = 700 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
 
     const svg = d3.select('#correlation-plot')

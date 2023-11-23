@@ -78,17 +78,17 @@ export class DataPreviewComponent {
      
         this.DataPreviewDataService.getJsonData(Response).subscribe(
           (r2:any)=>{
-           
+          
             this.DatapreviewColumnNames=r2.columnNames;
    
             this.rowData=r2.data
             this.makeHeaser();
-            
+            this.dataloaded=true
           }
         )
       },
       (Error)=>{
-        this.MessageService.add({ severity: 'error', summary: 'Success', detail: "you file is still processing..." });
+        this.MessageService.add({ severity: 'error', summary: 'Error', detail: "your file is still processing..." });
      
       }
     )
