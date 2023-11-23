@@ -9,7 +9,7 @@ import com.example.Data.PolishBackend.Service.DataCleaningService; // Import the
 
 
 @RestController
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://16.170.150.247:9000", "http://localhost:4200"})
 public class DataCleaningController {
     @Autowired
     private DataCleaningService dataCleaningService;
