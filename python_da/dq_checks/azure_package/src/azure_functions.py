@@ -144,6 +144,8 @@ def upload_results_to_azure(data, connection_string, job_id, result_container_na
 
     # timestamp = str(int(time.time()))
     result_blob_name = f'data_quality_result_{job_id}.json'
+    logger.info(result_blob_name)
+    logger.info(result_container_name)
     try:
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
         blob_client = blob_service_client.get_blob_client(result_container_name, result_blob_name)

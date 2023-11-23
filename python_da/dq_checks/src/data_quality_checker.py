@@ -43,19 +43,19 @@ class DataQualityChecker:
         result = {"fields": [], "outliers": {}}
         for col in self.dataset.select_dtypes(include=[np.number]).columns:
             result["fields"].append(col)
-            col_values = self.dataset[col].dropna()
-            z_scores = np.abs(stats.zscore(col_values))
+            col_values = self.dataset[col].apply(lambda x: None if pd.isna(x) else x)
+            z_scores = np.abs(stats.zscore(col_values.dropna()))
 
             result["outliers"][col] = [
                 {
                     "row": idx,
                     "field": col,
                     "value": val,
-                    "z_score": z_scores[idx],
-                    "is_outlier": bool(z_scores[idx] > threshold),
+                    "z_score": z_scores[original_idx] if pd.notna(val) else None,
+                    "is_outlier": bool(z_scores[original_idx] > threshold) if pd.notna(val) else False,
                     "threshold": threshold
                 }
-                for idx, val in col_values.iteritems()
+                for idx, (original_idx, val) in enumerate(col_values.iteritems())
             ]
         return result
 
