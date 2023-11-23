@@ -44,15 +44,22 @@ class DataQualityChecker:
         for col in self.dataset.select_dtypes(include=[np.number]).columns:
             result["fields"].append(col)
             col_values = self.dataset[col].apply(lambda x: None if pd.isna(x) else x)
-            z_scores = np.abs(stats.zscore(col_values.dropna()))
+            valid_values = col_values.dropna()
+
+            # Calculate z-scores only for non-NaN values
+            if not valid_values.empty:
+                z_scores = np.abs(stats.zscore(valid_values))
+                z_score_dict = dict(zip(valid_values.index, z_scores))
+            else:
+                z_score_dict = {}
 
             result["outliers"][col] = [
                 {
                     "row": idx,
                     "field": col,
                     "value": val,
-                    "z_score": z_scores[original_idx] if pd.notna(val) else None,
-                    "is_outlier": bool(z_scores[original_idx] > threshold) if pd.notna(val) else False,
+                    "z_score": z_score_dict.get(original_idx),
+                    "is_outlier": bool(z_score_dict.get(original_idx, 0) > threshold) if pd.notna(val) else False,
                     "threshold": threshold
                 }
                 for idx, (original_idx, val) in enumerate(col_values.iteritems())
