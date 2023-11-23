@@ -53,3 +53,26 @@
 .axis text {
     font-size: 10px;
 }
+
+/* Dynamic Title Style */
+.chart-container h2 {
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Legend Style */
+.legend {
+    font-size: 12px;
+}
+
+.legend rect {
+    stroke-width: 2;
+    stroke: #000;
+}
+
+.legend text {
+    text-anchor: start;
+    alignment-baseline: middle;
+}
