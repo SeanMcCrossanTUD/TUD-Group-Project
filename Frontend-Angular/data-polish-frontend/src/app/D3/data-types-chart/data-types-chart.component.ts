@@ -86,8 +86,7 @@ export class DataTypesChartComponent implements OnInit {
           .append("text")
           .attr("class", "axis-label x-axis-label")
           .attr("x", width / 2)
-          .attr("y", 40)
-          .text("Count of Data Types");
+          .attr("y", 40);
 
       // Rotate the text on the y-axis if it's too long
       svg.selectAll(".y-axis .tick text")
