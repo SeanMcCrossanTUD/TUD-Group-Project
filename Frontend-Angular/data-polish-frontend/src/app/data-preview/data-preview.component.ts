@@ -49,13 +49,15 @@ export class DataPreviewComponent {
             this.rowData=r2.data
             this.makeHeaser();
            this.dataloaded=true
+         
+
             
           }
         )
       },
       (Error)=>{
         this.hidepregress=true;
-        this.MessageService.add({ severity: 'error', summary: 'Try again ', detail: "you file is still processing..." });
+        this.MessageService.add({ severity: 'error', summary: 'Try again ', detail: "your file is still processing..." });
      
       }
     )

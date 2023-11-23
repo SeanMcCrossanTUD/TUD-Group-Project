@@ -66,7 +66,7 @@ tbody tr td{
     padding: 5px;
 }
 .refresh span{
-    color: white;
+    color: rgb(0, 0, 0);
     transition: transform 0.5s ease-in-out;
 }
 .refresh span:hover{
@@ -75,9 +75,7 @@ tbody tr td{
     
    
 }
-.refresh span:hover::after{
-    color: red;
-}
+
 .progress-bar{
     min-width: 80vw;
     min-height: 50vh;
@@ -91,7 +89,10 @@ tbody tr td{
     justify-content: center;
     align-items: center;
     background-color: white;
+    flex-direction: column;
     color: black;
     padding: 20px;
     border: 5px;
+  
 }
+
