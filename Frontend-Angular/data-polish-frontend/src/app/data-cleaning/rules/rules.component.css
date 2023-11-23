@@ -12,3 +12,61 @@
 /* 
     --ag-foreground-color: rgb(126, 46, 132); */
 /* } */
+
+
+.pop-up-continer{
+    width: 100%;
+    min-height: 90%;
+    border: 2px black solid;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 20px; 
+    overflow-y: scroll ;
+}
+.pop-up-continer div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+:host ::ng-deep .your-custom-class .ag-cell-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.save-button{
+    display: flex;
+    min-width: 100%;
+    justify-content: flex-end;
+}
+.save-button div{
+    background: black;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+.save-button div:hover{
+    cursor: pointer;
+}
+
+.remove-all-button{
+    display: flex;
+    min-width: 100%;
+    justify-content: flex-start;
+    margin-bottom: 5px;
+}
+.remove-all-button div{
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+}
+.remove-all-button div:hover{
+    cursor: pointer;
+}
+
