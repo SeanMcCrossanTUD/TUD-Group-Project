@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 interface OutlierDataPoint {
   row: number;
   value: number;
@@ -21,15 +21,21 @@ export class OutliersScatterPlotComponent implements OnInit {
   ngOnInit() {
     this.loadData();
   }
+  constructor(private D3DashboardService:D3DashboardService){
 
+  }
   loadData() {
-    d3.json('assets/z_score_outliers.json').then(data => {
-      this.data = data;
-      this.fields = this.data.outliers.fields;
+    this.D3DashboardService.getoutlier().subscribe(
+      (data: any) => {
+        console.log(data)
+        this.data=data;
+      this.fields = data.fields;
       this.selectedField = this.fields[0];
       this.createScatterPlot(this.selectedField);
     });
+  
   }
+
 
   createScatterPlot(field: string): void {
     d3.select('#scatter-plot').selectAll('*').remove();
@@ -45,7 +51,7 @@ export class OutliersScatterPlotComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const outlierData: OutlierDataPoint[] = this.data.outliers.outliers[field];
+    const outlierData: OutlierDataPoint[] = this.data.outliers[field];
 
     const x = d3.scaleLinear()
       .range([0, width])

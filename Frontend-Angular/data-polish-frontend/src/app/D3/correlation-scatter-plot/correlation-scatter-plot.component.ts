@@ -31,7 +31,7 @@ export class CorrelationScatterPlotComponent implements OnInit {
         console.log(data)
       this.rawData = data.outliers;
       this.fields = data.fields;
-        console.log(this.fields)
+  
       if (this.fields.length >= 2) {
         this.selectedTarget = this.fields[0];
         this.selectedPredictor = this.fields[1];
