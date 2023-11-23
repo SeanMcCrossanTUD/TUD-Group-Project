@@ -43,23 +43,30 @@ class DataQualityChecker:
         result = {"fields": [], "outliers": {}}
         for col in self.dataset.select_dtypes(include=[np.number]).columns:
             result["fields"].append(col)
-            col_values = self.dataset[col].dropna()
-            z_scores = np.abs(stats.zscore(col_values))
 
-            result["outliers"][col] = [
-                {
-                    "row": idx,
-                    "field": col,
-                    "value": val,
-                    "z_score": z_scores[idx],
-                    "is_outlier": bool(z_scores[idx] > threshold),  # Explicitly convert to Python bool
-                    "threshold": threshold
-                }
-                for idx, val in col_values.iteritems()
-            ]
+            # Drop NaN values and reset index to align with original dataset
+            col_values = self.dataset[col].dropna().reset_index(drop=True)
+            original_indices = self.dataset[col].dropna().index
+
+            if not col_values.empty:
+                z_scores = np.abs(stats.zscore(col_values))
+                z_score_map = dict(zip(original_indices, z_scores))
+
+                result["outliers"][col] = [
+                    {
+                        "row": original_idx,
+                        "field": col,
+                        "value": self.dataset.at[original_idx, col],
+                        "z_score": z_score_map.get(original_idx),
+                        "is_outlier": bool(z_score_map.get(original_idx, 0) > threshold),
+                        "threshold": threshold
+                    }
+                    for original_idx in original_indices
+                ]
+            else:
+                result["outliers"][col] = []
+
         return result
-
-
     def iqr_outliers(self, k: float = 1.5) -> dict:
         """
         This function identifies and returns the outliers in the dataset based on the IQR method.

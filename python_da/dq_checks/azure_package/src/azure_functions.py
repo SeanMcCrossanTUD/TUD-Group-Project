@@ -142,8 +142,10 @@ def upload_results_to_azure(data, connection_string, job_id, result_container_na
     # Convert to JSON string
     result_json = json.dumps(data_for_json, indent=4)
 
-    timestamp = str(int(time.time()))
-    result_blob_name = f'data_quality_result_{timestamp}.json'
+    # timestamp = str(int(time.time()))
+    result_blob_name = f'data_quality_result_{job_id}.json'
+    logger.info(result_blob_name)
+    logger.info(result_container_name)
     try:
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
         blob_client = blob_service_client.get_blob_client(result_container_name, result_blob_name)
@@ -175,8 +177,8 @@ def upload_meta_to_azure_data_preview(data, connection_string, job_id, result_co
 
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
-        timestamp = str(int(time.time()))
-        result_blob_name = f'data_preview_{timestamp}.json'
+        # timestamp = str(int(time.time()))
+        result_blob_name = f'data_preview_{job_id}.json'
 
         blob_client = blob_service_client.get_blob_client(container=result_container_name, blob=result_blob_name)
 
