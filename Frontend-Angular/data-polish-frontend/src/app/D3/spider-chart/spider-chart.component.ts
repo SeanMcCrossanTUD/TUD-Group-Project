@@ -21,7 +21,7 @@ export class SpiderChartComponent implements OnInit {
   }
 
   createSpiderChart(): void {
-    const width = 300, height = 300;
+    const width = 400, height = 300;
     const margin = { top: 50, right: 50, bottom: 50, left: 50 };
     const radius = Math.min(width, height) / 2;
 

@@ -1,59 +1,57 @@
+<!-- <app-missing-values-chart/>
+<app-duplicate-chart></app-duplicate-chart> -->
+
+<!-- <app-number-fields-chart/>
+<app-records-chart/>
+<app-cardinality/> -->
+
 <div class="dashboard">
-    <!-- Summary statistics -->
-    <div class="row1 stats-summary">
-        <div class="statistic-item">
-            <label>Total NO. Fields:</label>
+
+    <div class="row1">
+        
+        <div>
+            Total NO. Fields: 
             <app-number-fields-chart/>
         </div>
-        <div class="statistic-item">
-            <label>Total NO. Records:</label>
-            <app-records-chart/>
+        <div>
+            Total NO. Records : 
+           <app-records-chart/>
         </div>
-        <div class="statistic-item">
-            <label>Number of Duplicates:</label>
+        <div>
+            Number of Duplicates : 
             <app-duplicate-chart/>
         </div>
+        
     </div>
-    
-    <!-- Data Quality Charts -->
-    <div class="data-quality-charts">
-        <div class="chart-container">
-            <h2 class="chart-title">Data Quality Breakdown</h2>
-            <app-spider-chart></app-spider-chart>
-        </div>
-        <div class="chart-container">
-            <h2 class="chart-title">Data Quality Score</h2>
-            <app-data-quality-metric></app-data-quality-metric>
-        </div>
-    </div>
-
-    <!-- Charts grid -->
+    <!-- <div class="row2">
+       <div>
+        <app-cardinality/>
+       </div>
+       <div>
+        <app-data-types-chart/>
+       </div>
+       <div >
+        <app-missing-values-chart />
+       </div>
+    </div> -->
     <div class="grid-container">
-        <div class="chart-container">
-            <h2 class="chart-title">Outliers Scatter Plot</h2>
-            <app-outliers-scatter-plot/>
-        </div>
-        <div class="chart-container">
-            <h2 class="chart-title">Cardinality Distribution</h2>
+        <div>
             <app-cardinality/>
-        </div>
-        <div class="chart-container">
-            <h2 class="chart-title">Data Types Distribution</h2>
+           </div>
+           <div>
+           <app-data-quality-metric/>
+           </div>
+           <div>
             <app-data-types-chart/>
-        </div>
-        <div class="chart-container">
-            <h2 class="chart-title">Missing Values Over Time</h2>
+           </div>
+           <div><app-spider-chart/></div>
+           <div >
             <app-missing-values-chart />
-        </div>
+           </div>
+           <div><app-correlation-scatter-plot/>
+            </div>
            <div>
             <app-outliers-scatter-plot/>
-            </div>
-      <div>
-            <app-correlation-scatter-plot/>
-      </div>
-      <div>
-        <app-histogram/>
-      </div>
-      
+        </div>    
     </div>
 </div>
