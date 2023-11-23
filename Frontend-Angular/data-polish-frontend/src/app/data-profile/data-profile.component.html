@@ -9,49 +9,36 @@
 
     <div class="row1">
         
-        <div>
-            Total NO. Fields: 
+        <div class="div1">
+            Total NO. Fields
             <app-number-fields-chart/>
         </div>
-        <div>
-            Total NO. Records : 
+        <div class="div2">
+            Total NO. Records 
            <app-records-chart/>
         </div>
-        <div>
-            Number of Duplicates : 
+        <div class="div3">
+            Number of Duplicates 
             <app-duplicate-chart/>
+        </div>
+        <div class="div4">
+            <app-data-quality-metric/>
         </div>
         
     </div>
-    <!-- <div class="row2">
-       <div>
-        <app-cardinality/>
-       </div>
-       <div>
-        <app-data-types-chart/>
-       </div>
-       <div >
-        <app-missing-values-chart />
-       </div>
-    </div> -->
+    
     <div class="grid-container">
-        <div>
-            <app-cardinality/>
-           </div>
-           <div>
-           <app-data-quality-metric/>
-           </div>
-           <div>
-            <app-data-types-chart/>
-           </div>
-           <div><app-spider-chart/></div>
-           <div >
-            <app-missing-values-chart />
-           </div>
-           <div><app-correlation-scatter-plot/>
-            </div>
-           <div>
-            <app-outliers-scatter-plot/>
-        </div>    
+        <div><app-spider-chart/></div>
+        <div><app-histogram/></div> 
+
+        <div><app-cardinality/></div>
+        <div><app-correlation-scatter-plot/></div>
+
+        <div><app-data-types-chart/></div>
+        
+         
+        <div> <app-outliers-scatter-plot/> </div> 
+        <div > <app-missing-values-chart />  </div>
+         
     </div>
 </div>

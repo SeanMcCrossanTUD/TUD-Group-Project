@@ -17,7 +17,7 @@ export class DataProfileComponent {
   @ViewChild('img') img!: any;
   @ViewChild('newwindow') newwindow!:any;
   seeimage(e:any){
-   alert(e)
+
    window.open(e);
 
    
@@ -47,36 +47,17 @@ jobid=''
 ngOnInit() {
 
   this.jobid=this.cookieService.get('jobsid');
-  this.fileExportService.checkStatus(this.jobid).subscribe(
-    (Response:any)=>{
-  
-      if(Response.dataprofileoutput=='null'){
-        alert("your data is not Profiled yet");
-      }else{
-        this.foldername=this.checkStatusString;
-        alert("Profile Complete");
-      }
-    },
-    (error)=>{
-
-    }
-  )
+ 
   
   let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
   if (cookieValue != '' && cookieValue != 'DEFAULT') {
     this.accessibilityServiceService.basicsetting();
   }
 
-  this.items = [
-    { label: 'Download',command:()=>this.funcc() }
-   // { label: 'Delete', icon: 'pi pi-fw pi-trash' }
-];
 }
 
-funcc(){
-  
-  window.open(this.imgURL);
-}
+
+
 
 checkStatusString=''
 foldername='';

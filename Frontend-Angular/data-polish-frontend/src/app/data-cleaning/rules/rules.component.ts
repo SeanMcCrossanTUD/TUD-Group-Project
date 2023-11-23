@@ -3,9 +3,10 @@ import { DataPreviewDataService } from 'src/app/Services/Datacleaning/data-previ
 import { AgGridAngular } from 'ag-grid-angular';
 import { CellClickedEvent, ColDef, GridReadyEvent,GridApi } from 'ag-grid-community';
 import { AdvanceOptionsButtonComponent } from './nested-components/advance-options-button/advance-options-button.component';
-
+import { CookieService } from 'ngx-cookie-service';
 import 'ag-grid-enterprise';
 import { MessageService } from 'primeng/api';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -20,6 +21,9 @@ export class RulesComponent {
   constructor(
     private DataPreviewDataService:DataPreviewDataService,
     private messageService: MessageService,
+    private http: HttpClient,
+    private CookieService:CookieService,
+    private MessageService:MessageService
     ){
 
   }
@@ -64,11 +68,22 @@ export class RulesComponent {
 },{'naveen':'abc'}];
 
   ngOnInit(){
-    this.DataPreviewDataService.getJsonData2().subscribe(
-      (response:any)=>{
-       
-        this.makedata(response.columnNames);
-       
+
+    var id=this.CookieService.get('jobsid');
+    this.DataPreviewDataService.getData(id).subscribe(
+      (Response)=>{
+     
+        this.DataPreviewDataService.getJsonData(Response).subscribe(
+          (r2:any)=>{
+           
+            this.makedata(r2.columnNames);
+            
+          }
+        )
+      },
+      (Error)=>{
+        this.MessageService.add({ severity: 'error', summary: 'Try again ', detail: "you file is still processing..." });
+     
       }
     )
 
