@@ -13,11 +13,12 @@ interface OutlierDataPoint {
   templateUrl: './outliers-scatter-plot.component.html',
   styleUrls: ['./outliers-scatter-plot.component.css']
 })
-export class OutliersScatterPlotComponent implements OnInit {
 
-  private data: any; // Holds the loaded data
-  fields!: string[];
-  selectedField!: string;
+export class OutliersScatterPlotComponent implements OnInit {
+  private data: any;
+  public fields: string[] = [];
+  public selectedField: string = '';
+  public chartTitle: string = ''; // Dynamic chart title
 
   ngOnInit() {
     this.loadData();
@@ -28,8 +29,13 @@ export class OutliersScatterPlotComponent implements OnInit {
       this.data = data;
       this.fields = this.data.outliers.fields;
       this.selectedField = this.fields[0];
+      this.updateChartTitle(this.selectedField);
       this.createScatterPlot(this.selectedField);
     });
+  }
+// updating title
+  updateChartTitle(field: string) {
+    this.chartTitle = `${field} Outlier Scatter Plot`;
   }
 
   createScatterPlot(field: string): void {
@@ -103,11 +109,32 @@ export class OutliersScatterPlotComponent implements OnInit {
           .style('opacity', 0);
         tooltip.remove();
       });
+
+    // Adding legend
+    const legend = svg.append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${width - 100}, 20)`);
+
+    legend.selectAll(null)
+      .data([{color: 'lightcoral', text: 'Outliers'}, {color: 'lightblue', text: 'Regular'}])
+      .enter().append('rect')
+      .attr('y', (d, i) => i * 20)
+      .attr('width', 18)
+      .attr('height', 18)
+      .style('fill', d => d.color);
+
+    legend.selectAll(null)
+      .data([{color: 'lightcoral', text: 'Outliers'}, {color: 'lightblue', text: 'Regular'}])
+      .enter().append('text')
+      .attr('x', 24)
+      .attr('y', (d, i) => i * 20 + 14)
+      .text(d => d.text);
   }
 
   onFieldChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.selectedField = target.value;
+    this.updateChartTitle(this.selectedField);
     this.createScatterPlot(this.selectedField);
   }
 }

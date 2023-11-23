@@ -1,7 +1,9 @@
-<select (change)="onFieldChange($event)">
+<div class="chart-container">
+  <select (change)="onFieldChange($event)">
     <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
   </select>
-  
-  
+
+  <h2>{{ chartTitle }}</h2>
+
   <div id="scatter-plot"></div>
-  
+</div>
