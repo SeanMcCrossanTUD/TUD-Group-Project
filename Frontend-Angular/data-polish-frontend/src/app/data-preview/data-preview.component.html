@@ -1,12 +1,16 @@
-<div class="refresh">
+<!-- <div class="refresh">
     <span class="material-icons" (click)="refresh()">
         sync
         </span>
         <div>Refresh</div>
-</div>
+</div> -->
+
 <div class="progress-bar" *ngIf="!dataloaded">
-    <p-progressSpinner></p-progressSpinner>
-</div>
+    <p-progressSpinner [hidden]="hidepregress"></p-progressSpinner>
+    <div class="mes">
+        We are processing your file come back after some time
+    </div>
+</div> 
 
 <ag-grid-angular
     *ngIf="dataloaded"

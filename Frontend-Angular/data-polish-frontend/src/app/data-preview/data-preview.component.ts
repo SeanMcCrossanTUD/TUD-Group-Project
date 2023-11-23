@@ -34,6 +34,7 @@ export class DataPreviewComponent {
    
   }
   dataloaded=false;
+  hidepregress=false;
 
   ngOnInit(){
     var id=this.CookieService.get('jobsid');
@@ -53,6 +54,7 @@ export class DataPreviewComponent {
         )
       },
       (Error)=>{
+        this.hidepregress=true;
         this.MessageService.add({ severity: 'error', summary: 'Try again ', detail: "you file is still processing..." });
      
       }
