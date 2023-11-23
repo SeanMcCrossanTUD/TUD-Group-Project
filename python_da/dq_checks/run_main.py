@@ -39,6 +39,7 @@ with open(CONFIG_PATH, 'r') as file:
 SERVICE_BUS_CONNECTION_STRING = config["SERVICE_BUS_CONNECTION_STRING"]
 SERVICE_BUS_QUEUE_NAME = config["SERVICE_BUS_QUEUE_1_NAME"]
 connection_string = config["AZURE_CONNECTION_STRING"]
+OUTLIER_OUTPUT_CONTAINER = config["OUTLIER_OUTPUT_CONTAINER"]
 
 if connection_string is None:
     raise Exception("Failed to get connection string from environment variable")
@@ -120,12 +121,20 @@ def perform_data_quality_checks(data):
         'number_of_duplicate_values': number_of_duplicate_values,
         'missing_values': missing_values,
         'data_type_profile': data_type_profile_count,
-        'unique_values_in_text_fields': unique_values,
-        'z_score_outliers': z_score_outliers
+        'unique_values_in_text_fields': unique_values
+        #'z_score_outliers': z_score_outliers
         # 'iqr_outliers': iqr_outliers
     }
 
     return result
+
+def run_outliers_result(data, threshold=3.0):
+    checker = DataQualityChecker(data)
+    outliers_result = checker.z_score_outliers(threshold)
+
+    return outliers_result
+
+
 
 def meta_data_to_blob(df):
 
@@ -200,12 +209,18 @@ def main(test_iterations=None):
                 upload_results_to_azure(result, connection_string=connection_string, job_id=jobID)
                 logger.info(f'Data Quality checks uploaded for: {filename} - {jobID}')
 
-                data_quality_checker = DataQualityChecker(data)
-                run_visuals_and_upload(data_quality_checker, connection_string, container_name_images,jobID)
-                logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
+                outlier_result = run_outliers_result(data=data, threshold=3.0)
 
-                logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
-                
+                # Upload the result to Azure Blob Storage
+                upload_results_to_azure(outlier_result, connection_string, jobID, OUTLIER_OUTPUT_CONTAINER)
+                logger.info("Z-score outliers analysis results uploaded successfully.")
+
+                #data_quality_checker = DataQualityChecker(data)
+                #run_visuals_and_upload(data_quality_checker, connection_string, container_name_images,jobID)
+                #logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
+
+                #logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
+                logger.info("Data profile success")
                 time.sleep(60)
                 logger.info("sleep finished")
                 # Increment the counter

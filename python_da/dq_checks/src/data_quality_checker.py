@@ -52,7 +52,7 @@ class DataQualityChecker:
                     "field": col,
                     "value": val,
                     "z_score": z_scores[idx],
-                    "is_outlier": bool(z_scores[idx] > threshold),  # Explicitly convert to Python bool
+                    "is_outlier": bool(z_scores[idx] > threshold),
                     "threshold": threshold
                 }
                 for idx, val in col_values.iteritems()
