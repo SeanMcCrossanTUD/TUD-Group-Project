@@ -13,12 +13,10 @@ interface OutlierDataPoint {
   templateUrl: './outliers-scatter-plot.component.html',
   styleUrls: ['./outliers-scatter-plot.component.css']
 })
-
 export class OutliersScatterPlotComponent implements OnInit {
   private data: any;
   public fields: string[] = [];
   public selectedField: string = '';
-  public chartTitle: string = ''; // Dynamic chart title
 
   ngOnInit() {
     this.loadData();
@@ -29,13 +27,8 @@ export class OutliersScatterPlotComponent implements OnInit {
       this.data = data;
       this.fields = this.data.outliers.fields;
       this.selectedField = this.fields[0];
-      this.updateChartTitle(this.selectedField);
       this.createScatterPlot(this.selectedField);
     });
-  }
-// updating title
-  updateChartTitle(field: string) {
-    this.chartTitle = `${field} Outlier Scatter Plot`;
   }
 
   createScatterPlot(field: string): void {
@@ -94,7 +87,7 @@ export class OutliersScatterPlotComponent implements OnInit {
 
     svg.selectAll('.dot')
       .on('mouseover', function(event, d) {
-        const outlierPoint = d as OutlierDataPoint; // Cast the unknown type to OutlierDataPoint
+        const outlierPoint = d as OutlierDataPoint;
         const [px, py] = d3.pointer(event);
         tooltip.transition()
           .duration(200)
@@ -134,7 +127,6 @@ export class OutliersScatterPlotComponent implements OnInit {
   onFieldChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.selectedField = target.value;
-    this.updateChartTitle(this.selectedField);
     this.createScatterPlot(this.selectedField);
   }
 }

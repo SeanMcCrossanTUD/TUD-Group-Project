@@ -3,7 +3,8 @@
     <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
   </select>
 
-  <h2>{{ chartTitle }}</h2>
+  <!-- Dynamic title for the scatter plot -->
+  <h2>{{ field }} Outlier Scatter Plot</h2>
 
   <div id="scatter-plot"></div>
 </div>
