@@ -41,7 +41,7 @@ export class OutliersScatterPlotComponent implements OnInit {
     d3.select('#scatter-plot').selectAll('*').remove();
 
     const margin = { top: 20, right: 10, bottom: 30, left: 50 };
-    const width = 710 - margin.left - margin.right;
+    const width = 600 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
 
     const svg = d3.select('#scatter-plot')

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { CookieService } from 'ngx-cookie-service';
 import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 @Component({
   selector: 'app-missing-values-chart',
@@ -8,17 +9,19 @@ import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 })
 export class MissingValuesChartComponent implements OnInit {
 
-  constructor(private D3DashboardService:D3DashboardService){
-
+  constructor(private D3DashboardService:D3DashboardService,
+    private CookieService:CookieService){
+   
   }
 
   ngOnInit() {
+    var primarycolor=this.CookieService.get('chartprimarycolor');
 this.D3DashboardService.getData().subscribe((data: any) => {
       const totalRecords = data.number_of_records;
     
 
       const margin = {top: 10, right: 5, bottom: 100, left: 50};
-      const width = 500 - margin.left - margin.right;
+      const width = 400 - margin.left - margin.right;
       const height = 400 - margin.top - margin.bottom;
 
       const svg = d3.select("#chart-missing")
@@ -74,6 +77,7 @@ this.D3DashboardService.getData().subscribe((data: any) => {
                   .style("opacity", 0);
           })
           .transition()
+          .style("fill", primarycolor)
           .duration(1500)
           .attr("y", d => y(d[1] / totalRecords) || 0)
           .attr("height", d => height - (y(d[1] / totalRecords) || 0));

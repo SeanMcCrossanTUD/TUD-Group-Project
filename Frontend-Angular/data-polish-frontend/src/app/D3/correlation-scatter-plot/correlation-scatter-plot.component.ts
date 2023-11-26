@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { CookieService } from 'ngx-cookie-service';
 import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 interface CorrelationDataPoint {
   predictor: number;
@@ -21,7 +22,8 @@ export class CorrelationScatterPlotComponent implements OnInit {
   ngOnInit() {
     this.loadData();
   }
-  constructor(private D3DashboardService:D3DashboardService){
+  constructor(private D3DashboardService:D3DashboardService,
+    private cookieService:CookieService){
 
   }
 
@@ -60,7 +62,7 @@ export class CorrelationScatterPlotComponent implements OnInit {
     d3.select('#correlation-plot').selectAll('*').remove();
 
     const margin = { top: 20, right: 10, bottom: 30, left: 50 },
-          width = 700 - margin.left - margin.right,
+          width = 600 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
 
     const svg = d3.select('#correlation-plot')
@@ -88,7 +90,7 @@ export class CorrelationScatterPlotComponent implements OnInit {
     // Tooltip
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
-      .style('opacity', 0)
+      .style('opacity', 70)
       .style('position', 'absolute')
       .style('background', 'white')
       .style('border', '1px solid black')
@@ -96,6 +98,7 @@ export class CorrelationScatterPlotComponent implements OnInit {
       .style('pointer-events', 'none');
 
     // Data points
+    var primarycolor=this.cookieService.get("chartprimarycolor");
     const circles = svg.selectAll(".dot")
       .data(this.data)
       .enter().append("circle")
@@ -103,7 +106,8 @@ export class CorrelationScatterPlotComponent implements OnInit {
       .attr("r", 5)
       .attr("cx", 0) // Start from the left
       .attr("cy", d => y(d.target))
-      .style("fill", "lightblue") // Lighter fill color
+      // .style("fill", "lightblue") // Lighter fill color
+      .style("fill",primarycolor)
       .style("stroke", "black") // Hard border
       .style("stroke-width", "2px"); // Border width
 
