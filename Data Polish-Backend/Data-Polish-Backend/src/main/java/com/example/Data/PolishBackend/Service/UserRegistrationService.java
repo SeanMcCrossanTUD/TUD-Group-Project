@@ -17,10 +17,10 @@ public class UserRegistrationService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public ResponseEntity<String> registerUser(String fullName, String email, String password) {
-        // Validate email format
-        if (!isValidEmail(email)) {
+       /* // Validate email format
+       if (!isValidEmail(email)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email address");
-        }
+        }*/
 
         // Check if the email already exists in the database
         if (emailExists(email)) {
@@ -43,7 +43,8 @@ public class UserRegistrationService {
 
     private boolean isValidEmail(String email) {
         // Basic email format validation using a regular expression
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        String emailRegex ="^(.+)@(\\S+) $";
+                //"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
         // Check if the provided email matches the regular expression
         return email.matches(emailRegex);
