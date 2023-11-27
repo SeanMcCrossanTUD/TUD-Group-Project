@@ -100,13 +100,6 @@ def perform_data_quality_checks(data):
         logger.info(f'Successfully retrieved data_type_profile_count: {data_type_profile_count}')
     except KeyError as e:
         logger.error(f"KeyError accessing data_type_profile_count: {e}")
-        raise        
-    
-    try:
-        z_score_outliers = checker.z_score_outliers()
-        logger.info(f'Successfully retrieved z_score_outliers')
-    except KeyError as e:
-        logger.error(f"KeyError accessing z_score_outliers: {e}")
         raise
     
     # try:
