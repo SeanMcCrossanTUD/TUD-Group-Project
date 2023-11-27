@@ -183,14 +183,24 @@ def calculate_overall_quality(data):
         raise
 
     try:
-        scores = (completeness_score + uniqueness_score + consistency_score + average_readability) / 4
-        overall_score = scores * 100
+        overall_score = (completeness_score + uniqueness_score + consistency_score + average_readability) / 4
         logger.info(f"Successfully calculated overall quality score: {overall_score}")
     except Exception as e:
         logger.error(f"Error calculating overall quality score: {e}")
         raise
 
     return overall_score
+
+def quality_color_indicator(quality_score):
+    if quality_score >= 80:
+        return "Green"
+    elif 60 <= quality_score < 80:
+        return "Yellow"
+    elif 40 <= quality_score < 60:
+        return "Orange"
+    else:
+        return "Red"
+
 
 def meta_data_to_blob(df):
 
