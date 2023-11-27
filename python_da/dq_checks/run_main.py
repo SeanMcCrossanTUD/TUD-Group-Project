@@ -4,9 +4,11 @@ import json
 import time
 import pandas as pd
 from azure.core.exceptions import AzureError
+import numpy as np
 
 from dq_checks.src.data_quality_checker import DataQualityChecker
 from dq_checks.src.data_profiling_visuals import DataProfilingVisuals
+from dq_checks.src.data_quality_evaluator import AdvancedDataQualityEvaluator
 from dq_checks.azure_package.src.azure_functions import (
     download_blob_csv_data,
     download_blob_excel_data, 
@@ -134,7 +136,61 @@ def run_outliers_result(data, threshold=3.0):
 
     return outliers_result
 
+def calculate_overall_quality(data):
+    """
+    Calculate the overall data quality score based on completeness, uniqueness, consistency, and readability.
 
+    Parameters:
+    data (pd.DataFrame): The data on which to perform data quality evaluation.
+
+    Returns:
+    float: The overall data quality score as a percentage.
+    """
+    try:
+        evaluator = AdvancedDataQualityEvaluator(data)
+        logger.info("Data quality evaluator initialized successfully.")
+    except Exception as e:
+        logger.error(f"Error initializing data quality evaluator: {e}")
+        raise
+
+    try:
+        completeness_score = evaluator.completeness()
+        logger.info(f"Successfully calculated completeness score: {completeness_score}")
+    except Exception as e:
+        logger.error(f"Error calculating completeness score: {e}")
+        raise
+
+    try:
+        uniqueness_score = evaluator.uniqueness()
+        logger.info(f"Successfully calculated uniqueness score: {uniqueness_score}")
+    except Exception as e:
+        logger.error(f"Error calculating uniqueness score: {e}")
+        raise
+
+    try:
+        consistency_score = evaluator.consistency()
+        logger.info(f"Successfully calculated consistency score: {consistency_score}")
+    except Exception as e:
+        logger.error(f"Error calculating consistency score: {e}")
+        raise
+
+    try:
+        readability_scores = [evaluator.readability(col) for col in evaluator.df.columns if evaluator.df[col].dtype == 'object']
+        average_readability = np.mean(readability_scores) if readability_scores else 1
+        logger.info(f"Successfully calculated average readability score: {average_readability}")
+    except Exception as e:
+        logger.error(f"Error calculating readability scores: {e}")
+        raise
+
+    try:
+        scores = (completeness_score + uniqueness_score + consistency_score + average_readability) / 4
+        overall_score = scores * 100
+        logger.info(f"Successfully calculated overall quality score: {overall_score}")
+    except Exception as e:
+        logger.error(f"Error calculating overall quality score: {e}")
+        raise
+
+    return overall_score
 
 def meta_data_to_blob(df):
 
