@@ -205,18 +205,6 @@ def calculate_overall_quality(data):
 
     return quality_results
 
-
-def quality_color_indicator(quality_score):
-    if quality_score >= 80:
-        return "Green"
-    elif 60 <= quality_score < 80:
-        return "Yellow"
-    elif 40 <= quality_score < 60:
-        return "Orange"
-    else:
-        return "Red"
-
-
 def meta_data_to_blob(df):
 
     try:
@@ -295,6 +283,9 @@ def main(test_iterations=None):
                 # Upload the result to Azure Blob Storage
                 upload_results_to_azure(outlier_result, connection_string, jobID, OUTLIER_OUTPUT_CONTAINER)
                 logger.info("Z-score outliers analysis results uploaded successfully.")
+
+                dq_score = calculate_overall_quality(data=data)
+                logger.info("Overall quality score calculated")
 
                 #data_quality_checker = DataQualityChecker(data)
                 #run_visuals_and_upload(data_quality_checker, connection_string, container_name_images,jobID)
