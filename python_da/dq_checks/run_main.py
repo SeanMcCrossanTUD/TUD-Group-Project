@@ -117,8 +117,6 @@ def perform_data_quality_checks(data):
         'missing_values': missing_values,
         'data_type_profile': data_type_profile_count,
         'unique_values_in_text_fields': unique_values
-        #'z_score_outliers': z_score_outliers
-        # 'iqr_outliers': iqr_outliers
     }
 
     return result
@@ -137,8 +135,10 @@ def calculate_overall_quality(data):
     data (pd.DataFrame): The data on which to perform data quality evaluation.
 
     Returns:
-    float: The overall data quality score as a percentage.
+    dict: A dictionary containing the individual scores and the overall quality score as a percentage.
     """
+    quality_results = {}
+
     try:
         evaluator = AdvancedDataQualityEvaluator(data)
         logger.info("Data quality evaluator initialized successfully.")
@@ -148,6 +148,7 @@ def calculate_overall_quality(data):
 
     try:
         completeness_score = evaluator.completeness()
+        quality_results['completeness_score'] = completeness_score
         logger.info(f"Successfully calculated completeness score: {completeness_score}")
     except Exception as e:
         logger.error(f"Error calculating completeness score: {e}")
@@ -155,6 +156,7 @@ def calculate_overall_quality(data):
 
     try:
         uniqueness_score = evaluator.uniqueness()
+        quality_results['uniqueness_score'] = uniqueness_score
         logger.info(f"Successfully calculated uniqueness score: {uniqueness_score}")
     except Exception as e:
         logger.error(f"Error calculating uniqueness score: {e}")
@@ -162,6 +164,7 @@ def calculate_overall_quality(data):
 
     try:
         consistency_score = evaluator.consistency()
+        quality_results['consistency_score'] = consistency_score
         logger.info(f"Successfully calculated consistency score: {consistency_score}")
     except Exception as e:
         logger.error(f"Error calculating consistency score: {e}")
@@ -170,6 +173,7 @@ def calculate_overall_quality(data):
     try:
         readability_scores = [evaluator.readability(col) for col in evaluator.df.columns if evaluator.df[col].dtype == 'object']
         average_readability = np.mean(readability_scores) if readability_scores else 1
+        quality_results['average_readability'] = average_readability
         logger.info(f"Successfully calculated average readability score: {average_readability}")
     except Exception as e:
         logger.error(f"Error calculating readability scores: {e}")
@@ -177,12 +181,30 @@ def calculate_overall_quality(data):
 
     try:
         overall_score = (completeness_score + uniqueness_score + consistency_score + average_readability) / 4
+        quality_results['overall_score'] = overall_score * 100
         logger.info(f"Successfully calculated overall quality score: {overall_score}")
     except Exception as e:
         logger.error(f"Error calculating overall quality score: {e}")
         raise
+    try:
+        if overall_score >= 80:
+            colour_score = "Green"
+        elif 60 <= overall_score < 80:
+            colour_score = "Yellow"
+        elif 40 <= overall_score < 60:
+            colour_score = "Orange" 
+        else:
+            colour_score = "Red"
+    
+        quality_results['color'] = colour_score
+        logger.info(f"Successfully calculated colour score: {colour_score}")
+    except Exception as e:
+        logger.error(f"Error calculating colour scheme: {e}")
+        raise
 
-    return overall_score
+
+    return quality_results
+
 
 def quality_color_indicator(quality_score):
     if quality_score >= 80:
