@@ -52,6 +52,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 import { CorrelationScatterPlotComponent } from './D3/correlation-scatter-plot/correlation-scatter-plot.component';
 import { HistogramComponent } from './D3/histogram/histogram.component';
+import { BubbleChartComponent } from './D3/bubble-chart/bubble-chart.component';
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -90,7 +91,8 @@ const routes: Routes = [
     SpiderChartComponent,
     DataQualityMetricComponent,
     CorrelationScatterPlotComponent,
-    HistogramComponent
+    HistogramComponent,
+    BubbleChartComponent
 
   ],
   imports: [
