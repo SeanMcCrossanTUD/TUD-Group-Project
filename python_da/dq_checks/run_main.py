@@ -42,6 +42,7 @@ SERVICE_BUS_CONNECTION_STRING = config["SERVICE_BUS_CONNECTION_STRING"]
 SERVICE_BUS_QUEUE_NAME = config["SERVICE_BUS_QUEUE_1_NAME"]
 connection_string = config["AZURE_CONNECTION_STRING"]
 OUTLIER_OUTPUT_CONTAINER = config["OUTLIER_OUTPUT_CONTAINER"]
+DATA_QUALITY_SCORE_CONTAINER = config["DATA_QUALITY_SCORE_CONTAINER"]
 
 if connection_string is None:
     raise Exception("Failed to get connection string from environment variable")
@@ -102,12 +103,6 @@ def perform_data_quality_checks(data):
         logger.error(f"KeyError accessing data_type_profile_count: {e}")
         raise
     
-    # try:
-    #     iqr_outliers = checker.iqr_outliers()
-    #     logger.info(f'Successfully retrieved iqr_outliers')
-    # except KeyError as e:
-    #     logger.error(f"KeyError accessing iqr_outliers: {e}")
-    #     raise
     
     # Combine the results into a dictionary
     result = {
@@ -284,10 +279,13 @@ def main(test_iterations=None):
 
                 # Upload the result to Azure Blob Storage
                 upload_results_to_azure(outlier_result, connection_string, jobID, OUTLIER_OUTPUT_CONTAINER)
-                logger.info("Z-score outliers analysis results uploaded successfully.")
+                logger.info("Z-score outliers analysis results uploaded successfully for  {filename} - {jobID}")
 
                 dq_score = calculate_overall_quality(data=data)
                 logger.info("Overall quality score calculated")
+
+                upload_results_to_azure(dq_score, connection_string, jobID, DATA_QUALITY_SCORE_CONTAINER)
+                logger.info("Data quality score results uploaded successfully for  {filename} - {jobID}")                
 
                 #data_quality_checker = DataQualityChecker(data)
                 #run_visuals_and_upload(data_quality_checker, connection_string, container_name_images,jobID)
