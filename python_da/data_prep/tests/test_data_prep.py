@@ -658,11 +658,11 @@ def categorical_dataframe():
         'Category': ['A', 'A', 'B', 'C', 'C', 'C', 'D', 'E', 'F', 'G']
     })
 
-# Test successful collapse of rare categories
 def test_collapse_rare_categories_success(categorical_dataframe):
     dp = DataPrep(categorical_dataframe)
-    dp.collapse_rare_categories('Category', 20.0)  # Setting threshold so that 'D', 'E', 'F', 'G' become 'Other'
-    assert set(dp.dataframe['Category'].unique()) == {'A', 'B', 'C', 'Other'}
+    dp.collapse_rare_categories('Category', 20.0)
+    assert set(dp.dataframe['Category'].unique()) == {'A', 'C', 'Other'}
+
 
 # Test collapse with non-existent column
 def test_collapse_rare_categories_non_existent_column(categorical_dataframe):
@@ -682,10 +682,9 @@ def test_collapse_rare_categories_no_dataframe():
     with pytest.raises(ValueError):
         dp.collapse_rare_categories('Category', 5.0)
 
-# Test different threshold percentages
 def test_collapse_rare_categories_different_thresholds(categorical_dataframe):
     dp = DataPrep(categorical_dataframe)
-    dp.collapse_rare_categories('Category', 10.0)  # Setting a different threshold
+    dp.collapse_rare_categories('Category', 30.0)
     assert 'Other' in dp.dataframe['Category'].unique()
 
 # Test when no categories are rare

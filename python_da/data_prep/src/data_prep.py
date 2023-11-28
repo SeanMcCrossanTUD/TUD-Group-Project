@@ -5,31 +5,17 @@ import re
 from sklearn.decomposition import PCA
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+import nltk
+
+
+nltk.download('punkt')
+nltk.download('stopwords')
 
 # Class to encapsulate data cleaning functionalities
 class DataPrep:
 
     def __init__(self, dataset: pd.DataFrame):
         self.dataframe = dataset
-
-
-    # def load_dataframe(self, file_path):
-    #     # Check if the file path is valid from OS
-    #     if not os.path.exists(file_path):
-    #         raise FileNotFoundError(f'File {file_path} not found')
-    #     try:
-    #         # Try to load the file as a CSV
-    #         dataframe = pd.read_csv(file_path)
-    #         # Check if the dataframe is empty or incorrectly formatted (CSV only now)
-    #         if dataframe.empty:
-    #             raise ValueError(f'File {file_path} is empty or not in the correct format')
-    #         return dataframe
-    #     except pd.errors.ParserError as e:
-    #         # Handle CSV parsing errors
-    #         raise ValueError(f'Failed to parse {file_path} as a CSV file: {e}')
-    #     except Exception as e:
-    #         # Catch any other exceptions that may occur
-    #         raise Exception(f'An unexpected error occurred: {e}')
 
     def remove_duplicates(self):
         self.dataframe = self.dataframe.drop_duplicates()
@@ -587,7 +573,6 @@ class DataPrep:
 
         return self.dataframe
 
-    #Function 17
     def collapse_rare_categories(self, column_name, threshold_percentage=5.0):
         """
         Collapses rare categories in a specified column into an 'Other' category.
@@ -607,10 +592,6 @@ class DataPrep:
         if column_name not in self.dataframe.columns:
             raise ValueError(f'Column name {column_name} not found in dataframe')
 
-        # Ensure that the column is categorical
-        if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]) and not pd.api.types.is_object_dtype(self.dataframe[column_name]):
-            raise ValueError(f'Column {column_name} is not a categorical column.')
-
         # Calculate the frequency distribution of the categories
         frequency = self.dataframe[column_name].value_counts(normalize=True) * 100
 
@@ -618,12 +599,14 @@ class DataPrep:
         rare_categories = frequency[frequency < threshold_percentage].index
 
         # Collapse rare categories into 'Other'
-        try:
-            self.dataframe[column_name] = self.dataframe[column_name].apply(lambda x: 'Other' if x in rare_categories else x)
-        except Exception as e:
-            raise Exception(f'An error occurred while collapsing rare categories: {e}')
+        if not rare_categories.empty:
+            self.dataframe[column_name] = self.dataframe[column_name].replace(rare_categories, 'Other')
+        else:
+            print("No categories found with frequency below the threshold. No changes made.")
 
         return self.dataframe
+
+
        
     #Function 18
     def tokenize_text(self, column_name):
