@@ -15,3 +15,9 @@
     pointer-events: none;
     
 }
+
+.annotation-text {
+    font-size: 12px;
+    fill: #666;
+  }
+  
