@@ -53,6 +53,10 @@ import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outlier
 import { CorrelationScatterPlotComponent } from './D3/correlation-scatter-plot/correlation-scatter-plot.component';
 import { HistogramComponent } from './D3/histogram/histogram.component';
 import { BubbleChartComponent } from './D3/bubble-chart/bubble-chart.component';
+import { CompletenessMetricComponent } from './D3/completeness-metric/completeness-metric.component';
+import { ConsistencyMetricComponent } from './D3/consistency-metric/consistency-metric.component';
+import { ReadabilityMetricComponent } from './D3/readability-metric/readability-metric.component';
+import { UniquenessMetricComponent } from './D3/uniqueness-metric/uniqueness-metric.component';
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -92,7 +96,11 @@ const routes: Routes = [
     DataQualityMetricComponent,
     CorrelationScatterPlotComponent,
     HistogramComponent,
-    BubbleChartComponent
+    BubbleChartComponent,
+    CompletenessMetricComponent,
+    ConsistencyMetricComponent,
+    ReadabilityMetricComponent,
+    UniquenessMetricComponent
 
   ],
   imports: [
