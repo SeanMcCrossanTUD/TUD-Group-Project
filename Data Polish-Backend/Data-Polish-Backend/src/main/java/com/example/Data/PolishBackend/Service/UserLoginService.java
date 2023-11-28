@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import io.jsonwebtoken.security.Keys;
+import java.util.Base64;
 
 import java.util.Date;
 
@@ -18,7 +20,7 @@ public class UserLoginService {
     private JdbcTemplate jdbcTemplate;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final String secretKey = "mySecretKey"; // secure secret key
+    private final String secretKey = Base64.getEncoder().encodeToString(Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded()); // secure secret key
 
     public ResponseEntity<String> loginUser(String email, String password) {
         // Check if the email exists in the 'users' table
