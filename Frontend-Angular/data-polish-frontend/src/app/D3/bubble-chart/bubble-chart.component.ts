@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
+import { SimulationNodeDatum } from 'd3';
+
+interface ProcessedDataItem extends SimulationNodeDatum {
+  key: string;
+  value: number;
+}
 
 @Component({
   selector: 'app-bubble-chart',
@@ -7,15 +13,11 @@ import * as d3 from 'd3';
   styleUrls: ['./bubble-chart.component.css']
 })
 export class BubbleChartComponent implements OnInit {
-
-  private data: any[] = [
-    { "id": 1, "category": "Category A", "value1": 10, "value2": 20 },
-    { "id": 2, "category": "Category B", "value1": 15, "value2": 25 },
-    { "id": 3, "category": "Category C", "value1": 20, "value2": 30 },
-    { "id": 4, "category": "Category D", "value1": 25, "value2": 35 }
-  ];
-  
-  private currentColumn: string = 'value1';
+  @ViewChild('bubbleChart', { static: true }) private chartContainer!: ElementRef;
+  private margin = { top: 40, right: 20, bottom: 30, left: 40 };
+  private width = 600 - this.margin.left - this.margin.right;
+  private height = 400 - this.margin.top - this.margin.bottom;
+  private data: string[] = ['dog', 'cat', 'cat', 'cat', 'dog', 'frog', 'cat'];
 
   constructor() { }
 
@@ -24,41 +26,92 @@ export class BubbleChartComponent implements OnInit {
   }
 
   private createBubbleChart(): void {
-    d3.select('#bubbleChart').selectAll('*').remove();
+    const element = this.chartContainer.nativeElement;
+    const dataProcessed: ProcessedDataItem[] = this.processData(this.data);
 
-    const svg = d3.select('#bubbleChart').append('svg')
-      .attr('width', 600)
-      .attr('height', 400);
+    const svg = d3.select(element).append('svg')
+      .attr('width', this.width + this.margin.left + this.margin.right)
+      .attr('height', this.height + this.margin.top + this.margin.bottom)
+      .append('g')
+      .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
-    // Create groups for each bubble
-    const bubbleGroup = svg.selectAll('.bubble')
-      .data(this.data)
-      .enter().append('g')
+    const radiusScale = d3.scaleSqrt()
+      .domain([0, d3.max(dataProcessed, (d: ProcessedDataItem) => d.value) ?? 0])
+      .range([20, 80]); // Adjusted range for larger bubbles
+  
+    const simulation = d3.forceSimulation(dataProcessed as ProcessedDataItem[])
+      .force('charge', d3.forceManyBody().strength(50)) // Increased strength for more repulsion
+      .force('center', d3.forceCenter(this.width / 2, this.height / 2))
+      .force('collision', d3.forceCollide().radius((d: SimulationNodeDatum) => {
+        const item = d as ProcessedDataItem;
+        return radiusScale(item.value) + 1; // Add a small value to ensure separation
+      }))
+      .on('tick', ticked); // Add the tick function
+      
+    function ticked() {
+        bubbles
+          .attr('cx', d => d.x ?? 0)
+          .attr('cy', d => d.y ?? 0);
+    
+        labels
+          .attr('x', d => d.x ?? 0)
+          .attr('y', d => (d.y ?? 0) + 5);
+      }
+
+    const bubbles = svg.selectAll('.bubble')
+      .data(dataProcessed)
+      .enter().append('circle')
       .attr('class', 'bubble')
-      .attr('transform', (d, i) => `translate(${100 + i * 100}, 200)`);
+      .attr('r', (d: ProcessedDataItem) => radiusScale(d.value))
+      .attr('fill', () => this.getRandomColor());
 
-    // Create circles
-    bubbleGroup.append('circle')
-      .attr('r', d => +d[this.currentColumn])
-      .attr('fill', 'steelblue');
-
-    // Create text labels
-    bubbleGroup.append('text')
+    const labels = svg.selectAll('.label')
+      .data(dataProcessed)
+      .enter().append('text')
+      .attr('class', 'label')
       .attr('text-anchor', 'middle')
-      .attr('dy', '.3em') // Center vertically
-      .text(d => d.category); // Replace 'd.category' with the text you want to display
+      .attr('fill', 'black') // Change to black for better contrast or any color that suits your design
+      .text((d: ProcessedDataItem) => d.key)
+      .style('font-size', (d: ProcessedDataItem) => {
+        // Ensure a minimum font size, for example, 10px
+        const minFontSize = 20;
+        const calculatedSize = Math.min(2 * radiusScale(d.value), (2 * radiusScale(d.value) - 8) / this.getWidth(d.key));
+        return `${Math.max(minFontSize, calculatedSize)}px`;
+      })
+      .style('pointer-events', 'none');
 
-    // Add animation to circles
-    bubbleGroup.select('circle').transition()
-      .duration(750)
-      .attr('r', d => +d[this.currentColumn] * 1.5)
-      .transition()
-      .duration(750)
-      .attr('r', d => +d[this.currentColumn]);
+    simulation.on('tick', () => {
+      bubbles
+        .attr('cx', d => d.x ?? 0)
+        .attr('cy', d => d.y ?? 0);
+
+      labels
+        .attr('x', d => d.x ?? 0)
+        .attr('y', d => (d.y ?? 0) + 5);
+    });
   }
 
-  setColumn(column: string): void {
-    this.currentColumn = column;
-    this.createBubbleChart();
+  private processData(data: string[]): ProcessedDataItem[] {
+    const counts: { [key: string]: number } = {};
+    data.forEach(item => {
+      counts[item] = (counts[item] || 0) + 1;
+    });
+    return Object.keys(counts).map(key => ({
+      key,
+      value: counts[key]
+    }));
+  }
+
+  private getRandomColor(): string {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  private getWidth(text: string): number {
+    return text.length * 6;
   }
 }
