@@ -148,6 +148,8 @@ export class RulesComponent {
    cb_trim_whitespace=false
    cb_normalization=false
    cb_outlierManagement=false;
+   cb_MissingValueImputation=false;
+   cb_Numerical_Column_Binning=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false;
@@ -207,8 +209,8 @@ export class RulesComponent {
 
    ////////// normalization
    normalizationTypes:any=[{
-    types:'min-max'}
-    // ,{types:'z-score'}
+    types:'min-max'},
+    {types:'z-score'}
   ]
    selectedNormalizationTypes:any;
 
@@ -221,7 +223,19 @@ export class RulesComponent {
   ]
   selectedOutlier:any;
 
+  ///// missing value imputation
+  
+  missingvalueimpitationTypes:any=[{
+    types:'Remove'}
+    ,{types:'Mode'},
+    {types:'Mean'},
+    {types:'Median'},
+    {types:'Custom'}
+  ]
+  selectedmissingvalueimpitation:any;
 
+  ///////Numerical_Column_Binning
+  selected_Numerical_Column_Binning:any;
 
 
   removeAllFields(){
