@@ -20,7 +20,8 @@ public class UserLoginService {
     private JdbcTemplate jdbcTemplate;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final String secretKey = Base64.getEncoder().encodeToString(Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded()); // secure secret key
+    //secret key 256 bits
+    private final String secretKey = "WaaZ5eNs94mGk+joiqJf6Laj1s0oOrAyoy/saZJAaom801Rpqy88IaDZGhkhd65e";
 
     public ResponseEntity<String> loginUser(String email, String password) {
         // Check if the email exists in the 'users' table
@@ -60,7 +61,7 @@ public class UserLoginService {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 300,000)) // 5 min expiration
+                .setExpiration(new Date(System.currentTimeMillis() + 30000)) // 30 sec expiration
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
