@@ -123,7 +123,20 @@
 },
 "collapse_rare_categories": {
     "example_categorical_column": "example_threshold_percentage"
+},
+"tokenize_text": [
+    "example_text_column"
+],
+
+"apply_regex": {
+    "example_text_column": {
+        "regex_pattern": "example_regex_pattern",
+        "replacement_string": "example_replacement_string",
+        "operation": "example_operation" 
+    }
 }
+
+
 
 
 
