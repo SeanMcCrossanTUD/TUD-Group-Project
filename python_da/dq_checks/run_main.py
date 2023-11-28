@@ -241,6 +241,8 @@ def main(test_iterations=None):
     counter = 0
 
     while True:
+        time.sleep(5)
+        logger.info("sleep finished")
         # If test_iterations is set and counter has reached it, break the loop
         if test_iterations and counter >= test_iterations:
             break
@@ -293,8 +295,6 @@ def main(test_iterations=None):
 
                 #logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
                 logger.info("Data profile success")
-                time.sleep(60)
-                logger.info("sleep finished")
                 # Increment the counter
                 counter += 1
 

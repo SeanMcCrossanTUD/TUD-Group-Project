@@ -20,8 +20,8 @@ class DataQualityChecker:
     def count_unique_values_in_text_fields(self) -> dict:
         unique_values = {}
         for col in self.dataset.columns:
-            if self.dataset[col].dtype == 'object':  # Checking if the col is a text field
-                unique_count = self.dataset[col].nunique()  # Counting number of unique values
+            if self.dataset[col].dtype == 'object': 
+                unique_count = self.dataset[col].nunique() 
                 unique_values[col] = unique_count
         return unique_values
 
@@ -67,6 +67,7 @@ class DataQualityChecker:
                 result["outliers"][col] = []
 
         return result
+
     def iqr_outliers(self, k: float = 1.5) -> dict:
         """
         This function identifies and returns the outliers in the dataset based on the IQR method.
