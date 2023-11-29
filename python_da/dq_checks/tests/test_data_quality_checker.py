@@ -137,3 +137,26 @@ def outlier_checker():
 def test_iqr_outliers(outlier_checker):
     assert outlier_checker.iqr_outliers(k=1.5) == expected_iqr_outliers_result
 
+# Fixture for a test dataframe
+@pytest.fixture
+def text_data_dataframe():
+    return pd.DataFrame({
+        'TextColumn1': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+                        'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'BB', 'CC', 'DD', 'EE', 'FF', 'GG', 'HH', 'II', 'JJ', 'KK', 'LL',
+                        'MM', 'NN', 'OO', 'PP', 'QQ', 'RR', 'SS', 'TT', 'UU', 'VV', 'WW', 'XX'] + ['YY'] * 10,
+        'TextColumn2': ['Alpha', 'Beta', 'Gamma', 'Delta'] * 15
+    })
+
+# Test for the unique value frequencies function
+def test_count_unique_value_frequencies_in_text_fields(text_data_dataframe):
+    dq_checker = DataQualityChecker(text_data_dataframe)
+    result = dq_checker.count_unique_value_frequencies_in_text_fields()
+
+    # Test if the function identifies all text fields
+    assert set(result['text_fields']) == {'TextColumn1', 'TextColumn2'}
+
+    # Test if the function correctly counts unique values
+    assert len(result['value_counts']['TextColumn1']) == 51  # 50 unique values + 'other values'
+    assert result['value_counts']['TextColumn1']['YY'] == 10
+    assert 'other values' in result['value_counts']['TextColumn1']
+    assert result['value_counts']['TextColumn2'] == {'Alpha': 15, 'Beta': 15, 'Gamma': 15, 'Delta': 15}
