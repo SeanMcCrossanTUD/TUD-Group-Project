@@ -43,6 +43,7 @@ SERVICE_BUS_QUEUE_NAME = config["SERVICE_BUS_QUEUE_1_NAME"]
 connection_string = config["AZURE_CONNECTION_STRING"]
 OUTLIER_OUTPUT_CONTAINER = config["OUTLIER_OUTPUT_CONTAINER"]
 DATA_QUALITY_SCORE_CONTAINER = config["DATA_QUALITY_SCORE_CONTAINER"]
+BUBBLE_CHART_CONTAINER = config["BUBBLE_CHART_CONTAINER"]
 
 if connection_string is None:
     raise Exception("Failed to get connection string from environment variable")
@@ -127,6 +128,18 @@ def run_outliers_result(data, threshold=3.0):
     outliers_result = checker.z_score_outliers(threshold)
 
     return outliers_result
+
+def run_count_unique_values(data, max_unique_values=50):
+    # Drop rows with NaN values in text columns
+    text_columns = data.select_dtypes(include='object').columns
+    data_cleaned = data.dropna(subset=text_columns)
+
+    # Instantiate DataQualityChecker with the cleaned data
+    checker = DataQualityChecker(data_cleaned)
+    unique_values_result = checker.count_unique_value_frequencies_in_text_fields(max_unique_values)
+
+    return unique_values_result
+
 
 def calculate_overall_quality(data):
     """
@@ -291,11 +304,13 @@ def main(test_iterations=None):
                 logger.info("Overall quality score calculated")
 
                 upload_results_to_azure(dq_score, connection_string, jobID, DATA_QUALITY_SCORE_CONTAINER)
-                logger.info("Data quality score results uploaded successfully for  {filename} - {jobID}")                
+                logger.info("Data quality score results uploaded successfully for  {filename} - {jobID}")
 
-                #data_quality_checker = DataQualityChecker(data)
-                #run_visuals_and_upload(data_quality_checker, connection_string, container_name_images,jobID)
-                #logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
+                unique_values_count = run_count_unique_values(data=data, max_unique_values=50)
+                logger.info("Number of unique values counted")
+
+                upload_results_to_azure(unique_values_count, connection_string, jobID, BUBBLE_CHART_CONTAINER)
+                logger.info("Number of unique results uploaded successfully for  {filename} - {jobID}")
 
                 #logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
                 logger.info("Data profile success")
