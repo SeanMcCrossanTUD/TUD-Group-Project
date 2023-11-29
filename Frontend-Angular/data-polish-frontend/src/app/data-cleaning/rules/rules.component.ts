@@ -156,6 +156,7 @@ export class RulesComponent {
    cb_Text_Case_Adjustment=false;
    cb_Remove_Stopwords=false;
    cb_Replace_Substring=false;
+   cb_Label_Encoding=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false;
@@ -230,7 +231,8 @@ export class RulesComponent {
   selectedOutlier:any;
 
   ///// missing value imputation
-  
+  MissingValue_Custom=true;
+  Selected_MissingValue_Custom:any;
   missingvalueimpitationTypes:any=[{
     types:'Remove'}
     ,{types:'Mode'},
@@ -240,9 +242,17 @@ export class RulesComponent {
   ]
   selectedmissingvalueimpitation:any;
 
+  missingvalueCustom(){
+    if(this.selectedmissingvalueimpitation.types=='Custom'){
+      this.MissingValue_Custom=false;
+    }else{
+      this.MissingValue_Custom=true;
+    }
+  }
+
   ///////Numerical_Column_Binning
   selected_Numerical_Column_Binning:any;
-
+  values: string[] | undefined;
 
 
   ///// column renaming
@@ -265,6 +275,10 @@ export class RulesComponent {
   enableLine(){
    
   }
+
+
+  // cb_Label_Encoding
+
 
   removeAllFields(){
     this.rowData.forEach((x:any)=>{

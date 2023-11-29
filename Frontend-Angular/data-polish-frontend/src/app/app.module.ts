@@ -57,6 +57,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { TabMenuModule } from 'primeng/tabmenu';
 
+import { ChipsModule } from 'primeng/chips';
+
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -125,7 +127,8 @@ const routes: Routes = [
     CheckboxModule,
     DropdownModule,
     SelectButtonModule,
-    ScrollPanelModule
+    ScrollPanelModule,
+    ChipsModule
     
   ],
   providers: [

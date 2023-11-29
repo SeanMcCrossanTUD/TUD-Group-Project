@@ -80,6 +80,7 @@
                     <p-dropdown [hidden]="!cb_normalization" 
                       [options]="normalizationTypes" 
                       [(ngModel)]="selectedNormalizationTypes"
+                      [showClear]="true"
                       optionLabel="types" [showClear]="true" 
                       placeholder="Select option">
                     </p-dropdown>
@@ -119,10 +120,23 @@
                     <p-dropdown [hidden]="!cb_MissingValueImputation" 
                       [options]="missingvalueimpitationTypes" 
                       [(ngModel)]="selectedmissingvalueimpitation"
-                      optionLabel="types" [showClear]="true" 
+                      optionLabel="types" 
+                      [showClear]="true" 
+                      (onChange)="missingvalueCustom()"
                       placeholder="Select option">
                     </p-dropdown>
+                    
+                    
+                  
                   </div>
+                </div>
+                <div>
+                  <input 
+                    [hidden]="MissingValue_Custom"
+                    type="text"
+                    pInputText 
+                    placeholder="Enter Custom Value"
+                    [(ngModel)]="Selected_MissingValue_Custom" />
                 </div>
               </div>
               
@@ -140,14 +154,22 @@
                    </div>
                   <div>
                     <p-checkbox [(ngModel)]="cb_Numerical_Column_Binning" inputId="binary" [binary]="true"></p-checkbox>
-                    <input 
+                    <div class="card p-fluid">
+                    <p-chips
                     [hidden]="!cb_Numerical_Column_Binning" 
+                     [(ngModel)]="values" ></p-chips>
+                    </div>
+                    <!-- <input 
+                   
                     type="text"
                     pInputText 
-                    [(ngModel)]="selected_Numerical_Column_Binning" />
+                    [(ngModel)]="selected_Numerical_Column_Binning" /> -->
+                    <!--  -->
+                     
+                  <!-- </div> -->
                   </div>
                 </div>
-            
+<!--             
                 <div>
                   <div>
                     Column Type Conversion
@@ -166,7 +188,7 @@
                       placeholder="Select option">
                     </p-dropdown>
                   </div>
-                </div>
+                </div> -->
                    
             
             
@@ -223,7 +245,24 @@
                           </sup>
                         </div>
                   <div>
-                    <p-checkbox [(ngModel)]="cb_Remove_Stopwords" inputId="binary" [binary]="true"></p-checkbox>                
+                    <p-checkbox [(ngModel)]="cb_Remove_Stopwords" inputId="binary" [binary]="true"></p-checkbox> 
+                    <span [(ngModel)]="!cb_Remove_Stopwords">Language : English</span>               
+                  </div>
+                </div>
+
+
+                <div>
+                  <div>
+                    Label Encoding
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Label_Encoding" inputId="binary" [binary]="true"></p-checkbox> 
+                                 
                   </div>
                 </div>
 
