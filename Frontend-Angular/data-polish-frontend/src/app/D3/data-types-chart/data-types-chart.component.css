@@ -14,3 +14,10 @@
     border-radius: 5px;
     pointer-events: none;
 }
+
+.chart-container h2 {
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}

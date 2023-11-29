@@ -3,9 +3,12 @@ import { DataPreviewDataService } from 'src/app/Services/Datacleaning/data-previ
 import { AgGridAngular } from 'ag-grid-angular';
 import { CellClickedEvent, ColDef, GridReadyEvent,GridApi } from 'ag-grid-community';
 import { AdvanceOptionsButtonComponent } from './nested-components/advance-options-button/advance-options-button.component';
-
+import { CookieService } from 'ngx-cookie-service';
 import 'ag-grid-enterprise';
 import { MessageService } from 'primeng/api';
+import { HttpClient } from '@angular/common/http';
+import { AppSettings, constants } from 'src/app/Const/config';
+
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -20,6 +23,9 @@ export class RulesComponent {
   constructor(
     private DataPreviewDataService:DataPreviewDataService,
     private messageService: MessageService,
+    private http: HttpClient,
+    private CookieService:CookieService,
+    private MessageService:MessageService
     ){
 
   }
@@ -64,17 +70,28 @@ export class RulesComponent {
 },{'naveen':'abc'}];
 
   ngOnInit(){
-    this.DataPreviewDataService.getJsonData2().subscribe(
-      (response:any)=>{
-       
-        this.makedata(response.columnNames);
-       
+
+    var id=this.CookieService.get('jobsid');
+    this.DataPreviewDataService.getData(id).subscribe(
+      (Response)=>{
+     
+        this.DataPreviewDataService.getJsonData(Response).subscribe(
+          (r2:any)=>{           
+            this.makedata(r2.columnNames);
+            
+          }
+        )
+      },
+      (Error)=>{
+        this.MessageService.add({ severity: 'error', summary: 'Try again ', detail: "you file is still processing..." });
+     
       }
     )
 
  
     
    
+      
   
   }
 
@@ -133,6 +150,13 @@ export class RulesComponent {
    cb_trim_whitespace=false
    cb_normalization=false
    cb_outlierManagement=false;
+   cb_MissingValueImputation=false;
+   cb_Numerical_Column_Binning=false;
+   cb_Rename_Column_Name=false;
+   cb_Text_Case_Adjustment=false;
+   cb_Remove_Stopwords=false;
+   cb_Replace_Substring=false;
+   cb_Label_Encoding=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false;
@@ -192,8 +216,8 @@ export class RulesComponent {
 
    ////////// normalization
    normalizationTypes:any=[{
-    types:'min-max'}
-    // ,{types:'z-score'}
+    types:'min-max'},
+    {types:'z-score'}
   ]
    selectedNormalizationTypes:any;
 
@@ -206,7 +230,54 @@ export class RulesComponent {
   ]
   selectedOutlier:any;
 
+  ///// missing value imputation
+  MissingValue_Custom=true;
+  Selected_MissingValue_Custom:any;
+  missingvalueimpitationTypes:any=[{
+    types:'Remove'}
+    ,{types:'Mode'},
+    {types:'Mean'},
+    {types:'Median'},
+    {types:'Custom'}
+  ]
+  selectedmissingvalueimpitation:any;
 
+  missingvalueCustom(){
+    if(this.selectedmissingvalueimpitation.types=='Custom'){
+      this.MissingValue_Custom=false;
+    }else{
+      this.MissingValue_Custom=true;
+    }
+  }
+
+  ///////Numerical_Column_Binning
+  selected_Numerical_Column_Binning:any;
+  values: string[] | undefined;
+
+
+  ///// column renaming
+  Selected_Rename_Column_Name:any;
+
+
+
+  ///textcase adjusment
+  select_Text_Case_Adjustment:any;
+  options_Text_Case_Adjustment:any=[
+    {types:'uppercase'},
+    {types:'lowercase'},
+    {types:'titlecase'}
+  ]
+
+
+  /// replace substring
+  Selected_Replace_Substring_from:any;
+  Selected_Replace_Substring_to:any;
+  enableLine(){
+   
+  }
+
+
+  // cb_Label_Encoding
 
 
   removeAllFields(){
@@ -231,7 +302,15 @@ export class RulesComponent {
    isSuppressFlashSelected() {
     return (document.querySelector('#suppressFlash') as HTMLInputElement).checked;
   }
+
+
+
+  openHelpText(){
+  
+  }
 }
+
+
   
 
 

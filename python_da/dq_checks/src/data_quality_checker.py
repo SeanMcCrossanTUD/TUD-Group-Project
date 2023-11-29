@@ -20,8 +20,8 @@ class DataQualityChecker:
     def count_unique_values_in_text_fields(self) -> dict:
         unique_values = {}
         for col in self.dataset.columns:
-            if self.dataset[col].dtype == 'object':  # Checking if the col is a text field
-                unique_count = self.dataset[col].nunique()  # Counting number of unique values
+            if self.dataset[col].dtype == 'object': 
+                unique_count = self.dataset[col].nunique() 
                 unique_values[col] = unique_count
         return unique_values
 
@@ -43,22 +43,30 @@ class DataQualityChecker:
         result = {"fields": [], "outliers": {}}
         for col in self.dataset.select_dtypes(include=[np.number]).columns:
             result["fields"].append(col)
-            col_values = self.dataset[col].dropna()
-            z_scores = np.abs(stats.zscore(col_values))
 
-            result["outliers"][col] = [
-                {
-                    "row": idx,
-                    "field": col,
-                    "value": val,
-                    "z_score": z_scores[idx],
-                    "is_outlier": bool(z_scores[idx] > threshold),  # Explicitly convert to Python bool
-                    "threshold": threshold
-                }
-                for idx, val in col_values.iteritems()
-            ]
+            # Drop NaN values and reset index to align with original dataset
+            col_values = self.dataset[col].dropna().reset_index(drop=True)
+            original_indices = self.dataset[col].dropna().index
+
+            if not col_values.empty:
+                z_scores = np.abs(stats.zscore(col_values))
+                z_score_map = dict(zip(original_indices, z_scores))
+
+                result["outliers"][col] = [
+                    {
+                        "row": original_idx,
+                        "field": col,
+                        "value": self.dataset.at[original_idx, col],
+                        "z_score": z_score_map.get(original_idx),
+                        "is_outlier": bool(z_score_map.get(original_idx, 0) > threshold),
+                        "threshold": threshold
+                    }
+                    for original_idx in original_indices
+                ]
+            else:
+                result["outliers"][col] = []
+
         return result
-
 
     def iqr_outliers(self, k: float = 1.5) -> dict:
         """
@@ -112,3 +120,19 @@ class DataQualityChecker:
                 outliers[col] = outlier_info
 
         return outliers
+
+    def count_unique_value_frequencies_in_text_fields(self, max_unique_values=50) -> dict:
+        result = {'text_fields': [], 'value_counts': {}}
+
+        for col in self.dataset.select_dtypes(include='object').columns:
+            result['text_fields'].append(col)
+            value_counts = self.dataset[col].value_counts()
+
+            if len(value_counts) > max_unique_values:
+                top_values = value_counts.head(max_unique_values)
+                other_count = value_counts.iloc[max_unique_values:].sum()
+                value_counts = top_values.append(pd.Series({'other values': other_count}))
+
+            result['value_counts'][col] = value_counts.to_dict()
+
+        return result

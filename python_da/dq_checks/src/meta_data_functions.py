@@ -31,7 +31,10 @@ def dataframe_metadata_to_json(df):
     """
     # Does not exceed the number of rows in the data
     sample_size = min(200, len(df))
-    data_dict = df.head(sample_size).applymap(convert_numpy_to_python).to_dict(orient='records')
+
+    df_filtered = df.head(sample_size).fillna(value="")
+
+    data_dict = df_filtered.to_dict(orient='records')
 
     metadata = {
         "columnNames": list(df.columns),

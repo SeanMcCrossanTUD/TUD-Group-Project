@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-
+import { CookieService } from 'ngx-cookie-service';
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 interface CorrelationDataPoint {
   predictor: number;
   target: number;
@@ -21,12 +22,18 @@ export class CorrelationScatterPlotComponent implements OnInit {
   ngOnInit() {
     this.loadData();
   }
+  constructor(private D3DashboardService:D3DashboardService,
+    private cookieService:CookieService){
+
+  }
 
   loadData() {
-    d3.json('assets/z_score_outliers.json').then((data: any) => {
-      this.rawData = data.outliers.outliers;
-      this.fields = data.outliers.fields;
-
+    this.D3DashboardService.getoutlier().subscribe(
+      (data: any) => {
+        console.log(data)
+      this.rawData = data.outliers;
+      this.fields = data.fields;
+  
       if (this.fields.length >= 2) {
         this.selectedTarget = this.fields[0];
         this.selectedPredictor = this.fields[1];
@@ -34,9 +41,11 @@ export class CorrelationScatterPlotComponent implements OnInit {
       } else {
         console.error('Insufficient numeric fields found');
       }
-    }).catch(error => {
+    },
+    (error)=>{
       console.error('Error loading data:', error);
-    });
+    }
+    );
   }
 
   createScatterPlot(): void {
@@ -52,8 +61,8 @@ export class CorrelationScatterPlotComponent implements OnInit {
 
     d3.select('#correlation-plot').selectAll('*').remove();
 
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 },
-          width = 960 - margin.left - margin.right,
+    const margin = { top: 20, right: 10, bottom: 30, left: 50 },
+          width = 600 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
 
     const svg = d3.select('#correlation-plot')
@@ -81,7 +90,7 @@ export class CorrelationScatterPlotComponent implements OnInit {
     // Tooltip
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
-      .style('opacity', 0)
+      .style('opacity', 70)
       .style('position', 'absolute')
       .style('background', 'white')
       .style('border', '1px solid black')
@@ -89,6 +98,7 @@ export class CorrelationScatterPlotComponent implements OnInit {
       .style('pointer-events', 'none');
 
     // Data points
+    var primarycolor=this.cookieService.get("chartprimarycolor");
     const circles = svg.selectAll(".dot")
       .data(this.data)
       .enter().append("circle")
@@ -96,7 +106,8 @@ export class CorrelationScatterPlotComponent implements OnInit {
       .attr("r", 5)
       .attr("cx", 0) // Start from the left
       .attr("cy", d => y(d.target))
-      .style("fill", "lightblue") // Lighter fill color
+      // .style("fill", "lightblue") // Lighter fill color
+      .style("fill",primarycolor)
       .style("stroke", "black") // Hard border
       .style("stroke-width", "2px"); // Border width
 

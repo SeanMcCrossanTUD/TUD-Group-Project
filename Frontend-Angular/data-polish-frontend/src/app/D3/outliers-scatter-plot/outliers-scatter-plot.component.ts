@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 interface OutlierDataPoint {
   row: number;
   value: number;
@@ -14,29 +14,34 @@ interface OutlierDataPoint {
   styleUrls: ['./outliers-scatter-plot.component.css']
 })
 export class OutliersScatterPlotComponent implements OnInit {
-
-  private data: any; // Holds the loaded data
-  fields!: string[];
-  selectedField!: string;
+  private data: any;
+  public fields: string[] = [];
+  public selectedField: string = '';
 
   ngOnInit() {
     this.loadData();
   }
+  constructor(private D3DashboardService:D3DashboardService){
 
+  }
   loadData() {
-    d3.json('assets/z_score_outliers.json').then(data => {
-      this.data = data;
-      this.fields = this.data.outliers.fields;
+    this.D3DashboardService.getoutlier().subscribe(
+      (data: any) => {
+        console.log(data)
+        this.data=data;
+      this.fields = data.fields;
       this.selectedField = this.fields[0];
       this.createScatterPlot(this.selectedField);
     });
+  
   }
+
 
   createScatterPlot(field: string): void {
     d3.select('#scatter-plot').selectAll('*').remove();
 
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
-    const width = 960 - margin.left - margin.right;
+    const margin = { top: 20, right: 10, bottom: 30, left: 50 };
+    const width = 600 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
 
     const svg = d3.select('#scatter-plot')
@@ -46,7 +51,7 @@ export class OutliersScatterPlotComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const outlierData: OutlierDataPoint[] = this.data.outliers.outliers[field];
+    const outlierData: OutlierDataPoint[] = this.data.outliers[field];
 
     const x = d3.scaleLinear()
       .range([0, width])
@@ -88,7 +93,7 @@ export class OutliersScatterPlotComponent implements OnInit {
 
     svg.selectAll('.dot')
       .on('mouseover', function(event, d) {
-        const outlierPoint = d as OutlierDataPoint; // Cast the unknown type to OutlierDataPoint
+        const outlierPoint = d as OutlierDataPoint;
         const [px, py] = d3.pointer(event);
         tooltip.transition()
           .duration(200)
@@ -103,6 +108,26 @@ export class OutliersScatterPlotComponent implements OnInit {
           .style('opacity', 0);
         tooltip.remove();
       });
+
+    // Adding legend
+    const legend = svg.append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${width - 100}, 20)`);
+
+    legend.selectAll(null)
+      .data([{color: 'lightcoral', text: 'Outliers'}, {color: 'lightblue', text: 'Regular'}])
+      .enter().append('rect')
+      .attr('y', (d, i) => i * 20)
+      .attr('width', 18)
+      .attr('height', 18)
+      .style('fill', d => d.color);
+
+    legend.selectAll(null)
+      .data([{color: 'lightcoral', text: 'Outliers'}, {color: 'lightblue', text: 'Regular'}])
+      .enter().append('text')
+      .attr('x', 24)
+      .attr('y', (d, i) => i * 20 + 14)
+      .text(d => d.text);
   }
 
   onFieldChange(event: Event): void {

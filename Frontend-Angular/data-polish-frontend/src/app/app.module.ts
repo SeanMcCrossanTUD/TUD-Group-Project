@@ -44,12 +44,20 @@ import { OutliersComponent } from './outliers/outliers.component';
 import { D3DashboardService } from './Services/D3/d3-dashboard.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { SpiderChartComponent } from './D3/spider-chart/spider-chart.component';
+import { DataQualityMetricComponent } from './D3/data-quality-metric/data-quality-metric.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AdvanceOptionsButtonComponent } from './data-cleaning/rules/nested-components/advance-options-button/advance-options-button.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 import { CorrelationScatterPlotComponent } from './D3/correlation-scatter-plot/correlation-scatter-plot.component';
 import { HistogramComponent } from './D3/histogram/histogram.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { InputTextModule } from 'primeng/inputtext';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { TabMenuModule } from 'primeng/tabmenu';
+
+import { ChipsModule } from 'primeng/chips';
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -85,6 +93,8 @@ const routes: Routes = [
     OutliersComponent,
     OutliersScatterPlotComponent,
     AdvanceOptionsButtonComponent,
+    SpiderChartComponent,
+    DataQualityMetricComponent,
     CorrelationScatterPlotComponent,
     HistogramComponent
 
@@ -100,6 +110,8 @@ const routes: Routes = [
     FileUploadModule,
     ToastModule,
     ConfirmDialogModule,
+    TabMenuModule,
+    InputTextModule,
     ContextMenuModule,
     SidebarModule,
     TerminalModule,
@@ -113,7 +125,10 @@ const routes: Routes = [
     ColorPickerModule,
     ProgressSpinnerModule,
     CheckboxModule,
-    DropdownModule
+    DropdownModule,
+    SelectButtonModule,
+    ScrollPanelModule,
+    ChipsModule
     
   ],
   providers: [

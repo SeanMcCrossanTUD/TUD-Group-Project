@@ -27,7 +27,7 @@ export class DataTypesChartComponent implements OnInit {
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      if (Object.keys(data.data_type).length === 0) {
+      if (Object.keys(data.data_type_profile).length === 0) {
         svg.append("text")
             .attr("x", width / 2)
             .attr("y", height / 2)
@@ -37,7 +37,7 @@ export class DataTypesChartComponent implements OnInit {
         return;
       }
 
-      const sortedData: [string, number][] = Object.entries(data.data_type).map(([key, value]) => [key, Number(value)] as [string, number]).sort((a, b) => a[1] - b[1]);
+      const sortedData: [string, number][] = Object.entries(data.data_type_profile).map(([key, value]) => [key, Number(value)] as [string, number]).sort((a, b) => a[1] - b[1]);
     
 
       // Swap the x and y scales
@@ -86,8 +86,7 @@ export class DataTypesChartComponent implements OnInit {
           .append("text")
           .attr("class", "axis-label x-axis-label")
           .attr("x", width / 2)
-          .attr("y", 40)
-          .text("Count of Data Types");
+          .attr("y", 40);
 
       // Rotate the text on the y-axis if it's too long
       svg.selectAll(".y-axis .tick text")

@@ -1,6 +1,6 @@
 <div class="remove-all-button">
   <div (click)="addAllFields()">
-    <span class="material-icons">add_circle</span> Add All Columns
+    <span class="material-icons">add_circle</span> Keep All Columns
   </div>  &nbsp;
   <div (click)="removeAllFields()">
     <span class="material-icons">cancel</span> Remove All Columns
@@ -25,54 +25,309 @@
 <p-dialog [header]="currentrow" 
 [(visible)]="visible" 
 [breakpoints]="{ '960px': '75vw' }" 
-[style]="{ width: '50vw',height:'70vh' }"
+[style]="{ width: '60vw',height:'90vh' }"
  [draggable]="true"
   [resizable]="true">
-  <div class="pop-up-continer">
-    <div>
-      Remove Special characters
-    <p-checkbox  [(ngModel)]="cb_remove_special_characters" inputId="binary" [binary]="true"></p-checkbox>
+  <!-- <p-scrollPanel [style]="{ width: '100%', height: 'max-content' }"> -->
+   
 
-    </div>
 
-    <div>
-      Trim Whitespace
-    <p-checkbox  [(ngModel)]="cb_trim_whitespace" inputId="binary" [binary]="true"></p-checkbox>
-
-    </div>
-
-    <div>
-      Data Normalization
+    <div >
       <div>
-        <p-checkbox  [(ngModel)]="cb_normalization" inputId="binary" [binary]="true"></p-checkbox>
-        <p-dropdown [hidden]="!cb_normalization" [options]="normalizationTypes" [(ngModel)]="selectedNormalizationTypes" optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
+        <p-tabView>
+            <p-tabPanel header="1">
+              <div class="pop-up-continer">
+                <div>
+                  <div>
+                    Remove Special characters
+                    <sup (click)="openHelpText()">
+                      <span class="material-icons">
+                        help
+                      </span>
+                    </sup>
+                   
+                  </div>
+                
+                <p-checkbox  [(ngModel)]="cb_remove_special_characters" inputId="binary" [binary]="true"></p-checkbox>
+            
+                </div>
+
+                <div>
+                  <div>
+                    Trim Whitespace      
+                  <sup>
+                    <span class="material-icons">
+                      help
+                    </span>
+                  </sup>
+                  
+                </div>
+                <p-checkbox  [(ngModel)]="cb_trim_whitespace" inputId="binary" [binary]="true"></p-checkbox>
+            
+                </div>
+            
+                <div>
+                  <div>
+                    Data Normalization
+                    <sup>
+                      <span class="material-icons">
+                        help
+                      </span>
+                    </sup>
+                  </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_normalization" inputId="binary" [binary]="true"></p-checkbox>
+                    <p-dropdown [hidden]="!cb_normalization" 
+                      [options]="normalizationTypes" 
+                      [(ngModel)]="selectedNormalizationTypes"
+                      [showClear]="true"
+                      optionLabel="types" [showClear]="true" 
+                      placeholder="Select option">
+                    </p-dropdown>
+                  </div>
+                </div>
+               
+                  <div>
+                    <div>
+                      Outlier Management
+                      <sup>
+                        <span class="material-icons">
+                          help
+                        </span>
+                      </sup>
+                    </div>
+                    <div>
+                      <p-checkbox [(ngModel)]="cb_outlierManagement" inputId="binary" [binary]="true"></p-checkbox>
+                      <p-dropdown [hidden]="!cb_outlierManagement" [options]="outlierTypes" [(ngModel)]="selectedOutlier"
+                        optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
+                  
+                    </div>
+                  
+                  </div>
+            
+                  
+                <div>
+                  <div>
+                    Missing Value Imputation
+                    <sup>
+                      <span class="material-icons">
+                        help
+                      </span>
+                    </sup>
+                  </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_MissingValueImputation" inputId="binary" [binary]="true"></p-checkbox>
+                    <p-dropdown [hidden]="!cb_MissingValueImputation" 
+                      [options]="missingvalueimpitationTypes" 
+                      [(ngModel)]="selectedmissingvalueimpitation"
+                      optionLabel="types" 
+                      [showClear]="true" 
+                      (onChange)="missingvalueCustom()"
+                      placeholder="Select option">
+                    </p-dropdown>
+                    
+                    
+                  
+                  </div>
+                </div>
+                <div>
+                  <input 
+                    [hidden]="MissingValue_Custom"
+                    type="text"
+                    pInputText 
+                    placeholder="Enter Custom Value"
+                    [(ngModel)]="Selected_MissingValue_Custom" />
+                </div>
+              </div>
+              
+            </p-tabPanel>
+            <p-tabPanel header="2">
+              <div class="pop-up-continer">
+                <div>
+                  <div>
+                    Numerical Column Binning
+                     <sup>
+                       <span class="material-icons">
+                         help
+                       </span>
+                     </sup>
+                   </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Numerical_Column_Binning" inputId="binary" [binary]="true"></p-checkbox>
+                    <div class="card p-fluid">
+                    <p-chips
+                    [hidden]="!cb_Numerical_Column_Binning" 
+                     [(ngModel)]="values" ></p-chips>
+                    </div>
+                    <!-- <input 
+                   
+                    type="text"
+                    pInputText 
+                    [(ngModel)]="selected_Numerical_Column_Binning" /> -->
+                    <!--  -->
+                     
+                  <!-- </div> -->
+                  </div>
+                </div>
+<!--             
+                <div>
+                  <div>
+                    Column Type Conversion
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_MissingValueImputation" inputId="binary" [binary]="true"></p-checkbox>
+                    <p-dropdown [hidden]="!cb_MissingValueImputation" 
+                      [options]="missingvalueimpitationTypes" 
+                      [(ngModel)]="selectedmissingvalueimpitation"
+                      optionLabel="types" [showClear]="true" 
+                      placeholder="Select option">
+                    </p-dropdown>
+                  </div>
+                </div> -->
+                   
+            
+            
+            
+            
+                <div>
+                  <div>
+                    Rename Column Name
+                     <sup>
+                       <span class="material-icons">
+                         help
+                       </span>
+                     </sup>
+                   </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Rename_Column_Name" inputId="binary" [binary]="true"></p-checkbox>
+                    <input 
+                    [hidden]="!cb_Rename_Column_Name" 
+                    type="text"
+                    pInputText 
+                    [(ngModel)]="Selected_Rename_Column_Name" />
+                  </div>
+                </div>
+          
+          
+                <div>
+                  <div>
+                    Text Case Adjustment
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Text_Case_Adjustment" inputId="binary" [binary]="true"></p-checkbox>
+                    <p-dropdown [hidden]="!cb_Text_Case_Adjustment" 
+                      [options]="options_Text_Case_Adjustment" 
+                      [(ngModel)]="select_Text_Case_Adjustment"
+                      optionLabel="types" [showClear]="true" 
+                      placeholder="Select option">
+                    </p-dropdown>
+                  </div>
+                </div>
+
+                
+                <div>
+                  <div>
+                    Remove Stopwords
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Remove_Stopwords" inputId="binary" [binary]="true"></p-checkbox> 
+                    <span [(ngModel)]="!cb_Remove_Stopwords">Language : English</span>               
+                  </div>
+                </div>
+
+
+                <div>
+                  <div>
+                    Label Encoding
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Label_Encoding" inputId="binary" [binary]="true"></p-checkbox> 
+                                 
+                  </div>
+                </div>
+
+              </div>
+              
+            </p-tabPanel>
+            <p-tabPanel header="3">
+               <div class="pop-up-continer">
+                <div>
+                  <div>
+                    Replace Substrings
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Replace_Substring" 
+                    inputId="binary" 
+                    [binary]="true"
+                    onChange="enableLine()"
+                    ></p-checkbox>    
+                         
+                  </div>
+                </div>
+                <div>
+                  
+                  <input 
+                  id="replace_substring_from"
+                  [hidden]="!cb_Replace_Substring" 
+                  type="text"
+                  pInputText 
+                  placeholder="Source Substring"
+                  [(ngModel)]="Selected_Replace_Substring_from" />
+                
+                  <input 
+                  id="replace_substring_to"
+                  [hidden]="!cb_Replace_Substring" 
+                  type="text"
+                  placeholder="Target Substring"
+                  pInputText 
+                  [(ngModel)]="Selected_Replace_Substring_to" />
+                </div>
+               </div>
+            </p-tabPanel>
+        </p-tabView>
+      </div>
+     
   
      
-      </div>
-        </div>
-      <!-- <div>
-        <span> </span>
-        <p-dropdown [hidden]="!cb_normalization" [options]="normalizationTypes" [(ngModel)]="selectedNormalizationTypes" optionLabel="types" [showClear]="true" placeholder="Select new Data type"></p-dropdown>
-
-      </div> -->
-      <div>
-        Outlier Management
-        <div>
-          <p-checkbox  [(ngModel)]="cb_outlierManagement" inputId="binary" [binary]="true"></p-checkbox>
-          <p-dropdown [hidden]="!cb_outlierManagement" [options]="outlierTypes" [(ngModel)]="selectedOutlier" optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
+         
   
-        </div>
-          </div>
-       
+  
+    
 
 
 
 
 
 
+  
+      </div>
+  <!-- </p-scrollPanel> -->
 
-
-    </div>
     
     
  

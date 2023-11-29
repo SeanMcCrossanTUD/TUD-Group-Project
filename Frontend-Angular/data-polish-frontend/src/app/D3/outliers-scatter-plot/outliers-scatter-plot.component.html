@@ -1,7 +1,10 @@
-<select (change)="onFieldChange($event)">
+<div class="chart-container">
+  <select [(ngModel)]="selectedField" (change)="onFieldChange($event)">
     <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
   </select>
-  
-  
+
+
+  <h2 class="plot-title">{{ selectedField }} Outlier Scatter Plot</h2>
+
   <div id="scatter-plot"></div>
-  
+</div>

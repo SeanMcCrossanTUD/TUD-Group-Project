@@ -21,7 +21,7 @@ def test_dataframe_metadata_to_json():
     expected_metadata = {
         "columnNames": ['int_col', 'float_col', 'bool_col', 'text_col', 'mixed_col', 'missing_col'],
         "datatype": ['int64', 'float64', 'bool', 'object', 'object', 'float64'],
-        "data": df.head(3).fillna(value=np.nan).to_dict(orient='records'),
+        "data": df.head(3).fillna(value="").to_dict(orient='records'),  
         "type_conversion": {
             'int_col': ["bool", "string"],
             'float_col': ["bool", "string"],
@@ -37,6 +37,7 @@ def test_dataframe_metadata_to_json():
 
     # Testing
     assert actual_metadata_json == expected_metadata_json
+
 
 def test_possible_conversions():
     assert possible_conversions("int64") == ["bool", "string"]

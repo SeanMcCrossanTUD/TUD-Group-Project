@@ -34,6 +34,7 @@ export class DataPreviewComponent {
    
   }
   dataloaded=false;
+  hidepregress=false;
 
   ngOnInit(){
     var id=this.CookieService.get('jobsid');
@@ -48,12 +49,15 @@ export class DataPreviewComponent {
             this.rowData=r2.data
             this.makeHeaser();
            this.dataloaded=true
+         
+
             
           }
         )
       },
       (Error)=>{
-        this.MessageService.add({ severity: 'error', summary: 'Try again ', detail: "you file is still processing..." });
+        this.hidepregress=true;
+        this.MessageService.add({ severity: 'error', summary: 'Try again ', detail: "your file is still processing..." });
      
       }
     )
@@ -74,17 +78,17 @@ export class DataPreviewComponent {
      
         this.DataPreviewDataService.getJsonData(Response).subscribe(
           (r2:any)=>{
-           
+          
             this.DatapreviewColumnNames=r2.columnNames;
    
             this.rowData=r2.data
             this.makeHeaser();
-            
+            this.dataloaded=true
           }
         )
       },
       (Error)=>{
-        this.MessageService.add({ severity: 'error', summary: 'Success', detail: "you file is still processing..." });
+        this.MessageService.add({ severity: 'error', summary: 'Error', detail: "your file is still processing..." });
      
       }
     )

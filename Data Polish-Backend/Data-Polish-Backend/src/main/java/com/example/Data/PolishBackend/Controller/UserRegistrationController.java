@@ -4,25 +4,22 @@ import com.example.Data.PolishBackend.Service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/register")
+@CrossOrigin(origins = {"http://16.170.150.247:9000", "http://localhost:4200"})
+//@RequestMapping("/user-register")
 public class UserRegistrationController {
 
     @Autowired
     private UserRegistrationService userRegistrationService;
 
-    @PostMapping
+    @PostMapping("/user-register")
     public ResponseEntity<String> registerUser(
-            @RequestBody String fullName,
-            @RequestBody String email,
-            @RequestBody String password
+            @RequestParam String fullName,
+            @RequestParam String email,
+            @RequestParam String password
     ) {
-        userRegistrationService.registerUser(fullName, email, password);
-        return new ResponseEntity<>("New user successfully created", HttpStatus.CREATED);
+        return userRegistrationService.registerUser(fullName, email, password);
     }
 }
