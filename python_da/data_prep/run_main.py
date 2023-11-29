@@ -39,28 +39,6 @@ if connection_string is None:
 container_name_data_input = config["DATA_INPUT_CONTAINER"]
 
 
-def apply_transformations(dataset: pd.DataFrame) -> pd.DataFrame:
-    """
-    Apply transformations to the dataset using the functionalities defined in the DataPrep class.
-    Parameters:
-    dataset (pd.DataFrame): The dataset to transform.
-    Returns:
-    pd.DataFrame: The transformed dataset.
-    """
-    if not isinstance(dataset, pd.DataFrame):
-        logging.error('Provided dataset is not a pandas DataFrame')
-        raise TypeError('Expected dataset to be a pandas DataFrame')
-    try:
-        prep = DataPrep(dataset)
-        prep.remove_duplicates()
-    except Exception as e:
-        logging.error(f'Error occurred during transformation: {e}')
-        raise e
-
-    logging.info('Data transformations applied successfully')
-    return prep.dataframe
-
-
 def apply_col_specific_transformations(dataset: pd.DataFrame, config_path: str) -> pd.DataFrame:
     """
     Apply column-specific transformations to the dataset based on the JSON configuration.
@@ -85,61 +63,75 @@ def apply_col_specific_transformations(dataset: pd.DataFrame, config_path: str) 
 
         # Fill missing values
         for col, params in config.get('fill_missing_values', {}).items():
+            logging.info(f"Filling missing values for {col}")
             prep.fill_missing_values(col, method=params['method'], specific_value=params.get('specific_value'))
 
         # Normalize data
         for col, params in config.get('normalize_data', {}).items():
+            logging.info(f"Normalizing data for {col}")
             prep.normalize_data(col, method=params['method'])
 
         # Remove special characters
         for col in config.get('remove_special_characters', []):
+            logging.info(f"Removing special characters from {col}")
             prep.remove_special_characters(col)
 
         # Trim whitespace
         for col in config.get('trim_whitespace', []):
+            logging.info(f"Trimming whitespace in {col}")
             prep.trim_whitespace(col)
 
         # Change column type
         for col, params in config.get('change_column_type', {}).items():
+            logging.info(f"Changing column type for {col}")
             prep.change_column_type(col, new_type=params['new_type'])
 
         # Label encode
         for col in config.get('label_encode', []):
+            logging.info(f"Label encoding {col}")
             prep.label_encode(col)
 
         # Bin numeric to categorical
         for col, params in config.get('bin_numeric_to_categorical', {}).items():
+            logging.info(f"Binning numeric data to categorical for {col}")
             prep.bin_numeric_to_categorical(col, bins=params['bins'], labels=params.get('labels'))
 
         # Extract datetime components
         for col, params in config.get('extract_datetime_components', {}).items():
+            logging.info(f"Extracting datetime components for {col}")
             prep.extract_datetime_components(col, components=params['components'])
 
         # Replace substring
         for col, params in config.get('replace_substring', {}).items():
+            logging.info(f"Replacing substring in {col}")
             prep.replace_substring(col, old_substring=params['old_substring'], new_substring=params['new_substring'])
 
         # Parse datetime
         for col, params in config.get('parse_datetime', {}).items():
+            logging.info(f"Parsing datetime for {col}")
             prep.parse_datetime(col, datetime_format=params['datetime_format'])
 
         # Adjust text case
         for col, params in config.get('adjust_text_case', {}).items():
+            logging.info(f"Adjusting text case for {col}")
             prep.adjust_text_case(col, case_format=params['case_format'])
 
         # Remove stopwords
         for col, params in config.get('remove_stopwords', {}).items():
+            logging.info(f"Removing stopwords from {col}")
             prep.remove_stopwords(col, language=params['language'])
 
         # Collapse rare categories
         for col, params in config.get('collapse_rare_categories', {}).items():
+            logging.info(f"Collapsing rare categories in {col}")
             prep.collapse_rare_categories(col, threshold_percentage=params['threshold_percentage'])
 
         # Remove columns
         for col in config.get('remove_columns', {}).get('columns_to_remove', []):
+            logging.info(f"Removing column {col}")
             prep.remove_column(col)
 
-        logging.info('Column-specific transformations applied successfully')
+        logging.info('All column-specific transformations applied successfully')
         return prep.dataframe
 
     except FileNotFoundError:
