@@ -75,9 +75,7 @@ export class RulesComponent {
       (Response)=>{
      
         this.DataPreviewDataService.getJsonData(Response).subscribe(
-          (r2:any)=>{
-            // alert(constants.naveen)
-           
+          (r2:any)=>{           
             this.makedata(r2.columnNames);
             
           }
