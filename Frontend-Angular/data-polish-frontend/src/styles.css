@@ -104,3 +104,7 @@ background: black;
     visibility: visible;
   }
 }
+
+sup:hover{
+  cursor: pointer;
+}
