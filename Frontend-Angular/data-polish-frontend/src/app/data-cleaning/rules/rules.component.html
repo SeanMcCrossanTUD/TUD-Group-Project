@@ -164,7 +164,30 @@
   
   
   
-  
+      <div>
+        <div>
+          Rename Column Name
+           <sup>
+             <span class="material-icons">
+               help
+             </span>
+           </sup>
+         </div>
+        <div>
+          <p-checkbox [(ngModel)]="cb_Rename_Column_Name" inputId="binary" [binary]="true"></p-checkbox>
+          <input 
+          [hidden]="!cb_Rename_Column_Name" 
+          type="text"
+          pInputText 
+          [(ngModel)]="Selected_Rename_Column_Name" />
+        </div>
+      </div>
+
+
+
+
+
+
   
       </div>
   <!-- </p-scrollPanel> -->

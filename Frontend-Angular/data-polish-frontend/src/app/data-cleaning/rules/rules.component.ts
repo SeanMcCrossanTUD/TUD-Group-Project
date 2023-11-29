@@ -150,6 +150,7 @@ export class RulesComponent {
    cb_outlierManagement=false;
    cb_MissingValueImputation=false;
    cb_Numerical_Column_Binning=false;
+   cb_Rename_Column_Name=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false;
@@ -237,6 +238,10 @@ export class RulesComponent {
   ///////Numerical_Column_Binning
   selected_Numerical_Column_Binning:any;
 
+
+
+  ///// column renaming
+  Selected_Rename_Column_Name:any;
 
   removeAllFields(){
     this.rowData.forEach((x:any)=>{
