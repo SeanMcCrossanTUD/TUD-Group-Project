@@ -25,6 +25,7 @@ logger.addHandler(handler)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(BASE_DIR, 'pyconfigurations', 'azure_config.json')
 
+rules_config = "placeholder"
 
 with open(CONFIG_PATH, 'r') as file:
     config = json.load(file)
@@ -145,6 +146,56 @@ def apply_col_specific_transformations(dataset: pd.DataFrame, config_path: str) 
         raise e
 
 
+def apply_dataset_cleaning(dataset: pd.DataFrame, config_path: str) -> pd.DataFrame:
+    """
+    Apply dataset-wide cleaning actions based on the JSON configuration.
+
+    Parameters:
+    dataset (pd.DataFrame): The dataset to clean.
+    config_path (str): Path to the JSON configuration file.
+
+    Returns:
+    pd.DataFrame: The cleaned dataset.
+    """
+    if not isinstance(dataset, pd.DataFrame):
+        logging.error('Provided dataset is not a pandas DataFrame')
+        raise TypeError('Expected dataset to be a pandas DataFrame')
+
+    try:
+        # Load JSON configuration
+        with open(config_path, 'r') as file:
+            config = json.load(file)
+
+        prep = DataPrep(dataset)
+
+        # Remove duplicates
+        if config.get('remove_duplicates', {}).get('option') == 'yes':
+            logging.info('Removing duplicates from the dataset')
+            prep.remove_duplicates()
+
+        # Apply PCA
+        pca_config = config.get('apply_pca', {})
+        if pca_config:
+            columns = pca_config.get('columns', [])
+            n_components = pca_config.get('n_components')
+            if n_components is not None:
+                n_components = int(n_components)  # Convert to integer if it's not None
+            logging.info('Applying PCA on specified columns')
+            prep.apply_pca(columns, n_components)
+
+        logging.info('Dataset cleaning actions applied successfully')
+        return prep.dataframe
+
+    except FileNotFoundError:
+        logging.error(f'Configuration file {config_path} not found')
+        raise
+    except json.JSONDecodeError:
+        logging.error(f'Error parsing JSON from {config_path}')
+        raise
+    except Exception as e:
+        logging.error(f'Error occurred during dataset cleaning: {e}')
+        raise e
+        
 
 def main(test_iterations=None):
     counter = 0
@@ -177,7 +228,7 @@ def main(test_iterations=None):
                     logger.error(f'Invalid file type for {filename}. Only CSV and Excel files are supported.')
                     continue
 
-                result = apply_transformations(data)
+                result = apply_col_specific_transformations(data, rules_config)
                 
                 if file_extension == '.csv':
                     upload_result_csv_to_azure(result, connection_string, jobID, filename)
