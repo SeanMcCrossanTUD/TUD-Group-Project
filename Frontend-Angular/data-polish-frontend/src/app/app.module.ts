@@ -54,6 +54,7 @@ import { CorrelationScatterPlotComponent } from './D3/correlation-scatter-plot/c
 import { HistogramComponent } from './D3/histogram/histogram.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputTextModule } from 'primeng/inputtext';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -121,7 +122,8 @@ const routes: Routes = [
     ProgressSpinnerModule,
     CheckboxModule,
     DropdownModule,
-    SelectButtonModule
+    SelectButtonModule,
+    ScrollPanelModule
     
   ],
   providers: [

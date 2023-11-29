@@ -28,59 +28,41 @@
 [style]="{ width: '50vw',height:'80vh' }"
  [draggable]="true"
   [resizable]="true">
-  <div class="pop-up-continer">
-    <div>
-      <div>
-        Remove Special characters
-        <sup (click)="openHelpText()">
-          <span class="material-icons">
-            help
-          </span>
-        </sup>
-       
-      </div>
-    
-    <p-checkbox  [(ngModel)]="cb_remove_special_characters" inputId="binary" [binary]="true"></p-checkbox>
+  <!-- <p-scrollPanel [style]="{ width: '100%', height: 'max-content' }"> -->
 
-    </div>
-
-    <div>
+    <div class="pop-up-continer">
       <div>
-        Trim Whitespace      
-      <sup>
-        <span class="material-icons">
-          help
-        </span>
-      </sup>
+        <div>
+          Remove Special characters
+          <sup (click)="openHelpText()">
+            <span class="material-icons">
+              help
+            </span>
+          </sup>
+         
+        </div>
       
-    </div>
-    <p-checkbox  [(ngModel)]="cb_trim_whitespace" inputId="binary" [binary]="true"></p-checkbox>
-
-    </div>
-
-    <div>
+      <p-checkbox  [(ngModel)]="cb_remove_special_characters" inputId="binary" [binary]="true"></p-checkbox>
+  
+      </div>
+  
       <div>
-        Data Normalization
+        <div>
+          Trim Whitespace      
         <sup>
           <span class="material-icons">
             help
           </span>
         </sup>
+        
       </div>
-      <div>
-        <p-checkbox [(ngModel)]="cb_normalization" inputId="binary" [binary]="true"></p-checkbox>
-        <p-dropdown [hidden]="!cb_normalization" 
-          [options]="normalizationTypes" 
-          [(ngModel)]="selectedNormalizationTypes"
-          optionLabel="types" [showClear]="true" 
-          placeholder="Select option">
-        </p-dropdown>
+      <p-checkbox  [(ngModel)]="cb_trim_whitespace" inputId="binary" [binary]="true"></p-checkbox>
+  
       </div>
-    </div>
-   
+  
       <div>
         <div>
-          Outlier Management
+          Data Normalization
           <sup>
             <span class="material-icons">
               help
@@ -88,83 +70,105 @@
           </sup>
         </div>
         <div>
-          <p-checkbox [(ngModel)]="cb_outlierManagement" inputId="binary" [binary]="true"></p-checkbox>
-          <p-dropdown [hidden]="!cb_outlierManagement" [options]="outlierTypes" [(ngModel)]="selectedOutlier"
-            optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
-      
+          <p-checkbox [(ngModel)]="cb_normalization" inputId="binary" [binary]="true"></p-checkbox>
+          <p-dropdown [hidden]="!cb_normalization" 
+            [options]="normalizationTypes" 
+            [(ngModel)]="selectedNormalizationTypes"
+            optionLabel="types" [showClear]="true" 
+            placeholder="Select option">
+          </p-dropdown>
         </div>
-      
       </div>
-
-      
-    <div>
+     
+        <div>
+          <div>
+            Outlier Management
+            <sup>
+              <span class="material-icons">
+                help
+              </span>
+            </sup>
+          </div>
+          <div>
+            <p-checkbox [(ngModel)]="cb_outlierManagement" inputId="binary" [binary]="true"></p-checkbox>
+            <p-dropdown [hidden]="!cb_outlierManagement" [options]="outlierTypes" [(ngModel)]="selectedOutlier"
+              optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
+        
+          </div>
+        
+        </div>
+  
+        
       <div>
-        Missing Value Imputation
-        <sup>
-          <span class="material-icons">
-            help
-          </span>
-        </sup>
+        <div>
+          Missing Value Imputation
+          <sup>
+            <span class="material-icons">
+              help
+            </span>
+          </sup>
+        </div>
+        <div>
+          <p-checkbox [(ngModel)]="cb_MissingValueImputation" inputId="binary" [binary]="true"></p-checkbox>
+          <p-dropdown [hidden]="!cb_MissingValueImputation" 
+            [options]="missingvalueimpitationTypes" 
+            [(ngModel)]="selectedmissingvalueimpitation"
+            optionLabel="types" [showClear]="true" 
+            placeholder="Select option">
+          </p-dropdown>
+        </div>
       </div>
+         
+  
+  
       <div>
-        <p-checkbox [(ngModel)]="cb_MissingValueImputation" inputId="binary" [binary]="true"></p-checkbox>
-        <p-dropdown [hidden]="!cb_MissingValueImputation" 
-          [options]="missingvalueimpitationTypes" 
-          [(ngModel)]="selectedmissingvalueimpitation"
-          optionLabel="types" [showClear]="true" 
-          placeholder="Select option">
-        </p-dropdown>
+        <div>
+          Numerical Column Binning
+           <sup>
+             <span class="material-icons">
+               help
+             </span>
+           </sup>
+         </div>
+        <div>
+          <p-checkbox [(ngModel)]="cb_Numerical_Column_Binning" inputId="binary" [binary]="true"></p-checkbox>
+          <input 
+          [hidden]="!cb_Numerical_Column_Binning" 
+          type="text"
+          pInputText 
+          [(ngModel)]="selected_Numerical_Column_Binning" />
+        </div>
       </div>
-    </div>
-       
-
-
-    <div>
+  
       <div>
-        Numerical Column Binning
-         <sup>
-           <span class="material-icons">
-             help
-           </span>
-         </sup>
-       </div>
-      <div>
-        <p-checkbox [(ngModel)]="cb_Numerical_Column_Binning" inputId="binary" [binary]="true"></p-checkbox>
-        <input 
-        [hidden]="!cb_Numerical_Column_Binning" 
-        type="text"
-        pInputText 
-        [(ngModel)]="selected_Numerical_Column_Binning" />
+        <div>
+          Column Type Conversion
+                <sup>
+                  <span class="material-icons">
+                    help
+                  </span>
+                </sup>
+              </div>
+        <div>
+          <p-checkbox [(ngModel)]="cb_MissingValueImputation" inputId="binary" [binary]="true"></p-checkbox>
+          <p-dropdown [hidden]="!cb_MissingValueImputation" 
+            [options]="missingvalueimpitationTypes" 
+            [(ngModel)]="selectedmissingvalueimpitation"
+            optionLabel="types" [showClear]="true" 
+            placeholder="Select option">
+          </p-dropdown>
+        </div>
       </div>
-    </div>
-
-    <div>
-      <div>
-        Column Type Conversion
-              <sup>
-                <span class="material-icons">
-                  help
-                </span>
-              </sup>
-            </div>
-      <div>
-        <p-checkbox [(ngModel)]="cb_MissingValueImputation" inputId="binary" [binary]="true"></p-checkbox>
-        <p-dropdown [hidden]="!cb_MissingValueImputation" 
-          [options]="missingvalueimpitationTypes" 
-          [(ngModel)]="selectedmissingvalueimpitation"
-          optionLabel="types" [showClear]="true" 
-          placeholder="Select option">
-        </p-dropdown>
+         
+  
+  
+  
+  
+  
+  
       </div>
-    </div>
-       
+  <!-- </p-scrollPanel> -->
 
-
-
-
-
-
-    </div>
     
     
  
