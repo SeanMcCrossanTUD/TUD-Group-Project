@@ -1,8 +1,4 @@
-<div class="router-content-center">
-    <div class="glass-card download-container">
-     
-        
-        <p-button label="Export as CSV" severity="warning" [rounded]="true" (onClick)="download()"></p-button>
-    </div>
-   
+<div class="export-container">
+    <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+    <p-button label="Export cleaned Data" severity="secondary" (click)="export()"></p-button>
 </div>

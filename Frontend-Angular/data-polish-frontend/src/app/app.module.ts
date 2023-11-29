@@ -52,6 +52,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 import { CorrelationScatterPlotComponent } from './D3/correlation-scatter-plot/correlation-scatter-plot.component';
 import { HistogramComponent } from './D3/histogram/histogram.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { InputTextModule } from 'primeng/inputtext';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { TabMenuModule } from 'primeng/tabmenu';
+
+import { ChipsModule } from 'primeng/chips';
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -104,6 +110,8 @@ const routes: Routes = [
     FileUploadModule,
     ToastModule,
     ConfirmDialogModule,
+    TabMenuModule,
+    InputTextModule,
     ContextMenuModule,
     SidebarModule,
     TerminalModule,
@@ -117,7 +125,10 @@ const routes: Routes = [
     ColorPickerModule,
     ProgressSpinnerModule,
     CheckboxModule,
-    DropdownModule
+    DropdownModule,
+    SelectButtonModule,
+    ScrollPanelModule,
+    ChipsModule
     
   ],
   providers: [

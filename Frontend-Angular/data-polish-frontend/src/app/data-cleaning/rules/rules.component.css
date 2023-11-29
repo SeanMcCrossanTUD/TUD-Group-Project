@@ -20,7 +20,8 @@
     border: 2px black solid;
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 1vh;
+    padding-bottom: 25vh;
     gap: 20px; 
     overflow-y: scroll ;
 }
@@ -68,5 +69,9 @@
 }
 .remove-all-button div:hover{
     cursor: pointer;
+}
+
+p-tabView{
+    width: 55vw;
 }
 
