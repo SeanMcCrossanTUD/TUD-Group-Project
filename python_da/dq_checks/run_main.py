@@ -122,7 +122,13 @@ def perform_data_quality_checks(data):
     return result
 
 def run_outliers_result(data, threshold=3.0):
-    checker = DataQualityChecker(data)
+    # Certain charts become unusbale if the data is too much.
+    if len(data) > 5000:
+        data_sample = data.sample(n=5000, random_state=42)
+    else:
+        data_sample = data
+
+    checker = DataQualityChecker(data_sample)
     outliers_result = checker.z_score_outliers(threshold)
 
     return outliers_result
