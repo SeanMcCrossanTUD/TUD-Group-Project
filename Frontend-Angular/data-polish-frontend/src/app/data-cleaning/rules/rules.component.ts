@@ -8,6 +8,7 @@ import 'ag-grid-enterprise';
 import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { AppSettings, constants } from 'src/app/Const/config';
+
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -90,6 +91,7 @@ export class RulesComponent {
  
     
    
+      
   
   }
 
@@ -152,6 +154,8 @@ export class RulesComponent {
    cb_Numerical_Column_Binning=false;
    cb_Rename_Column_Name=false;
    cb_Text_Case_Adjustment=false;
+   cb_Remove_Stopwords=false;
+   cb_Replace_Substring=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false;
@@ -255,6 +259,12 @@ export class RulesComponent {
   ]
 
 
+  /// replace substring
+  Selected_Replace_Substring_from:any;
+  Selected_Replace_Substring_to:any;
+  enableLine(){
+   
+  }
 
   removeAllFields(){
     this.rowData.forEach((x:any)=>{
