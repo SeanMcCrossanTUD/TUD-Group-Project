@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import 'ag-grid-enterprise';
 import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
+import { AppSettings, constants } from 'src/app/Const/config';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -75,6 +76,7 @@ export class RulesComponent {
      
         this.DataPreviewDataService.getJsonData(Response).subscribe(
           (r2:any)=>{
+            // alert(constants.naveen)
            
             this.makedata(r2.columnNames);
             
@@ -260,7 +262,15 @@ export class RulesComponent {
    isSuppressFlashSelected() {
     return (document.querySelector('#suppressFlash') as HTMLInputElement).checked;
   }
+
+
+
+  openHelpText(){
+  
+  }
 }
+
+
   
 
 
