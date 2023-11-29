@@ -184,6 +184,27 @@
       </div>
 
 
+      <div>
+        <div>
+          Text Case Adjustment
+                <sup>
+                  <span class="material-icons">
+                    help
+                  </span>
+                </sup>
+              </div>
+        <div>
+          <p-checkbox [(ngModel)]="cb_Text_Case_Adjustment" inputId="binary" [binary]="true"></p-checkbox>
+          <p-dropdown [hidden]="!cb_Text_Case_Adjustment" 
+            [options]="options_Text_Case_Adjustment" 
+            [(ngModel)]="select_Text_Case_Adjustment"
+            optionLabel="types" [showClear]="true" 
+            placeholder="Select option">
+          </p-dropdown>
+        </div>
+      </div>
+
+
 
 
 

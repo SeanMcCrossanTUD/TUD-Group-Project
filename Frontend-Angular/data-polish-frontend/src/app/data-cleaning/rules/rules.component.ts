@@ -151,6 +151,7 @@ export class RulesComponent {
    cb_MissingValueImputation=false;
    cb_Numerical_Column_Binning=false;
    cb_Rename_Column_Name=false;
+   cb_Text_Case_Adjustment=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false;
@@ -242,6 +243,18 @@ export class RulesComponent {
 
   ///// column renaming
   Selected_Rename_Column_Name:any;
+
+
+
+  ///textcase adjusment
+  select_Text_Case_Adjustment:any;
+  options_Text_Case_Adjustment:any=[
+    {types:'uppercase'},
+    {types:'lowercase'},
+    {types:'titlecase'}
+  ]
+
+
 
   removeAllFields(){
     this.rowData.forEach((x:any)=>{

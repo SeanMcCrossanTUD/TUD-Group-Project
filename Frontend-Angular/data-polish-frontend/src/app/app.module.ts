@@ -55,6 +55,7 @@ import { HistogramComponent } from './D3/histogram/histogram.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputTextModule } from 'primeng/inputtext';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -107,6 +108,7 @@ const routes: Routes = [
     FileUploadModule,
     ToastModule,
     ConfirmDialogModule,
+    TabMenuModule,
     InputTextModule,
     ContextMenuModule,
     SidebarModule,
