@@ -111,6 +111,34 @@ def apply_col_specific_transformations(dataset: pd.DataFrame, config_path: str) 
         for col, params in config.get('bin_numeric_to_categorical', {}).items():
             prep.bin_numeric_to_categorical(col, bins=params['bins'], labels=params.get('labels'))
 
+        # Extract datetime components
+        for col, params in config.get('extract_datetime_components', {}).items():
+            prep.extract_datetime_components(col, components=params['components'])
+
+        # Replace substring
+        for col, params in config.get('replace_substring', {}).items():
+            prep.replace_substring(col, old_substring=params['old_substring'], new_substring=params['new_substring'])
+
+        # Parse datetime
+        for col, params in config.get('parse_datetime', {}).items():
+            prep.parse_datetime(col, datetime_format=params['datetime_format'])
+
+        # Adjust text case
+        for col, params in config.get('adjust_text_case', {}).items():
+            prep.adjust_text_case(col, case_format=params['case_format'])
+
+        # Remove stopwords
+        for col, params in config.get('remove_stopwords', {}).items():
+            prep.remove_stopwords(col, language=params['language'])
+
+        # Collapse rare categories
+        for col, params in config.get('collapse_rare_categories', {}).items():
+            prep.collapse_rare_categories(col, threshold_percentage=params['threshold_percentage'])
+
+        # Remove columns
+        for col in config.get('remove_columns', {}).get('columns_to_remove', []):
+            prep.remove_column(col)
+
         logging.info('Column-specific transformations applied successfully')
         return prep.dataframe
 
