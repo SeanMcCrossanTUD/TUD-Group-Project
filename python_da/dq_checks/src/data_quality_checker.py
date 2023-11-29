@@ -129,7 +129,6 @@ class DataQualityChecker:
             value_counts = self.dataset[col].value_counts()
 
             if len(value_counts) > max_unique_values:
-                # Keep the top 'max_unique_values' values and sum the counts of the rest
                 top_values = value_counts.head(max_unique_values)
                 other_count = value_counts.iloc[max_unique_values:].sum()
                 value_counts = top_values.append(pd.Series({'other values': other_count}))
