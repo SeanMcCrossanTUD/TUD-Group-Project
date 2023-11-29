@@ -143,7 +143,7 @@ def upload_results_to_azure(data, connection_string, job_id, result_container_na
     result_json = json.dumps(data_for_json, indent=4)
 
     # timestamp = str(int(time.time()))
-    result_blob_name = f'data_quality_result_{job_id}.json'
+    result_blob_name = f'data_quality_result_{result_container_name}_{job_id}.json'
     logger.info(result_blob_name)
     logger.info(result_container_name)
     try:

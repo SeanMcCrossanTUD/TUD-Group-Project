@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 interface HistogramDataPoint {
   value: number;
 }
@@ -19,11 +19,15 @@ export class HistogramComponent implements OnInit {
   ngOnInit() {
     this.loadData();
   }
+  constructor(private D3DashboardService:D3DashboardService){
 
+  }
   loadData() {
-    d3.json('assets/z_score_outliers.json').then((data: any) => {
-      this.rawData = data.outliers.outliers;
-      this.fields = data.outliers.fields;
+    this.D3DashboardService.getoutlier().subscribe(
+      (data: any) => {
+        console.log(data)
+      this.rawData = data.outliers;
+      this.fields = data.fields;
 
       if (this.fields.length > 0) {
         this.selectedField = this.fields[0];
@@ -31,9 +35,10 @@ export class HistogramComponent implements OnInit {
       } else {
         console.error('No fields found');
       }
-    }).catch(error => {
+    },(error)=>{
       console.error('Error loading data:', error);
-    });
+    }
+    );
   }
 
   createHistogram(): void {

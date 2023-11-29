@@ -245,4 +245,20 @@ moveback(){
     this.cookieService.set('ACCESSIBILITY',this.color);
     this.accessibilityset(); 
   }
+
+
+  chart_primary_color='lightblue'
+  set_chart_primary_color(){
+    this.cookieService.set('chartprimarycolor',this.chart_primary_color);
+    this.applytocharts("bar-1");
+    this.applytocharts("dot");
+   
+  }
+  applytocharts( x:any){
+    var elements:any= document.getElementsByClassName(x)
+   for(var i=0;i<elements.length;i++){
+    elements[i].style="fill:"+this.chart_primary_color+";"
+   }
+  }
+
 }

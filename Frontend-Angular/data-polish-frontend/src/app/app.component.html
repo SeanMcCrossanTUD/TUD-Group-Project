@@ -73,9 +73,16 @@
     
   </div>
   <div>
-    BackGround color : <p-colorPicker [(ngModel)]="color"></p-colorPicker>
+    Background color : <p-colorPicker [(ngModel)]="color"></p-colorPicker>
     <br/>
     <button (click)="setcolor()">SET</button>
+  </div>
+  <h2>Charts</h2>
+  <div>
+    Primary color 
+    <br/><p-colorPicker [(ngModel)]="chart_primary_color"></p-colorPicker>
+    <br/>
+    <button (click)="set_chart_primary_color()">SET</button>
   </div>
 
 </p-sidebar>
