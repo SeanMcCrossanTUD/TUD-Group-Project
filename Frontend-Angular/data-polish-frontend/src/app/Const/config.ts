@@ -17,6 +17,7 @@ export class AppSettings {
 }
 export class constants{
   static helpText_DataNormalization='abc';
+//   'EXAMPLE':'example'
 
 }
 
