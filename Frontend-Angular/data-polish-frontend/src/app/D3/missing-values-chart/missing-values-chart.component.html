@@ -1,2 +1,11 @@
-<div id="chart-missing"></div>
-
+<div *ngIf="dataAvailable; else noDataTemplate">
+    <h2 class="chart-heading">Missing Values Chart</h2>
+    <div id="chart-missing"></div>
+  </div>
+  
+  <ng-template #noDataTemplate>
+    <div class="no-data-message">
+      <h2>No Missing Values Detected.</h2>
+    </div>
+  </ng-template>
+  
