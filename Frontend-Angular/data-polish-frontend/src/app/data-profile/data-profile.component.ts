@@ -83,7 +83,7 @@ visibleHelpText=false;
 openHelpText(element:any){
   console.log(this.constants.config)
    this.WHAT=this.constants.config[element].WHAT;
-  // this.WHY=DataProfileConfig.NUMBEROFFIELDS.WHY;
+   this.WHY=this.constants.config[element].WHY;
   this.visibleHelpText=true;
   
 }
