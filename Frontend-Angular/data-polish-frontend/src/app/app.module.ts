@@ -63,6 +63,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ChipsModule } from 'primeng/chips';
+import { DataProfileConfig } from './Const/Dataprofile_config';
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -146,7 +147,8 @@ const routes: Routes = [
     CookieService,
     TerminalService,
     NavigatationService,
-    D3DashboardService
+    D3DashboardService,
+    DataProfileConfig
   ],
   bootstrap: [AppComponent]
 })
