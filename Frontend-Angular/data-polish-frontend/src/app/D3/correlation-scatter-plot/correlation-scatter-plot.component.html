@@ -1,11 +1,12 @@
-<div class="dropdown-container">
+<div *ngIf="fields && fields.length > 0; else noDataTemplate">
+  <div class="dropdown-container">
     <div class="dropdown">
       <label for="target-variable">Target Variable:</label>
       <select id="target-variable" [(ngModel)]="selectedTarget" (change)="onFieldChange()">
         <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
       </select>
     </div>
-  
+
     <div class="dropdown">
       <label for="predictor-variable">Predictor Variable:</label>
       <select id="predictor-variable" [(ngModel)]="selectedPredictor" (change)="onFieldChange()">
@@ -13,11 +14,16 @@
       </select>
     </div>
   </div>
+
   
-  <!-- Dynamic title for the scatter plot -->
-  <h2>{{ selectedTarget }} vs {{ selectedPredictor }} Correlation</h2>
+  <h2 *ngIf="selectedTarget && selectedPredictor">{{ selectedTarget }} vs {{ selectedPredictor }} Correlation</h2>
+
   
-  <!-- SVG container for the plot -->
   <div id="correlation-plot"></div>
-  
-  
+</div>
+
+<ng-template #noDataTemplate>
+  <div class="no-data-message">
+    <h2>No Numeric Data Available To Profile</h2>
+  </div>
+</ng-template>
