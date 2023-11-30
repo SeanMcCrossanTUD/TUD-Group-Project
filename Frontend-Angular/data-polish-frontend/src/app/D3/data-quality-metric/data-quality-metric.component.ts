@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import { arc, pie, PieArcDatum } from 'd3-shape';
+import { Arc, DefaultArcObject } from 'd3';
 
 @Component({
   selector: 'app-data-quality-metric',
@@ -17,15 +17,14 @@ export class DataQualityMetricComponent implements OnInit {
   }
 
   private createChart(): void {
-    const dataset = { score: this.data[0].value / 100 };
+    const targetValue = this.data[0].value; // e.g., 77 for 77%
+    const dataset = targetValue / 100; // Convert to a scale of 0 to 1
     const width = 200;
     const height = 200;
     const thickness = 20;
 
-    const getColor = (score: number) => {
-      if (score > 0.8) return 'green';
-      else if (score > 0.6) return 'orange';
-      else return 'red';
+    const getColor = (value: number) => {
+      return value > 80 ? 'green' : value > 60 ? 'orange' : 'red';
     };
 
     const svg = d3.select("#dq-metric")
@@ -34,51 +33,45 @@ export class DataQualityMetricComponent implements OnInit {
       .attr('width', width)
       .attr('height', height);
 
-    const arcGenerator = arc<PieArcDatum<any>>()
+    const arcGenerator: Arc<any, DefaultArcObject> = d3.arc()
       .innerRadius((width / 2) - thickness)
       .outerRadius(width / 2);
 
-    const pieGenerator = pie<any>()
-      .value((d: any) => d.score)
-      .sort(null);
+    const background = svg.append('path')
+      .datum({ startAngle: 0, endAngle: 2 * Math.PI } as DefaultArcObject)
+      .style('fill', '#ddd')
+      .attr('d', arcGenerator)
+      .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
-    const pathData = pieGenerator([{ score: 0 }, { score: 1 - dataset.score }]);
+    const foreground = svg.append('path')
+      .datum({ startAngle: 0, endAngle: 0 } as DefaultArcObject)
+      .style('fill', getColor(targetValue))
+      .attr('d', arcGenerator)
+      .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
-    const path = svg.append('g')
-      .attr('transform', `translate(${width / 2}, ${height / 2})`)
-      .selectAll('path')
-      .data(pathData)
-      .enter()
-      .append('path')
-      .attr('d', arcGenerator as any) // cast to 'any' to avoid type errors
-      .attr('fill', (d, i) => i === 0 ? getColor(dataset.score) : '#ddd')
-      .attr('stroke', 'white')
-      .attr('stroke-width', '6');
-
-    path.data(pieGenerator([{ score: dataset.score }, { score: 1 - dataset.score }]))
-      .transition()
+      foreground.transition()
       .duration(1500)
-      .attrTween('d', function (d) {
-        const i = d3.interpolateNumber(0, d.value as number);
-        return function (t) {
-          d.value = i(t);
-          return arcGenerator(d as PieArcDatum<any>) as unknown as string;
+      .attrTween('d', (d: DefaultArcObject) => {
+        const interpolate = d3.interpolate(d.endAngle, 2 * Math.PI * dataset);
+        return (t) => {
+          d.endAngle = interpolate(t);
+          return arcGenerator(d) || '';
         };
       });
 
     const text = svg.append('text')
-      .text(`0%`)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
       .attr('transform', `translate(${width / 2}, ${height / 2})`)
       .attr('font-size', '40')
-      .attr('fill', getColor(dataset.score));
+      .attr('fill', getColor(targetValue))
+      .text('0%');
 
     text.transition()
       .duration(1500)
       .tween('text', function () {
         const that = d3.select(this);
-        const i = d3.interpolateNumber(0, dataset.score * 100);
+        const i = d3.interpolateNumber(0, targetValue);
         return function (t) {
           that.text(Math.round(i(t)) + '%');
         };
