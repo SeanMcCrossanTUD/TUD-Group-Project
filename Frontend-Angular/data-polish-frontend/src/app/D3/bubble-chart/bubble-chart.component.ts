@@ -22,28 +22,30 @@ export class BubbleChartComponent implements OnInit {
   private margin = { top: 40, right: 20, bottom: 30, left: 40 };
   private width = 600 - this.margin.left - this.margin.right;
   private height = 400 - this.margin.top - this.margin.bottom;
+  categories: string[] = [];
+  private allData: CategoricalData | null = null;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.loadChartData('categorical_1');
-  }
-
-  private loadChartData(category: string): void {
     this.http.get<CategoricalData>('assets/sample.json').subscribe(data => {
-      if (data && data.hasOwnProperty(category)) {
-        const categoryData = data[category];
-        this.createBubbleChart(categoryData);
-      } else {
-        console.error(`Category '${category}' not found in the data.`);
-      }
+      this.allData = data;
+      this.categories = Object.keys(data);
+      this.createBubbleChart(data[this.categories[0]]);
     }, error => {
       console.error('Error loading json data:', error);
     });
   }
 
+  onCategoryChange(category: string): void {
+    if (this.allData && this.allData[category]) {
+      this.createBubbleChart(this.allData[category]);
+    }
+  }
+
   private createBubbleChart(data: ProcessedDataItem[]): void {
     console.log('Creating bubble chart with data:', data);
+    d3.select(this.chartContainer.nativeElement).select('svg').remove();
     const element = this.chartContainer.nativeElement;
     const svg = d3.select(element).append('svg')
       .attr('width', this.width + this.margin.left + this.margin.right)
