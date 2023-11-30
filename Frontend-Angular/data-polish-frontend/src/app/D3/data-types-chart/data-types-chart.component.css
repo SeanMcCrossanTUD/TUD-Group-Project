@@ -21,3 +21,10 @@
     color: #333;
     margin-bottom: 15px;
 }
+
+.no-data-message {
+    font-size: 24px; 
+    text-align: center;
+    color: #666; 
+    margin-top: 20px;
+  }
