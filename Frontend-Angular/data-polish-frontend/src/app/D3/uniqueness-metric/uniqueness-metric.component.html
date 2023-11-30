@@ -1,1 +1,11 @@
-<div id="uniqueness"></div>
+<div *ngIf="dataAvailable; else noDataTemplate">
+    <h4 class="chart-heading">Uniqueness Score</h4>
+    <div id="uniqueness"></div>
+  </div>
+  
+  <ng-template #noDataTemplate>
+    <div class="no-data-message">
+      <h4>No Data Available</h4>
+    </div>
+  </ng-template>
+  

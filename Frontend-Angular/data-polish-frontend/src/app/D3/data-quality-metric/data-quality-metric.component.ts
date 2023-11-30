@@ -12,8 +12,15 @@ export class DataQualityMetricComponent implements OnInit {
     { axis: "dq-metric", value: 77 },
   ];
 
+  dataAvailable = false;
+
   ngOnInit() {
-    this.createChart();
+    if (this.data.length > 0 && this.data[0].value !== undefined) {
+      this.dataAvailable = true; // Set to true if data is present
+      this.createChart();
+    } else {
+      this.dataAvailable = false; // Set to false if no data is present
+    }
   }
 
   private createChart(): void {
