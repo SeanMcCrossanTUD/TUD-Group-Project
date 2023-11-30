@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AccessibilityServiceService } from '../Services/accessibility/accessibility-service.service';
 import { FileExportService } from '../Services/fileExport/file-export.service';
 import { fadeInAnimation } from '../Animations/animation';
-import { DataProfileConfig } from '../Const/Dataprofile_config';
+import { constants } from '../Const/config';
 @Component({
   selector: 'app-data-profile',
   templateUrl: './data-profile.component.html',
@@ -42,6 +42,7 @@ constructor(
   private cookieService: CookieService,
   private accessibilityServiceService: AccessibilityServiceService,
   private fileExportService:FileExportService,
+  private constants:constants
  
   ){}
 
@@ -80,8 +81,9 @@ WHAT:any='HI';
 WHY:any;
 visibleHelpText=false;
 openHelpText(element:any){
-  this.WHAT=DataProfileConfig.NUMBEROFFIELDS.WHAT;
-  this.WHY=DataProfileConfig.NUMBEROFFIELDS.WHY;
+  console.log(this.constants.config)
+   this.WHAT=this.constants.config[element].WHAT;
+  // this.WHY=DataProfileConfig.NUMBEROFFIELDS.WHY;
   this.visibleHelpText=true;
   
 }
