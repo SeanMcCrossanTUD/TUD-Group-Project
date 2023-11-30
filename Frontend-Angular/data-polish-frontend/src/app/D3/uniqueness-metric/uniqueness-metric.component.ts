@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { Arc, DefaultArcObject } from 'd3';
 
 @Component({
   selector: 'app-uniqueness-metric',
@@ -8,7 +9,7 @@ import * as d3 from 'd3';
 })
 export class UniquenessMetricComponent implements OnInit {
   private data = [
-    { axis: "uniqueness", value: 87 },
+    { axis: "uniqueness", value: 98 },
   ];
 
   ngOnInit() {
@@ -16,47 +17,64 @@ export class UniquenessMetricComponent implements OnInit {
   }
 
   private createChart(): void {
-    const dataset = this.data[0].value / 100;
+    const targetValue = this.data[0].value; 
+    const dataset = targetValue / 100; 
     const width = 200;
     const height = 200;
     const thickness = 20;
-  
+
     const getColor = (value: number) => {
-      if (value > 80) return 'green';
-      else if (value > 60) return 'orange';
-      else return 'red';
+      return value > 80 ? 'green' : value > 60 ? 'orange' : 'red';
     };
-  
+
     const svg = d3.select("#uniqueness")
       .append('svg')
       .attr('class', 'pie')
       .attr('width', width)
       .attr('height', height);
-  
-    const arc = d3.arc<d3.PieArcDatum<any>>()
+
+    const arcGenerator: Arc<any, DefaultArcObject> = d3.arc()
       .innerRadius((width / 2) - thickness)
       .outerRadius(width / 2);
-  
-    const pie = d3.pie<{ value: number }>()
-      .value(d => d.value);
-  
-    const path = svg.append('g')
+
+    const background = svg.append('path')
+      .datum({ startAngle: 0, endAngle: 2 * Math.PI } as DefaultArcObject)
+      .style('fill', '#ddd')
+      .attr('d', arcGenerator)
+      .attr('transform', `translate(${width / 2}, ${height / 2})`);
+
+    const foreground = svg.append('path')
+      .datum({ startAngle: 0, endAngle: 0 } as DefaultArcObject)
+      .style('fill', getColor(targetValue))
+      .attr('d', arcGenerator)
+      .attr('transform', `translate(${width / 2}, ${height / 2})`);
+
+      foreground.transition()
+      .duration(1500)
+      .attrTween('d', (d: DefaultArcObject) => {
+        const interpolate = d3.interpolate(d.endAngle, 2 * Math.PI * dataset);
+        return (t) => {
+          d.endAngle = interpolate(t);
+          return arcGenerator(d) || '';
+        };
+      });
+
+    const text = svg.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
       .attr('transform', `translate(${width / 2}, ${height / 2})`)
-      .selectAll('path')
-      .data(pie([{ value: dataset }, { value: 1 - dataset }]))
-      .enter()
-      .append("path")
-      .attr("d", arc)
-      .attr("fill", (d, i) => i === 0 ? getColor(this.data[0].value) : '#ddd')
-      .attr("stroke", "white")
-      .attr("stroke-width", "6");
-  
-    const text = svg.append("text")
-      .text(`${this.data[0].value}%`)
-      .attr("text-anchor", "middle")
-      .attr("dominant-baseline", "middle")
-      .attr("transform", `translate(${width / 2}, ${height / 2})`)
-      .attr("font-size", "40")
-      .attr("fill", getColor(this.data[0].value));
-  }  
+      .attr('font-size', '40')
+      .attr('fill', getColor(targetValue))
+      .text('0%');
+
+    text.transition()
+      .duration(1500)
+      .tween('text', function () {
+        const that = d3.select(this);
+        const i = d3.interpolateNumber(0, targetValue);
+        return function (t) {
+          that.text(Math.round(i(t)) + '%');
+        };
+      });
+  }
 }
