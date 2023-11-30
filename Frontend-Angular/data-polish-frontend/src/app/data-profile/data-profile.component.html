@@ -9,19 +9,27 @@
 
     <div class="row1">
         
-        <div class="div1">
+        <div class="stat div1">
             Total NO. Fields
             <app-number-fields-chart/>
         </div>
-        <div class="div2">
+        <div class="stat div2">
             Total NO. Records 
            <app-records-chart/>
         </div>
-        <div class="div3">
-            Number of Duplicates 
+        <div class="stat div3">
+            <div>
+                Number of Duplicates 
+                <sup>
+                    <span class="material-icons">
+                        help
+                        </span>
+                </sup>
+            </div>
+           
             <app-duplicate-chart/>
         </div>
-        <div class="div4">
+        <div class="stat div4">
             <app-data-quality-metric/>
         </div>
         

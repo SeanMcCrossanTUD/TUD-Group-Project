@@ -4,9 +4,11 @@ import json
 import time
 import pandas as pd
 from azure.core.exceptions import AzureError
+import numpy as np
 
 from dq_checks.src.data_quality_checker import DataQualityChecker
 from dq_checks.src.data_profiling_visuals import DataProfilingVisuals
+from dq_checks.src.data_quality_evaluator import AdvancedDataQualityEvaluator
 from dq_checks.azure_package.src.azure_functions import (
     download_blob_csv_data,
     download_blob_excel_data, 
@@ -40,6 +42,8 @@ SERVICE_BUS_CONNECTION_STRING = config["SERVICE_BUS_CONNECTION_STRING"]
 SERVICE_BUS_QUEUE_NAME = config["SERVICE_BUS_QUEUE_1_NAME"]
 connection_string = config["AZURE_CONNECTION_STRING"]
 OUTLIER_OUTPUT_CONTAINER = config["OUTLIER_OUTPUT_CONTAINER"]
+DATA_QUALITY_SCORE_CONTAINER = config["DATA_QUALITY_SCORE_CONTAINER"]
+BUBBLE_CHART_CONTAINER = config["BUBBLE_CHART_CONTAINER"]
 
 if connection_string is None:
     raise Exception("Failed to get connection string from environment variable")
@@ -98,21 +102,8 @@ def perform_data_quality_checks(data):
         logger.info(f'Successfully retrieved data_type_profile_count: {data_type_profile_count}')
     except KeyError as e:
         logger.error(f"KeyError accessing data_type_profile_count: {e}")
-        raise        
-    
-    try:
-        z_score_outliers = checker.z_score_outliers()
-        logger.info(f'Successfully retrieved z_score_outliers')
-    except KeyError as e:
-        logger.error(f"KeyError accessing z_score_outliers: {e}")
         raise
     
-    # try:
-    #     iqr_outliers = checker.iqr_outliers()
-    #     logger.info(f'Successfully retrieved iqr_outliers')
-    # except KeyError as e:
-    #     logger.error(f"KeyError accessing iqr_outliers: {e}")
-    #     raise
     
     # Combine the results into a dictionary
     result = {
@@ -122,19 +113,111 @@ def perform_data_quality_checks(data):
         'missing_values': missing_values,
         'data_type_profile': data_type_profile_count,
         'unique_values_in_text_fields': unique_values
-        #'z_score_outliers': z_score_outliers
-        # 'iqr_outliers': iqr_outliers
     }
 
     return result
 
 def run_outliers_result(data, threshold=3.0):
-    checker = DataQualityChecker(data)
+    # Certain charts become unusbale if the data is too much.
+    if len(data) > 5000:
+        data_sample = data.sample(n=5000, random_state=42)
+    else:
+        data_sample = data
+
+    checker = DataQualityChecker(data_sample)
     outliers_result = checker.z_score_outliers(threshold)
 
     return outliers_result
 
+def run_count_unique_values(data, max_unique_values=50):
+    # Drop rows with NaN values in text columns
+    text_columns = data.select_dtypes(include='object').columns
+    data_cleaned = data.dropna(subset=text_columns)
 
+    # Instantiate DataQualityChecker with the cleaned data
+    checker = DataQualityChecker(data_cleaned)
+    unique_values_result = checker.count_unique_value_frequencies_in_text_fields(max_unique_values)
+
+    return unique_values_result
+
+
+def calculate_overall_quality(data):
+    """
+    Calculate the overall data quality score based on completeness, uniqueness, consistency, and readability.
+
+    Parameters:
+    data (pd.DataFrame): The data on which to perform data quality evaluation.
+
+    Returns:
+    dict: A dictionary containing the individual scores and the overall quality score as a percentage.
+    """
+    quality_results = {}
+
+    try:
+        evaluator = AdvancedDataQualityEvaluator(data)
+        logger.info("Data quality evaluator initialized successfully.")
+    except Exception as e:
+        logger.error(f"Error initializing data quality evaluator: {e}")
+        raise
+
+    try:
+        completeness_score = evaluator.completeness()
+        quality_results['completeness_score'] = completeness_score
+        logger.info(f"Successfully calculated completeness score: {completeness_score}")
+    except Exception as e:
+        logger.error(f"Error calculating completeness score: {e}")
+        raise
+
+    try:
+        uniqueness_score = evaluator.uniqueness()
+        quality_results['uniqueness_score'] = uniqueness_score
+        logger.info(f"Successfully calculated uniqueness score: {uniqueness_score}")
+    except Exception as e:
+        logger.error(f"Error calculating uniqueness score: {e}")
+        raise
+
+    try:
+        consistency_score = evaluator.consistency()
+        quality_results['consistency_score'] = consistency_score
+        logger.info(f"Successfully calculated consistency score: {consistency_score}")
+    except Exception as e:
+        logger.error(f"Error calculating consistency score: {e}")
+        raise
+
+    try:
+        readability_scores = [evaluator.readability(col) for col in evaluator.df.columns if evaluator.df[col].dtype == 'object']
+        average_readability = np.mean(readability_scores) if readability_scores else 1
+        quality_results['average_readability'] = average_readability
+        logger.info(f"Successfully calculated average readability score: {average_readability}")
+    except Exception as e:
+        logger.error(f"Error calculating readability scores: {e}")
+        raise
+
+    try:
+        overall_score = (completeness_score + uniqueness_score + consistency_score + average_readability) / 4
+        quality_results['overall_score'] = overall_score * 100
+        logger.info(f"Successfully calculated overall quality score: {overall_score}")
+    except Exception as e:
+        logger.error(f"Error calculating overall quality score: {e}")
+        raise
+    try:
+        if overall_score >= 80:
+            colour_score = "Green"
+        elif 60 <= overall_score < 80:
+            colour_score = "Yellow"
+        elif 40 <= overall_score < 60:
+            colour_score = "Orange" 
+        else:
+            colour_score = "Red"
+    
+        quality_results['color'] = colour_score
+        logger.info(f"Successfully calculated colour score: {colour_score}")
+    except Exception as e:
+        logger.error(f"Error calculating colour scheme: {e}")
+        raise
+
+
+    return quality_results
 
 def meta_data_to_blob(df):
 
@@ -172,6 +255,8 @@ def main(test_iterations=None):
     counter = 0
 
     while True:
+        time.sleep(5)
+        logger.info("sleep finished")
         # If test_iterations is set and counter has reached it, break the loop
         if test_iterations and counter >= test_iterations:
             break
@@ -213,16 +298,22 @@ def main(test_iterations=None):
 
                 # Upload the result to Azure Blob Storage
                 upload_results_to_azure(outlier_result, connection_string, jobID, OUTLIER_OUTPUT_CONTAINER)
-                logger.info("Z-score outliers analysis results uploaded successfully.")
+                logger.info("Z-score outliers analysis results uploaded successfully for  {filename} - {jobID}")
 
-                #data_quality_checker = DataQualityChecker(data)
-                #run_visuals_and_upload(data_quality_checker, connection_string, container_name_images,jobID)
-                #logger.info(f'Data profile images created and uploaded: {filename} - {jobID}')
+                dq_score = calculate_overall_quality(data=data)
+                logger.info("Overall quality score calculated")
+
+                upload_results_to_azure(dq_score, connection_string, jobID, DATA_QUALITY_SCORE_CONTAINER)
+                logger.info("Data quality score results uploaded successfully for  {filename} - {jobID}")
+
+                unique_values_count = run_count_unique_values(data=data, max_unique_values=50)
+                logger.info("Number of unique values counted")
+
+                upload_results_to_azure(unique_values_count, connection_string, jobID, BUBBLE_CHART_CONTAINER)
+                logger.info("Number of unique results uploaded successfully for  {filename} - {jobID}")
 
                 #logger.info(f'Data profile images nessage sent to service bus queue: {filename} - {jobID}')
                 logger.info("Data profile success")
-                time.sleep(60)
-                logger.info("sleep finished")
                 # Increment the counter
                 counter += 1
 

@@ -6,5 +6,7 @@
   "IMAGE_OUTPUT_CONTAINER": "imagesoutput",
   "OUTLIER_OUTPUT_CONTAINER": "outlier",
   "DATA_INPUT_CONTAINER": "csv",
-  "DATA_PREVIEW_CONTAINER":"datapreview"
+  "DATA_PREVIEW_CONTAINER":"datapreview",
+  "DATA_QUALITY_SCORE_CONTAINER": "qualityscore",
+  "BUBBLE_CHART_CONTAINER": "placeholder"
 }

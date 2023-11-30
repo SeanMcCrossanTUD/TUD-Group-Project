@@ -47,7 +47,7 @@ export class SpiderChartComponent implements OnInit {
                            .style("font-size", "12px")
                            .attr("text-anchor", "middle")
                            .attr("dy", "0.35em")
-                           .attr("x", (d, i) => (rScale(100) + labelOffset) * Math.cos(angleSlice * i - Math.PI / 2))
+                           .attr("x", (d, i) => (rScale(120) + labelOffset) * Math.cos(angleSlice * i - Math.PI / 2))
                            .attr("y", (d, i) => (rScale(100) + labelOffset) * Math.sin(angleSlice * i - Math.PI / 2))
                            .text(d => d.axis);
     // Draw the Circular Grids

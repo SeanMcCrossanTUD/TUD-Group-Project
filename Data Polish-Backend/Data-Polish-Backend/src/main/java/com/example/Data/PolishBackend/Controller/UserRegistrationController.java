@@ -8,19 +8,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = {"http://16.170.150.247:9000", "http://localhost:4200"})
-@RequestMapping("/api/register")
+//@RequestMapping("/user-register")
 public class UserRegistrationController {
 
     @Autowired
     private UserRegistrationService userRegistrationService;
 
-    @PostMapping
+    @PostMapping("/user-register")
     public ResponseEntity<String> registerUser(
-            @RequestBody String fullName,
-            @RequestBody String email,
-            @RequestBody String password
+            @RequestParam String fullName,
+            @RequestParam String email,
+            @RequestParam String password
     ) {
-        userRegistrationService.registerUser(fullName, email, password);
-        return new ResponseEntity<>("New user successfully created", HttpStatus.CREATED);
+        return userRegistrationService.registerUser(fullName, email, password);
     }
 }

@@ -1,0 +1,12 @@
+{
+    "remove_duplicates": {
+        "option": "yes"
+    },
+    "apply_pca": {
+        "columns": [
+            "example_column1",
+            "example_column2"
+        ],
+        "n_components": "example_number_of_components"
+    }
+}

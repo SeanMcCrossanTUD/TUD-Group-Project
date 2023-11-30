@@ -28,7 +28,7 @@
     .div3 { grid-area: 1 / 5 / 3 / 7; }
     .div4 { grid-area: 1 / 7 / 3 / 9; }
 
-.row1 div{
+.stat{
     background-color: white;
     border-radius: 5px;
     border: black 2px solid;
@@ -37,7 +37,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 5vh;
+    gap: 5vw;
     padding: 0.5vw;
 }
 

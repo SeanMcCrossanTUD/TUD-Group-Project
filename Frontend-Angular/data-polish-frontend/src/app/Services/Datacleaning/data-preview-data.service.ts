@@ -23,7 +23,7 @@ export class DataPreviewDataService {
     return this.HttpClient.get('https://fab5storage.blob.core.windows.net/datapreview/'+x
     )
   }
-  public getJsonData2(){
+  public getJsonData2(x:any){
     return this.HttpClient.get('http://localhost:3000/getdatapreviewdata1');
     
   }

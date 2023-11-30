@@ -52,11 +52,17 @@ import { DropdownModule } from 'primeng/dropdown';
 import { OutliersScatterPlotComponent } from './D3/outliers-scatter-plot/outliers-scatter-plot.component';
 import { CorrelationScatterPlotComponent } from './D3/correlation-scatter-plot/correlation-scatter-plot.component';
 import { HistogramComponent } from './D3/histogram/histogram.component';
+
 import { BubbleChartComponent } from './D3/bubble-chart/bubble-chart.component';
 import { CompletenessMetricComponent } from './D3/completeness-metric/completeness-metric.component';
 import { ConsistencyMetricComponent } from './D3/consistency-metric/consistency-metric.component';
 import { ReadabilityMetricComponent } from './D3/readability-metric/readability-metric.component';
 import { UniquenessMetricComponent } from './D3/uniqueness-metric/uniqueness-metric.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { InputTextModule } from 'primeng/inputtext';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { ChipsModule } from 'primeng/chips';
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -114,6 +120,8 @@ const routes: Routes = [
     FileUploadModule,
     ToastModule,
     ConfirmDialogModule,
+    TabMenuModule,
+    InputTextModule,
     ContextMenuModule,
     SidebarModule,
     TerminalModule,
@@ -127,7 +135,10 @@ const routes: Routes = [
     ColorPickerModule,
     ProgressSpinnerModule,
     CheckboxModule,
-    DropdownModule
+    DropdownModule,
+    SelectButtonModule,
+    ScrollPanelModule,
+    ChipsModule
     
   ],
   providers: [

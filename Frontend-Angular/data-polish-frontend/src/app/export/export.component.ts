@@ -15,43 +15,22 @@ export class ExportComponent {
 constructor(
   private cookieService: CookieService,
   private accessibilityServiceService: AccessibilityServiceService,
-  private fileExportService:FileExportService
+
   ){}
   ngOnInit() {
-    this.checkStatusString=this.cookieService.get('jobsid');
     let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
     if (cookieValue != '' && cookieValue != 'DEFAULT') {
       this.accessibilityServiceService.basicsetting();
     }
   }
-  outputURI='';
-  checkstatusbutton(){   
-    
-    this.fileExportService
-    .checkStatus(this.checkStatusString)
-    .subscribe((Response:any)=>{
-     
-      if(Response.datacleaningoutput=='null'){
-        alert("your data is not cleaned yet");
-      }else{
-        alert("your Data has been cleaned");
-        this.outputURI=Response.datacleaningoutput;
-      }
-    },
-    (err)=>{
-      alert("something went wrong checkyour JobID");
-    });
+
+
+  stateOptions: any[] = [{label: 'CSV', value: 'CSV'}, {label: 'Excel', value: 'EXCEL'}];
+
+  value: string = 'off';
+
+  export(){
+    alert(this.value)
   }
 
-
-  download(){
-   if(this.outputURI=='' || this.outputURI==undefined ){
-      alert('Error check status first');
-
-   }else{
-    var url="https://fab5storage.blob.core.windows.net/flaskapi2output/"+this.outputURI;
-    window.open(url);
-   }
-    
-  }
 }

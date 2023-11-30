@@ -5,31 +5,17 @@ import re
 from sklearn.decomposition import PCA
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+import nltk
+
+
+nltk.download('punkt')
+nltk.download('stopwords')
 
 # Class to encapsulate data cleaning functionalities
 class DataPrep:
 
     def __init__(self, dataset: pd.DataFrame):
         self.dataframe = dataset
-
-
-    # def load_dataframe(self, file_path):
-    #     # Check if the file path is valid from OS
-    #     if not os.path.exists(file_path):
-    #         raise FileNotFoundError(f'File {file_path} not found')
-    #     try:
-    #         # Try to load the file as a CSV
-    #         dataframe = pd.read_csv(file_path)
-    #         # Check if the dataframe is empty or incorrectly formatted (CSV only now)
-    #         if dataframe.empty:
-    #             raise ValueError(f'File {file_path} is empty or not in the correct format')
-    #         return dataframe
-    #     except pd.errors.ParserError as e:
-    #         # Handle CSV parsing errors
-    #         raise ValueError(f'Failed to parse {file_path} as a CSV file: {e}')
-    #     except Exception as e:
-    #         # Catch any other exceptions that may occur
-    #         raise Exception(f'An unexpected error occurred: {e}')
 
     def remove_duplicates(self):
         self.dataframe = self.dataframe.drop_duplicates()
@@ -587,7 +573,6 @@ class DataPrep:
 
         return self.dataframe
 
-#Function 17
     def collapse_rare_categories(self, column_name, threshold_percentage=5.0):
         """
         Collapses rare categories in a specified column into an 'Other' category.
@@ -607,10 +592,6 @@ class DataPrep:
         if column_name not in self.dataframe.columns:
             raise ValueError(f'Column name {column_name} not found in dataframe')
 
-        # Ensure that the column is categorical
-        if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]) and not pd.api.types.is_object_dtype(self.dataframe[column_name]):
-            raise ValueError(f'Column {column_name} is not a categorical column.')
-
         # Calculate the frequency distribution of the categories
         frequency = self.dataframe[column_name].value_counts(normalize=True) * 100
 
@@ -618,11 +599,83 @@ class DataPrep:
         rare_categories = frequency[frequency < threshold_percentage].index
 
         # Collapse rare categories into 'Other'
-        try:
-            self.dataframe[column_name] = self.dataframe[column_name].apply(lambda x: 'Other' if x in rare_categories else x)
-        except Exception as e:
-            raise Exception(f'An error occurred while collapsing rare categories: {e}')
+        if not rare_categories.empty:
+            self.dataframe[column_name] = self.dataframe[column_name].replace(rare_categories, 'Other')
+        else:
+            print("No categories found with frequency below the threshold. No changes made.")
 
         return self.dataframe
+
+
        
+    #Function 18
+    def tokenize_text(self, column_name):
+        """
+        Performs text tokenization on a specified text column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column to tokenize.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the tokenization
+        try:
+            self.dataframe[column_name] = self.dataframe[column_name].apply(word_tokenize)
+        except Exception as e:
+            raise Exception(f'An error occurred while tokenizing text: {e}')
+
+        return self.dataframe
+    
+    #Function 19
+    def apply_regex(self, column_name, regex_pattern, replacement_string="", operation="replace"):
+        """
+        Applies a regular expression operation to a specified text column in the DataFrame.
+
+        Args:
+        column_name (str): The name of the text column to apply the regex operation on.
+        regex_pattern (str): The regular expression pattern to apply.
+        replacement_string (str): The string to replace matches with, used in the 'replace' operation.
+        operation (str): The type of regex operation ('replace', 'extract'). Default is 'replace'.
+        """
+
+        # Check if a dataframe is loaded
+        if self.dataframe is None:
+            raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
+
+        # Check if the specified column exists
+        if column_name not in self.dataframe.columns:
+            raise ValueError(f'Column name {column_name} not found in dataframe')
+
+        # Ensure that the column is of text type
+        if not pd.api.types.is_string_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a text column.')
+
+        # Perform the regex operation
+        if operation == "replace":
+            # Apply the replace operation
+            try:
+                self.dataframe[column_name] = self.dataframe[column_name].str.replace(regex_pattern, replacement_string, regex=True)
+            except Exception as e:
+                raise Exception(f'An error occurred while applying regex replace operation: {e}')
+        elif operation == "extract":
+            # Apply the extract operation
+            try:
+                self.dataframe[column_name] = self.dataframe[column_name].str.extract(regex_pattern)
+            except Exception as e:
+                raise Exception(f'An error occurred while applying regex extract operation: {e}')
+        else:
+            raise ValueError(f'Invalid operation: {operation}. Valid operations are "replace" and "extract".')
+
+        return self.dataframe 
     
