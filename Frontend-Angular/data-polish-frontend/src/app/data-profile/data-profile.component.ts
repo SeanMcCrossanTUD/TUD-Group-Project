@@ -76,7 +76,7 @@ showMore(){
 }
 
 /// help text
-WHAT:any;
+WHAT:any='HI';
 WHY:any;
 visibleHelpText=false;
 openHelpText(element:any){
