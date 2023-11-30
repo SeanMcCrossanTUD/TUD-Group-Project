@@ -74,5 +74,11 @@
 
 .legend text {
     text-anchor: start;
-    alignment-baseline: middle;
 }
+
+.no-data-message {
+    font-size: 24px; 
+    text-align: center;
+    color: #666; 
+    margin-top: 20px;
+  }
