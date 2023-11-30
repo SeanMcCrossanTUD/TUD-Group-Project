@@ -17,8 +17,8 @@ export class DataQualityMetricComponent implements OnInit {
   }
 
   private createChart(): void {
-    const targetValue = this.data[0].value; // e.g., 77 for 77%
-    const dataset = targetValue / 100; // Convert to a scale of 0 to 1
+    const targetValue = this.data[0].value; 
+    const dataset = targetValue / 100;
     const width = 200;
     const height = 200;
     const thickness = 20;
