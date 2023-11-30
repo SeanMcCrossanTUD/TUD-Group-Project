@@ -80,7 +80,7 @@ WHAT:any='HI';
 WHY:any;
 visibleHelpText=false;
 openHelpText(element:any){
-  console.log(DataProfileConfig.NUMBEROFFIELDS)
+  this.WHAT=DataProfileConfig.NUMBEROFFIELDS.WHAT;
   this.visibleHelpText=true;
   
 }
