@@ -9,6 +9,7 @@ import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 })
 export class CardinalityComponent implements OnInit {
   @ViewChild('chart', { static: true }) private chartContainer!: ElementRef;
+  dataAvailable = false;  // Declare the property
 
   constructor(private D3DashboardService: D3DashboardService) {}
 
@@ -16,8 +17,11 @@ export class CardinalityComponent implements OnInit {
     this.D3DashboardService.getData().subscribe((data: any) => {
       if (!data) {
         console.error('Data is undefined');
+        this.dataAvailable = false; // Set it to false if no data
         return;
       }
+
+      
       const margin = { top: 10, right: 10, bottom: 100, left: 55 };
       const width = 400 - margin.left - margin.right;
       const height = 400 - margin.top - margin.bottom;
@@ -36,6 +40,14 @@ export class CardinalityComponent implements OnInit {
           .text("No cardinality data available.");
         return;
       }
+
+      if (!data.unique_values_in_text_fields || Object.keys(data.unique_values_in_text_fields).length === 0) {
+        this.dataAvailable = false; // Set to false if no unique values data
+        return;
+      } else {
+        this.dataAvailable = true; // Set to true if data is available
+      }
+
       const sortedData = Object.entries(data.unique_values_in_text_fields)
         .map(([key, value]) => [key, Number(value)] as [string, number])
         .sort((a, b) => b[1] - a[1]);

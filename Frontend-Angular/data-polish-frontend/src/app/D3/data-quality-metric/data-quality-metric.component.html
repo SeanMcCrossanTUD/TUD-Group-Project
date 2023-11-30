@@ -1,1 +1,11 @@
-<div id="dq-chart"></div>
+<div *ngIf="dataAvailable; else noDataTemplate">
+    <h2 class="chart-heading">Data Quality Score</h2>
+    <div id="dq-chart"></div>
+  </div>
+  
+  <ng-template #noDataTemplate>
+    <div class="no-data-message">
+      <h3>No Data Available</h3>
+    </div>
+  </ng-template>
+  

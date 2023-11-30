@@ -12,15 +12,21 @@ export class UniquenessMetricComponent implements OnInit {
     { axis: "uniqueness", value: 98 },
   ];
 
+  dataAvailable = false; 
+
   ngOnInit() {
-    this.createChart();
+    this.dataAvailable = this.data && this.data.length > 0;
+    if (this.dataAvailable) {
+      this.createChart();
+    }
   }
+
 
   private createChart(): void {
     const targetValue = this.data[0].value; 
     const dataset = targetValue / 100; 
-    const width = 200;
-    const height = 200;
+    const width = 150;
+    const height = 150;
     const thickness = 20;
 
     const getColor = (value: number) => {

@@ -12,15 +12,22 @@ export class CompletenessMetricComponent implements OnInit {
     { axis: "dq-metric", value: 20 },
   ];
 
+  // Declare the dataAvailable property
+  dataAvailable: boolean = true;
+
   ngOnInit() {
-    this.createChart();
+    // Check if data is available and set dataAvailable accordingly
+    this.dataAvailable = this.data.length > 0;
+    if (this.dataAvailable) {
+      this.createChart();
+    }
   }
 
   private createChart(): void {
-    const targetValue = this.data[0].value; // e.g., 77 for 77%
-    const dataset = targetValue / 100; // Convert to a scale of 0 to 1
-    const width = 200;
-    const height = 200;
+    const targetValue = this.data[0].value; 
+    const dataset = targetValue / 100;
+    const width = 150;
+    const height = 150;
     const thickness = 20;
 
     const getColor = (value: number) => {

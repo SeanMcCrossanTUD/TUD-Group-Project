@@ -12,8 +12,13 @@ export class ReadabilityMetricComponent implements OnInit {
     { axis: "readability", value: 98 },
   ];
 
+  dataAvailable = false; 
+
   ngOnInit() {
-    this.createChart();
+    this.dataAvailable = this.data && this.data.length > 0;
+    if (this.dataAvailable) {
+      this.createChart();
+    }
   }
 
   private createChart(): void {
