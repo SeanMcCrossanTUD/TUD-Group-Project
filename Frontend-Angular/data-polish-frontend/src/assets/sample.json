@@ -1,5 +1,8 @@
 [
   { "key": "dog", "value": 4 },
   { "key": "cat", "value": 7 },
-  { "key": "parrot", "value": 12 }
+  { "key": "parrot", "value": 10 },
+  { "key": "a", "value": 2 },
+  { "key": "b", "value": 20 },
+  { "key": "c", "value": 6 }
 ]

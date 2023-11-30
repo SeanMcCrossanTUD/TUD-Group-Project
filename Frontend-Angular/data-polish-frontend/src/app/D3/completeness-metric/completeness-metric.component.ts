@@ -9,7 +9,7 @@ import { Arc, DefaultArcObject } from 'd3';
 })
 export class CompletenessMetricComponent implements OnInit {
   private data = [
-    { axis: "dq-metric", value: 77 },
+    { axis: "dq-metric", value: 20 },
   ];
 
   ngOnInit() {

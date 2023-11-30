@@ -10,11 +10,27 @@
     <div class="row1">
         
         <div class="stat div1">
-            Total NO. Fields
+           
+            <div>
+                Total NO. Fields
+                <sup>
+                    <span class="material-icons">
+                        help
+                        </span>
+                </sup>
+            </div>
             <app-number-fields-chart/>
         </div>
         <div class="stat div2">
-            Total NO. Records 
+            <div>
+                Total NO. Records 
+                <sup>
+                    <span class="material-icons">
+                        help
+                        </span>
+                </sup>
+            </div>
+            
            <app-records-chart/>
         </div>
         <div class="stat div3">
@@ -29,10 +45,53 @@
            
             <app-duplicate-chart/>
         </div>
-        <div class="stat div4">
-            <app-data-quality-metric/>
+        <div class="stat div4 dq-all">
+            <div style="display: flex;">
+                <div style="
+                flex-basis: 90%;
+                justify-content: center;
+                align-items: center;
+                ">
+                    <app-data-quality-metric/>
+                </div>
+                <div style="flex-basis: 5%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <sup>
+                        
+                    
+                        <span class="material-icons">
+                            help
+                            </span>
+                        </sup>
+                        <sup>
+                            Expand
+                        <span class="material-icons" (click)="showMore()" title="Show More">
+                            <!-- more_vert -->
+                            expand_circle_down
+                            </span>
+                        </sup>
+                </div>
+              
+            </div>
+           
         </div>
         
+    </div>
+    <div style="display: grid; 
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    transition: all 4ms ease-in-out;
+    "  *ngIf="!hide_more">
+        <div class="stat">
+            <app-completeness-metric/>
+        </div>
+        <div class="stat">
+            <app-consistency-metric/>
+        </div>
+        <div class="stat">
+            <app-uniqueness-metric/>
+        </div>
+        <div class="stat">
+            <app-readability-metric/>
+        </div>
     </div>
     
     <div class="grid-container">
@@ -43,7 +102,9 @@
         <div><app-correlation-scatter-plot/></div>
 
         <div><app-data-types-chart/></div>
-        
+        <div>
+            <app-bubble-chart/>
+        </div>
          
         <div> <app-outliers-scatter-plot/> </div> 
         <div > <app-missing-values-chart />  </div>

@@ -65,4 +65,11 @@ checkstatusbutton(){
 
   
 }
+
+hide_more=true
+
+showMore(){
+  
+  this.hide_more=!this.hide_more
+}
 }
