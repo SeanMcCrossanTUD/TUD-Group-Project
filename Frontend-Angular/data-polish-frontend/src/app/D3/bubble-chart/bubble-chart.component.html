@@ -1,1 +1,8 @@
-<div #bubbleChart></div>
+<div>
+    <select #categorySelect (change)="onCategoryChange(categorySelect.value)">
+      <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+    </select>
+  </div>
+  
+  <div #bubbleChart></div>
+  
