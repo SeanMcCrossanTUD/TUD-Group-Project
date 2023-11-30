@@ -1,5 +1,7 @@
 
-
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { config } from 'rxjs';
 export class AppSettings {
    
     public static getBaseURL(){
@@ -15,8 +17,22 @@ export class AppSettings {
     }
 
 }
+@Injectable({
+    providedIn: 'root'
+  })
 export class constants{
-  static helpText_DataNormalization='abc';
+    constructor(private http:HttpClient){
+        http.get('assets/Dataprofile_config.json').subscribe(
+            (res)=>{
+                this.config=res;
+            },
+            (err)=>{
+                alert('erre');
+                console.log(err);
+            }
+        )
+    }
+   config:any;
 //   'EXAMPLE':'example'
 
 }
