@@ -95,13 +95,22 @@
     </div>
     
     <div class="grid-container">
-        <div>
-            <sup (click)="openHelpText('SPIDERCHART')">
+        <div style="display: flex;
+        justify-content: space-around;
+        gap:0px">
+         
+            <app-spider-chart style="max-width: 80%;"/>
+            <sup (click)="openHelpText('SPIDERCHART')"
+                style="flex-basis: 40%; display: flex; flex-direction: column;
+                 justify-content: 
+                 flex-start;
+                 min-height: 100%;">
                 <span class="material-icons">
                     help
                     </span>
+                    <span>&nbsp;</span>
             </sup>
-            <app-spider-chart/></div>
+        </div>
         <div><app-histogram/></div> 
 
         <div><app-cardinality/></div>
