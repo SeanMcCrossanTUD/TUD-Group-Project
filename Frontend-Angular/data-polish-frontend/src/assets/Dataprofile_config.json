@@ -1,9 +1,41 @@
 {
     "NUMBEROFFIELDS":{
-        "WHAT":"ABC",
-        "WHY":"ASFBJ"
+        "WHAT":"Displays the count of fields in the dataset.",
+        "WHY":""
+        
+        
+    },
+    "SPIDERCHART":{
+        "WHAT":"A radial chart that shows data in terms of multiple variables. decribe what it does more.   ",
+        "WHY":"Evaluate multiple metrics for a single record to determine data quality and consistency."
+        
+        
+    },
+    "NUMBEROFFIELDS":{
+        "WHAT":"Displays the count of fields in the dataset.",
+        "WHY":""
+        
+        
+    },
+    "NUMBEROFFIELDS":{
+        "WHAT":"Displays the count of fields in the dataset.",
+        "WHY":""
+        
+        
+    },
+    "NUMBEROFFIELDS":{
+        "WHAT":"Displays the count of fields in the dataset.",
+        "WHY":""
+        
+        
+    },
+    "NUMBEROFFIELDS":{
+        "WHAT":"Displays the count of fields in the dataset.",
+        "WHY":""
+        
         
     }
+
 }
 
    
