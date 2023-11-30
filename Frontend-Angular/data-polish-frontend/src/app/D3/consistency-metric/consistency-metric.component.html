@@ -1,1 +1,11 @@
-<div id="consistency"></div>
+<div *ngIf="dataAvailable; else noDataTemplate">
+    <h4 class="chart-heading">Consistency Score</h4>
+    <div id="consistency"></div>
+  </div>
+  
+  <ng-template #noDataTemplate>
+    <div class="no-data-message">
+      <h2>No Data Available</h2>
+    </div>
+  </ng-template>
+  

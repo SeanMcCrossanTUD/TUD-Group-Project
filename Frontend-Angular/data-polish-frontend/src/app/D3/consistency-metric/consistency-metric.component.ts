@@ -12,15 +12,21 @@ export class ConsistencyMetricComponent implements OnInit {
     { axis: "consistency", value: 98 },
   ];
 
+  dataAvailable: boolean = true; // Add this property always true for the moment unit intergrated with live data
+
   ngOnInit() {
-    this.createChart();
+    
+    this.dataAvailable = this.data && this.data.length > 0;
+    if (this.dataAvailable) {
+      this.createChart();
+    }
   }
 
   private createChart(): void {
     const targetValue = this.data[0].value; 
     const dataset = targetValue / 100; 
-    const width = 200;
-    const height = 200;
+    const width = 150;
+    const height = 150;
     const thickness = 20;
 
     const getColor = (value: number) => {
