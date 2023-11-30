@@ -3,11 +3,11 @@ import * as d3 from 'd3';
 import { Arc, DefaultArcObject } from 'd3';
 
 @Component({
-  selector: 'app-data-quality-metric',
-  template: '<div id="dq-metric"></div>',
-  styleUrls: ['./data-quality-metric.component.css']
+  selector: 'app-completeness-metric',
+  templateUrl: './completeness-metric.component.html',
+  styleUrls: ['./completeness-metric.component.css']
 })
-export class DataQualityMetricComponent implements OnInit {
+export class CompletenessMetricComponent implements OnInit {
   private data = [
     { axis: "dq-metric", value: 77 },
   ];
@@ -17,8 +17,8 @@ export class DataQualityMetricComponent implements OnInit {
   }
 
   private createChart(): void {
-    const targetValue = this.data[0].value; 
-    const dataset = targetValue / 100;
+    const targetValue = this.data[0].value; // e.g., 77 for 77%
+    const dataset = targetValue / 100; // Convert to a scale of 0 to 1
     const width = 200;
     const height = 200;
     const thickness = 20;
@@ -27,7 +27,7 @@ export class DataQualityMetricComponent implements OnInit {
       return value > 80 ? 'green' : value > 60 ? 'orange' : 'red';
     };
 
-    const svg = d3.select("#dq-metric")
+    const svg = d3.select("#completeness")
       .append('svg')
       .attr('class', 'pie')
       .attr('width', width)

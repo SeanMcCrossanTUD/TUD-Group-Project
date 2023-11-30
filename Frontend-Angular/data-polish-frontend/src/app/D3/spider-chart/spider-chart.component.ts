@@ -36,7 +36,7 @@ export class SpiderChartComponent implements OnInit {
     const rScale = d3.scaleLinear()
                      .range([0, radius])
                      .domain([0, 100]);
-    const labelOffset = 20;  // Increase this value if the labels are too close
+    const labelOffset = 20;
     const labels = svg.selectAll(".axisLabel")
                                        .data(this.data)
                                        .enter().append("g")
@@ -51,7 +51,7 @@ export class SpiderChartComponent implements OnInit {
                            .attr("y", (d, i) => (rScale(100) + labelOffset) * Math.sin(angleSlice * i - Math.PI / 2))
                            .text(d => d.axis);
     // Draw the Circular Grids
-    const levels = 5; // Number of levels (concentric circles)
+    const levels = 5;
     const levelFactor = radius / levels;
 
     svg.selectAll(".grid-circle")
@@ -77,7 +77,6 @@ export class SpiderChartComponent implements OnInit {
        .style("stroke", "black")
        .style("stroke-width", "2px");
 
-    // Transform data to the format expected by d3.radialLine
     const transformedData: [number, number][] = this.data.map((d, i) => {
       return [angleSlice * i, rScale(d.value)] as [number, number];
     });
@@ -86,13 +85,13 @@ export class SpiderChartComponent implements OnInit {
     // Create the radial line function
     const radarLine = d3.radialLine()
         .curve(d3.curveLinearClosed)
-        .radius(d => d[1])  // Use the radius (second element of the tuple)
-        .angle(d => d[0]);  // Use the angle (first element of the tuple)
+        .radius(d => d[1])
+        .angle(d => d[0]); 
 
     // Append the backgrounds
     svg.append('g')
        .selectAll("path")
-       .data([transformedData])  // Use transformed data
+       .data([transformedData])
        .enter().append("path")
        .attr("d", d => radarLine(d))
        .style("fill", "#f0f0f0")
@@ -101,11 +100,11 @@ export class SpiderChartComponent implements OnInit {
     // Create the outlines 
     svg.append('g')
       .selectAll("path")
-      .data([transformedData])  // Use transformed data
+      .data([transformedData])
       .enter().append("path")
       .attr("d", d => radarLine(d))
       .style("stroke-width", 3)
-      .style("stroke", "rgba(255, 165, 0, 0.7)")  // Orange with some transparency
+      .style("stroke", "rgba(255, 165, 0, 0.7)")
       .style("fill", "rgba(255, 165, 0, 0.2)"); 
 
     // Draw the axes 

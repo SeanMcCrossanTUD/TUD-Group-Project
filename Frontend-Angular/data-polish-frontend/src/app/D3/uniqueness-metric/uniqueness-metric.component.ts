@@ -3,13 +3,13 @@ import * as d3 from 'd3';
 import { Arc, DefaultArcObject } from 'd3';
 
 @Component({
-  selector: 'app-data-quality-metric',
-  template: '<div id="dq-metric"></div>',
-  styleUrls: ['./data-quality-metric.component.css']
+  selector: 'app-uniqueness-metric',
+  templateUrl: './uniqueness-metric.component.html',
+  styleUrls: ['./uniqueness-metric.component.css']
 })
-export class DataQualityMetricComponent implements OnInit {
+export class UniquenessMetricComponent implements OnInit {
   private data = [
-    { axis: "dq-metric", value: 77 },
+    { axis: "uniqueness", value: 98 },
   ];
 
   ngOnInit() {
@@ -18,7 +18,7 @@ export class DataQualityMetricComponent implements OnInit {
 
   private createChart(): void {
     const targetValue = this.data[0].value; 
-    const dataset = targetValue / 100;
+    const dataset = targetValue / 100; 
     const width = 200;
     const height = 200;
     const thickness = 20;
@@ -27,7 +27,7 @@ export class DataQualityMetricComponent implements OnInit {
       return value > 80 ? 'green' : value > 60 ? 'orange' : 'red';
     };
 
-    const svg = d3.select("#dq-metric")
+    const svg = d3.select("#uniqueness")
       .append('svg')
       .attr('class', 'pie')
       .attr('width', width)
