@@ -81,6 +81,7 @@ WHY:any;
 visibleHelpText=false;
 openHelpText(element:any){
   this.WHAT=DataProfileConfig.NUMBEROFFIELDS.WHAT;
+  this.WHY=DataProfileConfig.NUMBEROFFIELDS.WHY;
   this.visibleHelpText=true;
   
 }
