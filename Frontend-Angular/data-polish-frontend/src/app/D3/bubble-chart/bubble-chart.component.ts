@@ -8,6 +8,10 @@ interface ProcessedDataItem extends SimulationNodeDatum {
   value: number;
 }
 
+interface CategoricalData {
+  [category: string]: ProcessedDataItem[];
+}
+
 @Component({
   selector: 'app-bubble-chart',
   templateUrl: './bubble-chart.component.html',
@@ -22,18 +26,24 @@ export class BubbleChartComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.loadChartData();
+    this.loadChartData('categorical_1');
   }
-  
-  private loadChartData(): void {
-    this.http.get<ProcessedDataItem[]>('assets/sample.json').subscribe(data => {
-      this.createBubbleChart(data);
+
+  private loadChartData(category: string): void {
+    this.http.get<CategoricalData>('assets/sample.json').subscribe(data => {
+      if (data && data.hasOwnProperty(category)) {
+        const categoryData = data[category];
+        this.createBubbleChart(categoryData);
+      } else {
+        console.error(`Category '${category}' not found in the data.`);
+      }
     }, error => {
-      console.error('Error loading or parsing json data:', error);
-    });    
+      console.error('Error loading json data:', error);
+    });
   }
-  
+
   private createBubbleChart(data: ProcessedDataItem[]): void {
+    console.log('Creating bubble chart with data:', data);
     const element = this.chartContainer.nativeElement;
     const svg = d3.select(element).append('svg')
       .attr('width', this.width + this.margin.left + this.margin.right)
@@ -49,7 +59,6 @@ export class BubbleChartComponent implements OnInit {
       .force('charge', d3.forceManyBody().strength(50))
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
       .force('collision', d3.forceCollide().radius((node: SimulationNodeDatum) => {
-        // Cast the node to ProcessedDataItem
         const item = node as ProcessedDataItem;
         return radiusScale(item.value) + 1;
       }));

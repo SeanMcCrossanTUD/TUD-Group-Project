@@ -1,5 +1,12 @@
-[
-  { "key": "dog", "value": 4 },
-  { "key": "cat", "value": 7 },
-  { "key": "parrot", "value": 12 }
-]
+{
+  "categorical_1": [
+    { "key": "red", "value": 2 },
+    { "key": "white", "value": 6 },
+    { "key": "black", "value": 10 }
+  ],
+  "categorical_2": [
+    { "key": "dog", "value": 4 },
+    { "key": "cat", "value": 7 },
+    { "key": "parrot", "value": 12 }
+  ]
+}
