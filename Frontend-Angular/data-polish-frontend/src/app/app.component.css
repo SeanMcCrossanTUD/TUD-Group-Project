@@ -399,3 +399,10 @@ input:checked+.slider:before {
   align-items: center;
   gap: 10px;
 }
+.dp-login{
+
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  align-items:center ;
+}
