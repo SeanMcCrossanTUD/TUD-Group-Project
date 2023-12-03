@@ -42,6 +42,10 @@ export class AppComponent {
   line4:any
   
   ngOnInit() {
+    let login:string = this.cookieService.get('LOGIN');
+    if(login=='TRUE'){
+      this.isLoggedin=true;
+    }
     let cookieValue:string = this.cookieService.get('ACCESSIBILITY');
     if(cookieValue!='' && cookieValue!="DEFAULT"){
       this.accessibilityset();
@@ -261,4 +265,35 @@ moveback(){
    }
   }
 
+  isLoggedin=false;
+  emailid:any=''
+  password:any=''
+
+  logInInToSystem(){
+  
+    var regex=/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+   
+ 
+    if(this.emailid!='' &&
+     this.emailid!=undefined 
+      && regex.test(this.emailid)
+      && this.password!='' &&
+       this.password!=undefined
+    )
+    {
+
+      this.isLoggedin=true;
+      this.cookieService.set('LOGIN','TRUE')
+    }else{
+      this.messageService.add({ severity: 'error', 
+      summary: 'something went wrong  ',
+    detail:'check your credientials' })
+    }
+  }
+
+  logout(){
+    this.isLoggedin=false;
+    this.cookieService.set('LOGIN','FALSE')
+  }
 }
+
