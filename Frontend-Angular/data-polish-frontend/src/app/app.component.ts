@@ -40,36 +40,65 @@ export class AppComponent {
   line2:any
   line3:any
   line4:any
-  
+  linecolor:any='white';
   ngOnInit() {
     let login:string = this.cookieService.get('LOGIN');
     if(login=='TRUE'){
-      this.isLoggedin=true;
+      this.isLoggedin = true;
     }
-    let cookieValue:string = this.cookieService.get('ACCESSIBILITY');
-    if(cookieValue!='' && cookieValue!="DEFAULT"){
-      this.accessibilityset();
-   }
+
+      let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
+      if (cookieValue != '' && cookieValue != 'DEFAULT') {
+        this.accessibilityset();
+      }
+
+      if(cookieValue=='BLUE'){
+        this.linecolor='yellow'
+      }else if(cookieValue=='WHEAT'){    
+        this.linecolor='black'
+      }else if(cookieValue=='BLACK'){
+        this.linecolor='white'
+      }
+
+    
+
+  //}
 
 
-   const div1 = document.querySelector('#div-1');
-   const div2 = document.querySelector('#div-2');
-   const div3 = document.querySelector('#div-3');
-   const div4 = document.querySelector('#div-4');
-   const div5 = document.querySelector('#div-5');
-   const linecolor='white'
-this.line1 = new LeaderLine(div1, div2,{color:linecolor,hide:true})
-this.line2 = new LeaderLine(div2, div3,{color:linecolor,hide:true})
-this.line3 = new LeaderLine(div3, div4,{color:linecolor,hide:true})
-this.line4 = new LeaderLine(div4, div5,{color:linecolor,hide:true})
-this.line1active = new LeaderLine(div1, div2,{color:linecolor,dash: {animation: true}})
-this.line2active = new LeaderLine(div2, div3,{color:linecolor,dash: {animation: true},hide:true})
-this.line3active = new LeaderLine(div3, div4,{color:linecolor,dash: {animation: true},hide:true})
-this.line4active = new LeaderLine(div4, div5,{color:linecolor,dash: {animation: true},hide:true})
+}
 
-
-
-
+ngAfterViewInit(){
+  try{
+  const div1 = document.querySelector('#div-1');
+      const div2 = document.querySelector('#div-2');
+      const div3 = document.querySelector('#div-3');
+      const div4 = document.querySelector('#div-4');
+      const div5 = document.querySelector('#div-5');
+      const linecolor = this.linecolor;
+      this.line1 = new LeaderLine(div1, div2, { color: linecolor, hide: true });
+      this.line2 = new LeaderLine(div2, div3, { color: linecolor, hide: true });
+      this.line3 = new LeaderLine(div3, div4, { color: linecolor, hide: true });
+      this.line4 = new LeaderLine(div4, div5, { color: linecolor, hide: true });
+      this.line1active = new LeaderLine(div1, div2, {
+        color: linecolor,
+        dash: { animation: true },
+      });
+      this.line2active = new LeaderLine(div2, div3, {
+        color: linecolor,
+        dash: { animation: true },
+        hide: true,
+      });
+      this.line3active = new LeaderLine(div3, div4, {
+        color: linecolor,
+        dash: { animation: true },
+        hide: true,
+      });
+      this.line4active = new LeaderLine(div4, div5, {
+        color: linecolor,
+        dash: { animation: true },
+        hide: true,
+      });
+    }catch{}
 }
 toggleLine(line:any){
   if(line==11){
@@ -284,6 +313,7 @@ moveback(){
 
       this.isLoggedin=true;
       this.cookieService.set('LOGIN','TRUE')
+      
     }else{
       this.messageService.add({ severity: 'error', 
       summary: 'something went wrong  ',
