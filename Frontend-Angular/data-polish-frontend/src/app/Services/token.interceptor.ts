@@ -13,7 +13,6 @@ import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
     constructor(   private cookieService: CookieService){
-        
     }
   intercept(
     request: HttpRequest<any>,
