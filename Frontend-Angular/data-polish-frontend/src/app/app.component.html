@@ -44,18 +44,29 @@
 </div>
 </div>
 
+<div *ngIf="isLoggedin">
+  <div class="nav-bar">
+    <div 
+    
+    id="div-1"><span class="number-menu">
+      1
+    </span> Import</div>
+    <div  id="div-2"><span class="number-menu">2</span>Preview</div>
+    <div  id="div-3">
+      <span class="number-menu">3</span>
+       Profile
+    </div>
+    <div  id="div-4">
+      <span class="number-menu">4</span>
+      Cleaning</div>
+    <div  id="div-5">
+      <span class="number-menu">5</span> Export</div>
+  </div>
+</div>
 <div id="home-container" *ngIf="isLoggedin">
  <div class="content-container">
 
-  <div class="nav-bar">
-    <div 
-    class="highlight" 
-    id="div-1">1 - Import</div>
-    <div  id="div-2">2 - Preview</div>
-    <div class="highlight" id="div-3">3 - Profile</div>
-    <div class="highlight" id="div-4">4 - Cleaning</div>
-    <div class="highlight" id="div-5">5 - Export</div>
-  </div>
+  
   <div class="contents">
 <router-outlet/>
   </div>
