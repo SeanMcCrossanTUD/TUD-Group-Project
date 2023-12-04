@@ -343,6 +343,8 @@ moveback(){
   logout(){
     this.isLoggedin=false;
     this.cookieService.set('LOGIN','FALSE')
+    location.reload();
+
   }
 }
 
