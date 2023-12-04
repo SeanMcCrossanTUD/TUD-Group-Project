@@ -10,6 +10,7 @@ import { InputType } from '@coreui/angular';
 import { BlobStorageService } from './Services/Fileupload/blob-storage.service';
 declare var LeaderLine: any;
 import { fadeInAnimation } from './Animations/animation';
+import { LoginServiceService } from './Services/login/login-service.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -30,7 +31,10 @@ export class AppComponent {
      private cookieService: CookieService,
      private accessibilityServiceService:AccessibilityServiceService,
      private terminalService:TerminalService,
-     private BlobStorageService:BlobStorageService
+     private BlobStorageService:BlobStorageService,
+     private  LoginServiceService:LoginServiceService
+     
+
   ){ }
   line1active:any
   line2active:any
@@ -310,9 +314,24 @@ moveback(){
        this.password!=undefined
     )
     {
-
-      this.isLoggedin=true;
+      this.LoginServiceService.login(this.emailid,this.password).subscribe(
+        (res)=>{
+          
+          var x=res.split('Token: ');
+          
+          this.isLoggedin=true;
       this.cookieService.set('LOGIN','TRUE')
+      this.cookieService.set('TOKEN',x[1]);
+      location.reload();
+        },
+        (err)=>{
+          console.log(err);
+          this.messageService.add({ severity: 'error', 
+          summary: 'something went wrong  ',
+        detail:'check your credientials' })
+        
+        }
+      )
       
     }else{
       this.messageService.add({ severity: 'error', 
