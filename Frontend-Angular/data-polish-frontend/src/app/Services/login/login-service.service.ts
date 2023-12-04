@@ -12,11 +12,8 @@ export class LoginServiceService {
   ) { }
 
   login(email:any,password:any){
-    var URL=AppSettings.getBaseURL()+'user-login';
-    let params = new HttpParams();
-      params = params.append('email', email);
-      params = params.append('password', password);
+    var URL=AppSettings.getBaseURL()+'user-login?email='+email+'&password='+password
 
-      return this.http.post(URL,{ params: params})
+      return this.http.get(URL,{responseType:'text'})
   }
 }
