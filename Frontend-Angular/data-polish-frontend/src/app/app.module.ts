@@ -150,11 +150,11 @@ const routes: Routes = [
     NavigatationService,
     D3DashboardService,
     constants,
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: TokenInterceptor,
-    //   multi: true,
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
     
   ],
   bootstrap: [AppComponent]
