@@ -176,6 +176,8 @@ export class RulesComponent {
    cb_Replace_Substring=false;
    cb_Label_Encoding=false;
 
+   cb_Column_Type_Conversion=false;
+
    setallCBTOFalse(){
     this.cb_remove_special_characters=false
     this.cb_trim_whitespace=false
@@ -369,9 +371,9 @@ setNumerical_Column_Binning(x:any){
   ///textcase adjusment
   select_Text_Case_Adjustment:any;
   options_Text_Case_Adjustment:any=[
-    {types:'uppercase'},
-    {types:'lowercase'},
-    {types:'titlecase'}
+    {types:'Upper'},
+    {types:'Lower'},
+    {types:'Title'}
   ]
 
 
@@ -385,6 +387,19 @@ setNumerical_Column_Binning(x:any){
 
   // cb_Label_Encoding
 
+
+  // column type conversion
+  options_Column_Type_Conversion:any=[
+    {types:'Object'},
+    {types:'Text'},
+    {types:'Numerical'}
+  ]
+  select_Column_Type_Conversion:any
+
+
+  /// combine rare categories
+  cb_Combine_Rare_Categories=false;
+  selected_Combine_Rare_Categories:any=0;
 
   removeAllFields(){
     this.rowData.forEach((x:any)=>{
