@@ -253,11 +253,33 @@ export class RulesComponent {
    if(this.cb_Standard_Datetime_format){
     this.setStandard_Datetime_format(this.currentrow);
    }
+   if(this.cb_Regular_Expression_Operations){
+    this.setregex(this.currentrow);
+   }
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
    }
 /////////////////////////////////////////////
+setregex(x:any){
+  var json:any;
+  if(this.select_Regular_Expression_Operations.types=='Replace'){
+    json={
+      'columnName':x,
+      'method':'Replace',
+      'pattern':this.select_Regular_Expression_Operations_from,
+      'replaceWith':this.select_Regular_Expression_Operations_to
+    }
+  }else{
+    json={
+      'columnName':x,
+      'method':'Extract',
+      'pattern':this.select_Regular_Expression_Operations_from
+    }
+  }
+  this.rules["regular_expresion_operations"].push(json);
+  console.log(this.rules)
+}
 setStandard_Datetime_format(x:any){
   let temp="{\""+x+"\":\""+this.selected_Standard_Datetime_format+"\"}";
   this.rules["standard_datetime_format"].push(JSON.parse(temp));
