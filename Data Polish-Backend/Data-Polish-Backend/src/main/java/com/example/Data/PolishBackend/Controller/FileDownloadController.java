@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class FileDownloadController {
         // Call the service to get the file details as a JSON string
         return fileDownloadService.getFileDetails(jobID);
     } */
-    public ResponseEntity<String> downloadFile(
+    public ResponseEntity<Resource> downloadFile(
             @RequestParam String jobID,
             @RequestParam String fileType,
             @RequestHeader("Authorization") String token)
@@ -35,7 +36,8 @@ public class FileDownloadController {
         if (isValidJwtToken(token)) {
             return fileDownloadService.downloadFile(jobID,fileType);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
+            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ByteArrayResource("Unauthorized access".getBytes()));
         }
     }
 
