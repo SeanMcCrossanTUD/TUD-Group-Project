@@ -8,6 +8,7 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from data_prep.src.data_prep import DataPrep
 from data_prep.azure_package.src.azure_functions import (download_blob_csv_data,
+                                                download_blob_json_data,
                                                 upload_result_excel_to_azure,
                                                 download_blob_excel_data,
                                                 upload_result_csv_to_azure,
@@ -25,7 +26,7 @@ logger.addHandler(handler)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(BASE_DIR, 'pyconfigurations', 'azure_config.json')
 
-rules_config = "placeholder"
+
 
 with open(CONFIG_PATH, 'r') as file:
     config = json.load(file)
@@ -33,6 +34,7 @@ with open(CONFIG_PATH, 'r') as file:
 SERVICE_BUS_CONNECTION_STRING = config["SERVICE_BUS_CONNECTION_STRING"]
 SERVICE_BUS_QUEUE_NAME = config["SERVICE_BUS_QUEUE_2_NAME"]
 connection_string = config["AZURE_CONNECTION_STRING"]
+RULES_CONTAINER = config["RULES_CONTAINER"]
 
 if connection_string is None:
     raise Exception("Failed to get connection string from environment variable")
@@ -215,7 +217,12 @@ def main(test_iterations=None):
                 message_content = json.loads(cleaned_msg)
 
                 filename = message_content.get('rawurl', 'Unknown Filename') 
+                json_file_name = message_content.get('rawurl', 'Unknown Filename')
                 jobID = message_content.get('jobID', 'Unknown JobID')
+
+                # Download JSON rules file
+                json_rules_string = download_blob_json_data(connection_string, json_file_name, RULES_CONTAINER)
+                json_rules = json.loads(json_rules_string) if json_rules_string else None
 
                 file_extension = os.path.splitext(filename)[1].lower()
                 if file_extension == '.csv':
@@ -228,7 +235,7 @@ def main(test_iterations=None):
                     logger.error(f'Invalid file type for {filename}. Only CSV and Excel files are supported.')
                     continue
 
-                result = apply_col_specific_transformations(data, rules_config)
+                result = apply_col_specific_transformations(data, json_rules)
                 
                 if file_extension == '.csv':
                     upload_result_csv_to_azure(result, connection_string, jobID, filename)
@@ -241,7 +248,7 @@ def main(test_iterations=None):
             else:
                 logger.info('No new messages. Waiting for next check...')
             
-            time.sleep(600)  # waits for 60 seconds before checking again
+            time.sleep(5)  # waits for 5 seconds before checking again
 
         except AzureError as ae:
             logger.error(f"AzureError: {str(ae)}")
