@@ -1,5 +1,7 @@
 package com.example.Data.PolishBackend.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class FileDownloadService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public ResponseEntity<String> downloadFile(String jobID,String fileType) {
+    public ResponseEntity<Resource> downloadFile(String jobID, String fileType) {
         try {
             // Retrieve 'datacleaningoutput' from the database and store in cleanedFile
             String sql = "SELECT datacleaningoutput FROM jobsandblobs WHERE jobid = ?";
@@ -39,8 +41,32 @@ public class FileDownloadService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
 
+            // Construct the URL for downloading the file from Azure Blob Storage
+            String blobUrl = String.format("https://fab5storage.blob.core.windows.net/output/%s", "fab5storage", cleanedFile);
 
+            // Download the file using HTTP
+            byte[] fileContent = downloadBlob(blobUrl);
 
+            // Extract file extension from cleanedFile
+            String fileExtension = cleanedFile.substring(cleanedFile.lastIndexOf('.'));
+
+            // If the file extension matches the requested fileType, return the file
+            if (fileExtension.equals(fileType)) {
+                ByteArrayResource resource = new ByteArrayResource(fileContent);
+                return ResponseEntity.ok()
+                        .header("Content-Disposition", "attachment;filename=" + cleanedFile)
+                        .body(resource);
+            } else {
+                // Convert the file to the requested fileType
+                String convertedFileName = cleanedFile.replace(".csv", fileType);
+                ByteArrayResource resource = new ByteArrayResource(fileContent);
+                return ResponseEntity.ok()
+                        .header("Content-Disposition", "attachment;filename=" + convertedFileName)
+                        .body(resource);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
 
 
         /* prev code
