@@ -66,6 +66,7 @@ import { ChipsModule } from 'primeng/chips';
 import { constants } from './Const/config';
 import { TokenInterceptor } from './Services/token.interceptor';
 import { SliderModule } from 'primeng/slider';
+import { MultiSelectModule } from 'primeng/multiselect';
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
     {path:'newjob',component:SetpsHomeComponent},
@@ -129,6 +130,7 @@ const routes: Routes = [
     TerminalModule,
     DockModule,
     FormsModule,
+    MultiSelectModule,
     TabViewModule,
     StepsModule,
     SliderModule,
