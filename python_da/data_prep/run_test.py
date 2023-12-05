@@ -35,6 +35,7 @@ def apply_configured_transformations(json_config, dataset_path, output_path):
         for imputation in config.get('missing_value_imputation', []):
             if col in imputation:
                 method = imputation[col]['method']
+                method = method.lower()
                 prep.fill_missing_values(col, method=method)
 
         # Remove stopwords in text columns

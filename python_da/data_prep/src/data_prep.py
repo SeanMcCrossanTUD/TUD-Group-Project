@@ -22,7 +22,7 @@ class DataPrep:
         return self.dataframe
 
     # Function 1.
-    def fill_missing_values(self, column_name, method='mode', specific_value=None):
+    def fill_missing_values(self, column_name, method='Mode', specific_value=None):
         """
         Fills missing values in a specified column using various methods.
 
@@ -538,12 +538,11 @@ class DataPrep:
     def remove_stopwords(self, column_name, language='english'):
         """
         Removes stop words from a text column in the DataFrame for natural language processing.
-
         Args:
         column_name (str): The name of the text column to remove stop words from.
         language (str): Language of the stop words. Default is 'english'.
         """
-
+        
         # Check if a dataframe is loaded
         if self.dataframe is None:
             raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
@@ -561,6 +560,10 @@ class DataPrep:
 
         # Function to remove stop words from a sentence
         def remove_stopwords_from_sentence(sentence):
+            # Check if the sentence is a string
+            if not isinstance(sentence, str):
+                return sentence
+            
             word_tokens = word_tokenize(sentence)
             filtered_sentence = [w for w in word_tokens if not w.lower() in stop_words]
             return ' '.join(filtered_sentence)
