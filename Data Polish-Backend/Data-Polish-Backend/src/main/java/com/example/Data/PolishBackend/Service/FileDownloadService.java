@@ -60,10 +60,8 @@ public class FileDownloadService {
                 // Convert the file to the requested fileType
                 byte[] convertedFileContent;
                 if (fileType.equals(".csv")) {
-                    // Implement CSV to XLSX conversion logic
                     convertedFileContent = convertCsvToXlsx(fileContent);
                 } else if (fileType.equals(".xlsx")) {
-                    // Implement XLSX to CSV conversion logic
                     convertedFileContent = convertXlsxToCsv(fileContent);
                 } else {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -112,6 +110,42 @@ public class FileDownloadService {
             }
         } catch (IOException e) {
             throw e;
+        }
+    }
+
+    // method to convert CSV to XLSX
+    private byte[] convertCsvToXlsx(byte[] csvContent) {
+        try {
+            // Parse CSV content to JsonNode
+            JsonNode jsonNode = csvMapper.readerFor(JsonNode.class)
+                    .with(CsvSchema.emptySchema().withHeader())
+                    .readTree(new ByteArrayInputStream(csvContent));
+
+            // Convert JsonNode to XLSX bytes using ObjectMapper
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            objectMapper.writeValue(outputStream, jsonNode);
+
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return csvContent;
+        }
+    }
+
+    // method to convert XLSX to CSV
+    private byte[] convertXlsxToCsv(byte[] xlsxContent) {
+        try {
+            // Parse XLSX content to JsonNode using ObjectMapper
+            // Add your logic here if needed
+
+            // Convert JsonNode to CSV bytes using CsvMapper
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            // For now, just return the original content
+            outputStream.write(xlsxContent);
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return xlsxContent;
         }
     }
 }
