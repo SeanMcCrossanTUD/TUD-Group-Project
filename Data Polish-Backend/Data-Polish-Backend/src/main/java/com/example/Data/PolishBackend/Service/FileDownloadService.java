@@ -101,6 +101,18 @@ public class FileDownloadService {
 
          */
     }
-    
+    private byte[] downloadBlob(String blobUrl) throws IOException {
+        try {
+            URL url = new URL(blobUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            try (InputStream inputStream = connection.getInputStream()) {
+                return inputStream.readAllBytes();
+            }
+        } catch (IOException e) {
+            throw e;
+        }
+    }
 }
 
