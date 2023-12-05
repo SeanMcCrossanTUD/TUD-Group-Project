@@ -102,12 +102,12 @@
 
 
 <div id="mobile" hidden>Please use computer to access the webpage</div>
-<div id="folating-button-container">
+<div id="folating-button-container" title="Accessibility Bar">
   <div (click)="showsidebar()">   <span class="material-icons">accessibility</span> </div>
   
 </div>
 
-<p-sidebar [(visible)]="sidebarVisible" position="right">
+<p-sidebar [(visible)]="sidebarVisible" position="right" >
   <h2>Accessibility Bar</h2>
   <div>
     <div class="Accessibility-buttons" (click)="changeBG('DEFAULT')">Default</div>
