@@ -258,8 +258,8 @@ export class RulesComponent {
    if(this.cb_Regular_Expression_Operations){
     this.setregex(this.currentrow);
    }
-   if(this.cb_Regular_Expression_Operations){
-    this.set_Regular_Expression_Operations(this.currentrow);
+   if(this.cb_Extract_Datetime_Components){
+    this.set_Extract_Datetime_Components(this.currentrow);
    }
    this.visible=false;
    this.currentrow='';
@@ -267,8 +267,8 @@ export class RulesComponent {
    }
 /////////////////////////////////////////////
 
-set_Regular_Expression_Operations(x:any){
-  
+set_Extract_Datetime_Components(x:any){
+  console.log(this.Extract_Datetime_Components_selected)
 }
 setregex(x:any){
   var json:any;
