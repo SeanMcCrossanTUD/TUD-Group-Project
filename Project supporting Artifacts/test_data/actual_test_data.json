@@ -4,6 +4,7 @@
       "name",
       "category",
       "main_category",
+      "currency",
       "goal",
       "launched",
       "pledged",

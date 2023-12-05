@@ -75,100 +75,139 @@ def apply_configured_transformations(json_config, dataset_path, output_path):
     for renaming in config.get('rename_column_name', []):
         for old_name, new_name in renaming.items():
             prep.rename_column(old_name, new_name)
+    
+        # Standard datetime format parsing
+    for datetime_config in config.get('standard_datetime_format', []):
+        for col, format in datetime_config.items():
+            prep.parse_datetime(col, datetime_format=format)
+
+    # Regular expression operations
+    for regex_operation in config.get('regular_expresion_operations', []):
+        col = regex_operation.get("columnName")
+        method = regex_operation.get("method")
+        pattern = regex_operation.get("pattern")
+        replace_with = regex_operation.get("replaceWith", "")
+
+        if method == "Replace":
+            prep.apply_regex(col, regex_pattern=pattern, replacement_string=replace_with, operation="replace")
+
+    # Collapse rare categories
+    for collapse_config in config.get('collapse_rare_caregories', []):
+        for col, threshold in collapse_config.items():
+            threshold = float(threshold)  # Convert threshold to float
+            prep.collapse_rare_categories(col, threshold_percentage=threshold)
+
+    # Text tokenization
+    for text_tokenisation in config.get('text_tokenisation', []):
+        prep.tokenize_text(text_tokenisation)
 
     # Save the transformed dataset
     prep.dataframe.to_csv(output_path, index=False)
 
 # Example usage
 json_config = '''{
-  "columns_kept": [
-      "ID",
-      "name",
-      "category",
-      "currency",
-      "main_category",
-      "goal",
-      "launched",
-      "pledged",
-      "state",
-      "country",
-      "usd pledged",
-      "usd_pledged_real"
-  ],
-  "trim_whitespace": [
-      "ID",
-      "currency",
-      "name"
-  ],
-  "remove_special_characters": [
-      "ID",
-      "currency",
-      "name"
-  ],
-  "normalize_data": [
-      {
-          "currency": {
-              "method": {
-                  "types": "min-max"
-              }
-          }
-      },
-      {
-          "usd pledged": {
-              "method": {
-                  "types": "min-max"
-              }
-          }
-      }
-  ],
-  "missing_value_imputation": [
-      {
-          "ID": {
-              "method": "Remove"
-          }
-      }
-  ],
-  "remove_stopwords": [
-      "ID",
-      "country"
-  ],
-  "label_encoding": [
-      "category"
-  ],
-  "numerical_column_binning": [
-      {
-          "usd_pledged_real": [
-              1000,
-              10000,
-              100000,
-              1,
-              1000000
-          ]
-      }
-  ],
-  "rename_column_name": [
-      {
-          "currency": "PAYMENT_CURRENCY"
-      },
-      {
-          "main_category": "NEW_CATEGORY"
-      }
-  ],
-  "textcase_adjustment": [
-      {
-          "ID": "upper"
-      },
-      {
-          "currency": "upper"
-      }
-  ],
-  "replace_substring": [
-      {
-          "ID": {
-              "10": "X"
-          }
-      }
-  ]
+    "columns_kept": [
+        "ID",
+        "name",
+        "category",
+        "main_category",
+        "currency",
+        "deadline",
+        "goal",
+        "launched",
+        "pledged",
+        "state",
+        "backers",
+        "country",
+        "usd pledged",
+        "usd_pledged_real",
+        "usd_goal_real"
+    ],
+    "trim_whitespace": [
+        "name"
+    ],
+    "remove_special_characters": [],
+    "normalize_data": [
+        {
+            "usd_goal_real": {
+                "method": {
+                    "types": "min-max"
+                }
+            }
+        }
+    ],
+    "outlier_management": [
+        {
+            "usd_pledged_real": {
+                "method": {
+                    "types": "2 - SD"
+                }
+            }
+        }
+    ],
+    "missing_value_imputation": [
+        {
+            "ID": {
+                "method": "Remove"
+            }
+        }
+    ],
+    "remove_stopwords": [],
+    "label_encoding": [
+        "main_category"
+    ],
+    "numerical_column_binning": [
+        {
+            "usd pledged": [
+                1,
+                100,
+                1000,
+                10000,
+                100000
+            ]
+        }
+    ],
+    "rename_column_name": [
+        {
+            "name": "FULLNAME"
+        }
+    ],
+    "textcase_adjustment": [
+        {
+            "name": "Upper"
+        }
+    ],
+    "replace_substring": [
+        {
+            "country": {
+                "US": "IE"
+            }
+        }
+    ],
+    "column_type_conversion": [
+        {
+            "currency": "Text"
+        }
+    ],
+    "text_tokenisation": [],
+    "collapse_rare_caregories": [
+        {
+            "category": "20"
+        }
+    ],
+    "standard_datetime_format": [
+        {
+            "deadline": "%Y-%m-%d"
+        }
+    ],
+    "regular_expresion_operations": [
+        {
+            "columnName": "launched",
+            "method": "Replace",
+            "pattern": "5-[0-9]+",
+            "replaceWith": "/"
+        }
+    ]
 }'''
 dataset_path = '/Users/seanmccrossan/Downloads/dirty_startup_dataset.csv'
 output_path = '/Users/seanmccrossan/group_project/TUD-Group-Project/Project supporting Artifacts/test_data/data_clean_result.csv'
