@@ -288,18 +288,18 @@ class DataPrep:
 
         return self.dataframe
     
-     #Function 9
-    def bin_numeric_to_categorical(self, column_name, bins, labels=None):
+    # Function 9
+    def bin_numeric_to_categorical(self, column_name, bins):
         """
         Converts a numeric column into categorical by binning values into specified ranges.
+        It creates a new column with the original column name followed by 'binned'.
 
         Args:
         column_name (str): The name of the numeric column to convert.
         bins (list): The edges defining the bins. Should be a list of numbers.
-        labels (list, optional): A list of labels for the bins. Length should be one less than the bins.
 
         Raises:
-        ValueError: If the bins or labels are not correctly specified.
+        ValueError: If the bins are not correctly specified.
         """
 
         # Check if a dataframe is loaded
@@ -314,9 +314,20 @@ class DataPrep:
         if not pd.api.types.is_numeric_dtype(self.dataframe[column_name]):
             raise ValueError(f'Column {column_name} is not a numeric column.')
 
+        # Sort the bins and ensure they are unique
+        bins = sorted(set(bins))
+
+        # Check if bins are correctly specified
+        if len(bins) < 2:
+            raise ValueError("At least two bin edges are required.")
+
+        # Generate labels for the bins
+        labels = [f'{bins[i]}-{bins[i+1]}' for i in range(len(bins)-1)]
+
         # Perform the binning
         try:
-            self.dataframe[column_name] = pd.cut(self.dataframe[column_name], bins, labels=labels)
+            binned_column_name = f'{column_name}_binned'
+            self.dataframe[binned_column_name] = pd.cut(self.dataframe[column_name], bins, labels=labels, include_lowest=True)
         except Exception as e:
             raise Exception(f'An error occurred while binning the column: {e}')
 

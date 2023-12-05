@@ -52,14 +52,10 @@ def apply_configured_transformations(json_config, dataset_path, output_path):
                 bins = sorted(binning[col])  # Sort the bins
                 prep.bin_numeric_to_categorical(col, bins)
 
-    # Rename column names
-    for renaming in config.get('rename_column_name', []):
-        for old_name, new_name in renaming.items():
-            prep.rename_column(old_name, new_name)
-
     # Adjust text case in text columns
     for adjustment in config.get('textcase_adjustment', []):
         for col, case_format in adjustment.items():
+            case_format = case_format.lower()
             if pd.api.types.is_string_dtype(dataset[col]):
                 prep.adjust_text_case(col, case_format)
 
@@ -74,6 +70,11 @@ def apply_configured_transformations(json_config, dataset_path, output_path):
     for col in config.get('collapse_rare_categories', []):
         if pd.api.types.is_categorical_dtype(dataset[col]):
             prep.collapse_rare_categories(col, threshold_percentage=5.0)
+    
+        # Rename column names
+    for renaming in config.get('rename_column_name', []):
+        for old_name, new_name in renaming.items():
+            prep.rename_column(old_name, new_name)
 
     # Save the transformed dataset
     prep.dataframe.to_csv(output_path, index=False)
@@ -84,6 +85,7 @@ json_config = '''{
       "ID",
       "name",
       "category",
+      "currency",
       "main_category",
       "goal",
       "launched",
@@ -154,10 +156,10 @@ json_config = '''{
   ],
   "textcase_adjustment": [
       {
-          "ID": "uppercase"
+          "ID": "upper"
       },
       {
-          "currency": "uppercase"
+          "currency": "upper"
       }
   ],
   "replace_substring": [
@@ -171,31 +173,7 @@ json_config = '''{
 dataset_path = '/Users/seanmccrossan/Downloads/dirty_startup_dataset.csv'
 output_path = '/Users/seanmccrossan/group_project/TUD-Group-Project/Project supporting Artifacts/test_data/data_clean_result.csv'
 
+# At the end of your script, call the function with both dataset_path and output_path
 apply_configured_transformations(json_config, dataset_path, output_path)
 
-# Configuration JSON
-json_config = '''
-{
-    "columns_kept": [
-        "ID", "name", "category", "main_category", "deadline", "goal", "pledged", "state", "country", "usd_pledged_real", "usd_goal_real"
-    ],
-    "trim_whitespace": ["ID", "category"],
-    "remove_special_characters": ["ID", "deadline"],
-    "normalize_data": [
-        { "ID": { "method": { "types": "min-max" } } },
-        { "category": { "method": { "types": "z-score" } } },
-        { "deadline": { "method": { "types": "min-max" } } }
-    ]
-}
-'''
 
-# Load dataset
-dataset_path = '/Users/seanmccrossan/Downloads/dirty_startup_dataset.csv'
-dataset = pd.read_csv(dataset_path)
-
-# Apply transformations
-transformed_dataset = apply_configured_transformations(json_config, dataset)
-
-# Save transformed dataset
-output_path = '/Users/seanmccrossan/group_project/TUD-Group-Project/Project supporting Artifacts/test_data/data_clean_result.csv'
-transformed_dataset.to_csv(output_path, index=False)
