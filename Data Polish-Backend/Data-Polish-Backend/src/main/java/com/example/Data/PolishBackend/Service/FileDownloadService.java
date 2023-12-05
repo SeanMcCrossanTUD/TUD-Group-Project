@@ -42,7 +42,7 @@ public class FileDownloadService {
             }
 
             // Construct the URL for downloading the file from Azure Blob Storage
-            String blobUrl = String.format("https://fab5storage.blob.core.windows.net/output/%s", "fab5storage", cleanedFile);
+            String blobUrl = String.format("https://fab5storage.blob.core.windows.net/output/%s", cleanedFile);
 
             // Download the file using HTTP
             byte[] fileContent = downloadBlob(blobUrl);
@@ -58,8 +58,19 @@ public class FileDownloadService {
                         .body(resource);
             } else {
                 // Convert the file to the requested fileType
-                String convertedFileName = cleanedFile.replace(".csv", fileType);
-                ByteArrayResource resource = new ByteArrayResource(fileContent);
+                byte[] convertedFileContent;
+                if (fileType.equals(".csv")) {
+                    // Implement CSV to XLSX conversion logic
+                    convertedFileContent = convertCsvToXlsx(fileContent);
+                } else if (fileType.equals(".xlsx")) {
+                    // Implement XLSX to CSV conversion logic
+                    convertedFileContent = convertXlsxToCsv(fileContent);
+                } else {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                }
+
+                String convertedFileName = cleanedFile.replace(fileExtension, fileType);
+                ByteArrayResource resource = new ByteArrayResource(convertedFileContent);
                 return ResponseEntity.ok()
                         .header("Content-Disposition", "attachment;filename=" + convertedFileName)
                         .body(resource);
@@ -90,5 +101,6 @@ public class FileDownloadService {
 
          */
     }
+    
 }
 
