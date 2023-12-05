@@ -1,0 +1,89 @@
+{
+  "columns_kept": [
+      "ID",
+      "name",
+      "category",
+      "main_category",
+      "goal",
+      "launched",
+      "pledged",
+      "state",
+      "country",
+      "usd pledged",
+      "usd_pledged_real"
+  ],
+  "trim_whitespace": [
+      "ID",
+      "currency",
+      "name"
+  ],
+  "remove_special_characters": [
+      "ID",
+      "currency",
+      "name"
+  ],
+  "normalize_data": [
+      {
+          "currency": {
+              "method": {
+                  "types": "min-max"
+              }
+          }
+      },
+      {
+          "usd pledged": {
+              "method": {
+                  "types": "min-max"
+              }
+          }
+      }
+  ],
+  "missing_value_imputation": [
+      {
+          "ID": {
+              "method": "Remove"
+          }
+      }
+  ],
+  "remove_stopwords": [
+      "ID",
+      "country"
+  ],
+  "label_encoding": [
+      "category"
+  ],
+  "numerical_column_binning": [
+      {
+          "usd_pledged_real": [
+              1000,
+              10000,
+              100000,
+              1,
+              1000000
+          ]
+      }
+  ],
+  "rename_column_name": [
+      {
+          "currency": "PAYMENT_CURRENCY"
+      },
+      {
+          "main_category": "NEW_CATEGORY"
+      }
+  ],
+  "textcase_adjustment": [
+      {
+          "ID": "uppercase"
+      },
+      {
+          "currency": "uppercase"
+      }
+  ],
+  "replace_substring": [
+      {
+          "ID": {
+              "10": "X"
+          }
+      }
+  ]
+}
