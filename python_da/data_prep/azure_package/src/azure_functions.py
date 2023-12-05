@@ -57,6 +57,41 @@ def download_blob_csv_data(connection_string, file_name, container_name="csv"):
         logger.error(f"Unexpected error while downloading blob data: {str(e)}")
         raise e
 
+def download_blob_json_data(connection_string, file_name, container_name="rules"):
+    """Download JSON data from Azure Blob Storage.
+
+    Args:
+    - connection_string (str): The Azure connection string.
+    - container_name (str, optional): Name of the Azure blob container. Defaults to 'rules'.
+
+    Returns:
+    - str: JSON string containing the downloaded data.
+    """
+
+    try:
+        logger.info('Initializing BlobServiceClient')
+        blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+        blob_name = file_name
+
+        if not blob_name:
+            logger.error('No blobs found in container')
+            raise Exception('No blobs found in the container')
+
+        logger.info(f'Downloading JSON data from Azure Blob Storage: {blob_name}')
+        blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+        blob_data = blob_client.download_blob()
+        json_data = blob_data.readall().decode('utf-8')
+
+        if not json_data:
+            logger.warning("Downloaded JSON data is empty or contains only whitespace. No acceptable data.")
+            return None
+
+        return json_data
+
+    except Exception as e:
+        logger.error(f"Error downloading blob data: {e}")
+        raise
+
 def download_blob_excel_data(connection_string, file_name, container_name="excel"):
     """Download Excel data from Azure Blob Storage.
 
