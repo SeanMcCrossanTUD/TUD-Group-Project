@@ -10,6 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
     take jobid as param
     query db to get file details (every column)
     return file details in json format to frontend
+
+    take jobid, fileType(excel,csv) as param
+    query db with jobid to get 'datacleaningoutput' value and store it in string 'cleanedFile'
+    download the blob (cleaned data) which name equals to 'cleanedFile'  from 'output' container
+    check type of the file downloaded from container
+    if file type matches with 'fileType' then return that file to frontend
+    else convert the file to the 'fileType' and then return to frontend
  */
 @Service
 public class FileDownloadService {
