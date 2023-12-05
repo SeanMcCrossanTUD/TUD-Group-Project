@@ -136,7 +136,13 @@ export class RulesComponent {
     "numerical_column_binning":[],
     "rename_column_name":[],
     "textcase_adjustment":[],
-    "replace_substring":[]
+    "replace_substring":[],
+
+    "column_type_conversion":[],
+    "text_tokenisation":[],
+    "combine_rare_caregories":[],
+    "standard_datetime_format":[],
+    "regular_expresion_operations":[]
    }
 
    setdata(){
@@ -177,6 +183,10 @@ export class RulesComponent {
    cb_Label_Encoding=false;
 
    cb_Column_Type_Conversion=false;
+   cb_Text_Tokenisation=false;
+   cb_Combine_Rare_Categories=false;
+   cb_Standard_Datetime_format=false;
+   cb_Regular_Expression_Operations=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false
@@ -190,6 +200,11 @@ export class RulesComponent {
     this.cb_Remove_Stopwords=false;
     this.cb_Replace_Substring=false;
     this.cb_Label_Encoding=false;
+    this.cb_Column_Type_Conversion=false;
+    this.cb_Text_Tokenisation=false;
+    this.cb_Combine_Rare_Categories=false;
+    this.cb_Standard_Datetime_format=false;
+    this.cb_Regular_Expression_Operations=false;
    }
    savechangestorules(){
   
@@ -226,12 +241,17 @@ export class RulesComponent {
    if(this.cb_Replace_Substring){
     this.setReplaceSubstring(this.currentrow);
    }
+   if(this.cb_Column_Type_Conversion){
+    this.setColumn_Type_Conversion(this.currentrow);
+   }
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
    }
 /////////////////////////////////////////////
-
+setColumn_Type_Conversion(x:any){
+  
+}
 setReplaceSubstring(x:any){
   let t1="{\""+this.Selected_Replace_Substring_from+"\":\""+this.Selected_Replace_Substring_to+"\"}"
   let temp="{\""+x+"\":"+t1+"}"
@@ -398,9 +418,33 @@ setNumerical_Column_Binning(x:any){
 
 
   /// combine rare categories
-  cb_Combine_Rare_Categories=false;
-  selected_Combine_Rare_Categories:any=0;
 
+  selected_Combine_Rare_Categories:any=5;
+
+
+  /// cb_Text_Tokenisation
+
+
+  //selected_Standard_Datetime_format
+  selected_Standard_Datetime_format:any;
+
+
+  // Regular_Expression_Operations
+  select_Regular_Expression_Operations:any;
+  options_Regular_Expression_Operations:any=[
+    {types:'Replace'},
+    {types:'Extract'}
+  ]
+  select_Regular_Expression_Operations_from:any;
+  select_Regular_Expression_Operations_to:any;
+  enableReplaceString=false;
+  reg(){
+    if(this.select_Regular_Expression_Operations.types=='Replace'){
+      this.enableReplaceString=true;
+    }else{
+      this.enableReplaceString=false;
+    }
+  }
   removeAllFields(){
     this.rowData.forEach((x:any)=>{
       x["Keep column"]=false;
