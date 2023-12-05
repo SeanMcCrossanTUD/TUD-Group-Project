@@ -258,11 +258,18 @@ export class RulesComponent {
    if(this.cb_Regular_Expression_Operations){
     this.setregex(this.currentrow);
    }
+   if(this.cb_Regular_Expression_Operations){
+    this.set_Regular_Expression_Operations(this.currentrow);
+   }
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
    }
 /////////////////////////////////////////////
+
+set_Regular_Expression_Operations(x:any){
+  
+}
 setregex(x:any){
   var json:any;
   if(this.select_Regular_Expression_Operations.types=='Replace'){
