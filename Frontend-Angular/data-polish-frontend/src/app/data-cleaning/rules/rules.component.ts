@@ -129,7 +129,14 @@ export class RulesComponent {
     "trim_whitespace":[],
     "remove_special_characters":[],
     "normalize_data":[],
-    "outlier_management":[]
+    "outlier_management":[],
+    "missing_value_imputation":[],
+    "remove_stopwords":[],
+    "label_encoding":[],
+    "numerical_column_binning":[],
+    "rename_column_name":[],
+    "textcase_adjustment":[],
+    "replace_substring":[]
    }
 
    setdata(){
@@ -170,9 +177,17 @@ export class RulesComponent {
    cb_Label_Encoding=false;
 
    setallCBTOFalse(){
-    this.cb_remove_special_characters=false;
-    this.cb_trim_whitespace=false;
-    this.cb_normalization=false;
+    this.cb_remove_special_characters=false
+    this.cb_trim_whitespace=false
+    this.cb_normalization=false
+    this.cb_outlierManagement=false;
+    this.cb_MissingValueImputation=false;
+    this.cb_Numerical_Column_Binning=false;
+    this.cb_Rename_Column_Name=false;
+    this.cb_Text_Case_Adjustment=false;
+    this.cb_Remove_Stopwords=false;
+    this.cb_Replace_Substring=false;
+    this.cb_Label_Encoding=false;
    }
    savechangestorules(){
   
@@ -188,18 +203,67 @@ export class RulesComponent {
    if(this.cb_outlierManagement){
     this.setOutlierManagement(this.currentrow);
    }
+   if(this.cb_MissingValueImputation){
+    this.setMissingValueImputation(this.currentrow);
+   }
+   if(this.cb_Numerical_Column_Binning){
+    this.setNumerical_Column_Binning(this.currentrow);
+   }
+   if(this.cb_Rename_Column_Name){
+    this.setRenameColumnName(this.currentrow)
+   }
+   if(this.cb_Remove_Stopwords){
+    this.setRemove_Stopwords(this.currentrow);
+   }
+   if(this.cb_Label_Encoding){
+    this.setLabelEncoding(this.currentrow);
+   }
+   if(this.cb_Text_Case_Adjustment){
+    this.setTextCase(this.currentrow);
+   }
+   if(this.cb_Replace_Substring){
+    this.setReplaceSubstring(this.currentrow);
+   }
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
    }
+/////////////////////////////////////////////
+
+setReplaceSubstring(x:any){
+  let t1="{\""+this.Selected_Replace_Substring_from+"\":\""+this.Selected_Replace_Substring_to+"\"}"
+  let temp="{\""+x+"\":"+t1+"}"
+  this.rules["replace_substring"].push(JSON.parse(temp));
+  console.log(this.rules)
+}
+setTextCase(x:any){
+ 
+  let temp="{\""+x+"\":\""+this.select_Text_Case_Adjustment.types+"\"}"
+  this.rules["textcase_adjustment"].push(JSON.parse(temp));
+
+}
+setRenameColumnName(x:any){
+  let temp="{\""+x+"\":\""+this.Selected_Rename_Column_Name+"\"}"
+  this.rules["rename_column_name"].push(JSON.parse(temp));
+  console.log(this.rules);
+}
+setNumerical_Column_Binning(x:any){
+ 
+  
+  let temp="{\""+x+"\":["+this.values+"]}"
+
+   console.log(temp);
+   this.rules["numerical_column_binning"].push(JSON.parse(temp));
+}
+   setRemove_Stopwords(x:any){
+    this.rules["remove_stopwords"].push(x);
+   }
 
    setTrimWhiteSpaces(x:any){
-    this.rules["trim_whitespace"].push(x);
-    console.log(this.rules)
+    this.rules["trim_whitespace"].push(x);  
    }
    setRemoveSpecialCharacters(x:any){
     this.rules["remove_special_characters"].push(x);
-    console.log(this.rules)
    }
    setNormalization(x:any){
     var t1={
@@ -211,7 +275,6 @@ export class RulesComponent {
 
     console.log(temp);
     this.rules["normalize_data"].push(JSON.parse(temp));
-    console.log(this.rules)
    }
 
    setOutlierManagement(x:any){
@@ -221,9 +284,27 @@ export class RulesComponent {
     t1.method=this.selectedOutlier;
     let temp="{\""+x+"\":"+JSON.stringify(t1)+"}";
     this.rules["outlier_management"].push(JSON.parse(temp));
-    console.log(this.rules);
-
    }
+   setMissingValueImputation(x:any){
+    var t1={
+      method:''
+    }
+    if(this.selectedmissingvalueimpitation.types=="Custom"){
+      t1.method=this.Selected_MissingValue_Custom;
+    }else{
+      t1.method=this.selectedmissingvalueimpitation.types;
+    }
+    let temp="{\""+x+"\":"+JSON.stringify(t1)+"}";
+    this.rules["missing_value_imputation"].push(JSON.parse(temp));
+
+    console.log(this.rules)
+   }
+
+   setLabelEncoding(x:any){
+    this.rules["label_encoding"].push(x);
+   }
+
+
 
 
    //////////// data type change
