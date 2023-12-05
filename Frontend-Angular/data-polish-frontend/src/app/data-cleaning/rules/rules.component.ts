@@ -140,7 +140,7 @@ export class RulesComponent {
 
     "column_type_conversion":[],
     "text_tokenisation":[],
-    "combine_rare_caregories":[],
+    "collapse_rare_categories":[],
     "standard_datetime_format":[],
     "regular_expresion_operations":[]
    }
