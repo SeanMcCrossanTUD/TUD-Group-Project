@@ -128,7 +128,8 @@ export class RulesComponent {
     "columns_kept":[],
     "trim_whitespace":[],
     "remove_special_characters":[],
-    "normalize_data":[]
+    "normalize_data":[],
+    "outlier_management":[]
    }
 
    setdata(){
@@ -184,9 +185,9 @@ export class RulesComponent {
    if(this.cb_normalization){
     this.setNormalization(this.currentrow);
    }
-  //  if(this.cb_outlierManagement){
-  //   this.setNormalization(this.currentrow);
-  //  }
+   if(this.cb_outlierManagement){
+    this.setOutlierManagement(this.currentrow);
+   }
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
@@ -211,6 +212,17 @@ export class RulesComponent {
     console.log(temp);
     this.rules["normalize_data"].push(JSON.parse(temp));
     console.log(this.rules)
+   }
+
+   setOutlierManagement(x:any){
+    var t1={
+      method:''
+    }
+    t1.method=this.selectedOutlier;
+    let temp="{\""+x+"\":"+JSON.stringify(t1)+"}";
+    this.rules["outlier_management"].push(JSON.parse(temp));
+    console.log(this.rules);
+
    }
 
 
