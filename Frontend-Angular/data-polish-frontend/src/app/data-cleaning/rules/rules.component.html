@@ -216,7 +216,7 @@
           
                 <div>
                   <div>
-                    Text Case Adjustment
+                    Adjust Text Case 
                           <sup>
                             <span class="material-icons">
                               help
@@ -307,6 +307,52 @@
                   pInputText 
                   [(ngModel)]="Selected_Replace_Substring_to" />
                 </div>
+
+                <div>
+                  <div>
+                    Column Type Conversion
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Column_Type_Conversion" inputId="binary" [binary]="true"></p-checkbox>
+                    <p-dropdown [hidden]="!cb_Column_Type_Conversion" 
+                      [options]="options_Column_Type_Conversion" 
+                      [(ngModel)]="select_Column_Type_Conversion"
+                      optionLabel="types" [showClear]="true" 
+                      placeholder="Select option">
+                    </p-dropdown>
+                  </div>
+                </div>
+
+
+
+                <div>
+                  <div>
+                    Combine Rare Categories
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Combine_Rare_Categories" inputId="binary" [binary]="true"></p-checkbox>
+                    <div style="display: flex;
+                    flex-direction: column;"
+                    *ngIf="cb_Combine_Rare_Categories"
+                    >
+                      <input type="text" pInputText [(ngModel)]="selected_Combine_Rare_Categories" class="w-full"/>
+                      <p-slider [(ngModel)]="selected_Combine_Rare_Categories" class="w-full"></p-slider>
+                  </div>
+                  </div>
+                </div>
+
+
+
                </div>
             </p-tabPanel>
         </p-tabView>
