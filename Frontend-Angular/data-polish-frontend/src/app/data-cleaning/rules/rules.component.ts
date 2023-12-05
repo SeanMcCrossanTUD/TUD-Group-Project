@@ -187,6 +187,7 @@ export class RulesComponent {
    cb_Combine_Rare_Categories=false;
    cb_Standard_Datetime_format=false;
    cb_Regular_Expression_Operations=false;
+   cb_Extract_Datetime_Components=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false
@@ -205,6 +206,7 @@ export class RulesComponent {
     this.cb_Combine_Rare_Categories=false;
     this.cb_Standard_Datetime_format=false;
     this.cb_Regular_Expression_Operations=false;
+    this.cb_Extract_Datetime_Components=false
    }
    savechangestorules(){
   
@@ -474,6 +476,14 @@ setNumerical_Column_Binning(x:any){
   //selected_Standard_Datetime_format
   selected_Standard_Datetime_format:any;
 
+  Standard_Datetime_format_options: any = [
+    { types: '%Y-%m-%d' },
+    { types: '%d-%m-%Y' },
+    { types: '%m-%d-%Y' },
+    {types:'%y-%m-%d'},
+    {types:'%d-%m-%y'},
+    {types:'%m-%d-%y'}
+  ];
 
   // Regular_Expression_Operations
   select_Regular_Expression_Operations:any;
@@ -484,6 +494,18 @@ setNumerical_Column_Binning(x:any){
   select_Regular_Expression_Operations_from:any;
   select_Regular_Expression_Operations_to:any;
   enableReplaceString=false;
+//////////cb_Extract_Datetime_Components
+  Extract_Datetime_Components_selected: any = [];
+  Extract_Datetime_Components_options = [
+    { name: 'year' },
+    { name: 'month' },
+    {name:'day'},
+    {name:'hour'},
+    {name:'minute'},
+    {name:'second'},
+    
+    
+  ];
   reg(){
     if(this.select_Regular_Expression_Operations.types=='Replace'){
       this.enableReplaceString=true;
