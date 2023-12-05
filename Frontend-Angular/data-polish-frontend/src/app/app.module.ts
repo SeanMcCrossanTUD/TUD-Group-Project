@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadFileComponent } from './upload-file/upload-file.component';
@@ -64,6 +64,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ChipsModule } from 'primeng/chips';
 import { constants } from './Const/config';
+import { TokenInterceptor } from './Services/token.interceptor';
 
 const routes: Routes = [
     {path:'',component:UploadFileComponent},
@@ -148,7 +149,12 @@ const routes: Routes = [
     TerminalService,
     NavigatationService,
     D3DashboardService,
-    constants
+    constants,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
     
   ],
   bootstrap: [AppComponent]

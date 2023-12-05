@@ -47,7 +47,7 @@ export class RulesComponent {
   }
     ,
     {
-      field:"Advanced cleaning options",
+      field:"cleaning options",
       width:300,
       cellClass: 'your-custom-class', 
       cellRenderer: AdvanceOptionsButtonComponent,
@@ -65,7 +65,7 @@ export class RulesComponent {
 
   DatapreviewData=[{"Field Names":123,"Data Type":"boolean",
   "Keep column":true,
-  "Advanced cleaning options":"abc"
+  "cleaning options":"abc"
 
 },{'naveen':'abc'}];
 
@@ -102,7 +102,7 @@ export class RulesComponent {
         {
           "Field Names":item,
           "Keep column":true,
-          "Advanced cleaning options":item
+          "cleaning options":item
         }
       )
     })
