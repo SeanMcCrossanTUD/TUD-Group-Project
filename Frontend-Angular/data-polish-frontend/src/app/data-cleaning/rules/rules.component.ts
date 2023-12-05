@@ -244,19 +244,35 @@ export class RulesComponent {
    if(this.cb_Column_Type_Conversion){
     this.setColumn_Type_Conversion(this.currentrow);
    }
+   if(this.cb_Combine_Rare_Categories){
+    this.setCombine_Rare_Categories(this.currentrow);
+   }
+   if(this.cb_Text_Tokenisation){
+    this.setText_Tokenisation(this.currentrow);
+   }
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
    }
 /////////////////////////////////////////////
+setText_Tokenisation(x:any){
+  this.rules["text_tokenisation"].push(x);  
+}
+setCombine_Rare_Categories(x:any){
+  let temp="{\""+x+"\":\""+this.selected_Combine_Rare_Categories+"\"}";
+  this.rules["combine_rare_caregories"].push(JSON.parse(temp));
+  console.log(this.rules)
+}
 setColumn_Type_Conversion(x:any){
+  let temp="{\""+x+"\":\""+this.select_Column_Type_Conversion.types+"\"}";
+  this.rules["column_type_conversion"].push(JSON.parse(temp));
   
 }
 setReplaceSubstring(x:any){
   let t1="{\""+this.Selected_Replace_Substring_from+"\":\""+this.Selected_Replace_Substring_to+"\"}"
   let temp="{\""+x+"\":"+t1+"}"
   this.rules["replace_substring"].push(JSON.parse(temp));
-  console.log(this.rules)
+
 }
 setTextCase(x:any){
  
