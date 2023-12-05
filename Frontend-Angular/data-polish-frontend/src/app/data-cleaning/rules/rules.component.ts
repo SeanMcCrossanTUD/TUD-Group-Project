@@ -250,11 +250,19 @@ export class RulesComponent {
    if(this.cb_Text_Tokenisation){
     this.setText_Tokenisation(this.currentrow);
    }
+   if(this.cb_Standard_Datetime_format){
+    this.setStandard_Datetime_format(this.currentrow);
+   }
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
    }
 /////////////////////////////////////////////
+setStandard_Datetime_format(x:any){
+  let temp="{\""+x+"\":\""+this.selected_Standard_Datetime_format+"\"}";
+  this.rules["standard_datetime_format"].push(JSON.parse(temp));
+  console.log(this.rules)
+}
 setText_Tokenisation(x:any){
   this.rules["text_tokenisation"].push(x);  
 }
