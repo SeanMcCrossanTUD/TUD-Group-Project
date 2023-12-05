@@ -21,7 +21,9 @@ export class TokenInterceptor implements HttpInterceptor {
     // Get the token from your authentication service or wherever you store it
     
     const token = this.cookieService.get('TOKEN')
-    
+    if(request.url.includes('https://fab5storage.blob.core.windows.net')){
+      return next.handle(request.clone());
+    }
     // Clone the request and add the Authorization header with the bearer token
     const modifiedRequest = request.clone({
       setHeaders: {
