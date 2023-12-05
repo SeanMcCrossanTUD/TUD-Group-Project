@@ -21,6 +21,14 @@
             "method": "z-score"
         }
     },
+    "remove_outliers": {
+        "example_numeric_column1": {
+            "sd": 2.5
+        },
+        "example_numeric_column2": {
+            "sd": 3.0
+        }
+    },
     "remove_special_characters": [
         "example_text_column1",
         "example_text_column2"
