@@ -29,6 +29,10 @@
             "sd": 3.0
         }
     },
+    "rename_column": {
+        "old_column1": "new_column1",
+        "old_column2": "new_column2"
+    },
     "remove_special_characters": [
         "example_text_column1",
         "example_text_column2"
