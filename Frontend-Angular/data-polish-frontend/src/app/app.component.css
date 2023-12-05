@@ -142,8 +142,8 @@ box-shadow: rgb(252, 240, 169) 0px 0px 10px; */
 
 #folating-button-container:hover {
   cursor: pointer;
-  background-color: rgb(91, 23, 86);
-  border: 2px red solid;
+
+  border: 5px red solid;
 
 }
 
