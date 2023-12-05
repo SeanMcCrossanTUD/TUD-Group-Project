@@ -14,7 +14,7 @@ import java.util.Date;
 
 
 @RestController
-@CrossOrigin(origins = {"http://16.170.150.247:9000", "http://localhost:4200"})
+//@CrossOrigin(origins = {"http://16.170.150.247:9000", "http://localhost:4200"})
 public class FileDownloadController {
     @Autowired
     private FileDownloadService fileDownloadService;
