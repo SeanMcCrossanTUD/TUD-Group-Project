@@ -345,13 +345,87 @@
                     flex-direction: column;"
                     *ngIf="cb_Combine_Rare_Categories"
                     >
-                      <input type="text" pInputText [(ngModel)]="selected_Combine_Rare_Categories" class="w-full"/>
-                      <p-slider [(ngModel)]="selected_Combine_Rare_Categories" class="w-full"></p-slider>
+                      <input type="text" pInputText 
+                      [(ngModel)]="selected_Combine_Rare_Categories"
+                  
+                       class="w-full"/>
+                      <p-slider [(ngModel)]="selected_Combine_Rare_Categories" 
+                      class="w-full"></p-slider>
                   </div>
                   </div>
                 </div>
 
 
+                <div>
+                  <div>
+                    Text Tokenisation
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Text_Tokenisation" inputId="binary" [binary]="true"></p-checkbox>
+                    
+                  </div>
+                </div>
+
+                
+                <div>
+                  <div>
+                    Standard Datetime format
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Standard_Datetime_format" inputId="binary" [binary]="true"></p-checkbox>
+                    <input *ngIf="cb_Standard_Datetime_format"
+                    type="text" pInputText [(ngModel)]="selected_Standard_Datetime_format" class="w-full"/>
+                 
+                  </div>
+                  <div >
+                       
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    Regular Expression Operations
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                        <div>
+                          <p-checkbox [(ngModel)]="cb_Regular_Expression_Operations" inputId="binary" [binary]="true"></p-checkbox>
+                          <p-dropdown *ngIf="cb_Regular_Expression_Operations" 
+                            [options]="options_Regular_Expression_Operations" 
+                            [(ngModel)]="select_Regular_Expression_Operations"
+                            optionLabel="types" [showClear]="true" 
+                            (onChange)="reg()"
+                            placeholder="Select option">
+                          </p-dropdown>
+                        </div>
+
+                </div>
+                <div>
+                  <input *ngIf="cb_Regular_Expression_Operations"
+                  type="text" pInputText 
+                  [(ngModel)]="select_Regular_Expression_Operations_from" 
+                  class="w-full"/>
+
+                  <input *ngIf="enableReplaceString"
+                  type="text" pInputText 
+                  [(ngModel)]="select_Regular_Expression_Operations_to" 
+                  class="w-full"/>
+              
+                </div>
+               
 
                </div>
             </p-tabPanel>
