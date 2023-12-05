@@ -314,6 +314,10 @@ class DataPrep:
         if not pd.api.types.is_numeric_dtype(self.dataframe[column_name]):
             raise ValueError(f'Column {column_name} is not a numeric column.')
 
+            # Ensure bins is a list of numbers
+        if not isinstance(bins, list) or not all(isinstance(x, (int, float)) for x in bins):
+            raise ValueError("Bins should be a list of numbers.")
+
         # Sort the bins and ensure they are unique
         bins = sorted(set(bins))
 
@@ -605,6 +609,10 @@ class DataPrep:
         # Check if the specified column exists
         if column_name not in self.dataframe.columns:
             raise ValueError(f'Column name {column_name} not found in dataframe')
+        
+        if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]) and not pd.api.types.is_object_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a categorical or object type column.')
+
 
         # Calculate the frequency distribution of the categories
         frequency = self.dataframe[column_name].value_counts(normalize=True) * 100
