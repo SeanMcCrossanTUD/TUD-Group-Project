@@ -332,7 +332,7 @@
 
                 <div>
                   <div>
-                    collapse Rare Categories
+                    Collapse Rare Categories
                           <sup>
                             <span class="material-icons">
                               help
@@ -383,9 +383,35 @@
                         </div>
                   <div>
                     <p-checkbox [(ngModel)]="cb_Standard_Datetime_format" inputId="binary" [binary]="true"></p-checkbox>
-                    <input *ngIf="cb_Standard_Datetime_format"
-                    type="text" pInputText [(ngModel)]="selected_Standard_Datetime_format" class="w-full"/>
-                 
+                     <p-dropdown *ngIf="cb_Standard_Datetime_format"
+                      [options]="Standard_Datetime_format_options" 
+                      [(ngModel)]="selected_Standard_Datetime_format"
+                      optionLabel="types" [showClear]="true" 
+                      placeholder="Select option">
+                    </p-dropdown>
+                  </div>
+                  <div >
+                       
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    Extract Datetime Components
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Extract_Datetime_Components" inputId="binary" [binary]="true"></p-checkbox>
+                    <p-multiSelect *ngIf="cb_Extract_Datetime_Components"
+                    [options]="Extract_Datetime_Components_options" 
+                    [(ngModel)]="Extract_Datetime_Components_selected" 
+                    display="chip"
+                    optionLabel="name"></p-multiSelect>
+           
                   </div>
                   <div >
                        
@@ -427,7 +453,7 @@
                 </div>
                
 
-               </div>
+                      </div>
             </p-tabPanel>
         </p-tabView>
       </div>
