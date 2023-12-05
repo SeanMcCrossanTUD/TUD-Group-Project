@@ -209,6 +209,7 @@ def main(test_iterations=None):
 
         # Check Azure queue for a new message
         try:
+            time.sleep(5)
             msg = receive_message_from_queue(SERVICE_BUS_CONNECTION_STRING, SERVICE_BUS_QUEUE_NAME)
             logger.info(msg)
             if msg is not None:
@@ -217,7 +218,7 @@ def main(test_iterations=None):
                 message_content = json.loads(cleaned_msg)
 
                 filename = message_content.get('rawurl', 'Unknown Filename') 
-                json_file_name = message_content.get('rawurl', 'Unknown Filename')
+                json_file_name = message_content.get('jsonFilename', 'Unknown Filename')
                 jobID = message_content.get('jobID', 'Unknown JobID')
 
                 # Download JSON rules file
@@ -248,7 +249,6 @@ def main(test_iterations=None):
             else:
                 logger.info('No new messages. Waiting for next check...')
             
-            time.sleep(5)  # waits for 5 seconds before checking again
 
         except AzureError as ae:
             logger.error(f"AzureError: {str(ae)}")
