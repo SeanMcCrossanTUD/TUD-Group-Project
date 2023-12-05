@@ -23,8 +23,17 @@ public class FileDownloadService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public ResponseEntity<String> getFileDetails(String jobID) {
-        
+    public ResponseEntity<String> downloadFile(String jobID,String fileType) {
+        try {
+            // Retrieve 'datacleaningoutput' from the database and store in cleanedFile
+            String sql = "SELECT datacleaningoutput FROM jobsandblobs WHERE jobid = ?";
+            String cleanedFile = jdbcTemplate.queryForObject(sql, String.class, jobID);
+
+            if (cleanedFile == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+
 
 
 
