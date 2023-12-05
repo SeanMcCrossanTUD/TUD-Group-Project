@@ -14,6 +14,15 @@ import java.nio.file.Files;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 /*
     take jobid as param
     query db to get file details (every column)
@@ -123,6 +132,7 @@ public class FileDownloadService {
 
             // Convert JsonNode to XLSX bytes using ObjectMapper
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValue(outputStream, jsonNode);
 
             return outputStream.toByteArray();
