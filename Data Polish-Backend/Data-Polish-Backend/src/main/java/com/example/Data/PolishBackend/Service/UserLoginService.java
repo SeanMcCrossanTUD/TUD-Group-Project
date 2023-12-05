@@ -61,7 +61,7 @@ public class UserLoginService {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 30000)) // 30 sec expiration
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*30)) // 30 sec expiration
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }

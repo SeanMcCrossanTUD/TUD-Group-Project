@@ -21,7 +21,7 @@ public class DataCleaningController {
     // secure secret key 256 bits
     private final String secretKey = "WaaZ5eNs94mGk+joiqJf6Laj1s0oOrAyoy/saZJAaom801Rpqy88IaDZGhkhd65e";
 
-    @GetMapping("/data-clean")
+    @PostMapping("/data-clean")
     /*public ResponseEntity<String> cleanData(@RequestParam String jobID, @RequestBody JsonNode cleaningRules) {
         return dataCleaningService.processDataCleaning(jobID,cleaningRules);
     }*/

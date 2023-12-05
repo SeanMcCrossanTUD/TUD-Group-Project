@@ -8,7 +8,7 @@ import 'ag-grid-enterprise';
 import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { AppSettings, constants } from 'src/app/Const/config';
-
+import { DataCleaningService } from 'src/app/Services/Datacleaning/data-cleaning.service';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -25,7 +25,8 @@ export class RulesComponent {
     private messageService: MessageService,
     private http: HttpClient,
     private CookieService:CookieService,
-    private MessageService:MessageService
+    private MessageService:MessageService,
+    private DataCleaningService:DataCleaningService
     ){
 
   }
@@ -140,7 +141,16 @@ export class RulesComponent {
 
       this.rules.columns_kept=temp;
       console.log(this.rules);
-      this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Your rules has been saved' })
+      var jobid=this.CookieService.get('jobsid');
+      this.DataCleaningService.saveData(this.rules,jobid).subscribe(
+        (res)=>{
+          this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Your rules has been saved' })
+        },
+        (err)=>{
+          alert(err);
+        }
+      )
+     
    }
 
    
@@ -174,6 +184,9 @@ export class RulesComponent {
    if(this.cb_normalization){
     this.setNormalization(this.currentrow);
    }
+  //  if(this.cb_outlierManagement){
+  //   this.setNormalization(this.currentrow);
+  //  }
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
