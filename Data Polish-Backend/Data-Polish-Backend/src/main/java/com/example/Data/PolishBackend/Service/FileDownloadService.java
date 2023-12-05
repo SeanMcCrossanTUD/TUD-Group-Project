@@ -24,7 +24,13 @@ public class FileDownloadService {
     private JdbcTemplate jdbcTemplate;
 
     public ResponseEntity<String> getFileDetails(String jobID) {
+        
+
+
+
+        /* prev code
         String sql = "SELECT rawurl, dataprofileoutput, datacleaningoutput FROM jobsandblobs WHERE jobid = ?";
+
         try {
             // Execute the query to retrieve the file details
             String fileDetails = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
@@ -40,6 +46,8 @@ public class FileDownloadService {
             // Handle exceptions, e.g., jobID not found, and return an appropriate error response
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid Job ID");
         }
+
+         */
     }
 }
 
