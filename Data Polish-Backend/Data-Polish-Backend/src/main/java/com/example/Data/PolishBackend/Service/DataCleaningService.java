@@ -38,7 +38,7 @@ import java.util.UUID;
     publish to q2
         - retrieved dataprofilingoutput value (to trigger datacleaning py microservice)
         - json filename
-    
+
  */
 @Service
 public class DataCleaningService {
