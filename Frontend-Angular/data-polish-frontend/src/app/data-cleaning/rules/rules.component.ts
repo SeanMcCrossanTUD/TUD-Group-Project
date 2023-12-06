@@ -143,7 +143,8 @@ export class RulesComponent {
     "collapse_rare_categories":[],
     "standard_datetime_format":[],
     "regular_expresion_operations":[],
-    "extract_datetime_components":[]
+    "extract_datetime_components":[],
+    "dataset_actions":[]
 
    }
 
@@ -190,6 +191,7 @@ export class RulesComponent {
    cb_Standard_Datetime_format=false;
    cb_Regular_Expression_Operations=false;
    cb_Extract_Datetime_Components=false;
+   cb_Remove_Duplicate=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false
@@ -208,7 +210,8 @@ export class RulesComponent {
     this.cb_Combine_Rare_Categories=false;
     this.cb_Standard_Datetime_format=false;
     this.cb_Regular_Expression_Operations=false;
-    this.cb_Extract_Datetime_Components=false
+    this.cb_Extract_Datetime_Components=false;
+    this.cb_Remove_Duplicate=false;
     
    }
 
@@ -232,7 +235,8 @@ export class RulesComponent {
       "collapse_rare_categories":[],
       "standard_datetime_format":[],
       "regular_expresion_operations":[],
-      "extract_datetime_components":[]
+      "extract_datetime_components":[],
+      "dataset_actions":[]
   
      }
    }
@@ -293,6 +297,16 @@ export class RulesComponent {
    this.currentrow='';
    this.setallCBTOFalse();
    console.log(this.rules)
+   }
+
+   saveDatasetCleaning(){
+    if(this.cb_Remove_Duplicate){
+      this.rules['dataset_actions'].push('remove_duplicates')
+      
+    }
+    console.log(this.rules);
+    this.cb_Remove_Duplicate=false;
+    this.Visibledatasetactions=false;
    }
 /////////////////////////////////////////////
 
@@ -588,6 +602,10 @@ setNumerical_Column_Binning(x:any){
 
   openHelpText(){
   
+  }
+  Visibledatasetactions=false;
+  dataSetActions(){
+    this.Visibledatasetactions=true;
   }
 }
 
