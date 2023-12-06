@@ -326,7 +326,7 @@ setregex(x:any){
   console.log(this.rules)
 }
 setStandard_Datetime_format(x:any){
-  let temp="{\""+x+"\":\""+this.selected_Standard_Datetime_format+"\"}";
+  let temp="{\""+x+"\":\""+this.selected_Standard_Datetime_format.types+"\"}";
   this.rules["standard_datetime_format"].push(JSON.parse(temp));
   console.log(this.rules)
 }
