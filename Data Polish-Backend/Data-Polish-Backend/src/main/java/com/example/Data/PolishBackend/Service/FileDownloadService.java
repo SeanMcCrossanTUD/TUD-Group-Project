@@ -72,6 +72,11 @@ public class FileDownloadService {
             // Retrieve 'datacleaningoutput' from the database and store in cleanedFile
             String sql = "SELECT datacleaningoutput FROM jobsandblobs WHERE jobid = ?";
             String cleanedFile = jdbcTemplate.queryForObject(sql, String.class, jobID);
+            ////* in case there's a conversion, use this newCleanedFilename */////
+            int lastDotIndex = cleanedFile.lastIndexOf('.');   // the index of the last dot in cleanedFile
+            // Extract the substring from the beginning to the last dot
+            String newCleanedFilename = cleanedFile.substring(0, lastDotIndex);
+
 
             if (cleanedFile == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
