@@ -233,6 +233,31 @@ export class RulesComponent {
   
      }
    }
+
+   resetRules(){
+    this.rules={
+      "columns_kept":[],
+      "trim_whitespace":[],
+      "remove_special_characters":[],
+      "normalize_data":[],
+      "outlier_management":[],
+      "missing_value_imputation":[],
+      "remove_stopwords":[],
+      "label_encoding":[],
+      "numerical_column_binning":[],
+      "rename_column_name":[],
+      "textcase_adjustment":[],
+      "replace_substring":[],
+  
+      "column_type_conversion":[],
+      "text_tokenisation":[],
+      "combine_rare_caregories":[],
+      "standard_datetime_format":[],
+      "regular_expresion_operations":[],
+      "extract_datetime_components":[]
+  
+     }
+   }
    savechangestorules(){
   
    if(this.cb_remove_special_characters){
