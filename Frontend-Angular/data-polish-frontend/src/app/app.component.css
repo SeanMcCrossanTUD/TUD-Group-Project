@@ -245,8 +245,8 @@ input:checked+.slider:before {
 /* menu */
 .menu-wrap {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 5em;
+  left: 5px;
   z-index: 1;
 }
 
