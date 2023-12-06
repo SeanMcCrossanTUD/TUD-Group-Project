@@ -18,7 +18,7 @@ public class CleaningRulesExportService {
 
     public ResponseEntity<String> exportCleaningRules(String jobID) {
         try {
-            // Query the database to get the cleaning rules for the specified jobID
+            // Query the DB to get the cleaning rules for the specified jobID
             String sql = "SELECT cleaningrules FROM jobsandblobs WHERE jobid = ?";
             String cleaningRules = jdbcTemplate.queryForObject(sql, String.class, jobID);
 
@@ -30,8 +30,7 @@ public class CleaningRulesExportService {
             }
 
         } catch (Exception e) {
-            // Return an internal server error response if an exception occurs
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error retrieving cleaning rules: " + e.getMessage());
         }
     }
 }
