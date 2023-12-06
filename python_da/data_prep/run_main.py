@@ -42,110 +42,117 @@ if connection_string is None:
 container_name_data_input = config["DATA_INPUT_CONTAINER"]
 
 
-def apply_col_specific_transformations(dataset: pd.DataFrame, config_path: str) -> pd.DataFrame:
-    """
-    Apply column-specific transformations to the dataset based on the JSON configuration.
-
-    Parameters:
-    dataset (pd.DataFrame): The dataset to transform.
-    config_path (str): Path to the JSON configuration file.
-
-    Returns:
-    pd.DataFrame: The transformed dataset.
-    """
-    if not isinstance(dataset, pd.DataFrame):
-        logging.error('Provided dataset is not a pandas DataFrame')
-        raise TypeError('Expected dataset to be a pandas DataFrame')
-
+def apply_configured_transformations(json_config, dataset):
     try:
-        # Load JSON configuration
-        with open(config_path, 'r') as file:
-            config = json.load(file)
-
+        logger.info(f"Begin column transformations")
         prep = DataPrep(dataset)
 
-        # Fill missing values
-        for col, params in config.get('fill_missing_values', {}).items():
-            logging.info(f"Filling missing values for {col}")
-            prep.fill_missing_values(col, method=params['method'], specific_value=params.get('specific_value'))
+        # Parse JSON configuration
+       # config = json.loads(json_config)
+        config = json_config
 
-        # Normalize data
-        for col, params in config.get('normalize_data', {}).items():
-            logging.info(f"Normalizing data for {col}")
-            prep.normalize_data(col, method=params['method'])
+        # Remove columns not in columns_kept
+        columns_kept = config.get('columns_kept', [])
+        columns_to_remove = [col for col in dataset.columns if col not in columns_kept]
+        if columns_to_remove:
+            prep.remove_columns(columns_to_remove)
+            logger.info(f"Removed columns: {columns_to_remove}")
 
-        # Remove special characters
-        for col in config.get('remove_special_characters', []):
-            logging.info(f"Removing special characters from {col}")
-            prep.remove_special_characters(col)
+        # Apply transformations based on column data type
+        for col in dataset.columns:
+            # Check and apply trim whitespace
+            if col in config.get('trim_whitespace', []) and pd.api.types.is_string_dtype(dataset[col]):
+                prep.trim_whitespace(col)
+                logger.info(f"Trimmed whitespace in column: {col}")
 
-        # Trim whitespace
-        for col in config.get('trim_whitespace', []):
-            logging.info(f"Trimming whitespace in {col}")
-            prep.trim_whitespace(col)
+            # Check and apply removal of special characters
+            if col in config.get('remove_special_characters', []) and pd.api.types.is_string_dtype(dataset[col]):
+                prep.remove_special_characters(col)
+                logger.info(f"Removed special characters in column: {col}")
 
-        # Change column type
-        for col, params in config.get('change_column_type', {}).items():
-            logging.info(f"Changing column type for {col}")
-            prep.change_column_type(col, new_type=params['new_type'])
+            # Apply normalization on numeric columns
+            for normalization in config.get('normalize_data', []):
+                if col in normalization and pd.api.types.is_numeric_dtype(dataset[col]):
+                    method = normalization[col]['method']['types']
+                    prep.normalize_data(col, method)
+                    logger.info(f"Normalized data in column: {col} using method: {method}")
 
-        # Label encode
-        for col in config.get('label_encode', []):
-            logging.info(f"Label encoding {col}")
-            prep.label_encode(col)
+            # Apply missing value imputation
+            for imputation in config.get('missing_value_imputation', []):
+                if col in imputation:
+                    method = imputation[col]['method'].lower()
+                    prep.fill_missing_values(col, method=method)
+                    logger.info(f"Filled missing values in column: {col} using method: {method}")
 
-        # Bin numeric to categorical
-        for col, params in config.get('bin_numeric_to_categorical', {}).items():
-            logging.info(f"Binning numeric data to categorical for {col}")
-            prep.bin_numeric_to_categorical(col, bins=params['bins'], labels=params.get('labels'))
+            # Apply removal of stopwords on text columns
+            if col in config.get('remove_stopwords', []) and pd.api.types.is_string_dtype(dataset[col]):
+                prep.remove_stopwords(col)
+                logger.info(f"Removed stopwords in column: {col}")
 
-        # Extract datetime components
-        for col, params in config.get('extract_datetime_components', {}).items():
-            logging.info(f"Extracting datetime components for {col}")
-            prep.extract_datetime_components(col, components=params['components'])
+            # Apply label encoding on categorical columns
+            if col in config.get('label_encoding', []) and pd.api.types.is_string_dtype(dataset[col]):
+                prep.label_encode(col)
+                logger.info(f"Label encoded column: {col}")
 
-        # Replace substring
-        for col, params in config.get('replace_substring', {}).items():
-            logging.info(f"Replacing substring in {col}")
-            prep.replace_substring(col, old_substring=params['old_substring'], new_substring=params['new_substring'])
+            # Apply numerical column binning
+            for binning in config.get('numerical_column_binning', []):
+                if col in binning and pd.api.types.is_numeric_dtype(dataset[col]):
+                    bins = sorted(binning[col])  # Sort the bins
+                    prep.bin_numeric_to_categorical(col, bins)
+                    logger.info(f"Binned numeric column: {col} into categories")
 
-        # Parse datetime
-        for col, params in config.get('parse_datetime', {}).items():
-            logging.info(f"Parsing datetime for {col}")
-            prep.parse_datetime(col, datetime_format=params['datetime_format'])
+            # Apply text case adjustment
+            for adjustment in config.get('textcase_adjustment', []):
+                for col, case_format in adjustment.items():
+                    if pd.api.types.is_string_dtype(dataset[col]):
+                        prep.adjust_text_case(col, case_format.lower())
+                        logger.info(f"Adjusted text case in column: {col} to {case_format}")
 
-        # Adjust text case
-        for col, params in config.get('adjust_text_case', {}).items():
-            logging.info(f"Adjusting text case for {col}")
-            prep.adjust_text_case(col, case_format=params['case_format'])
+            # Apply substring replacement
+            for replacement in config.get('replace_substring', []):
+                for col, substrings in replacement.items():
+                    if pd.api.types.is_string_dtype(dataset[col]):
+                        for old_substring, new_substring in substrings.items():
+                            prep.replace_substring(col, old_substring, new_substring)
+                            logger.info(f"Replaced substring in column: {col}")
 
-        # Remove stopwords
-        for col, params in config.get('remove_stopwords', {}).items():
-            logging.info(f"Removing stopwords from {col}")
-            prep.remove_stopwords(col, language=params['language'])
+            # Apply rare categories collapse
+            for collapse_config in config.get('collapse_rare_categories', []):
+                for col, threshold in collapse_config.items():
+                    threshold = float(threshold)
+                    if pd.api.types.is_categorical_dtype(dataset[col]) or pd.api.types.is_object_dtype(dataset[col]):
+                        prep.collapse_rare_categories(col, threshold_percentage=threshold)
+                        logger.info(f"Collapsed rare categories in column: {col} with threshold: {threshold}")
 
-        # Collapse rare categories
-        for col, params in config.get('collapse_rare_categories', {}).items():
-            logging.info(f"Collapsing rare categories in {col}")
-            prep.collapse_rare_categories(col, threshold_percentage=params['threshold_percentage'])
+            # Apply datetime parsing
+            for datetime_config in config.get('standard_datetime_format', []):
+                for col, format in datetime_config.items():
+                    prep.parse_datetime(col, datetime_format=format)
+                    logger.info(f"Parsed datetime in column: {col} with format: {format}")
 
-        # Remove columns
-        for col in config.get('remove_columns', {}).get('columns_to_remove', []):
-            logging.info(f"Removing column {col}")
-            prep.remove_column(col)
+            # Apply regular expression operations
+            for regex_operation in config.get('regular_expression_operations', []):
+                col = regex_operation.get("columnName")
+                pattern = regex_operation.get("pattern")
+                replace_with = regex_operation.get("replaceWith", "")
+                prep.apply_regex(col, regex_pattern=pattern, replacement_string=replace_with, operation="replace")
+                logger.info(f"Applied regex operation on column: {col}")
 
-        logging.info('All column-specific transformations applied successfully')
+            # Apply text tokenization
+            for text_tokenisation in config.get('text_tokenisation', []):
+                if pd.api.types.is_string_dtype(dataset[col]):
+                    prep.tokenize_text(col)
+                    logger.info(f"Tokenized text in column: {col}")
+
+        logger.info(f"Transformed dataset")
+
         return prep.dataframe
 
-    except FileNotFoundError:
-        logging.error(f'Configuration file {config_path} not found')
-        raise
-    except json.JSONDecodeError:
-        logging.error(f'Error parsing JSON from {config_path}')
-        raise
     except Exception as e:
-        logging.error(f'Error occurred during column-specific transformation: {e}')
-        raise e
+        logger.error(f"An error occurred: {e}")
+        raise
+
+
 
 
 def apply_dataset_cleaning(dataset: pd.DataFrame, config_path: str) -> pd.DataFrame:
@@ -236,7 +243,7 @@ def main(test_iterations=None):
                     logger.error(f'Invalid file type for {filename}. Only CSV and Excel files are supported.')
                     continue
 
-                result = apply_col_specific_transformations(data, json_rules)
+                result = apply_configured_transformations(json_config=json_rules, dataset=data)
                 
                 if file_extension == '.csv':
                     upload_result_csv_to_azure(result, connection_string, jobID, filename)
