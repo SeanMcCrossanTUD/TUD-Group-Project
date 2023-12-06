@@ -209,29 +209,7 @@ export class RulesComponent {
     this.cb_Standard_Datetime_format=false;
     this.cb_Regular_Expression_Operations=false;
     this.cb_Extract_Datetime_Components=false
-
-    this.rules={
-      "columns_kept":[],
-      "trim_whitespace":[],
-      "remove_special_characters":[],
-      "normalize_data":[],
-      "outlier_management":[],
-      "missing_value_imputation":[],
-      "remove_stopwords":[],
-      "label_encoding":[],
-      "numerical_column_binning":[],
-      "rename_column_name":[],
-      "textcase_adjustment":[],
-      "replace_substring":[],
-  
-      "column_type_conversion":[],
-      "text_tokenisation":[],
-      "combine_rare_caregories":[],
-      "standard_datetime_format":[],
-      "regular_expresion_operations":[],
-      "extract_datetime_components":[]
-  
-     }
+    
    }
 
    resetRules(){
@@ -314,6 +292,7 @@ export class RulesComponent {
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
+   console.log(this.rules)
    }
 /////////////////////////////////////////////
 
@@ -329,7 +308,7 @@ set_Extract_Datetime_Components(x:any){
   json+="]}"
  
   this.rules['extract_datetime_components'].push(JSON.parse(json));
-  console.log(this.rules);
+  
 }
 setregex(x:any){
   var json:any;
@@ -348,12 +327,12 @@ setregex(x:any){
     }
   }
   this.rules["regular_expresion_operations"].push(json);
-  console.log(this.rules)
+
 }
 setStandard_Datetime_format(x:any){
   let temp="{\""+x+"\":\""+this.selected_Standard_Datetime_format.types+"\"}";
   this.rules["standard_datetime_format"].push(JSON.parse(temp));
-  console.log(this.rules)
+  
 }
 setText_Tokenisation(x:any){
   this.rules["text_tokenisation"].push(x);  
@@ -362,9 +341,10 @@ setCombine_Rare_Categories(x:any){
   let temp="{\""+x+"\":\""+this.selected_Combine_Rare_Categories+"\"}";
 
   this.rules["combine_rare_caregories"].push(JSON.parse(temp));
-  console.log(this.rules)
+
 }
 setColumn_Type_Conversion(x:any){
+  console.log(this.select_Column_Type_Conversion)
   let temp="{\""+x+"\":\""+this.select_Column_Type_Conversion.types+"\"}";
   this.rules["column_type_conversion"].push(JSON.parse(temp));
   
@@ -384,14 +364,14 @@ setTextCase(x:any){
 setRenameColumnName(x:any){
   let temp="{\""+x+"\":\""+this.Selected_Rename_Column_Name+"\"}"
   this.rules["rename_column_name"].push(JSON.parse(temp));
-  console.log(this.rules);
+ 
 }
 setNumerical_Column_Binning(x:any){
  
   
   let temp="{\""+x+"\":["+this.values+"]}"
 
-   console.log(temp);
+
    this.rules["numerical_column_binning"].push(JSON.parse(temp));
 }
    setRemove_Stopwords(x:any){
@@ -412,7 +392,7 @@ setNumerical_Column_Binning(x:any){
     t1.method=this.selectedNormalizationTypes
     let temp="{\""+x+"\":"+JSON.stringify(t1)+"}"
 
-    console.log(temp);
+
     this.rules["normalize_data"].push(JSON.parse(temp));
    }
 
@@ -436,7 +416,6 @@ setNumerical_Column_Binning(x:any){
     let temp="{\""+x+"\":"+JSON.stringify(t1)+"}";
     this.rules["missing_value_imputation"].push(JSON.parse(temp));
 
-    console.log(this.rules)
    }
 
    setLabelEncoding(x:any){
