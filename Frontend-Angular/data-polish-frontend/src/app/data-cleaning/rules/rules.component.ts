@@ -140,7 +140,7 @@ export class RulesComponent {
 
     "column_type_conversion":[],
     "text_tokenisation":[],
-    "combine_rare_caregories":[],
+    "collapse_rare_categories":[],
     "standard_datetime_format":[],
     "regular_expresion_operations":[],
     "extract_datetime_components":[]
@@ -229,7 +229,7 @@ export class RulesComponent {
   
       "column_type_conversion":[],
       "text_tokenisation":[],
-      "combine_rare_caregories":[],
+      "collapse_rare_categories":[],
       "standard_datetime_format":[],
       "regular_expresion_operations":[],
       "extract_datetime_components":[]
@@ -340,7 +340,7 @@ setText_Tokenisation(x:any){
 setCombine_Rare_Categories(x:any){
   let temp="{\""+x+"\":\""+this.selected_Combine_Rare_Categories+"\"}";
 
-  this.rules["combine_rare_caregories"].push(JSON.parse(temp));
+  this.rules["collapse_rare_categories"].push(JSON.parse(temp));
 
 }
 setColumn_Type_Conversion(x:any){
