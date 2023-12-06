@@ -50,6 +50,22 @@ public class CleaningRulesImportService {
         }
     }
 
+    //method to store json file in blob
+    private void storeJsonInBlobStorage(MultipartFile jsonFile, String jsonFilename) {
+        try {
+            // Connect to Azure Blob Storage
+            BlobContainerClient containerClient = new BlobServiceClientBuilder()
+                    .connectionString(azureConnectionString)
+                    .buildClient()
+                    .getBlobContainerClient("rules");
 
+            // Get a reference to the blob
+            containerClient.getBlobClient(jsonFilename)
+                    .upload(jsonFile.getInputStream(), jsonFile.getSize(), true);
+        } catch (Exception e) {
+            // Handle exceptions related to Azure Blob
+            e.printStackTrace();
+        }
+    }
 }
 
