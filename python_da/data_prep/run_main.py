@@ -64,6 +64,16 @@ def apply_configured_transformations(json_config, dataset):
                 prep.rename_column(old_name, new_name)
                 logger.info(f"Renamed column {old_name} to {new_name}")
 
+        # Apply outlier management
+        for outlier_management in config.get('outlier_management', []):
+            for col, details in outlier_management.items():
+                if pd.api.types.is_numeric_dtype(dataset[col]):
+                    method = details['method']['types']
+                    # Extract the number for standard deviation
+                    sd = int(method.split('-')[0].strip())
+                    logger.info(f"Removing outliers in column: {col} using {sd} SD method")
+                    prep.remove_outliers(sd, col)
+
         # Apply transformations based on column data type
         for col in dataset.columns:
             # Check and apply trim whitespace
@@ -149,6 +159,13 @@ def apply_configured_transformations(json_config, dataset):
                 if pd.api.types.is_string_dtype(dataset[col]):
                     prep.tokenize_text(col)
                     logger.info(f"Tokenized text in column: {col}")
+                    
+        # Handle column type conversion
+        for conversion in config.get('column_type_conversion', []):
+            for col, new_type in conversion.items():
+                if new_type == "Text" and pd.api.types.is_string_dtype(dataset[col]):
+                    prep.change_column_type(col, 'object')
+                    logger.info(f"Changed data type of column {col} to Text (object)")        
 
         logger.info(f"Transformed dataset")
 
