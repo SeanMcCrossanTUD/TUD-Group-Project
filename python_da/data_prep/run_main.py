@@ -58,6 +58,12 @@ def apply_configured_transformations(json_config, dataset):
             prep.remove_columns(columns_to_remove)
             logger.info(f"Removed columns: {columns_to_remove}")
 
+            # Apply renaming of column names
+        for renaming_config in config.get('rename_column_name', []):
+            for old_name, new_name in renaming_config.items():
+                prep.rename_column(old_name, new_name)
+                logger.info(f"Renamed column {old_name} to {new_name}")
+
         # Apply transformations based on column data type
         for col in dataset.columns:
             # Check and apply trim whitespace

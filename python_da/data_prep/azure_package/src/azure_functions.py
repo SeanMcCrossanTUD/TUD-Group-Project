@@ -92,7 +92,7 @@ def download_blob_json_data(connection_string, file_name, container_name="rules"
         logger.error(f"Error downloading blob data: {e}")
         raise
 
-def download_blob_excel_data(connection_string, file_name, container_name="excel"):
+def download_blob_excel_data(connection_string, file_name, container_name="csv"):
     """Download Excel data from Azure Blob Storage.
 
     Args:
@@ -191,6 +191,7 @@ def upload_result_csv_to_azure(result, connection_string, job_id, file_name):
     
     
     result_blob_name = f'data_polish_{file_name}'
+    result_blob_name = f'data_polish_{file_name.split(".")[0]}'
     
     # Define the name of the container to upload the result
     result_container_name = 'output'
@@ -224,7 +225,8 @@ def upload_result_excel_to_azure(result, connection_string, job_id, file_name):
     - file_name (str): The file name to be used in Azure Blob Storage.
     """
     
-    result_blob_name = f'data_polish_{file_name}.xlsx'
+    result_blob_name = f'data_polish_{file_name}'
+    result_blob_name = f'data_polish_{file_name.split(".")[0]}'
     
     # Define the name of the container to upload the result
     result_container_name = 'output'
