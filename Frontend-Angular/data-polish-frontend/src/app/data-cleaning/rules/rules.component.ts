@@ -142,7 +142,9 @@ export class RulesComponent {
     "text_tokenisation":[],
     "collapse_rare_categories":[],
     "standard_datetime_format":[],
-    "regular_expresion_operations":[]
+    "regular_expresion_operations":[],
+    "extract_datetime_components":[]
+
    }
 
    setdata(){
@@ -268,7 +270,18 @@ export class RulesComponent {
 /////////////////////////////////////////////
 
 set_Extract_Datetime_Components(x:any){
-  console.log(this.Extract_Datetime_Components_selected)
+  var json="{\""+x+"\":[";
+  var length=this.Extract_Datetime_Components_selected.length;
+  for(var i=0;i<length;i++){
+    json+="\""+this.Extract_Datetime_Components_selected[i].name+"\""
+    if(i+1!=length){
+      json+=","
+    }
+  }
+  json+="]}"
+ 
+  this.rules['extract_datetime_components'].push(JSON.parse(json));
+  console.log(this.rules);
 }
 setregex(x:any){
   var json:any;
