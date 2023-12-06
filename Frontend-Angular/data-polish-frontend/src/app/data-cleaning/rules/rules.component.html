@@ -1,14 +1,48 @@
 <div class="remove-all-button">
   <div (click)="addAllFields()">
-    <span class="material-icons">add_circle</span> Keep All Columns
+    <span class="material-icons">add_circle</span> 
+    <!-- <i class="bi bi-plus-square"></i> -->
+    Keep All Columns
   </div>  &nbsp;
   <div (click)="removeAllFields()">
-    <span class="material-icons">cancel</span> Remove All Columns
+    <span class="material-icons">cancel</span> 
+    <!-- <i class="bi bi-x-circle"></i> -->
+    Remove All Columns
   </div>
   &nbsp;
-  <div (click)="setdata()">
-    <span class="material-icons">save</span> save cleaning rules </div>
+  <div (click)="resetRules()">
+    <span class="material-icons">restart_alt</span> Reset Rules </div>
+    &nbsp;
+    <div (click)="setdata()" >
+      <i class="bi bi-magic"></i> PCA </div>
+      &nbsp;
+      <div (click)="setdata()">
+        <span class="material-icons">save</span> 
+        <!-- <i class="bi bi-floppy2"></i> -->
+        save cleaning rules </div>
+        &nbsp;
+
+        <div (click)="setdata()">
+          <span class="material-icons">
+            download
+            </span>
+
+          Download Rules </div>
+
+
+          &nbsp;
+          <div (click)="setdata()">
+            <span class="material-icons">
+              upload
+              </span>
+
+           Import Cleaning Rules </div>
+
+
+
+
 </div>
+
 <ag-grid-angular
     style="width: 80vw;height: 70vh;"
     class="ag-theme-alpine"
@@ -35,7 +69,7 @@
     <div >
       <div>
         <p-tabView>
-            <p-tabPanel header="Basic">
+            <p-tabPanel header="General">
               <div class="pop-up-continer">
                 <div>
                   <div>
@@ -141,7 +175,7 @@
               </div>
               
             </p-tabPanel>
-            <p-tabPanel header="Numerical">
+            <p-tabPanel header="Text">
               <div class="pop-up-continer">
                 <div>
                   <div>
@@ -269,7 +303,7 @@
               </div>
               
             </p-tabPanel>
-            <p-tabPanel header="Advanced">
+            <p-tabPanel header="Numerical">
                <div class="pop-up-continer">
                 <div>
                   <div>
@@ -372,51 +406,7 @@
                 </div>
 
                 
-                <div>
-                  <div>
-                    Standard Datetime format
-                          <sup>
-                            <span class="material-icons">
-                              help
-                            </span>
-                          </sup>
-                        </div>
-                  <div>
-                    <p-checkbox [(ngModel)]="cb_Standard_Datetime_format" inputId="binary" [binary]="true"></p-checkbox>
-                     <p-dropdown *ngIf="cb_Standard_Datetime_format"
-                      [options]="Standard_Datetime_format_options" 
-                      [(ngModel)]="selected_Standard_Datetime_format"
-                      optionLabel="types" [showClear]="true" 
-                      placeholder="Select option">
-                    </p-dropdown>
-                  </div>
-                  <div >
-                       
-                  </div>
-                </div>
-
-                <div>
-                  <div>
-                    Extract Datetime Components
-                          <sup>
-                            <span class="material-icons">
-                              help
-                            </span>
-                          </sup>
-                        </div>
-                  <div>
-                    <p-checkbox [(ngModel)]="cb_Extract_Datetime_Components" inputId="binary" [binary]="true"></p-checkbox>
-                    <p-multiSelect *ngIf="cb_Extract_Datetime_Components"
-                    [options]="Extract_Datetime_Components_options" 
-                    [(ngModel)]="Extract_Datetime_Components_selected" 
-                    display="chip"
-                    optionLabel="name"></p-multiSelect>
-           
-                  </div>
-                  <div >
-                       
-                  </div>
-                </div>
+               
 
                 <div>
                   <div>
@@ -454,6 +444,56 @@
                
 
                       </div>
+            </p-tabPanel>
+            <p-tabPanel header="Datetime">
+              <div class="pop-up-continer">
+
+                <div>
+                  <div>
+                    Standard Datetime format
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Standard_Datetime_format" inputId="binary" [binary]="true"></p-checkbox>
+                     <p-dropdown *ngIf="cb_Standard_Datetime_format"
+                      [options]="Standard_Datetime_format_options" 
+                      [(ngModel)]="selected_Standard_Datetime_format"
+                      optionLabel="types" [showClear]="true" 
+                      placeholder="Select option">
+                    </p-dropdown>
+                  </div>
+                  <div >
+                       
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    Extract Datetime Components
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Extract_Datetime_Components" inputId="binary" [binary]="true"></p-checkbox>
+                    <p-multiSelect *ngIf="cb_Extract_Datetime_Components"
+                    [options]="Extract_Datetime_Components_options" 
+                    [(ngModel)]="Extract_Datetime_Components_selected" 
+                    display="chip"                    
+                    optionLabel="name"></p-multiSelect>
+           
+                  </div>
+                  <div >
+                       
+                  </div>
+                </div>
+                </div>
             </p-tabPanel>
         </p-tabView>
       </div>
