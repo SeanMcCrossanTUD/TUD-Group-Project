@@ -13,6 +13,9 @@ public class CleaningRulesImportController {
     @Autowired
     private CleaningRulesImportService cleaningRulesImportService;
 
+    // secure secret key 256 bits
+    private final String secretKey = "WaaZ5eNs94mGk+joiqJf6Laj1s0oOrAyoy/saZJAaom801Rpqy88IaDZGhkhd65e";
+
     @PostMapping("/rules-import")
     public ResponseEntity<String> importCleaningRules(
             @RequestParam String jobID,
