@@ -100,11 +100,6 @@ def apply_transformations(prep, json_config):
             prep.trim_whitespace(col)
             logger.info(f"Trimmed whitespace in column: {col}")
 
-        # Remove special characters in text columns
-        if col in json_config.get('remove_special_characters', []) and pd.api.types.is_string_dtype(prep.dataframe[col]):
-            prep.remove_special_characters(col)
-            logger.info(f"Removed special characters in column: {col}")
-
         # Normalize data in numeric columns
         for normalization in json_config.get('normalize_data', []):
             if col in normalization and pd.api.types.is_numeric_dtype(prep.dataframe[col]):
@@ -165,6 +160,11 @@ def apply_transformations(prep, json_config):
                 replace_with = regex_operation[col].get("replaceWith", "")
                 prep.apply_regex(col, regex_pattern=pattern, replacement_string=replace_with, operation="replace")
                 logger.info(f"Applied regex operation on column: {col}")
+
+        # Remove special characters in text columns
+        if col in json_config.get('remove_special_characters', []) and pd.api.types.is_string_dtype(prep.dataframe[col]):
+            prep.remove_special_characters(col)
+            logger.info(f"Removed special characters in column: {col}")
 
         # Text tokenization
         for text_tokenisation in json_config.get('text_tokenisation', []):
