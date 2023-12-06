@@ -31,7 +31,7 @@ import java.util.UUID;
     query db with jobid to get dataprofilingoutput value
 
     convert the json object to json file
-    create json filename rules+uuid.json //uuid to make each file unique
+    create json filename rules_+uuid.json //uuid to make each file unique
     store the json filename in DB under cleaningrules column for that jobid
     store the json file in blob - rules
 
