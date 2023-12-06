@@ -189,11 +189,8 @@ public class FileDownloadService {
         return workbook;
     }
 
+    // method for conversion XLSX to CSV  using Apache POI
     private String convertXlsxToCsv(InputStream inputStream) throws IOException {
-        // Implement XLSX to CSV conversion logic using Apache POI
-        // This is a simplified example, you may need to adapt it based on your XLSX format
-        // Note: The CSV data is assumed to be a simple concatenation of values in this example
-
         try (Workbook workbook = WorkbookFactory.create(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             StringWriter stringWriter = new StringWriter();
