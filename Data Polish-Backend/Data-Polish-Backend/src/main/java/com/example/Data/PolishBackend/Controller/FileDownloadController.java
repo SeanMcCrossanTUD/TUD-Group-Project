@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.Data.PolishBackend.Service.FileDownloadService; // Import the FileUploadService
 
+import java.io.File;
 import java.util.Date;
 
 
@@ -36,8 +37,8 @@ public class FileDownloadController {
         if (isValidJwtToken(token)) {
             return fileDownloadService.downloadFile(jobID,fileType);
         } else {
-            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ByteArrayResource("Unauthorized access".getBytes()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body((Resource) new File("Unauthorized access"));
+            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access".getBytes());
         }
     }
 
