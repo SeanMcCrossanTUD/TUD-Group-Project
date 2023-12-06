@@ -147,7 +147,7 @@ def apply_transformations(prep, json_config):
         for collapse_config in json_config.get('collapse_rare_categories', []):
             if col in collapse_config:
                 threshold = float(collapse_config[col])
-                if pd.api.types.is_categorical_dtype(prep.dataframe[col]) or pd.api.types.is_object_dtype(prep.dataframe[col]):
+                if pd.api.types.is_string_dtype(prep.dataframe[col]):
                     prep.collapse_rare_categories(col, threshold_percentage=threshold)
                     logger.info(f"Collapsed rare categories in column: {col} with threshold: {threshold}")
 
