@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 public class CleaningRulesExportController {
     @Autowired
     private CleaningRulesExportService cleaningRulesExportService;
+    
+    // secure secret key 256 bits
+    private final String secretKey = "WaaZ5eNs94mGk+joiqJf6Laj1s0oOrAyoy/saZJAaom801Rpqy88IaDZGhkhd65e";
 
     @GetMapping("/rules-export")
     public ResponseEntity<String> exportCleaningRules(@RequestParam String jobID) {
