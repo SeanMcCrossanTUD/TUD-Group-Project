@@ -107,7 +107,7 @@ public class FileDownloadService {
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.CONTENT_TYPE, "text/csv");
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + cleanedFile + ".csv");
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + newCleanedFilename + ".csv");
 
                 return new ResponseEntity<>(convertedFile, headers, HttpStatus.OK);
             } else if (".xlsx".equals(fileType) && ".csv".equals(fileExtension)) {
