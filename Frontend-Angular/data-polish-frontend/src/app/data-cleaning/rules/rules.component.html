@@ -2,12 +2,12 @@
   <div (click)="addAllFields()">
     <span class="material-icons">add_circle</span> 
     <!-- <i class="bi bi-plus-square"></i> -->
-    Keep All Columns
+    Keep All 
   </div>  &nbsp;
   <div (click)="removeAllFields()">
     <span class="material-icons">cancel</span> 
     <!-- <i class="bi bi-x-circle"></i> -->
-    Remove All Columns
+    Remove All 
   </div>
   &nbsp;
   <div (click)="resetRules()">
@@ -526,3 +526,33 @@
   <!--  [binary]="true" -->
     
 </p-dialog>
+
+
+<p-dialog header="Dataset Actions" 
+[(visible)]="Visibledatasetactions" 
+[breakpoints]="{ '960px': '75vw' }" 
+[style]="{ width: '60vw',height:'90vh' }"
+ [draggable]="true"
+  [resizable]="true">
+  <div class="pop-up-continer">
+    <div>
+      <div>
+        Remove Duplicate
+              <sup>
+                <span class="material-icons">
+                  help
+                </span>
+              </sup>
+            </div>
+      <div>
+        <p-checkbox [(ngModel)]="cb_Remove_Duplicate" inputId="binary" [binary]="true"></p-checkbox> 
+              
+      </div>
+    </div>
+    </div>
+    <br/>
+    <div class="save-button">
+      <div (click)="saveDatasetCleaning()">Save</div>
+    </div>
+
+  </p-dialog>
