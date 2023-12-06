@@ -191,7 +191,7 @@ def upload_result_csv_to_azure(result, connection_string, job_id, file_name):
     
     
     result_blob_name = f'data_polish_{file_name}'
-    result_blob_name = f'data_polish_{file_name.split(".")[0]}'
+    # result_blob_name = f'data_polish_{file_name.split(".")[0]}'
     
     # Define the name of the container to upload the result
     result_container_name = 'output'
@@ -226,7 +226,7 @@ def upload_result_excel_to_azure(result, connection_string, job_id, file_name):
     """
     
     result_blob_name = f'data_polish_{file_name}'
-    result_blob_name = f'data_polish_{file_name.split(".")[0]}'
+    # result_blob_name = f'data_polish_{file_name.split(".")[0]}'
     
     # Define the name of the container to upload the result
     result_container_name = 'output'
