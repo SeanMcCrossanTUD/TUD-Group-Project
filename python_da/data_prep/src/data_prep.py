@@ -70,33 +70,34 @@ class DataPrep:
         return self.dataframe
     
     # Function 2.
-    def remove_outliers(self, sd: float = 3.0) -> None:
+    def remove_outliers(self, column_name: str, sd: float = 3.0) -> None:
         """
-        Removes or modifies the outliers in the dataframe based on the specified standard deviation.
+        Removes or modifies the outliers in a specified column of the dataframe based on the given standard deviation.
 
         Args:
-        sd (float): The number of standard deviations to use for defining an outlier. 
-                    Defaults to 3.0.
-
+        column_name (str): The name of the column to remove outliers from.
+        sd (float): The number of standard deviations to use for defining an outlier. Defaults to 3.0.
         """
 
         if self.dataframe is None:
             raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
 
-        # Iterate over each numeric column in the dataframe
-        for col in self.dataframe.select_dtypes(include=[np.number]).columns:
-            # Exclude null values from the column
-            col_values = self.dataframe[col].dropna()
-            
-            # Calculate the mean and standard deviation for the column
-            mean, std = col_values.mean(), col_values.std()
-            
-            # Define the upper and lower bounds for outliers
-            lower_bound = mean - sd * std
-            upper_bound = mean + sd * std
+        # Ensure the column exists and is numeric
+        if column_name not in self.dataframe.columns or not pd.api.types.is_numeric_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not found or is not numeric in the dataframe.')
 
-            # Replace the outliers in the dataframe with NaN
-            self.dataframe.loc[(self.dataframe[col] < lower_bound) | (self.dataframe[col] > upper_bound), col] = np.nan
+        # Exclude null values from the column
+        col_values = self.dataframe[column_name].dropna()
+
+        # Calculate the mean and standard deviation for the column
+        mean, std = col_values.mean(), col_values.std()
+
+        # Define the upper and lower bounds for outliers
+        lower_bound = mean - sd * std
+        upper_bound = mean + sd * std
+
+        # Replace the outliers in the dataframe with NaN
+        self.dataframe.loc[(self.dataframe[column_name] < lower_bound) | (self.dataframe[column_name] > upper_bound), column_name] = np.nan
 
 
     # Function 3.

@@ -51,9 +51,11 @@ def handle_outlier_management(prep, json_config):
     for outlier_management in json_config.get('outlier_management', []):
         for col, details in outlier_management.items():
             if pd.api.types.is_numeric_dtype(prep.dataframe[col]):
-                sd = int(details['method']['types'].split('-')[0].strip())
-                prep.remove_outliers(sd, col)
+                sd = int(details['method'].split('-')[0].strip())
+                logger.info(f"Removing outliers in column: {col} using {sd} SD method")
+                prep.remove_outliers(col, sd)
                 logger.info(f"Outliers removed from column: {col}")
+
 
 def handle_missing_value_imputation(prep, json_config):
     for imputation in json_config.get('missing_value_imputation', []):
@@ -64,16 +66,34 @@ def handle_missing_value_imputation(prep, json_config):
 
 def handle_renaming_and_dropping_columns(prep, json_config):
     # Renaming columns
+    renamed_columns = {}
     for renaming in json_config.get('rename_column_name', []):
         for old_name, new_name in renaming.items():
             prep.rename_column(old_name, new_name)
+            renamed_columns[old_name] = new_name
+            logger.info(f"Renamed column {old_name} to {new_name}")
+
+    # Update columns_kept list with new names
+    columns_to_keep = set(json_config.get('columns_kept', []))
+    for old_name, new_name in renamed_columns.items():
+        if old_name in columns_to_keep:
+            columns_to_keep.remove(old_name)
+            columns_to_keep.add(new_name)
+
+    # Identify columns that have been binned
+    binned_columns = [col for col in prep.dataframe.columns if col.endswith('_binned')]
+    columns_to_keep.update(binned_columns)
 
     # Dropping columns
-    columns_to_keep = json_config.get('columns_kept', [])
     columns_to_remove = [col for col in prep.dataframe.columns if col not in columns_to_keep]
-    prep.remove_columns(columns_to_remove)
+    if columns_to_remove:
+        prep.remove_columns(columns_to_remove)
+        logger.info(f"Dropped columns: {', '.join(columns_to_remove)}")
+
+
 
 def apply_transformations(prep, json_config):
+
     for col in prep.dataframe.columns:
         # Trim whitespace in text columns
         if col in json_config.get('trim_whitespace', []) and pd.api.types.is_string_dtype(prep.dataframe[col]):
@@ -98,14 +118,14 @@ def apply_transformations(prep, json_config):
             logger.info(f"Removed stopwords in column: {col}")
 
         # Label encoding in categorical columns
-        if col in json_config.get('label_encoding', []) and pd.api.types.is_categorical_dtype(prep.dataframe[col]):
+        if col in json_config.get('label_encoding', []) and pd.api.types.is_string_dtype(prep.dataframe[col]):
             prep.label_encode(col)
             logger.info(f"Label encoded column: {col}")
 
         # Numerical column binning in numeric columns
-        for binning in json_config.get('numerical_column_binning', []):
-            if col in binning and pd.api.types.is_numeric_dtype(prep.dataframe[col]):
-                bins = sorted(binning[col])
+        for binning_config in json_config.get('numerical_column_binning', []):
+            if col in binning_config and pd.api.types.is_numeric_dtype(prep.dataframe[col]):
+                bins = sorted(binning_config[col])
                 prep.bin_numeric_to_categorical(col, bins)
                 logger.info(f"Binned numeric column: {col} into categories")
 
