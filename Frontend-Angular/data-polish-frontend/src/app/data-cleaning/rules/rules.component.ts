@@ -400,7 +400,7 @@ setNumerical_Column_Binning(x:any){
     var t1={
       method:''
     }
-    t1.method=this.selectedOutlier;
+    t1.method=this.selectedOutlier.types;
     let temp="{\""+x+"\":"+JSON.stringify(t1)+"}";
     this.rules["outlier_management"].push(JSON.parse(temp));
    }
