@@ -117,7 +117,7 @@ public class FileDownloadService {
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + cleanedFile + ".xlsx");
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + newCleanedFilename + ".xlsx");
 
                 return new ResponseEntity<>(convertedFile, headers, HttpStatus.OK);
             } else {
