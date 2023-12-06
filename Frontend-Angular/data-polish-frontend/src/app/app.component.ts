@@ -10,6 +10,7 @@ import { InputType } from '@coreui/angular';
 import { BlobStorageService } from './Services/Fileupload/blob-storage.service';
 declare var LeaderLine: any;
 import { fadeInAnimation } from './Animations/animation';
+import { LoginServiceService } from './Services/login/login-service.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -30,7 +31,10 @@ export class AppComponent {
      private cookieService: CookieService,
      private accessibilityServiceService:AccessibilityServiceService,
      private terminalService:TerminalService,
-     private BlobStorageService:BlobStorageService
+     private BlobStorageService:BlobStorageService,
+     private  LoginServiceService:LoginServiceService
+     
+
   ){ }
   line1active:any
   line2active:any
@@ -40,32 +44,65 @@ export class AppComponent {
   line2:any
   line3:any
   line4:any
-  
+  linecolor:any='white';
   ngOnInit() {
-    let cookieValue:string = this.cookieService.get('ACCESSIBILITY');
-    if(cookieValue!='' && cookieValue!="DEFAULT"){
-      this.accessibilityset();
-   }
+    let login:string = this.cookieService.get('LOGIN');
+    if(login=='TRUE'){
+      this.isLoggedin = true;
+    }
+
+      let cookieValue: string = this.cookieService.get('ACCESSIBILITY');
+      if (cookieValue != '' && cookieValue != 'DEFAULT') {
+        this.accessibilityset();
+      }
+
+      if(cookieValue=='BLUE'){
+        this.linecolor='yellow'
+      }else if(cookieValue=='WHEAT'){    
+        this.linecolor='black'
+      }else if(cookieValue=='BLACK'){
+        this.linecolor='white'
+      }
+
+    
+
+  //}
 
 
-   const div1 = document.querySelector('#div-1');
-   const div2 = document.querySelector('#div-2');
-   const div3 = document.querySelector('#div-3');
-   const div4 = document.querySelector('#div-4');
-   const div5 = document.querySelector('#div-5');
-   const linecolor='white'
-this.line1 = new LeaderLine(div1, div2,{color:linecolor,hide:true})
-this.line2 = new LeaderLine(div2, div3,{color:linecolor,hide:true})
-this.line3 = new LeaderLine(div3, div4,{color:linecolor,hide:true})
-this.line4 = new LeaderLine(div4, div5,{color:linecolor,hide:true})
-this.line1active = new LeaderLine(div1, div2,{color:linecolor,dash: {animation: true}})
-this.line2active = new LeaderLine(div2, div3,{color:linecolor,dash: {animation: true},hide:true})
-this.line3active = new LeaderLine(div3, div4,{color:linecolor,dash: {animation: true},hide:true})
-this.line4active = new LeaderLine(div4, div5,{color:linecolor,dash: {animation: true},hide:true})
+}
 
-
-
-
+ngAfterViewInit(){
+  try{
+  const div1 = document.querySelector('#div-1');
+      const div2 = document.querySelector('#div-2');
+      const div3 = document.querySelector('#div-3');
+      const div4 = document.querySelector('#div-4');
+      const div5 = document.querySelector('#div-5');
+      const linecolor = this.linecolor;
+      this.line1 = new LeaderLine(div1, div2, { color: linecolor, hide: true });
+      this.line2 = new LeaderLine(div2, div3, { color: linecolor, hide: true });
+      this.line3 = new LeaderLine(div3, div4, { color: linecolor, hide: true });
+      this.line4 = new LeaderLine(div4, div5, { color: linecolor, hide: true });
+      this.line1active = new LeaderLine(div1, div2, {
+        color: linecolor,
+        dash: { animation: true },
+      });
+      this.line2active = new LeaderLine(div2, div3, {
+        color: linecolor,
+        dash: { animation: true },
+        hide: true,
+      });
+      this.line3active = new LeaderLine(div3, div4, {
+        color: linecolor,
+        dash: { animation: true },
+        hide: true,
+      });
+      this.line4active = new LeaderLine(div4, div5, {
+        color: linecolor,
+        dash: { animation: true },
+        hide: true,
+      });
+    }catch{}
 }
 toggleLine(line:any){
   if(line==11){
@@ -261,4 +298,53 @@ moveback(){
    }
   }
 
+  isLoggedin=false;
+  emailid:any=''
+  password:any=''
+
+  logInInToSystem(){
+  
+    var regex=/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+   
+ 
+    if(this.emailid!='' &&
+     this.emailid!=undefined 
+      && regex.test(this.emailid)
+      && this.password!='' &&
+       this.password!=undefined
+    )
+    {
+      this.LoginServiceService.login(this.emailid,this.password).subscribe(
+        (res)=>{
+          
+          var x=res.split('Token: ');
+          
+          this.isLoggedin=true;
+      this.cookieService.set('LOGIN','TRUE')
+      this.cookieService.set('TOKEN',x[1]);
+      location.reload();
+        },
+        (err)=>{
+          console.log(err);
+          this.messageService.add({ severity: 'error', 
+          summary: 'something went wrong  ',
+        detail:'check your credientials' })
+        
+        }
+      )
+      
+    }else{
+      this.messageService.add({ severity: 'error', 
+      summary: 'something went wrong  ',
+    detail:'check your credientials' })
+    }
+  }
+
+  logout(){
+    this.isLoggedin=false;
+    this.cookieService.set('LOGIN','FALSE')
+    location.reload();
+
+  }
 }
+

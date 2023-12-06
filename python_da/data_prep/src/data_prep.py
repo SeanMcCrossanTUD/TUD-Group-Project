@@ -22,7 +22,7 @@ class DataPrep:
         return self.dataframe
 
     # Function 1.
-    def fill_missing_values(self, column_name, method='mode', specific_value=None):
+    def fill_missing_values(self, column_name, method='Mode', specific_value=None):
         """
         Fills missing values in a specified column using various methods.
 
@@ -70,33 +70,34 @@ class DataPrep:
         return self.dataframe
     
     # Function 2.
-    def remove_outliers(self, sd: float = 3.0) -> None:
+    def remove_outliers(self, column_name: str, sd: float = 3.0) -> None:
         """
-        Removes or modifies the outliers in the dataframe based on the specified standard deviation.
+        Removes or modifies the outliers in a specified column of the dataframe based on the given standard deviation.
 
         Args:
-        sd (float): The number of standard deviations to use for defining an outlier. 
-                    Defaults to 3.0.
-
+        column_name (str): The name of the column to remove outliers from.
+        sd (float): The number of standard deviations to use for defining an outlier. Defaults to 3.0.
         """
 
         if self.dataframe is None:
             raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
 
-        # Iterate over each numeric column in the dataframe
-        for col in self.dataframe.select_dtypes(include=[np.number]).columns:
-            # Exclude null values from the column
-            col_values = self.dataframe[col].dropna()
-            
-            # Calculate the mean and standard deviation for the column
-            mean, std = col_values.mean(), col_values.std()
-            
-            # Define the upper and lower bounds for outliers
-            lower_bound = mean - sd * std
-            upper_bound = mean + sd * std
+        # Ensure the column exists and is numeric
+        if column_name not in self.dataframe.columns or not pd.api.types.is_numeric_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not found or is not numeric in the dataframe.')
 
-            # Replace the outliers in the dataframe with NaN
-            self.dataframe.loc[(self.dataframe[col] < lower_bound) | (self.dataframe[col] > upper_bound), col] = np.nan
+        # Exclude null values from the column
+        col_values = self.dataframe[column_name].dropna()
+
+        # Calculate the mean and standard deviation for the column
+        mean, std = col_values.mean(), col_values.std()
+
+        # Define the upper and lower bounds for outliers
+        lower_bound = mean - sd * std
+        upper_bound = mean + sd * std
+
+        # Replace the outliers in the dataframe with NaN
+        self.dataframe.loc[(self.dataframe[column_name] < lower_bound) | (self.dataframe[column_name] > upper_bound), column_name] = np.nan
 
 
     # Function 3.
@@ -288,18 +289,18 @@ class DataPrep:
 
         return self.dataframe
     
-     #Function 9
-    def bin_numeric_to_categorical(self, column_name, bins, labels=None):
+    # Function 9
+    def bin_numeric_to_categorical(self, column_name, bins):
         """
         Converts a numeric column into categorical by binning values into specified ranges.
+        It creates a new column with the original column name followed by 'binned'.
 
         Args:
         column_name (str): The name of the numeric column to convert.
         bins (list): The edges defining the bins. Should be a list of numbers.
-        labels (list, optional): A list of labels for the bins. Length should be one less than the bins.
 
         Raises:
-        ValueError: If the bins or labels are not correctly specified.
+        ValueError: If the bins are not correctly specified.
         """
 
         # Check if a dataframe is loaded
@@ -314,9 +315,24 @@ class DataPrep:
         if not pd.api.types.is_numeric_dtype(self.dataframe[column_name]):
             raise ValueError(f'Column {column_name} is not a numeric column.')
 
+            # Ensure bins is a list of numbers
+        if not isinstance(bins, list) or not all(isinstance(x, (int, float)) for x in bins):
+            raise ValueError("Bins should be a list of numbers.")
+
+        # Sort the bins and ensure they are unique
+        bins = sorted(set(bins))
+
+        # Check if bins are correctly specified
+        if len(bins) < 2:
+            raise ValueError("At least two bin edges are required.")
+
+        # Generate labels for the bins
+        labels = [f'{bins[i]}-{bins[i+1]}' for i in range(len(bins)-1)]
+
         # Perform the binning
         try:
-            self.dataframe[column_name] = pd.cut(self.dataframe[column_name], bins, labels=labels)
+            binned_column_name = f'{column_name}_binned'
+            self.dataframe[binned_column_name] = pd.cut(self.dataframe[column_name], bins, labels=labels, include_lowest=True)
         except Exception as e:
             raise Exception(f'An error occurred while binning the column: {e}')
 
@@ -538,12 +554,11 @@ class DataPrep:
     def remove_stopwords(self, column_name, language='english'):
         """
         Removes stop words from a text column in the DataFrame for natural language processing.
-
         Args:
         column_name (str): The name of the text column to remove stop words from.
         language (str): Language of the stop words. Default is 'english'.
         """
-
+        
         # Check if a dataframe is loaded
         if self.dataframe is None:
             raise ValueError('Dataframe is not loaded. Provide a file_path to load dataframe.')
@@ -561,6 +576,10 @@ class DataPrep:
 
         # Function to remove stop words from a sentence
         def remove_stopwords_from_sentence(sentence):
+            # Check if the sentence is a string
+            if not isinstance(sentence, str):
+                return sentence
+            
             word_tokens = word_tokenize(sentence)
             filtered_sentence = [w for w in word_tokens if not w.lower() in stop_words]
             return ' '.join(filtered_sentence)
@@ -591,6 +610,10 @@ class DataPrep:
         # Check if the specified column exists
         if column_name not in self.dataframe.columns:
             raise ValueError(f'Column name {column_name} not found in dataframe')
+        
+        if not pd.api.types.is_categorical_dtype(self.dataframe[column_name]) and not pd.api.types.is_object_dtype(self.dataframe[column_name]):
+            raise ValueError(f'Column {column_name} is not a categorical or object type column.')
+
 
         # Calculate the frequency distribution of the categories
         frequency = self.dataframe[column_name].value_counts(normalize=True) * 100

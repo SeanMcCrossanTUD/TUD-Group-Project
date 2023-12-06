@@ -14,6 +14,7 @@ interface MissingValueData {
   styleUrls: ['./missing-values-chart.component.css']
 })
 export class MissingValuesChartComponent implements OnInit {
+  dataAvailable = false; // Property to track if data is available
 
   constructor(private D3DashboardService: D3DashboardService,
               private CookieService: CookieService) {}
@@ -21,9 +22,15 @@ export class MissingValuesChartComponent implements OnInit {
   ngOnInit() {
     const primarycolor = this.CookieService.get('chartprimarycolor');
     this.D3DashboardService.getData().subscribe((data: any) => {
+      if (!data || Object.keys(data.missing_values).length === 0) {
+        this.dataAvailable = false;
+        return;
+      }
+      
+      this.dataAvailable = true;
       const totalRecords = data.number_of_records;
       const maxBars = 15;
-
+      
       const margin = {top: 10, right: 30, bottom: 100, left: 50};
       const width = 460 - margin.left - margin.right;
       const height = 400 - margin.top - margin.bottom;

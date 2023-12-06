@@ -40,6 +40,9 @@ public class UserLoginService {
         // Generate JWT token
         String token = generateJwtToken(email);
 
+        // Store the token in the 'tokens' column of the 'users' table
+        storeTokenInDatabase(email, token);
+
         // You can customize the response based on your needs
         return ResponseEntity.status(HttpStatus.OK).body("Login successful. Token: " + token);
     }
@@ -61,8 +64,14 @@ public class UserLoginService {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 30000)) // 30 sec expiration
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*120)) // 2hr expiration
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+    }
+
+    private void storeTokenInDatabase(String email, String token) {
+        // Update the 'tokens' column with the generated token for the given email
+        String sql = "UPDATE users SET tokens = ? WHERE email = ?";
+        jdbcTemplate.update(sql, token, email);
     }
 }

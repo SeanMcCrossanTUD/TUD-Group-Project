@@ -1,16 +1,73 @@
+<div class="dp-login" *ngIf="!isLoggedin">
+  
+<div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+  <div class="text-center mb-5">
+      <img src="assets/images/logo.png" alt="Image" height="100" class="mb-3">
+      <div class="text-900 text-3xl font-medium mb-3">Sign In</div>
+      <span class="text-600 font-medium line-height-3">Don't have an account?</span>
+      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
+  </div>
+
+  <div>
+    
 
 
-<div id="home-container">
+      <label for="email1" class="block text-900 font-medium mb-2">Email</label>
+      <input id="email1" type="email" 
+      placeholder="Email address" 
+      pInputText 
+      class="w-full mb-3"
+      required
+        [(ngModel)]="emailid"
+      >
+
+      <label for="password1" class="block text-900 font-medium mb-2">Password</label>
+      <input id="password1" type="password" placeholder="Password" 
+      required
+      pInputText class="w-full mb-3"
+      [(ngModel)]="password">
+
+      <div class="flex align-items-center justify-content-between mb-6">
+          <!-- <div class="flex align-items-center">
+              <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
+              <label for="rememberme1" class="text-900">Remember me</label>
+          </div> -->
+          <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
+      </div>
+
+      <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full"
+      (click)="logInInToSystem()"
+      ></button>
+
+
+  </div>
+</div>
+</div>
+
+<div *ngIf="isLoggedin">
+  
+  <div class="nav-bar">
+    <div 
+    
+    id="div-1"><span class="number-menu">
+      1
+    </span> Import</div>
+    <div  id="div-2"><span class="number-menu">2</span>Preview</div>
+    <div  id="div-3">
+      <span class="number-menu">3</span>
+       Profile
+    </div>
+    <div  id="div-4">
+      <span class="number-menu">4</span>
+      Cleaning</div>
+    <div  id="div-5">
+      <span class="number-menu">5</span> Export</div>
+  </div>
+</div>
+<div id="home-container" *ngIf="isLoggedin">
  <div class="content-container">
 
-  <div class="nav-bar">
-    <div (click)="navigate('1')"
-    class="highlight" id="div-1">1 - Import</div>
-    <div  id="div-2">2 - Preview</div>
-    <div class="highlight" id="div-3">3 - Profile</div>
-    <div class="highlight" id="div-4">4 - Cleaning</div>
-    <div class="highlight" id="div-5">5 - Export</div>
-  </div>
+  
   <div class="contents">
 <router-outlet/>
   </div>
@@ -46,12 +103,12 @@
 
 
 <div id="mobile" hidden>Please use computer to access the webpage</div>
-<div id="folating-button-container">
+<div id="folating-button-container" title="Accessibility Bar">
   <div (click)="showsidebar()">   <span class="material-icons">accessibility</span> </div>
   
 </div>
 
-<p-sidebar [(visible)]="sidebarVisible" position="right">
+<p-sidebar [(visible)]="sidebarVisible" position="right" >
   <h2>Accessibility Bar</h2>
   <div>
     <div class="Accessibility-buttons" (click)="changeBG('DEFAULT')">Default</div>
@@ -86,7 +143,7 @@
   </div>
 
 </p-sidebar>
-<div class="menu-buttons">
+<div class="menu-buttons" *ngIf="isLoggedin">
   <div class="menu-wrap">
     <input type="checkbox" class="toggler">
     <div class="hamburger"><div></div></div>
@@ -100,7 +157,7 @@
           <ul>
             <li><a href="#">Tasks</a></li>
             <li><a href="#">New Task </a></li>
-            <li><a href="#">Log Out</a></li>
+            <li (click)="logout()"><a>Log Out</a></li>
             <!-- <li><a href="#">Contact</a></li> -->
           </ul>
         </div>
@@ -108,4 +165,29 @@
     </div>
   </div>
   
+</div>
+
+<div style="
+position: absolute;
+  top: 0;
+  left: 0;
+">
+  <div>
+    <div class="logo"
+    
+    style="background-color: rgb(250, 243, 243);
+    color: black;
+    padding-right: 10px;
+    ">
+      <div style="border-radius: 20px; ">
+        <img src="assets/images/logo.png" width="60px">
+      </div>
+      <div style="font-size: x-large;
+      font-family: logo
+      ;
+      ">
+        DataPolish
+      </div>
+      
+    </div>
 </div>

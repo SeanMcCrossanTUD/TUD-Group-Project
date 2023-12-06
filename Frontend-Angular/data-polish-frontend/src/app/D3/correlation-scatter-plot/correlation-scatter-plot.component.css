@@ -28,3 +28,11 @@ h2 {
     text-align: left; 
     margin-bottom: 20px;
 }
+
+.no-data-message {
+    font-size: 24px; 
+    text-align: center;
+    color: #666; 
+    margin-top: 20px;
+  }
+  

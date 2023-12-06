@@ -46,7 +46,8 @@ export class HistogramComponent implements OnInit {
       return;
     }
 
-    // Filter data for the selected field and ensure values are defined
+
+    
     this.data = this.rawData[this.selectedField]
                   .filter((d: any) => d.value !== undefined)
                   .map((d: any) => ({ value: d.value }));

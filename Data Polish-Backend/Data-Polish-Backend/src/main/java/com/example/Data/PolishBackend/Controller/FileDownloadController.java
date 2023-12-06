@@ -3,16 +3,19 @@ package com.example.Data.PolishBackend.Controller;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.Data.PolishBackend.Service.FileDownloadService; // Import the FileUploadService
 
+import java.io.File;
 import java.util.Date;
 
 
 @RestController
-@CrossOrigin(origins = {"http://16.170.150.247:9000", "http://localhost:4200"})
+//@CrossOrigin(origins = {"http://16.170.150.247:9000", "http://localhost:4200"})
 public class FileDownloadController {
     @Autowired
     private FileDownloadService fileDownloadService;
@@ -20,18 +23,22 @@ public class FileDownloadController {
     // secure secret key 256 bits
     private final String secretKey = "WaaZ5eNs94mGk+joiqJf6Laj1s0oOrAyoy/saZJAaom801Rpqy88IaDZGhkhd65e";
 
-    @GetMapping("/download-csv")
+    @GetMapping("/download-file")
     /*public ResponseEntity<String> downloadFile(@RequestParam String jobID) {
         // Call the service to get the file details as a JSON string
         return fileDownloadService.getFileDetails(jobID);
     } */
-    public ResponseEntity<String> downloadFile(@RequestParam String jobID, @RequestHeader("Authorization") String token) {
-
+    public ResponseEntity<Resource> downloadFile(
+            @RequestParam String jobID,
+            @RequestParam String fileType,
+            @RequestHeader("Authorization") String token)
+    {
         // Validate the JWT token
         if (isValidJwtToken(token)) {
-            return fileDownloadService.getFileDetails(jobID);
+            return fileDownloadService.downloadFile(jobID,fileType);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body((Resource) new File("Unauthorized access"));
+            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access".getBytes());
         }
     }
 

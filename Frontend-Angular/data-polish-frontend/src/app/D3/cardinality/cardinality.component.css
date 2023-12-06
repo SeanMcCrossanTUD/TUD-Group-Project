@@ -14,3 +14,10 @@
   border-radius: 5px;
   pointer-events: none;
 }
+
+.no-data-message {
+  font-size: 24px; 
+  text-align: center;
+  color: #666; 
+  margin-top: 20px;
+}

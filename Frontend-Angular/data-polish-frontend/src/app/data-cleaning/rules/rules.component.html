@@ -1,14 +1,48 @@
 <div class="remove-all-button">
   <div (click)="addAllFields()">
-    <span class="material-icons">add_circle</span> Keep All Columns
+    <span class="material-icons">add_circle</span> 
+    <!-- <i class="bi bi-plus-square"></i> -->
+    Keep All Columns
   </div>  &nbsp;
   <div (click)="removeAllFields()">
-    <span class="material-icons">cancel</span> Remove All Columns
+    <span class="material-icons">cancel</span> 
+    <!-- <i class="bi bi-x-circle"></i> -->
+    Remove All Columns
   </div>
   &nbsp;
-  <div (click)="setdata()">
-    <span class="material-icons">save</span> save cleaning rules </div>
+  <div (click)="resetRules()">
+    <span class="material-icons">restart_alt</span> Reset Rules </div>
+    &nbsp;
+    <div (click)="dataSetActions()" >
+      <i class="bi bi-magic"></i> Dataset Actions </div>
+      &nbsp;
+      <div (click)="setdata()">
+        <span class="material-icons">save</span> 
+        <!-- <i class="bi bi-floppy2"></i> -->
+        save Cleaning rules </div>
+        &nbsp;
+
+        <div (click)="setdata()">
+          <span class="material-icons">
+            download
+            </span>
+
+          Download Cleaning Rules </div>
+
+
+          &nbsp;
+          <div (click)="setdata()">
+            <span class="material-icons">
+              upload
+              </span>
+
+           Import Cleaning Rules </div>
+
+
+
+
 </div>
+
 <ag-grid-angular
     style="width: 80vw;height: 70vh;"
     class="ag-theme-alpine"
@@ -35,7 +69,7 @@
     <div >
       <div>
         <p-tabView>
-            <p-tabPanel header="1">
+            <p-tabPanel header="General">
               <div class="pop-up-continer">
                 <div>
                   <div>
@@ -141,7 +175,7 @@
               </div>
               
             </p-tabPanel>
-            <p-tabPanel header="2">
+            <p-tabPanel header="Text">
               <div class="pop-up-continer">
                 <div>
                   <div>
@@ -196,7 +230,7 @@
             
                 <div>
                   <div>
-                    Rename Column Name
+                    Rename Column
                      <sup>
                        <span class="material-icons">
                          help
@@ -216,7 +250,7 @@
           
                 <div>
                   <div>
-                    Text Case Adjustment
+                    Adjust Text Case 
                           <sup>
                             <span class="material-icons">
                               help
@@ -269,7 +303,7 @@
               </div>
               
             </p-tabPanel>
-            <p-tabPanel header="3">
+            <p-tabPanel header="Numerical">
                <div class="pop-up-continer">
                 <div>
                   <div>
@@ -307,7 +341,159 @@
                   pInputText 
                   [(ngModel)]="Selected_Replace_Substring_to" />
                 </div>
-               </div>
+
+                <div>
+                  <div>
+                    Column Type Conversion
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Column_Type_Conversion" inputId="binary" [binary]="true"></p-checkbox>
+                    <p-dropdown [hidden]="!cb_Column_Type_Conversion" 
+                      [options]="options_Column_Type_Conversion" 
+                      [(ngModel)]="select_Column_Type_Conversion"
+                      optionLabel="types" [showClear]="true" 
+                      placeholder="Select option">
+                    </p-dropdown>
+                  </div>
+                </div>
+
+
+
+                <div>
+                  <div>
+                    Collapse Rare Categories
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Combine_Rare_Categories" inputId="binary" [binary]="true"></p-checkbox>
+                    <div style="display: flex;
+                    flex-direction: column;"
+                    *ngIf="cb_Combine_Rare_Categories"
+                    >
+                      <input type="text" pInputText 
+                      [(ngModel)]="selected_Combine_Rare_Categories"
+                  
+                       class="w-full"/>
+                      <p-slider [(ngModel)]="selected_Combine_Rare_Categories" 
+                      class="w-full"></p-slider>
+                  </div>
+                  </div>
+                </div>
+
+
+                <div>
+                  <div>
+                    Text Tokenisation
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Text_Tokenisation" inputId="binary" [binary]="true"></p-checkbox>
+                    
+                  </div>
+                </div>
+
+                
+               
+
+                <div>
+                  <div>
+                    Regular Expression Operations
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                        <div>
+                          <p-checkbox [(ngModel)]="cb_Regular_Expression_Operations" inputId="binary" [binary]="true"></p-checkbox>
+                          <p-dropdown *ngIf="cb_Regular_Expression_Operations" 
+                            [options]="options_Regular_Expression_Operations" 
+                            [(ngModel)]="select_Regular_Expression_Operations"
+                            optionLabel="types" [showClear]="true" 
+                            (onChange)="reg()"
+                            placeholder="Select option">
+                          </p-dropdown>
+                        </div>
+
+                </div>
+                <div>
+                  <input *ngIf="cb_Regular_Expression_Operations"
+                  type="text" pInputText 
+                  [(ngModel)]="select_Regular_Expression_Operations_from" 
+                  class="w-full"/>
+
+                  <input *ngIf="enableReplaceString"
+                  type="text" pInputText 
+                  [(ngModel)]="select_Regular_Expression_Operations_to" 
+                  class="w-full"/>
+              
+                </div>
+               
+
+                      </div>
+            </p-tabPanel>
+            <p-tabPanel header="Datetime">
+              <div class="pop-up-continer">
+
+                <div>
+                  <div>
+                    Standard Datetime format
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Standard_Datetime_format" inputId="binary" [binary]="true"></p-checkbox>
+                     <p-dropdown *ngIf="cb_Standard_Datetime_format"
+                      [options]="Standard_Datetime_format_options" 
+                      [(ngModel)]="selected_Standard_Datetime_format"
+                      optionLabel="types" [showClear]="true" 
+                      placeholder="Select option">
+                    </p-dropdown>
+                  </div>
+                  <div >
+                       
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    Extract Datetime Components
+                          <sup>
+                            <span class="material-icons">
+                              help
+                            </span>
+                          </sup>
+                        </div>
+                  <div>
+                    <p-checkbox [(ngModel)]="cb_Extract_Datetime_Components" inputId="binary" [binary]="true"></p-checkbox>
+                    <p-multiSelect *ngIf="cb_Extract_Datetime_Components"
+                    [options]="Extract_Datetime_Components_options" 
+                    [(ngModel)]="Extract_Datetime_Components_selected" 
+                    display="chip"                    
+                    optionLabel="name"></p-multiSelect>
+           
+                  </div>
+                  <div >
+                       
+                  </div>
+                </div>
+                </div>
             </p-tabPanel>
         </p-tabView>
       </div>

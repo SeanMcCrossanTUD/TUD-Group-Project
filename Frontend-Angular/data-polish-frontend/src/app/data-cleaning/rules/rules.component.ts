@@ -8,7 +8,7 @@ import 'ag-grid-enterprise';
 import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { AppSettings, constants } from 'src/app/Const/config';
-
+import { DataCleaningService } from 'src/app/Services/Datacleaning/data-cleaning.service';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -25,7 +25,8 @@ export class RulesComponent {
     private messageService: MessageService,
     private http: HttpClient,
     private CookieService:CookieService,
-    private MessageService:MessageService
+    private MessageService:MessageService,
+    private DataCleaningService:DataCleaningService
     ){
 
   }
@@ -47,7 +48,7 @@ export class RulesComponent {
   }
     ,
     {
-      field:"Advanced cleaning options",
+      field:"cleaning options",
       width:300,
       cellClass: 'your-custom-class', 
       cellRenderer: AdvanceOptionsButtonComponent,
@@ -65,7 +66,7 @@ export class RulesComponent {
 
   DatapreviewData=[{"Field Names":123,"Data Type":"boolean",
   "Keep column":true,
-  "Advanced cleaning options":"abc"
+  "cleaning options":"abc"
 
 },{'naveen':'abc'}];
 
@@ -102,7 +103,7 @@ export class RulesComponent {
         {
           "Field Names":item,
           "Keep column":true,
-          "Advanced cleaning options":item
+          "cleaning options":item
         }
       )
     })
@@ -127,7 +128,23 @@ export class RulesComponent {
     "columns_kept":[],
     "trim_whitespace":[],
     "remove_special_characters":[],
-    "normalize_data":[]
+    "normalize_data":[],
+    "outlier_management":[],
+    "missing_value_imputation":[],
+    "remove_stopwords":[],
+    "label_encoding":[],
+    "numerical_column_binning":[],
+    "rename_column_name":[],
+    "textcase_adjustment":[],
+    "replace_substring":[],
+
+    "column_type_conversion":[],
+    "text_tokenisation":[],
+    "collapse_rare_categories":[],
+    "standard_datetime_format":[],
+    "regular_expresion_operations":[],
+    "extract_datetime_components":[]
+
    }
 
    setdata(){
@@ -140,7 +157,16 @@ export class RulesComponent {
 
       this.rules.columns_kept=temp;
       console.log(this.rules);
-      this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Your rules has been saved' })
+      var jobid=this.CookieService.get('jobsid');
+      this.DataCleaningService.saveData(this.rules,jobid).subscribe(
+        (res)=>{
+          this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Your rules has been saved' })
+        },
+        (err)=>{
+          alert(err);
+        }
+      )
+     
    }
 
    
@@ -158,10 +184,57 @@ export class RulesComponent {
    cb_Replace_Substring=false;
    cb_Label_Encoding=false;
 
+   cb_Column_Type_Conversion=false;
+   cb_Text_Tokenisation=false;
+   cb_Combine_Rare_Categories=false;
+   cb_Standard_Datetime_format=false;
+   cb_Regular_Expression_Operations=false;
+   cb_Extract_Datetime_Components=false;
+
    setallCBTOFalse(){
-    this.cb_remove_special_characters=false;
-    this.cb_trim_whitespace=false;
-    this.cb_normalization=false;
+    this.cb_remove_special_characters=false
+    this.cb_trim_whitespace=false
+    this.cb_normalization=false
+    this.cb_outlierManagement=false;
+    this.cb_MissingValueImputation=false;
+    this.cb_Numerical_Column_Binning=false;
+    this.cb_Rename_Column_Name=false;
+    this.cb_Text_Case_Adjustment=false;
+    this.cb_Remove_Stopwords=false;
+    this.cb_Replace_Substring=false;
+    this.cb_Label_Encoding=false;
+    this.cb_Column_Type_Conversion=false;
+    this.cb_Text_Tokenisation=false;
+    this.cb_Combine_Rare_Categories=false;
+    this.cb_Standard_Datetime_format=false;
+    this.cb_Regular_Expression_Operations=false;
+    this.cb_Extract_Datetime_Components=false
+    
+   }
+
+   resetRules(){
+    this.rules={
+      "columns_kept":[],
+      "trim_whitespace":[],
+      "remove_special_characters":[],
+      "normalize_data":[],
+      "outlier_management":[],
+      "missing_value_imputation":[],
+      "remove_stopwords":[],
+      "label_encoding":[],
+      "numerical_column_binning":[],
+      "rename_column_name":[],
+      "textcase_adjustment":[],
+      "replace_substring":[],
+  
+      "column_type_conversion":[],
+      "text_tokenisation":[],
+      "collapse_rare_categories":[],
+      "standard_datetime_format":[],
+      "regular_expresion_operations":[],
+      "extract_datetime_components":[]
+  
+     }
    }
    savechangestorules(){
   
@@ -174,18 +247,142 @@ export class RulesComponent {
    if(this.cb_normalization){
     this.setNormalization(this.currentrow);
    }
+   if(this.cb_outlierManagement){
+    this.setOutlierManagement(this.currentrow);
+   }
+   if(this.cb_MissingValueImputation){
+    this.setMissingValueImputation(this.currentrow);
+   }
+   if(this.cb_Numerical_Column_Binning){
+    this.setNumerical_Column_Binning(this.currentrow);
+   }
+   if(this.cb_Rename_Column_Name){
+    this.setRenameColumnName(this.currentrow)
+   }
+   if(this.cb_Remove_Stopwords){
+    this.setRemove_Stopwords(this.currentrow);
+   }
+   if(this.cb_Label_Encoding){
+    this.setLabelEncoding(this.currentrow);
+   }
+   if(this.cb_Text_Case_Adjustment){
+    this.setTextCase(this.currentrow);
+   }
+   if(this.cb_Replace_Substring){
+    this.setReplaceSubstring(this.currentrow);
+   }
+   if(this.cb_Column_Type_Conversion){
+    this.setColumn_Type_Conversion(this.currentrow);
+   }
+   if(this.cb_Combine_Rare_Categories){
+    this.setCombine_Rare_Categories(this.currentrow);
+   }
+   if(this.cb_Text_Tokenisation){
+    this.setText_Tokenisation(this.currentrow);
+   }
+   if(this.cb_Standard_Datetime_format){
+    this.setStandard_Datetime_format(this.currentrow);
+   }
+   if(this.cb_Regular_Expression_Operations){
+    this.setregex(this.currentrow);
+   }
+   if(this.cb_Extract_Datetime_Components){
+    this.set_Extract_Datetime_Components(this.currentrow);
+   }
    this.visible=false;
    this.currentrow='';
    this.setallCBTOFalse();
+   console.log(this.rules)
+   }
+/////////////////////////////////////////////
+
+set_Extract_Datetime_Components(x:any){
+  var json="{\""+x+"\":[";
+  var length=this.Extract_Datetime_Components_selected.length;
+  for(var i=0;i<length;i++){
+    json+="\""+this.Extract_Datetime_Components_selected[i].name+"\""
+    if(i+1!=length){
+      json+=","
+    }
+  }
+  json+="]}"
+ 
+  this.rules['extract_datetime_components'].push(JSON.parse(json));
+  
+}
+setregex(x:any){
+  var json:any;
+  if(this.select_Regular_Expression_Operations.types=='Replace'){
+    json={
+      'columnName':x,
+      'method':'Replace',
+      'pattern':this.select_Regular_Expression_Operations_from,
+      'replaceWith':this.select_Regular_Expression_Operations_to
+    }
+  }else{
+    json={
+      'columnName':x,
+      'method':'Extract',
+      'pattern':this.select_Regular_Expression_Operations_from
+    }
+  }
+  this.rules["regular_expresion_operations"].push(json);
+
+}
+setStandard_Datetime_format(x:any){
+  let temp="{\""+x+"\":\""+this.selected_Standard_Datetime_format.types+"\"}";
+  this.rules["standard_datetime_format"].push(JSON.parse(temp));
+  
+}
+setText_Tokenisation(x:any){
+  this.rules["text_tokenisation"].push(x);  
+}
+setCombine_Rare_Categories(x:any){
+  let temp="{\""+x+"\":\""+this.selected_Combine_Rare_Categories+"\"}";
+
+  this.rules["collapse_rare_categories"].push(JSON.parse(temp));
+
+}
+setColumn_Type_Conversion(x:any){
+  console.log(this.select_Column_Type_Conversion)
+  let temp="{\""+x+"\":\""+this.select_Column_Type_Conversion.types+"\"}";
+  this.rules["column_type_conversion"].push(JSON.parse(temp));
+  
+}
+setReplaceSubstring(x:any){
+  let t1="{\""+this.Selected_Replace_Substring_from+"\":\""+this.Selected_Replace_Substring_to+"\"}"
+  let temp="{\""+x+"\":"+t1+"}"
+  this.rules["replace_substring"].push(JSON.parse(temp));
+
+}
+setTextCase(x:any){
+ 
+  let temp="{\""+x+"\":\""+this.select_Text_Case_Adjustment.types+"\"}"
+  this.rules["textcase_adjustment"].push(JSON.parse(temp));
+
+}
+setRenameColumnName(x:any){
+  let temp="{\""+x+"\":\""+this.Selected_Rename_Column_Name+"\"}"
+  this.rules["rename_column_name"].push(JSON.parse(temp));
+ 
+}
+setNumerical_Column_Binning(x:any){
+ 
+  
+  let temp="{\""+x+"\":["+this.values+"]}"
+
+
+   this.rules["numerical_column_binning"].push(JSON.parse(temp));
+}
+   setRemove_Stopwords(x:any){
+    this.rules["remove_stopwords"].push(x);
    }
 
    setTrimWhiteSpaces(x:any){
-    this.rules["trim_whitespace"].push(x);
-    console.log(this.rules)
+    this.rules["trim_whitespace"].push(x);  
    }
    setRemoveSpecialCharacters(x:any){
     this.rules["remove_special_characters"].push(x);
-    console.log(this.rules)
    }
    setNormalization(x:any){
     var t1={
@@ -195,10 +392,37 @@ export class RulesComponent {
     t1.method=this.selectedNormalizationTypes
     let temp="{\""+x+"\":"+JSON.stringify(t1)+"}"
 
-    console.log(temp);
+
     this.rules["normalize_data"].push(JSON.parse(temp));
-    console.log(this.rules)
    }
+
+   setOutlierManagement(x:any){
+    var t1={
+      method:''
+    }
+    t1.method=this.selectedOutlier.types;
+    let temp="{\""+x+"\":"+JSON.stringify(t1)+"}";
+    this.rules["outlier_management"].push(JSON.parse(temp));
+   }
+   setMissingValueImputation(x:any){
+    var t1={
+      method:''
+    }
+    if(this.selectedmissingvalueimpitation.types=="Custom"){
+      t1.method=this.Selected_MissingValue_Custom;
+    }else{
+      t1.method=this.selectedmissingvalueimpitation.types;
+    }
+    let temp="{\""+x+"\":"+JSON.stringify(t1)+"}";
+    this.rules["missing_value_imputation"].push(JSON.parse(temp));
+
+   }
+
+   setLabelEncoding(x:any){
+    this.rules["label_encoding"].push(x);
+   }
+
+
 
 
    //////////// data type change
@@ -263,9 +487,9 @@ export class RulesComponent {
   ///textcase adjusment
   select_Text_Case_Adjustment:any;
   options_Text_Case_Adjustment:any=[
-    {types:'uppercase'},
-    {types:'lowercase'},
-    {types:'titlecase'}
+    {types:'Upper'},
+    {types:'Lower'},
+    {types:'Title'}
   ]
 
 
@@ -280,6 +504,63 @@ export class RulesComponent {
   // cb_Label_Encoding
 
 
+  // column type conversion
+  options_Column_Type_Conversion:any=[
+    {types:'Object'},
+    {types:'Text'},
+    {types:'Numerical'}
+  ]
+  select_Column_Type_Conversion:any
+
+
+  /// combine rare categories
+
+  selected_Combine_Rare_Categories:any=5;
+
+
+  /// cb_Text_Tokenisation
+
+
+  //selected_Standard_Datetime_format
+  selected_Standard_Datetime_format:any;
+
+  Standard_Datetime_format_options: any = [
+    { types: '%Y-%m-%d' },
+    { types: '%d-%m-%Y' },
+    { types: '%m-%d-%Y' },
+    {types:'%y-%m-%d'},
+    {types:'%d-%m-%y'},
+    {types:'%m-%d-%y'}
+  ];
+
+  // Regular_Expression_Operations
+  select_Regular_Expression_Operations:any;
+  options_Regular_Expression_Operations:any=[
+    {types:'Replace'},
+    {types:'Extract'}
+  ]
+  select_Regular_Expression_Operations_from:any;
+  select_Regular_Expression_Operations_to:any;
+  enableReplaceString=false;
+//////////cb_Extract_Datetime_Components
+  Extract_Datetime_Components_selected: any = [];
+  Extract_Datetime_Components_options = [
+    { name: 'year' },
+    { name: 'month' },
+    {name:'day'},
+    {name:'hour'},
+    {name:'minute'},
+    {name:'second'},
+    
+    
+  ];
+  reg(){
+    if(this.select_Regular_Expression_Operations.types=='Replace'){
+      this.enableReplaceString=true;
+    }else{
+      this.enableReplaceString=false;
+    }
+  }
   removeAllFields(){
     this.rowData.forEach((x:any)=>{
       x["Keep column"]=false;

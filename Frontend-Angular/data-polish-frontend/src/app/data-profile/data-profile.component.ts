@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AccessibilityServiceService } from '../Services/accessibility/accessibility-service.service';
 import { FileExportService } from '../Services/fileExport/file-export.service';
 import { fadeInAnimation } from '../Animations/animation';
+import { constants } from '../Const/config';
 @Component({
   selector: 'app-data-profile',
   templateUrl: './data-profile.component.html',
@@ -40,7 +41,9 @@ export class DataProfileComponent {
 constructor(
   private cookieService: CookieService,
   private accessibilityServiceService: AccessibilityServiceService,
-  private fileExportService:FileExportService
+  private fileExportService:FileExportService,
+  private constants:constants
+ 
   ){}
 
 jobid=''
@@ -63,6 +66,25 @@ checkStatusString=''
 foldername='';
 checkstatusbutton(){
 
+  
+}
+
+hide_more=true
+
+showMore(){
+  
+  this.hide_more=!this.hide_more
+}
+
+/// help text
+WHAT:any='HI';
+WHY:any;
+visibleHelpText=false;
+openHelpText(element:any){
+  console.log(this.constants.config)
+   this.WHAT=this.constants.config[element].WHAT;
+   this.WHY=this.constants.config[element].WHY;
+  this.visibleHelpText=true;
   
 }
 }

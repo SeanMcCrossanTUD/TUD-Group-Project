@@ -9,11 +9,11 @@ body {
 
   margin: 0;
   min-height: 100vh;
-  /* background: rgb(26,22,64);
-background: linear-gradient(84deg, rgba(26,22,64,1) 0%, rgba(65,72,212,1) 48%, rgba(11,10,46,1) 100%); */
-background: black;
+  background: rgb(24,21,60);
+  background: linear-gradient(172deg, rgba(24,21,60,1) 19%, rgba(20,176,159,1) 100%);
+/* background: black; */
 
-/* background: radial-gradient(circle, rgb(66, 56, 151) 0%, rgb(86, 94, 247) 20%, rgb(159, 156, 224) 100%);  */
+
 
 }
 /* Move this to Frontend-Angular/data-polish-frontend/src/app/D3/missing-values-chart/missing-values-chart.component.css but it is currently being overidden */
