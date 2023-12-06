@@ -140,7 +140,7 @@ export class RulesComponent {
 
     "column_type_conversion":[],
     "text_tokenisation":[],
-    "collapse_rare_categories":[],
+    "combine_rare_caregories":[],
     "standard_datetime_format":[],
     "regular_expresion_operations":[],
     "extract_datetime_components":[]
@@ -209,6 +209,29 @@ export class RulesComponent {
     this.cb_Standard_Datetime_format=false;
     this.cb_Regular_Expression_Operations=false;
     this.cb_Extract_Datetime_Components=false
+
+    this.rules={
+      "columns_kept":[],
+      "trim_whitespace":[],
+      "remove_special_characters":[],
+      "normalize_data":[],
+      "outlier_management":[],
+      "missing_value_imputation":[],
+      "remove_stopwords":[],
+      "label_encoding":[],
+      "numerical_column_binning":[],
+      "rename_column_name":[],
+      "textcase_adjustment":[],
+      "replace_substring":[],
+  
+      "column_type_conversion":[],
+      "text_tokenisation":[],
+      "combine_rare_caregories":[],
+      "standard_datetime_format":[],
+      "regular_expresion_operations":[],
+      "extract_datetime_components":[]
+  
+     }
    }
    savechangestorules(){
   
@@ -312,6 +335,7 @@ setText_Tokenisation(x:any){
 }
 setCombine_Rare_Categories(x:any){
   let temp="{\""+x+"\":\""+this.selected_Combine_Rare_Categories+"\"}";
+
   this.rules["combine_rare_caregories"].push(JSON.parse(temp));
   console.log(this.rules)
 }
