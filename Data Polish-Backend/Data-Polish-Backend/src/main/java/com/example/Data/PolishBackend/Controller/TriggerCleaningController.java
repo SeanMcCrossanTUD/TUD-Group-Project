@@ -16,6 +16,11 @@ public class TriggerCleaningController {
 
     @PostMapping("/trigger-cleaning")
     public ResponseEntity<String> triggerCleaning(@RequestParam String jobID, @RequestHeader("Authorization") String token) {
-        return triggerCleaningService.triggerCleaning(jobID);
+        // Validate the JWT token
+        if (isValidJwtToken(token)) {
+            return triggerCleaningService.triggerCleaning(jobID);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
+        }
     }
 }
