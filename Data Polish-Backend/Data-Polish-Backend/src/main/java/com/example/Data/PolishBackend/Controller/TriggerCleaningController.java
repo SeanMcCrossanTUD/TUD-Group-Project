@@ -9,5 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class TriggerCleaningController {
+
+    private TriggerCleaningService triggerCleaningService;
+
+    @PostMapping("/trigger-cleaning")
+    public ResponseEntity<String> triggerCleaning(@RequestParam String jobID) {
+        return triggerCleaningService.triggerCleaning(jobID);
+    }
 }
