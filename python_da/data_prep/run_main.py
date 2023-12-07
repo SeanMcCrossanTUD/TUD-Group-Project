@@ -90,7 +90,16 @@ def handle_renaming_and_dropping_columns(prep, json_config):
         prep.remove_columns(columns_to_remove)
         logger.info(f"Dropped columns: {', '.join(columns_to_remove)}")
 
-
+def apply_dataset_actions(prep, json_config):
+    # Check if dataset_actions key exists in the configuration
+    if 'dataset_actions' in json_config:
+        for action in json_config['dataset_actions']:
+            if action == "remove_duplicates":
+                prep.remove_duplicates()
+                logger.info("Removed duplicates from the dataset.")
+            
+            else:
+                logger.warning(f"Action '{action}' is not recognized and will be skipped.")
 
 def apply_transformations(prep, json_config):
 
@@ -185,6 +194,9 @@ def apply_configured_transformations(json_config, dataset):
 
         # Validate inputs
         validate_inputs(dataset, json_config)
+
+        # Apply dataset-level actions
+        apply_dataset_actions(prep, json_config)
 
         # Handle outlier management first
         handle_outlier_management(prep, json_config)
