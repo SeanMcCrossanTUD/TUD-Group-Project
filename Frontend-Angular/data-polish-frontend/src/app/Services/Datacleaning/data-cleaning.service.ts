@@ -22,10 +22,10 @@ export class DataCleaningService {
     return url;
   }
 
-  public uploadRules(x:any){
-    var URL=AppSettings.getBaseURL()+"rules-import";
+  public uploadRules(x:any,jobid:any){
+    var URL=AppSettings.getBaseURL()+"rules-import?jobID="+jobid;
     var formdata = new FormData();
-    formdata.append("file", x, x.name)
+    formdata.append("file", x)
     
     //var json=JSON.stringify(formdata)
       return this.HttpClient.post(URL,formdata);
