@@ -3,6 +3,9 @@ import { CookieService } from 'ngx-cookie-service';
 import { AccessibilityServiceService } from '../Services/accessibility/accessibility-service.service';
 import { FileExportService } from '../Services/fileExport/file-export.service';
 import { fadeInAnimation } from '../Animations/animation';
+import { HttpClient } from '@angular/common/http';
+import { AppSettings } from '../Const/config';
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-export',
   templateUrl: './export.component.html',
@@ -15,6 +18,7 @@ export class ExportComponent {
 constructor(
   private cookieService: CookieService,
   private accessibilityServiceService: AccessibilityServiceService,
+  private http: HttpClient 
 
   ){}
   ngOnInit() {
@@ -34,7 +38,25 @@ constructor(
   selectedExportOption= {types:'CSV'};
 
   export(){
-    alert(this.selectedExportOption.types)
+    
+    var jobID=this.cookieService.get('jobsid');
+  
+    const fileType = this.selectedExportOption.types === 'Excel' ? '.xlsx' : '.csv';
+
+    this.http.get(AppSettings.getBaseURL()+'download-file?jobID='+jobID+"&fileType="+fileType,
+    {responseType:'blob'}).subscribe(
+      (res)=>{
+          
+          const fileName = 'Export' + fileType; 
+          saveAs(res, fileName);
+        console.log(res);
+      },
+      (error)=>{
+        console.log(error);
+      }
+    )
+
+
   }
 
 }
