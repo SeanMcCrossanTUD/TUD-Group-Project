@@ -633,14 +633,16 @@ setNumerical_Column_Binning(x:any){
   UploadFile(e:any){
  
     this.dropdown.progress=30;
+    var jobID=this.CookieService.get('jobsid');
     for(let file of e.files) {
      
       this.dropdown.progress=50;    
-  
-      this.DataCleaningService.uploadRules(file).subscribe((respose:any)=>{     
+      
+      this.DataCleaningService.uploadRules(file,jobID).subscribe((respose:any)=>{     
 
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Your File has been uploaded' });
-          this.dropdown.clear();        
+          this.dropdown.clear();    
+          this.visibleImportRules=false;    
           
               
       },(err)=>{
