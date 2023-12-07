@@ -43,4 +43,16 @@ public class TriggerCleaningService {
         String dataprofileoutput;
         String cleaningrules;
     }
+    public ResponseEntity<String> triggerCleaning(String jobID) {
+        try {
+            DataResult dataResult = new DataResult();
+
+
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+    }
+
+
 }
