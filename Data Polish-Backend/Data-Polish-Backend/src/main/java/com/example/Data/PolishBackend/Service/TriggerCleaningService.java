@@ -72,7 +72,7 @@ public class TriggerCleaningService {
     }
 
     //method to publish message to Azure Service Bus
-    private void publishMessageToQueue(String jobID, String rawurl, String dataprofileoutput, String jsonFilename) {
+    private void publishMessageToQueue(String jobID, String rawurl, String dataprofileoutput, String cleaningrules) {
         try {
             // Connect to Azure Service Bus
             ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
@@ -82,8 +82,12 @@ public class TriggerCleaningService {
                     .buildClient();
 
             // Construct the JSON message to send
-            String jsonData = "{\"jobID\":\"" + jobID + "\", \"rawurl\":\"" + rawurl + "\", \"dataprofileoutput\":\"" + dataprofileoutput + "\", \"jsonFilename\":\"" + jsonFilename + "\"}";
+            String jsonData = "{\"jobID\":\"" + jobID + "\"," +
+                    " \"rawurl\":\"" + rawurl + "\", " +
+                    "\"dataprofileoutput\":\"" + dataprofileoutput + "\", " +
+                    "\"cleaningrules\":\"" + cleaningrules + "\"}";
 
+          
 
         } catch (Exception e) {
             // Handle exceptions related to Azure Service Bus
