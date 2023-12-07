@@ -87,7 +87,9 @@ public class TriggerCleaningService {
                     "\"dataprofileoutput\":\"" + dataprofileoutput + "\", " +
                     "\"cleaningrules\":\"" + cleaningrules + "\"}";
 
-          
+            // Convert the JSON to BinaryData
+            BinaryData messageData = BinaryData.fromString(jsonData);
+
 
         } catch (Exception e) {
             // Handle exceptions related to Azure Service Bus
