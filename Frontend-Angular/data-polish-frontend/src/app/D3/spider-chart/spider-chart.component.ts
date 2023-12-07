@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { HttpClient } from '@angular/common/http';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 interface SpiderData {
   axis: string;
   value: number;
@@ -14,14 +14,15 @@ interface SpiderData {
 })
 export class SpiderChartComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private D3DashboardService:D3DashboardService) { }
 
   ngOnInit(): void {
     this.fetchData();
   }
 
   private fetchData(): void {
-    this.http.get<any>('assets/data_quality_score.json').subscribe(data => {
+    this.D3DashboardService.getQualityMertic().subscribe(data => {
       if (data) {
         const spiderData: SpiderData[] = [
           { axis: "Completeness", value: parseFloat((data.completeness_score * 100).toFixed(2)) },

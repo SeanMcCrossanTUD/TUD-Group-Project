@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { HttpClient } from '@angular/common/http';
 import { Arc, DefaultArcObject } from 'd3';
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 
 @Component({
   selector: 'app-completeness-metric',
@@ -11,14 +12,15 @@ import { Arc, DefaultArcObject } from 'd3';
 export class CompletenessMetricComponent implements OnInit {
   dataAvailable: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+    private D3DashboardService:D3DashboardService) {}
 
   ngOnInit() {
     this.fetchData();
   }
 
   private fetchData(): void {
-    this.http.get<any>('assets/data_quality_score.json').subscribe(data => {
+    this.D3DashboardService.getQualityMertic().subscribe(data => {
       if (data && data.completeness_score !== undefined) {
         const roundedCompleteness = parseFloat(data.completeness_score.toFixed(2));
         this.createChart(roundedCompleteness * 100); // Convert to percentage
@@ -31,7 +33,7 @@ export class CompletenessMetricComponent implements OnInit {
     const dataset = completeness / 100; 
     const width = 150;
     const height = 150;
-    const thickness = 20;
+    const thickness = 15;
 
     const getColor = (value: number) => {
       return value > 80 ? 'green' : value > 60 ? 'orange' : 'red';

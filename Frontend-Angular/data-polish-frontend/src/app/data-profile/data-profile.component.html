@@ -76,10 +76,9 @@
         </div>
         
     </div>
-    <div style="display: grid; 
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    transition: all 4ms ease-in-out;
-    "  *ngIf="!hide_more">
+    <div 
+    class="row1"
+    *ngIf="!hide_more">
         <div class="stat">
             <app-completeness-metric/>
         </div>
