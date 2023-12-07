@@ -33,4 +33,13 @@ public class TriggerCleaningService {
     private String serviceBusConnectionString;
     @Value("${azure.servicebus.queue-name-q2}")
     private String queueName;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    //method for creating rawurl+dataprofileoutput for the given jobID
+    private static class DataResult {
+        String rawurl;
+        String dataprofileoutput;
+    }
 }
