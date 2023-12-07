@@ -21,4 +21,13 @@ export class DataCleaningService {
     var url=AppSettings.getBlobURL()+containerName+blobName;
     return url;
   }
+
+  public uploadRules(x:any){
+    var URL=AppSettings.getBaseURL()+"rules-import";
+    var formdata = new FormData();
+    formdata.append("file", x, x.name)
+    
+    //var json=JSON.stringify(formdata)
+      return this.HttpClient.post(URL,formdata);
+  }
 }
