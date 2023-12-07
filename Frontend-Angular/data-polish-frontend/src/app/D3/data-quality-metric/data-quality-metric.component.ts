@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { Arc, DefaultArcObject } from 'd3';
 import { HttpClient } from '@angular/common/http';
-
 @Component({
   selector: 'app-data-quality-metric',
   template: '<div id="dq-metric"></div>',
@@ -11,10 +10,14 @@ import { HttpClient } from '@angular/common/http';
 export class DataQualityMetricComponent implements OnInit {
 
   dataAvailable = false;
+  constructor(private D3DashboardService:D3DashboardService){
+    
+  }
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
+
     this.fetchData();
   }
 
