@@ -103,3 +103,22 @@ p-tabView{
         border: 1px solid black;
     }
    
+.fileupload-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+    border: 2px black solid;
+    padding: 50px;
+}
+
+.fileupload-containe p-fileUpload{
+    max-width: 50%;
+}
+
+#fileupload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

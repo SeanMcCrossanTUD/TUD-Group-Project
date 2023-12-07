@@ -19,10 +19,10 @@
       <div (click)="setdata()">
         <span class="material-icons">save</span> 
         <!-- <i class="bi bi-floppy2"></i> -->
-        save Cleaning rules </div>
+        Save Cleaning Rules </div>
         &nbsp;
 
-        <div (click)="setdata()">
+        <div (click)="downloadRules()">
           <span class="material-icons">
             download
             </span>
@@ -31,7 +31,7 @@
 
 
           &nbsp;
-          <div (click)="setdata()">
+          <div (click)="importRules()">
             <span class="material-icons">
               upload
               </span>
@@ -560,5 +560,37 @@
     <div class="save-button">
       <div (click)="saveDatasetCleaning()">Save</div>
     </div>
+
+  </p-dialog>
+
+  <p-dialog header="Import Cleaning Rules" 
+[(visible)]="visibleImportRules" 
+[breakpoints]="{ '960px': '75vw' }" 
+[style]="{ width: '60vw',height:'70vh' }"
+ [draggable]="true"
+  [resizable]="true">
+  <div class="fileupload-container">
+
+    <p-fileUpload  #fileupload [customUpload]="true" (uploadHandler)="UploadFile($event)" (onUpload)="onUploadFile($event)" >
+      <ng-template pTemplate="content">
+          <div id=fileupload>
+               <img src="assets/images/draganddrop-icon.png" width="100px"> 
+               <label>Drag & Drop file here</label>   
+               <br/>
+               <cite>Supported file types json </cite> 
+               
+          </div>
+          <ul *ngIf="uploadedFiles.length">
+              <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+          </ul>
+      </ng-template>
+  </p-fileUpload>
+
+
+    </div>
+    <!-- <br/>
+    <div class="save-button">
+      <div (click)="saveDatasetCleaning()">Save</div>
+    </div> -->
 
   </p-dialog>

@@ -7,3 +7,14 @@
     align-items: center;
     gap: 5vw;
 }
+
+.export-card{
+    min-width: inherit;
+    min-height: 20vh;
+    background-color: white;
+    padding: 30px;
+    color: gray;
+    display: grid;
+    grid-template-columns: 1f;
+    gap: 20px;
+}

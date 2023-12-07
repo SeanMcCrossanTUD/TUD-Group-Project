@@ -15,6 +15,17 @@ export class AppSettings {
         // }
        
     }
+    public static getBlobURL(){
+        // try{
+            // let x=window.location.href;
+            // let y=x.split('v2');
+            // return y[0];
+            return 'https://fab5storage.blob.core.windows.net/';
+        // }catch{
+        //     return 'http://localhost:8082/';
+        // }
+       
+    }
 
 }
 @Injectable({

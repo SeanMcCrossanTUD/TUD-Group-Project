@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { AppSettings, constants } from 'src/app/Const/config';
 import { DataCleaningService } from 'src/app/Services/Datacleaning/data-cleaning.service';
+import { FileUpload } from 'primeng/fileupload';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -607,6 +608,58 @@ setNumerical_Column_Binning(x:any){
   dataSetActions(){
     this.Visibledatasetactions=true;
   }
+
+  downloadRules(){
+    var jobid=this.CookieService.get('jobsid');
+    this.DataCleaningService.downLoadRules(jobid).subscribe(
+      (res:any)=>{        
+          window.open(this.DataCleaningService.downloadRulesFromBlob(res));
+        },
+        (err)=>{
+          console.log(err);
+          this.MessageService.add({ severity: 'error', summary: 'No File Exist / Network issue', detail: "File may not be saved before" });
+     
+      }
+    )
+  }
+
+  visibleImportRules=false;
+  uploadedFiles: any[] = [];
+  @ViewChild('fileupload') dropdown!: FileUpload;
+  importRules(){
+    this.visibleImportRules=true;
+  }
+
+  UploadFile(e:any){
+ 
+    this.dropdown.progress=30;
+    var jobID=this.CookieService.get('jobsid');
+    for(let file of e.files) {
+     
+      this.dropdown.progress=50;    
+      
+      this.DataCleaningService.uploadRules(file,jobID).subscribe((respose:any)=>{     
+
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Your File has been uploaded' });
+          this.dropdown.clear();    
+          this.visibleImportRules=false;    
+          
+              
+      },(err)=>{
+
+        this.messageService.add({ severity: 'error', summary: 'error', detail: 'Your File not uploaded' });
+      
+       
+      });
+      this.dropdown.progress=100;
+      break;
+  }
+
+  }
+  onUploadFile(e:any){
+    this.uploadedFiles=[]
+  }
+  //// end of class
 }
 
 
