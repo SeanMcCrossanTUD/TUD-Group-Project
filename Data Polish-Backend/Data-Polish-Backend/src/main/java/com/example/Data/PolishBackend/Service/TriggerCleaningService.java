@@ -61,7 +61,11 @@ public class TriggerCleaningService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found for the job id.");
             }
 
-        }catch (Exception e) {
+            //publish message to Azure Service Bus
+            publishMessageToQueue(jobID, dataResult.rawurl, dataResult.dataprofileoutput, dataResult.cleaningrules);
+
+
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
