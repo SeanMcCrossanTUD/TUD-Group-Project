@@ -37,9 +37,9 @@ export class DataQualityMetricComponent implements OnInit {
 
   private createChart(overallScore: number): void {
     const dataset = overallScore / 100; // Convert to a scale of 0 to 1
-    const width = 200;
-    const height = 200;
-    const thickness = 20;
+    const width = 150;
+    const height = 150;
+    const thickness = 15;
 
     const getColor = (value: number) => {
       return value > 80 ? 'green' : value > 60 ? 'orange' : 'red';
