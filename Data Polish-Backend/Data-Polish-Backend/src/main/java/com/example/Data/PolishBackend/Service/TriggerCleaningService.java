@@ -26,5 +26,11 @@ import java.util.UUID;
 * query DB with jobID and get all details
 * publish message with JobID and file details in queue 2
 * */
+@Service
 public class TriggerCleaningService {
+    //storing service connection string and queueName
+    @Value("${azure.servicebus.connection-string}")
+    private String serviceBusConnectionString;
+    @Value("${azure.servicebus.queue-name-q2}")
+    private String queueName;
 }
