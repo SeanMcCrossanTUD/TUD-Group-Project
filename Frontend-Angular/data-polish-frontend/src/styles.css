@@ -108,3 +108,9 @@ body {
 sup:hover{
   cursor: pointer;
 }
+
+.chart-heading{
+  font-size: 12;
+  font-family:"Verdana";
+  text-align: center;
+}

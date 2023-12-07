@@ -32,6 +32,7 @@ export class MissingValuesChartComponent implements OnInit {
       const totalRecords = data.number_of_records;
       const maxBars = 15;
 
+
       // Explicitly type the value in the filter method
       const filteredData = Object.entries(data.missing_values)
         .filter(([key, value]: [string, any]) => value > 0)
@@ -45,8 +46,9 @@ export class MissingValuesChartComponent implements OnInit {
       const displayedData = filteredData.slice(0, maxBars);
       const additionalFields = filteredData.length - maxBars;
 
-      const margin = {top: 10, right: 30, bottom: 100, left: 50};
-      const width = 460 - margin.left - margin.right;
+      const margin = {top: 10, right: 15, bottom: 100, left: 20};
+      const width = 550 - margin.left - margin.right;
+
       const height = 400 - margin.top - margin.bottom;
 
       const svg = d3.select("#chart-missing")
