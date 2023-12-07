@@ -90,6 +90,9 @@ public class TriggerCleaningService {
             // Convert the JSON to BinaryData
             BinaryData messageData = BinaryData.fromString(jsonData);
 
+            // Create a ServiceBusMessage with the JSON data
+            ServiceBusMessage message = new ServiceBusMessage(messageData);
+
 
         } catch (Exception e) {
             // Handle exceptions related to Azure Service Bus
