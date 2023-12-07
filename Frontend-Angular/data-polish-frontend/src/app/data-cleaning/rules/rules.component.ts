@@ -607,6 +607,20 @@ setNumerical_Column_Binning(x:any){
   dataSetActions(){
     this.Visibledatasetactions=true;
   }
+
+  downloadRules(){
+    var jobid=this.CookieService.get('jobsid');
+    this.DataCleaningService.downLoadRules(jobid).subscribe(
+      (res:any)=>{        
+          window.open(this.DataCleaningService.downloadRulesFromBlob(res));
+        },
+        (err)=>{
+          console.log(err);
+          this.MessageService.add({ severity: 'error', summary: 'No File Exist / Network issue', detail: "File may not be saved before" });
+     
+      }
+    )
+  }
 }
 
 
