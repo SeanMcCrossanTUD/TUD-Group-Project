@@ -63,9 +63,9 @@ public class TriggerCleaningService {
 
             //publish message to Azure Service Bus
             publishMessageToQueue(jobID, dataResult.rawurl, dataResult.dataprofileoutput, dataResult.cleaningrules);
-return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("safsd");
 
-
+            // Return a success response with no body
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
