@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { HttpClient } from '@angular/common/http';
 import { Arc, DefaultArcObject } from 'd3';
 
 @Component({
@@ -8,22 +9,28 @@ import { Arc, DefaultArcObject } from 'd3';
   styleUrls: ['./readability-metric.component.css']
 })
 export class ReadabilityMetricComponent implements OnInit {
-  private data = [
-    { axis: "readability", value: 98 },
-  ];
 
-  dataAvailable = false; 
+  dataAvailable = false;
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.dataAvailable = this.data && this.data.length > 0;
-    if (this.dataAvailable) {
-      this.createChart();
-    }
+    this.fetchData();
   }
 
-  private createChart(): void {
-    const targetValue = this.data[0].value; 
-    const dataset = targetValue / 100; 
+  private fetchData(): void {
+    this.http.get<any>('assets/data_quality_score.json').subscribe(data => {
+      if (data && data.average_readability !== undefined) {
+        const roundedReadability = parseFloat(data.average_readability.toFixed(2));
+        this.createChart(roundedReadability);
+        this.dataAvailable = true;
+      }
+    });
+  }
+
+  private createChart(readabilityValue: number): void {
+    const targetValue = readabilityValue * 100; // Convert to percentage
+    const dataset = targetValue / 100;
     const width = 200;
     const height = 200;
     const thickness = 20;

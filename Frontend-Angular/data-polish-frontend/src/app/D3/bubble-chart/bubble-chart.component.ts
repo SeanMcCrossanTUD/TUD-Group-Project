@@ -1,15 +1,10 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { HttpClient } from '@angular/common/http';
-import { SimulationNodeDatum } from 'd3';
 
-interface ProcessedDataItem extends SimulationNodeDatum {
+interface BubbleDataItem extends d3.SimulationNodeDatum {
   key: string;
   value: number;
-}
-
-interface CategoricalData {
-  [category: string]: ProcessedDataItem[];
 }
 
 @Component({
@@ -23,28 +18,37 @@ export class BubbleChartComponent implements OnInit {
   private width = 600 - this.margin.left - this.margin.right;
   private height = 400 - this.margin.top - this.margin.bottom;
   categories: string[] = [];
-  private allData: CategoricalData | null = null;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get<CategoricalData>('assets/sample.json').subscribe(data => {
-      this.allData = data;
-      this.categories = Object.keys(data);
-      this.createBubbleChart(data[this.categories[0]]);
+    this.http.get<any>('assets/bubble_chart.json').subscribe(data => {
+      this.categories = Object.keys(data.value_counts);
+      const bubbleData = this.transformData(data.value_counts[this.categories[0]]);
+      this.createBubbleChart(bubbleData);
     }, error => {
       console.error('Error loading json data:', error);
     });
   }
 
+  // Add the onCategoryChange method
   onCategoryChange(category: string): void {
-    if (this.allData && this.allData[category]) {
-      this.createBubbleChart(this.allData[category]);
+    if (category) {
+      this.http.get<any>('assets/bubble_chart.json').subscribe(data => {
+        const bubbleData = this.transformData(data.value_counts[category]);
+        this.createBubbleChart(bubbleData);
+      });
     }
   }
 
-  private createBubbleChart(data: ProcessedDataItem[]): void {
-    console.log('Creating bubble chart with data:', data);
+  private transformData(data: any): BubbleDataItem[] {
+    return Object.entries(data).map(([key, value]) => ({
+      key: key,
+      value: value as number
+    }));
+  }
+
+  private createBubbleChart(data: BubbleDataItem[]): void {
     d3.select(this.chartContainer.nativeElement).select('svg').remove();
     const element = this.chartContainer.nativeElement;
     const svg = d3.select(element).append('svg')
@@ -53,25 +57,24 @@ export class BubbleChartComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
-      const radiusScale = d3.scaleSqrt()
-      .domain([0, d3.max(data, (d: ProcessedDataItem) => d.value) ?? 0])
+    const radiusScale = d3.scaleSqrt()
+      .domain([0, d3.max(data, d => d.value) ?? 0])
       .range([20, 80]); 
 
-      const simulation = d3.forceSimulation(data)
+    const simulation = d3.forceSimulation(data)
       .force('charge', d3.forceManyBody().strength(50))
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
-      .force('collision', d3.forceCollide().radius((node: SimulationNodeDatum) => {
-        const item = node as ProcessedDataItem;
+      .force('collision', d3.forceCollide().radius(d => {
+        const item = d as BubbleDataItem; // Cast to BubbleDataItem
         return radiusScale(item.value) + 1;
       }));
-
 
     const bubbles = svg.selectAll('.bubble')
       .data(data)
       .enter().append('circle')
       .attr('class', 'bubble')
-      .attr('r', (d: ProcessedDataItem) => radiusScale(d.value))
-      .attr('fill', () => this.getRandomColor());
+      .attr('r', d => radiusScale(d.value))
+      .attr('fill', this.getRandomColor());
 
     const labels = svg.selectAll('.label')
       .data(data)
@@ -79,22 +82,13 @@ export class BubbleChartComponent implements OnInit {
       .attr('class', 'label')
       .attr('text-anchor', 'middle')
       .attr('fill', 'black')
-      .text((d: ProcessedDataItem) => d.key)
-      .style('font-size', (d: ProcessedDataItem) => {
-        const minFontSize = 20;
-        const calculatedSize = Math.min(2 * radiusScale(d.value), (2 * radiusScale(d.value) - 8) / this.getWidth(d.key));
-        return `${Math.max(minFontSize, calculatedSize)}px`;
-      })
+      .text(d => d.key)
+      .style('font-size', d => `${Math.max(20, Math.min(2 * radiusScale(d.value), (2 * radiusScale(d.value) - 8) / this.getWidth(d.key)))}px`)
       .style('pointer-events', 'none');
 
     simulation.on('tick', () => {
-      bubbles
-        .attr('cx', d => d.x ?? 0)
-        .attr('cy', d => d.y ?? 0);
-
-      labels
-        .attr('x', d => d.x ?? 0)
-        .attr('y', d => (d.y ?? 0) + 5);
+      bubbles.attr('cx', d => d.x ?? 0).attr('cy', d => d.y ?? 0);
+      labels.attr('x', d => d.x ?? 0).attr('y', d => (d.y ?? 0) + 5);
     });
   }
 
