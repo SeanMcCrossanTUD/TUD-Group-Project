@@ -364,6 +364,18 @@
                         </div>
 
                 </div>
+                <div>
+                  <input *ngIf="cb_Regular_Expression_Operations "
+                  type="text" pInputText 
+                  [(ngModel)]="select_Regular_Expression_Operations_from" 
+                  class="w-full"/>
+
+                  <input *ngIf="enableReplaceString && cb_Regular_Expression_Operations"
+                  type="text" pInputText 
+                  [(ngModel)]="select_Regular_Expression_Operations_to" 
+                  class="w-full"/>
+              
+                </div>
 
               </div>
               
@@ -445,18 +457,7 @@
                 
                
 
-                <div>
-                  <input *ngIf="cb_Regular_Expression_Operations"
-                  type="text" pInputText 
-                  [(ngModel)]="select_Regular_Expression_Operations_from" 
-                  class="w-full"/>
-
-                  <input *ngIf="enableReplaceString"
-                  type="text" pInputText 
-                  [(ngModel)]="select_Regular_Expression_Operations_to" 
-                  class="w-full"/>
-              
-                </div>
+            
                
 
                       </div>
