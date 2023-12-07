@@ -26,8 +26,8 @@ export class DataQualityMetricComponent implements OnInit {
   private createChart(): void {
     const targetValue = this.data[0].value; 
     const dataset = targetValue / 100;
-    const width = 200;
-    const height = 200;
+    const width = 150;
+    const height = 150;
     const thickness = 20;
 
     const getColor = (value: number) => {
