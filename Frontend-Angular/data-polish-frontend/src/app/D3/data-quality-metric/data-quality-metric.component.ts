@@ -1,21 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { Arc, DefaultArcObject } from 'd3';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 @Component({
   selector: 'app-data-quality-metric',
   template: '<div id="dq-metric"></div>',
   styleUrls: ['./data-quality-metric.component.css']
 })
 export class DataQualityMetricComponent implements OnInit {
-  private data = [
-    { axis: "dq-metric", value: 77 },
-  ];
+  private data :any;
 
   dataAvailable = false;
+  constructor(private D3DashboardService:D3DashboardService){
+    
+  }
 
   ngOnInit() {
-    if (this.data.length > 0 && this.data[0].value !== undefined) {
+    this.D3DashboardService.getQualityMertic().subscribe(
+      (data)=>{
+        this.data=data['overall_score'];        
+        this.setData();
+      },
+      (error)=>{
+        console.log(error);
+      }
+    )
+  }
+
+  setData(){
+     
+    if ( this.data!= undefined || this.data!=null) {      
       this.dataAvailable = true; // Set to true if data is present
       this.createChart();
     } else {
@@ -24,7 +38,7 @@ export class DataQualityMetricComponent implements OnInit {
   }
 
   private createChart(): void {
-    const targetValue = this.data[0].value; 
+    const targetValue = this.data; 
     const dataset = targetValue / 100;
     const width = 150;
     const height = 150;
