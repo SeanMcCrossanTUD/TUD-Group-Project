@@ -74,6 +74,12 @@ public class TriggerCleaningService {
     //method to publish message to Azure Service Bus
     private void publishMessageToQueue(String jobID, String rawurl, String dataprofileoutput, String jsonFilename) {
         try {
+            // Connect to Azure Service Bus
+            ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
+                    .connectionString(serviceBusConnectionString)
+                    .sender()
+                    .queueName(queueName)
+                    .buildClient();
 
         } catch (Exception e) {
             // Handle exceptions related to Azure Service Bus
