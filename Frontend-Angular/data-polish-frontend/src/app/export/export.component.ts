@@ -25,12 +25,16 @@ constructor(
   }
 
 
-  stateOptions: any[] = [{label: 'CSV', value: 'CSV'}, {label: 'Excel', value: 'EXCEL'}];
+  
 
-  value: string = 'off';
+  exportOptions:any[]=[
+    {types:'CSV'},
+    {types:'Excel'}
+  ]
+  selectedExportOption= {types:'CSV'};
 
   export(){
-    alert(this.value)
+    alert(this.selectedExportOption.types)
   }
 
 }

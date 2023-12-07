@@ -1,4 +1,44 @@
 <div class="export-container">
-    <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
-    <p-button label="Export cleaned Data" severity="secondary" (click)="export()"></p-button>
+    <!-- <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+    -->
+
+    <div class="export-card">
+        <div>
+            <h2>
+                Export Clean Data
+            </h2>
+            <p>
+                Download Data that has been cleaned using the rules set in previous steps.
+            </p>
+            <p>
+                Select the file format and click export button.
+            </p>
+        </div>
+        <div style="display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            ">
+            <p>
+                Select File Format
+            </p>
+            <p-dropdown
+            [options]="exportOptions" 
+            [(ngModel)]="selectedExportOption"
+            [showClear]="true"
+            optionLabel="types" [showClear]="true" 
+            placeholder="Select File Format">
+          </p-dropdown>
+
+  
+            
+        </div>
+        <div style="display: flex;
+        justify-content: center;
+        align-items: center;">
+            <p-button label="Export" severity="secondary" (click)="export()"></p-button> 
+        </div>
+       
+    </div>
 </div>
+
