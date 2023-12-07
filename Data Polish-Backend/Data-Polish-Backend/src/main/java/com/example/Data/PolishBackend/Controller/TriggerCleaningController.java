@@ -3,6 +3,7 @@ package com.example.Data.PolishBackend.Controller;
 import com.example.Data.PolishBackend.Service.TriggerCleaningService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.Date;
 @RestController
 public class TriggerCleaningController {
 
+    @Autowired
     private TriggerCleaningService triggerCleaningService;
 
     // secure secret key 256 bits
