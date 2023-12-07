@@ -63,6 +63,7 @@ public class TriggerCleaningService {
 
             //publish message to Azure Service Bus
             publishMessageToQueue(jobID, dataResult.rawurl, dataResult.dataprofileoutput, dataResult.cleaningrules);
+return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("safsd");
 
 
         } catch (Exception e) {
@@ -93,7 +94,8 @@ public class TriggerCleaningService {
             // Create a ServiceBusMessage with the JSON data
             ServiceBusMessage message = new ServiceBusMessage(messageData);
 
-
+            // Send the message to the 'q2' queue
+            senderClient.sendMessage(message);
         } catch (Exception e) {
             // Handle exceptions related to Azure Service Bus
             e.printStackTrace();
