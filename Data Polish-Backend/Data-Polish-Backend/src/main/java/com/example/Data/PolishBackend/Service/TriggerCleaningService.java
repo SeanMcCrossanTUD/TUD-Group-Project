@@ -55,6 +55,12 @@ public class TriggerCleaningService {
                 dataResult.dataprofileoutput = rs.getString("dataprofileoutput");
                 dataResult.cleaningrules = rs.getString("cleaningrules");
             });
+
+            //check if value not found in DB
+            if (dataResult.rawurl == null || dataResult.dataprofileoutput == null || dataResult.cleaningrules == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found for the job id.");
+            }
+
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
