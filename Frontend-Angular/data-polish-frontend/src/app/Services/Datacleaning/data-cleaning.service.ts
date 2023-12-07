@@ -13,12 +13,12 @@ export class DataCleaningService {
   }
   public downLoadRules(jobid:any){
     var URL=AppSettings.getBaseURL()+'rules-export?jobID='+jobid;
-    return this.HttpClient.get(URL)
+    return this.HttpClient.get(URL,{responseType:'text'})
   }
 
   public downloadRulesFromBlob(blobName:any){
     var containerName='rules/'
     var url=AppSettings.getBlobURL()+containerName+blobName;
-    return this.HttpClient.get(url);
+    return url;
   }
 }
