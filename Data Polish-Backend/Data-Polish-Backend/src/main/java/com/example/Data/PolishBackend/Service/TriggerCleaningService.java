@@ -23,7 +23,7 @@ import java.util.UUID;
 
 /*
 * take jobID from frontend
-* query DB with jobID and get all details
+* query DB with jobID and get file details - rawurl+dataprofileoutput+cleaningrules
 * publish message with JobID and file details in queue 2
 * */
 @Service
@@ -37,9 +37,10 @@ public class TriggerCleaningService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    //method for creating rawurl+dataprofileoutput for the given jobID
+    //method for creating rawurl+dataprofileoutput+cleaningrules for the given jobID
     private static class DataResult {
         String rawurl;
         String dataprofileoutput;
+        String cleaningrules;
     }
 }
