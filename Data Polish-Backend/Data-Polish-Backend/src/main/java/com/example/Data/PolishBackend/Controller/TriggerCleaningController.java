@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TriggerCleaningController {
 
     private TriggerCleaningService triggerCleaningService;
+    
+    // secure secret key 256 bits
+    private final String secretKey = "WaaZ5eNs94mGk+joiqJf6Laj1s0oOrAyoy/saZJAaom801Rpqy88IaDZGhkhd65e";
 
     @PostMapping("/trigger-cleaning")
     public ResponseEntity<String> triggerCleaning(@RequestParam String jobID) {
