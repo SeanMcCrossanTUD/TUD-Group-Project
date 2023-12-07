@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-spider-chart',
@@ -7,20 +8,28 @@ import * as d3 from 'd3';
   styleUrls: ['./spider-chart.component.css']
 })
 export class SpiderChartComponent implements OnInit {
-  private data = [
-    {axis: "Completeness", value: 98},
-    {axis: "Uniqueness", value: 60},
-    {axis: "Readability", value: 90},
-    {axis: "Consistency", value: 99}
-  ];
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.createSpiderChart();
+    this.fetchData();
   }
 
-  createSpiderChart(): void {
+  private fetchData(): void {
+    this.http.get<any>('assets/data_quality_score.json').subscribe(data => {
+      if (data) {
+        const spiderData = [
+          { axis: "Completeness", value: parseFloat((data.completeness_score * 100).toFixed(2)) },
+          { axis: "Uniqueness", value: parseFloat((data.uniqueness_score * 100).toFixed(2)) },
+          { axis: "Readability", value: parseFloat((data.average_readability * 100).toFixed(2)) },
+          { axis: "Consistency", value: parseFloat((data.consistency_score * 100).toFixed(2)) }
+        ];
+        this.createSpiderChart(spiderData);
+      }
+    });
+  }
+
+  createSpiderChart(data: { axis: string, value: number }[]): void {
     const width = 400, height = 300;
     const margin = { top: 50, right: 50, bottom: 50, left: 50 };
     const radius = Math.min(width, height) / 2;
@@ -32,7 +41,7 @@ export class SpiderChartComponent implements OnInit {
                   .append('g')
                   .attr('transform', `translate(${width / 2 + margin.left},${height / 2 + margin.top})`);
 
-    const angleSlice = Math.PI * 2 / this.data.length;
+    const angleSlice = Math.PI * 2 / data.length;
     const rScale = d3.scaleLinear()
                      .range([0, radius])
                      .domain([0, 100]);
