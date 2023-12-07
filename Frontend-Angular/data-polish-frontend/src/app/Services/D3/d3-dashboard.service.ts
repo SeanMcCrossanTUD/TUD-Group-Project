@@ -15,6 +15,7 @@ export class D3DashboardService {
    static currentjobid='';
     static data2:any;
     static qualityMetricsDate:any;
+    static bubbleChartData:any
    getData(): Observable<any> {
     const jobID = this.cookieService.get('jobsid');
     if(jobID!=D3DashboardService.currentjobid){
@@ -100,6 +101,33 @@ export class D3DashboardService {
    
   }
 
+  
+  getBubbleChart(): Observable<any>{
+
+    const jobID = this.cookieService.get('jobsid');
+   
+    const url = `https://fab5storage.blob.core.windows.net/bubblechart/data_quality_result_bubblechart_${jobID}.json`;
+    if(jobID!=D3DashboardService.currentjobid){
+      D3DashboardService.bubbleChartData=null;
+    }
+    if (D3DashboardService.bubbleChartData) {
+      return of(D3DashboardService.bubbleChartData);
+    } else {
+    return this.http.get(url).pipe(
+      map((res: any) =>{
+      
+        D3DashboardService.currentjobid=jobID;
+        D3DashboardService.bubbleChartData=res;
+        return res;
+      }),
+      catchError((error) => {
+        console.error('Error fetching outlier data:', error);
+        return throwError('Something went wrong while fetching outlier data.'); // You can customize the error message
+      })
+    );
+    }
+   
+  }
     
 
 

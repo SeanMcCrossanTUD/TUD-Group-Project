@@ -240,6 +240,9 @@ export class RulesComponent {
       "dataset_actions":[]
   
      }
+
+     this.messageService.add({ severity: 'success', summary: 'Reset Successful ', detail: 'All rules has been reseted' });
+     
    }
    savechangestorules(){
   

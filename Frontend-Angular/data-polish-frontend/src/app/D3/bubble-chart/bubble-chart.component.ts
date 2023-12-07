@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { HttpClient } from '@angular/common/http';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 interface BubbleDataItem extends d3.SimulationNodeDatum {
   key: string;
   value: number;
@@ -19,10 +19,11 @@ export class BubbleChartComponent implements OnInit {
   private height = 400 - this.margin.top - this.margin.bottom;
   categories: string[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private D3DashboardService:D3DashboardService) { }
 
   ngOnInit(): void {
-    this.http.get<any>('assets/bubble_chart.json').subscribe(data => {
+    this.D3DashboardService.getBubbleChart().subscribe(data => {
       this.categories = Object.keys(data.value_counts);
       const bubbleData = this.transformData(data.value_counts[this.categories[0]]);
       this.createBubbleChart(bubbleData);
@@ -34,7 +35,7 @@ export class BubbleChartComponent implements OnInit {
   // Add the onCategoryChange method
   onCategoryChange(category: string): void {
     if (category) {
-      this.http.get<any>('assets/bubble_chart.json').subscribe(data => {
+      this.D3DashboardService.getBubbleChart().subscribe(data => {
         const bubbleData = this.transformData(data.value_counts[category]);
         this.createBubbleChart(bubbleData);
       });
