@@ -81,6 +81,10 @@ public class TriggerCleaningService {
                     .queueName(queueName)
                     .buildClient();
 
+            // Construct the JSON message to send
+            String jsonData = "{\"jobID\":\"" + jobID + "\", \"rawurl\":\"" + rawurl + "\", \"dataprofileoutput\":\"" + dataprofileoutput + "\", \"jsonFilename\":\"" + jsonFilename + "\"}";
+
+
         } catch (Exception e) {
             // Handle exceptions related to Azure Service Bus
             e.printStackTrace();
