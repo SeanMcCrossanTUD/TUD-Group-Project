@@ -96,6 +96,9 @@ return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("safsd");
 
             // Send the message to the 'q2' queue
             senderClient.sendMessage(message);
+
+            // Close the sender and the ServiceBusClient
+            senderClient.close();
         } catch (Exception e) {
             // Handle exceptions related to Azure Service Bus
             e.printStackTrace();
