@@ -46,8 +46,9 @@ constructor(
     this.http.get(AppSettings.getBaseURL()+'download-file?jobID='+jobID+"&fileType="+fileType,
     {responseType:'blob'}).subscribe(
       (res)=>{
-          
-          const fileName = 'Export' + fileType; 
+        
+        var today = new Date();
+          const fileName = 'Export-'+today.getHours()+"-"+today.getMinutes() + fileType; 
           saveAs(res, fileName);
         console.log(res);
       },
