@@ -76,3 +76,49 @@ p-tabView{
     width: 55vw;
 }
 
+.remove-all-button div:active{
+    box-shadow: 0 5px #666;
+    transform: translateY(3px);
+}
+
+.p-dropdown{
+    border: 1px solid black;
+}
+
+
+    ::ng-deep .p-dropdown{
+        border: 1px solid black;
+    
+    }
+    ::ng-deep .p-dropdown .p-inputtext{
+        border: 0px 
+    
+    } 
+
+    ::ng-deep .p-chips{
+        border: 1px solid black;
+        border-radius: 5px;          
+    }
+    ::ng-deep .p-inputtext{
+        border: 1px solid black;
+    }
+   
+.fileupload-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+    border: 2px black solid;
+    padding: 50px;
+}
+
+.fileupload-containe p-fileUpload{
+    max-width: 50%;
+}
+
+#fileupload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

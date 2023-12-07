@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { AppSettings, constants } from 'src/app/Const/config';
 import { DataCleaningService } from 'src/app/Services/Datacleaning/data-cleaning.service';
+import { FileUpload } from 'primeng/fileupload';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -143,7 +144,8 @@ export class RulesComponent {
     "collapse_rare_categories":[],
     "standard_datetime_format":[],
     "regular_expresion_operations":[],
-    "extract_datetime_components":[]
+    "extract_datetime_components":[],
+    "dataset_actions":[]
 
    }
 
@@ -190,6 +192,7 @@ export class RulesComponent {
    cb_Standard_Datetime_format=false;
    cb_Regular_Expression_Operations=false;
    cb_Extract_Datetime_Components=false;
+   cb_Remove_Duplicate=false;
 
    setallCBTOFalse(){
     this.cb_remove_special_characters=false
@@ -208,7 +211,8 @@ export class RulesComponent {
     this.cb_Combine_Rare_Categories=false;
     this.cb_Standard_Datetime_format=false;
     this.cb_Regular_Expression_Operations=false;
-    this.cb_Extract_Datetime_Components=false
+    this.cb_Extract_Datetime_Components=false;
+    this.cb_Remove_Duplicate=false;
     
    }
 
@@ -232,9 +236,13 @@ export class RulesComponent {
       "collapse_rare_categories":[],
       "standard_datetime_format":[],
       "regular_expresion_operations":[],
-      "extract_datetime_components":[]
+      "extract_datetime_components":[],
+      "dataset_actions":[]
   
      }
+
+     this.messageService.add({ severity: 'success', summary: 'Reset Successful ', detail: 'All rules has been reseted' });
+     
    }
    savechangestorules(){
   
@@ -293,6 +301,16 @@ export class RulesComponent {
    this.currentrow='';
    this.setallCBTOFalse();
    console.log(this.rules)
+   }
+
+   saveDatasetCleaning(){
+    if(this.cb_Remove_Duplicate){
+      this.rules['dataset_actions'].push('remove_duplicates')
+      
+    }
+    console.log(this.rules);
+    this.cb_Remove_Duplicate=false;
+    this.Visibledatasetactions=false;
    }
 /////////////////////////////////////////////
 
@@ -589,6 +607,62 @@ setNumerical_Column_Binning(x:any){
   openHelpText(){
   
   }
+  Visibledatasetactions=false;
+  dataSetActions(){
+    this.Visibledatasetactions=true;
+  }
+
+  downloadRules(){
+    var jobid=this.CookieService.get('jobsid');
+    this.DataCleaningService.downLoadRules(jobid).subscribe(
+      (res:any)=>{        
+          window.open(this.DataCleaningService.downloadRulesFromBlob(res));
+        },
+        (err)=>{
+          console.log(err);
+          this.MessageService.add({ severity: 'error', summary: 'No File Exist / Network issue', detail: "File may not be saved before" });
+     
+      }
+    )
+  }
+
+  visibleImportRules=false;
+  uploadedFiles: any[] = [];
+  @ViewChild('fileupload') dropdown!: FileUpload;
+  importRules(){
+    this.visibleImportRules=true;
+  }
+
+  UploadFile(e:any){
+ 
+    this.dropdown.progress=30;
+    var jobID=this.CookieService.get('jobsid');
+    for(let file of e.files) {
+     
+      this.dropdown.progress=50;    
+      
+      this.DataCleaningService.uploadRules(file,jobID).subscribe((respose:any)=>{     
+
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Your File has been uploaded' });
+          this.dropdown.clear();    
+          this.visibleImportRules=false;    
+          
+              
+      },(err)=>{
+
+        this.messageService.add({ severity: 'error', summary: 'error', detail: 'Your File not uploaded' });
+      
+       
+      });
+      this.dropdown.progress=100;
+      break;
+  }
+
+  }
+  onUploadFile(e:any){
+    this.uploadedFiles=[]
+  }
+  //// end of class
 }
 
 

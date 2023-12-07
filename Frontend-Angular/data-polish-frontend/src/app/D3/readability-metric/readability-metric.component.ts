@@ -1,32 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+import { HttpClient } from '@angular/common/http';
 import { Arc, DefaultArcObject } from 'd3';
-
+import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 @Component({
   selector: 'app-readability-metric',
   templateUrl: './readability-metric.component.html',
   styleUrls: ['./readability-metric.component.css']
 })
 export class ReadabilityMetricComponent implements OnInit {
-  private data = [
-    { axis: "readability", value: 98 },
-  ];
 
-  dataAvailable = false; 
+  dataAvailable = false;
+
+  constructor(private http: HttpClient,
+    private D3DashboardService:D3DashboardService) {}
 
   ngOnInit() {
-    this.dataAvailable = this.data && this.data.length > 0;
-    if (this.dataAvailable) {
-      this.createChart();
-    }
+    this.fetchData();
   }
 
-  private createChart(): void {
-    const targetValue = this.data[0].value; 
-    const dataset = targetValue / 100; 
-    const width = 200;
-    const height = 200;
-    const thickness = 20;
+  private fetchData(): void {
+    this.D3DashboardService.getQualityMertic().subscribe(data => {    
+      if (data && data.average_readability !== undefined) {
+                var roundedReadability = parseFloat(data.average_readability.toFixed(2));  
+        this.dataAvailable = true;    
+        this.createChart(roundedReadability);
+
+      }
+    });
+  }
+
+  private createChart(readabilityValue: number): void {
+    const targetValue = readabilityValue * 100; // Convert to percentage
+    const dataset = targetValue / 100;
+    const width = 150;
+    const height = 150;
+    const thickness = 15;
 
     const getColor = (value: number) => {
       return value > 80 ? 'green' : value > 60 ? 'orange' : 'red';
