@@ -132,8 +132,13 @@
                     </div>
                     <div>
                       <p-checkbox [(ngModel)]="cb_outlierManagement" inputId="binary" [binary]="true"></p-checkbox>
-                      <p-dropdown [hidden]="!cb_outlierManagement" [options]="outlierTypes" [(ngModel)]="selectedOutlier"
-                        optionLabel="types" [showClear]="true" placeholder="Select option"></p-dropdown>
+                      <p-dropdown [hidden]="!cb_outlierManagement"
+                       [options]="outlierTypes" 
+                       [(ngModel)]="selectedOutlier"
+                        optionLabel="types" 
+                        [showClear]="true" 
+                        
+                        placeholder="Select option"></p-dropdown>
                   
                     </div>
                   
@@ -188,11 +193,12 @@
                    </div>
                   <div>
                     <p-checkbox [(ngModel)]="cb_Numerical_Column_Binning" inputId="binary" [binary]="true"></p-checkbox>
-                    <div class="card p-fluid">
+                   
                     <p-chips
+                    placeholder="Enter Bins"
                     [hidden]="!cb_Numerical_Column_Binning" 
                      [(ngModel)]="values" ></p-chips>
-                    </div>
+                    
                     <!-- <input 
                    
                     type="text"
