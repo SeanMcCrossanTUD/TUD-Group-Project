@@ -4,5 +4,6 @@
   "SERVICE_BUS_QUEUE_2_NAME": "q2",
   "AZURE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=fab5storage;AccountKey=AO587ZFcVtkHENZKDUsKznLFHIe6Rjf4gSlF9USX9M/VJf1B8BpNP66JejtIqlOhWzxHqYyJK4cC+AStNxJTqA==;EndpointSuffix=core.windows.net",
   "IMAGE_OUTPUT_CONTAINER": "imagesoutput",
+  "RULES_CONTAINER": "rules",
   "DATA_INPUT_CONTAINER": "csv"
 }

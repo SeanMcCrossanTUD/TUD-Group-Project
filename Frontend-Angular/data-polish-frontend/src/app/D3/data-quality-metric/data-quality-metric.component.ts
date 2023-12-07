@@ -1,47 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { Arc, DefaultArcObject } from 'd3';
-import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-data-quality-metric',
   template: '<div id="dq-metric"></div>',
   styleUrls: ['./data-quality-metric.component.css']
 })
 export class DataQualityMetricComponent implements OnInit {
-  private data :any;
 
   dataAvailable = false;
   constructor(private D3DashboardService:D3DashboardService){
     
   }
 
+  constructor(private http: HttpClient) {}
+
   ngOnInit() {
-    this.D3DashboardService.getQualityMertic().subscribe(
-      (data)=>{
-        this.data=data['overall_score'];        
-        this.setData();
-      },
-      (error)=>{
-        console.log(error);
+
+    this.fetchData();
+  }
+
+  private fetchData(): void {
+    this.http.get<any>('assets/data_quality_score.json').subscribe(data => {
+      if (data && data.overall_score !== undefined) {
+        const roundedOverallScore = parseFloat(data.overall_score.toFixed(2));
+        this.createChart(roundedOverallScore); // Use the rounded overall score
+        this.dataAvailable = true;
+      } else {
+        this.dataAvailable = false;
       }
-    )
+    });
   }
 
-  setData(){
-     
-    if ( this.data!= undefined || this.data!=null) {      
-      this.dataAvailable = true; // Set to true if data is present
-      this.createChart();
-    } else {
-      this.dataAvailable = false; // Set to false if no data is present
-    }
-  }
-
-  private createChart(): void {
-    const targetValue = this.data; 
-    const dataset = targetValue / 100;
-    const width = 150;
-    const height = 150;
+  private createChart(overallScore: number): void {
+    const dataset = overallScore / 100; // Convert to a scale of 0 to 1
+    const width = 200;
+    const height = 200;
     const thickness = 20;
 
     const getColor = (value: number) => {
@@ -58,7 +53,7 @@ export class DataQualityMetricComponent implements OnInit {
       .innerRadius((width / 2) - thickness)
       .outerRadius(width / 2);
 
-    const background = svg.append('path')
+    svg.append('path')
       .datum({ startAngle: 0, endAngle: 2 * Math.PI } as DefaultArcObject)
       .style('fill', '#ddd')
       .attr('d', arcGenerator)
@@ -66,15 +61,15 @@ export class DataQualityMetricComponent implements OnInit {
 
     const foreground = svg.append('path')
       .datum({ startAngle: 0, endAngle: 0 } as DefaultArcObject)
-      .style('fill', getColor(targetValue))
+      .style('fill', getColor(overallScore))
       .attr('d', arcGenerator)
       .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
-      foreground.transition()
+    foreground.transition()
       .duration(1500)
       .attrTween('d', (d: DefaultArcObject) => {
         const interpolate = d3.interpolate(d.endAngle, 2 * Math.PI * dataset);
-        return (t) => {
+        return (t: number) => {
           d.endAngle = interpolate(t);
           return arcGenerator(d) || '';
         };
@@ -85,14 +80,14 @@ export class DataQualityMetricComponent implements OnInit {
       .attr('dominant-baseline', 'middle')
       .attr('transform', `translate(${width / 2}, ${height / 2})`)
       .attr('font-size', '40')
-      .attr('fill', getColor(targetValue))
+      .attr('fill', getColor(overallScore))
       .text('0%');
 
     text.transition()
       .duration(1500)
       .tween('text', function () {
         const that = d3.select(this);
-        const i = d3.interpolateNumber(0, targetValue);
+        const i = d3.interpolateNumber(0, overallScore);
         return function (t) {
           that.text(Math.round(i(t)) + '%');
         };

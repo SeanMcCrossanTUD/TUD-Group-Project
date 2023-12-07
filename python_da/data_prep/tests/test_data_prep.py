@@ -293,47 +293,46 @@ def test_dataframe6():
         'Text': ['a', 'b', 'c', 'd', 'e']
     })
 
-
-#Test if binning is a success
+# Test if binning is a success
 def test_bin_numeric_to_categorical_success(test_dataframe6):
     dp = DataPrep(test_dataframe6)
     bins = [0, 2, 5]  # Define bins
-    labels = ['Low', 'High']  # Define labels for bins
-    dp.bin_numeric_to_categorical('Numeric', bins, labels)
+    dp.bin_numeric_to_categorical('Numeric', bins)
 
-    # Check if the column is now categorical
-    assert pd.api.types.is_categorical_dtype(dp.dataframe['Numeric'].dtype)
-
+    # Check if the new column is created and is categorical
+    assert pd.api.types.is_categorical_dtype(dp.dataframe['Numeric_binned'].dtype)
+    # Check if the labels are correctly assigned
+    assert set(dp.dataframe['Numeric_binned'].cat.categories) == {'0-2', '2-5'}
 
 # Test binning on non-existent column
 def test_bin_numeric_to_categorical_non_existent_column(test_dataframe6):
     dp = DataPrep(test_dataframe6)
     with pytest.raises(ValueError):
-        dp.bin_numeric_to_categorical('NonExistent', [0, 1], ['A'])
+        dp.bin_numeric_to_categorical('NonExistent', [0, 1])
 
 # Test binning on non-numeric column
 def test_bin_numeric_to_categorical_non_numeric_column(test_dataframe6):
     dp = DataPrep(test_dataframe6)
     with pytest.raises(ValueError):
-        dp.bin_numeric_to_categorical('Text', [0, 1], ['A'])
+        dp.bin_numeric_to_categorical('Text', [0, 1])
 
 # Test binning when no dataframe is loaded
 def test_bin_numeric_to_categorical_no_dataframe():
     dp = DataPrep(None)  # No dataframe loaded
     with pytest.raises(ValueError):
-        dp.bin_numeric_to_categorical('Numeric', [0, 1], ['A'])
+        dp.bin_numeric_to_categorical('Numeric', [0, 1])
 
-# Test incorrect bins specification
+# Test incorrect bins specification (not a list)
 def test_bin_numeric_to_categorical_incorrect_bins(test_dataframe6):
     dp = DataPrep(test_dataframe6)
-    with pytest.raises(Exception):
-        dp.bin_numeric_to_categorical('Numeric', 'incorrect', ['A'])
+    with pytest.raises(ValueError):
+        dp.bin_numeric_to_categorical('Numeric', 'incorrect')
 
-# Test incorrect labels specification
-def test_bin_numeric_to_categorical_incorrect_labels(test_dataframe6):
+# Test incorrect bins specification (too few bins)
+def test_bin_numeric_to_categorical_few_bins(test_dataframe6):
     dp = DataPrep(test_dataframe6)
-    with pytest.raises(Exception):
-        dp.bin_numeric_to_categorical('Numeric', [0, 1, 2], 'incorrect')
+    with pytest.raises(ValueError):
+        dp.bin_numeric_to_categorical('Numeric', [0])
 
 
 # Fixture for a test dataframe

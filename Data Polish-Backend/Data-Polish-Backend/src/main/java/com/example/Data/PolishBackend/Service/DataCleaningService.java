@@ -31,7 +31,7 @@ import java.util.UUID;
     query db with jobid to get dataprofilingoutput value
 
     convert the json object to json file
-    create json filename rules+uuid.json //uuid to make each file unique
+    create json filename rules_+uuid.json //uuid to make each file unique
     store the json filename in DB under cleaningrules column for that jobid
     store the json file in blob - rules
 
@@ -121,7 +121,7 @@ public class DataCleaningService {
             // Send the message to the 'q2' queue
             senderClient.sendMessage(message);
 
-            // Close the sender and the ServiceBusClient when done
+            // Close the sender and the ServiceBusClient
             senderClient.close();
         } catch (Exception e) {
             // Handle exceptions related to Azure Service Bus

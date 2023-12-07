@@ -1,11 +1,10 @@
 <div *ngIf="dataAvailable; else noDataTemplate">
-    <h4 class="chart-heading">Completeness Score</h4>
-    <div id="completeness"></div>
+  <h4 class="chart-heading">Completeness Score</h4>
+  <div id="completeness"></div>
+</div>
+
+<ng-template #noDataTemplate>
+  <div class="no-data-message">
+    <h4>No Data Available</h4>
   </div>
-  
-  <ng-template #noDataTemplate>
-    <div class="no-data-message">
-      <h4>No Data Available</h4>
-    </div>
-  </ng-template>
-  
+</ng-template>
