@@ -47,7 +47,14 @@ public class TriggerCleaningService {
         try {
             DataResult dataResult = new DataResult();
 
+            // Retrieve 'rawurl','dataprofileoutput' and 'cleaningrules' from the database
+            String sql = "SELECT rawurl, dataprofileoutput, cleaningrules FROM jobsandblobs WHERE jobid = ?";
 
+            jdbcTemplate.query(sql, new Object[]{jobID}, rs -> {
+                dataResult.rawurl = rs.getString("rawurl");
+                dataResult.dataprofileoutput = rs.getString("dataprofileoutput");
+                dataResult.cleaningrules = rs.getString("cleaningrules");
+            });
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
