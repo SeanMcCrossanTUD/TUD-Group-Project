@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { AppSettings, constants } from 'src/app/Const/config';
 import { DataCleaningService } from 'src/app/Services/Datacleaning/data-cleaning.service';
+import { FileUpload } from 'primeng/fileupload';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -621,6 +622,42 @@ setNumerical_Column_Binning(x:any){
       }
     )
   }
+
+  visibleImportRules=false;
+  uploadedFiles: any[] = [];
+  @ViewChild('fileupload') dropdown!: FileUpload;
+  importRules(){
+    this.visibleImportRules=true;
+  }
+
+  UploadFile(e:any){
+ 
+    this.dropdown.progress=30;
+    for(let file of e.files) {
+     
+      this.dropdown.progress=50;    
+  
+      this.DataCleaningService.uploadRules(file).subscribe((respose:any)=>{     
+
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Your File has been uploaded' });
+          this.dropdown.clear();        
+          
+              
+      },(err)=>{
+
+        this.messageService.add({ severity: 'error', summary: 'error', detail: 'Your File not uploaded' });
+      
+       
+      });
+      this.dropdown.progress=100;
+      break;
+  }
+
+  }
+  onUploadFile(e:any){
+    this.uploadedFiles=[]
+  }
+  //// end of class
 }
 
 
