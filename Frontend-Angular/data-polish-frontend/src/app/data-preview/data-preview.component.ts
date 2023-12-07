@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { DataPreviewDataService } from '../Services/Datacleaning/data-preview-data.service';
 import { fadeInAnimation } from '../Animations/animation';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -17,7 +17,9 @@ import { CookieService } from 'ngx-cookie-service';
   host: { '[@fadeInAnimation]': '' }
 })
 export class DataPreviewComponent {
-
+  height = '50vh';
+  gridStyle="width: 80vw;height:"+this.height
+  
   constructor(
     private DataPreviewDataService:DataPreviewDataService,
     private http: HttpClient,
@@ -37,6 +39,12 @@ export class DataPreviewComponent {
   hidepregress=false;
 
   ngOnInit(){
+    var url=String(window.location);
+    var pageNumber=url.charAt(url.length-1)
+    if(pageNumber=='2'){
+      this.height='80vh'
+      this.gridStyle="width: 80vw;height:"+this.height
+    }
     var id=this.CookieService.get('jobsid');
     this.DataPreviewDataService.getData(id).subscribe(
       (Response)=>{

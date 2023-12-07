@@ -16,7 +16,7 @@
 
 <ag-grid-angular
     *ngIf="dataloaded"
-    style="width: 80vw;height: 70vh;"
+    [style]="gridStyle"
     class="ag-theme-alpine"
     [defaultColDef]="defaultColDef"
     [rowData]="rowData"
