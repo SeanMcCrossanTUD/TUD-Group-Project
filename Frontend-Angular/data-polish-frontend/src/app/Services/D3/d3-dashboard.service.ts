@@ -52,7 +52,7 @@ export class D3DashboardService {
 
   getoutlier(): Observable<any> {
     const jobID = this.cookieService.get('jobsid');
-    const url = `https://fab5storage.blob.core.windows.net/outlier/data_quality_result_${jobID}.json`;
+    const url = `https://fab5storage.blob.core.windows.net/outlier/data_quality_result_outlier_${jobID}.json`;
     if(jobID!=D3DashboardService.currentjobid){
       D3DashboardService.data=null;
     }
