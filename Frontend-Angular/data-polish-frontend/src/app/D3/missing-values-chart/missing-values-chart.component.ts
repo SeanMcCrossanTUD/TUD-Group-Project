@@ -31,8 +31,8 @@ export class MissingValuesChartComponent implements OnInit {
       const totalRecords = data.number_of_records;
       const maxBars = 15;
       
-      const margin = {top: 10, right: 30, bottom: 100, left: 50};
-      const width = 460 - margin.left - margin.right;
+      const margin = {top: 10, right: 15, bottom: 100, left: 20};
+      const width = 550 - margin.left - margin.right;
       const height = 400 - margin.top - margin.bottom;
 
       const svg = d3.select("#chart-missing")
