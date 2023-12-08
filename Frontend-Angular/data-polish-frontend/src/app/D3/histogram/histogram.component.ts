@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 
@@ -11,23 +11,20 @@ interface HistogramDataPoint {
   templateUrl: './histogram.component.html',
   styleUrls: ['./histogram.component.css']
 })
-export class HistogramComponent implements OnInit {
+export class HistogramComponent implements OnInit, AfterViewInit {
   private rawData: any;
   private data: HistogramDataPoint[] = []; 
   public fields: string[] = []; 
   public selectedField: string = ''; 
 
-  constructor(
-    private D3DashboardService: D3DashboardService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private D3DashboardService: D3DashboardService) {}
 
   ngOnInit() {
     this.loadData();
   }
 
   ngAfterViewInit() {
-    // Ensures the view is fully initialized
+    // This ensures the chart is created after the view is fully initialized
     if (this.fields.length > 0) {
       this.selectedField = this.fields[0];
       this.updateDataAndCreateHistogram();
@@ -40,13 +37,9 @@ export class HistogramComponent implements OnInit {
         this.rawData = data.outliers;
         this.fields = data.fields;
 
-        if (this.fields.length > 0) {
+        if (this.fields.length > 0 && !this.selectedField) {
           this.selectedField = this.fields[0];
-          this.updateDataAndCreateHistogram();
-        } else {
-          console.error('No fields found');
         }
-        this.cdr.detectChanges(); // Manually trigger change detection
       }, (error) => {
         console.error('Error loading data:', error);
       }
@@ -57,9 +50,10 @@ export class HistogramComponent implements OnInit {
     this.data = this.rawData[this.selectedField]
                   .filter((d: any) => d.value !== undefined)
                   .map((d: any) => ({ value: d.value }));
-    this.createHistogram(); // Create histogram with the selected field's data
+    this.createHistogram();
   }
 
+  
   createHistogram(): void {
     if (!this.selectedField || this.data.length === 0) {
       console.error('No data available for histogram');
