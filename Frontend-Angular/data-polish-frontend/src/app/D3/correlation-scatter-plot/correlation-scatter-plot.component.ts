@@ -116,14 +116,19 @@ export class CorrelationScatterPlotComponent implements OnInit {
       .attr("cx", d => x(d.predictor));
 
       circles.on("mouseover", (event, d) => {
+        d3.select(event.currentTarget) 
+          .style("fill", "lightcoral"); 
+      
         tooltip.transition().duration(200).style("opacity", 0.9);
         tooltip.html(`Predictor: ${d.predictor}<br/>Target: ${d.target}`)
           .style("left", (event.pageX + 10) + "px")
           .style("top", (event.pageY - 28) + "px");
       })
-      .on("mouseout", () => {
+      .on("mouseout", (event) => {
+        d3.select(event.currentTarget) 
+          .style("fill", "lightblue"); 
+      
         tooltip.transition().duration(500).style("opacity", 0);
-        
       });
   }
 
