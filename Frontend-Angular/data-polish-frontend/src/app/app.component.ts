@@ -211,8 +211,8 @@ accessibilityset(){
 
 
 /******** */
-backStyle='visibility: collapse;'
-nextStyle='visibility: visible;'
+// backStyle='visibility: collapse;'
+// nextStyle='visibility: visible;'
 movenext(){
   if(this.currentpage<5){
     this.currentpage++;
