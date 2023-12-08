@@ -59,9 +59,9 @@
         
  
     },
-    "":{
-        "WHAT":"",
-        "WHY":""
+    "missing-values-chart":{
+        "WHAT":"Highlights the number of missing values within a column in a dataset.",
+        "WHY":"Directs where to fill missing values or to decide if a column with too many missing values should be removed."
         
  
     },
