@@ -214,6 +214,21 @@ accessibilityset(){
 // backStyle='visibility: collapse;'
 // nextStyle='visibility: visible;'
 movenext(){
+  if(this.currentpage==1){
+    var condition=this.cookieService.get('FILEUPLOAD');
+    if(condition!='TRUE'){
+      this.messageService.add({ severity: 'error', summary: 'Dataset Not Uploaded', detail: 'Please Upload file to continue' });
+      return;
+    }
+  }
+  if(this.currentpage==4){
+    var condition=this.cookieService.get('RULESSAVED');
+    if(condition!='TRUE'){
+      this.messageService.add({ severity: 'error', summary: 'Cleaning Rules Not Saved', detail: 'Please Save Datacleaning rules to start cleaning the dataset' });
+      return;
+    }
+  }
+  
   if(this.currentpage<5){
     this.currentpage++;
     this.router.navigate([this.currentpage]);
