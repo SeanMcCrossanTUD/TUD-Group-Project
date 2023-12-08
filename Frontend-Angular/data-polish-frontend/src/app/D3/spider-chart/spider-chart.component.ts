@@ -50,7 +50,7 @@ export class SpiderChartComponent implements OnInit {
                   .attr('transform', `translate(${width / 2 + margin.left},${height / 2 + margin.top})`);
 
   // Define an offset for the labels
-  const labelOffset = 10; // Adjust this value as needed
+  const labelOffset = 37 ; // Adjust this value as needed
 
   // Create labels
   const labels = svg.selectAll(".axisLabel")
