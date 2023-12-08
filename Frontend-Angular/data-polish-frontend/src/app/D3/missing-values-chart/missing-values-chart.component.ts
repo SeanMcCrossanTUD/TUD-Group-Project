@@ -6,6 +6,7 @@ import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 interface MissingValueData {
   key: string;
   value: number;
+  percentage: number;
 }
 
 @Component({
@@ -14,7 +15,7 @@ interface MissingValueData {
   styleUrls: ['./missing-values-chart.component.css']
 })
 export class MissingValuesChartComponent implements OnInit {
-  dataAvailable = false; // Property to track if data is available
+  dataAvailable = false;
 
   constructor(private D3DashboardService: D3DashboardService,
               private CookieService: CookieService) {}
@@ -22,17 +23,32 @@ export class MissingValuesChartComponent implements OnInit {
   ngOnInit() {
     const primarycolor = this.CookieService.get('chartprimarycolor');
     this.D3DashboardService.getData().subscribe((data: any) => {
-      if (!data || Object.keys(data.missing_values).length === 0) {
+      if (!data || !data.missing_values || Object.keys(data.missing_values).length === 0) {
         this.dataAvailable = false;
         return;
       }
-      
+
       this.dataAvailable = true;
       const totalRecords = data.number_of_records;
       const maxBars = 15;
-      
-      const margin = {top: 10, right: 30, bottom: 100, left: 50};
-      const width = 460 - margin.left - margin.right;
+
+
+      // Explicitly type the value in the filter method
+      const filteredData = Object.entries(data.missing_values)
+        .filter(([key, value]: [string, any]) => value > 0)
+        .map(([key, value]) => ({
+          key: key,
+          value: Number(value),
+          percentage: Number(value) / totalRecords * 100
+        }))
+        .sort((a, b) => b.value - a.value);
+
+      const displayedData = filteredData.slice(0, maxBars);
+      const additionalFields = filteredData.length - maxBars;
+
+      const margin = {top: 10, right: 15, bottom: 100, left: 20};
+      const width = 550 - margin.left - margin.right;
+
       const height = 400 - margin.top - margin.bottom;
 
       const svg = d3.select("#chart-missing")
@@ -42,28 +58,15 @@ export class MissingValuesChartComponent implements OnInit {
           .append("g")
           .attr("transform", `translate(${margin.left},${margin.top})`);
 
-      if (Object.keys(data.missing_values).length === 0) {
-        svg.append("text")
-            .attr("x", width / 2)
-            .attr("y", height / 2)
-            .attr("text-anchor", "middle")
-            .text("No missing values detected.");
-        return;
-      }
-
-      const sortedData = Object.entries(data.missing_values)
-                               .map(([key, value]): MissingValueData => ({ key, value: Number(value) }))
-                               .sort((a, b) => b.value - a.value);
-
-      const displayedData = sortedData.slice(0, maxBars);
-      const additionalFields = sortedData.length - maxBars;
-
       const x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
       const y = d3.scaleLinear().rangeRound([height, 0]);
 
       x.domain(displayedData.map(d => d.key));
-      // Use the spread operator to ensure d3.max receives an array
-      y.domain([0, d3.max([...displayedData.map(d => d.value)]) || 0]);
+      y.domain([0, d3.max(displayedData, d => d.value) || 0]);
+
+      let tooltip = d3.select('body').append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0);
 
       svg.selectAll(".bar")
           .data(displayedData)
@@ -73,7 +76,16 @@ export class MissingValuesChartComponent implements OnInit {
           .attr("y", d => y(d.value))
           .attr("width", x.bandwidth())
           .attr("height", d => height - y(d.value))
-          .style("fill", primarycolor);
+          .style("fill", primarycolor)
+          .on('mouseover', function (event, d) {
+            tooltip.transition().duration(200).style('opacity', 0.9);
+            tooltip.html(`Field: ${d.key}<br/>Missing: ${d.value} (${d.percentage.toFixed(2)}%)`)
+              .style('left', (event.pageX) + 'px')
+              .style('top', (event.pageY - 28) + 'px');
+          })
+          .on('mouseout', function () {
+            tooltip.transition().duration(500).style('opacity', 0);
+          });
 
       svg.append("g")
           .attr("transform", `translate(0, ${height})`)
@@ -85,14 +97,13 @@ export class MissingValuesChartComponent implements OnInit {
       svg.append("g")
           .call(d3.axisLeft(y));
 
-      // Annotation for additional fields
-      if (additionalFields > 0) {
-        svg.append("text")
-           .attr("x", width)
-           .attr("y", height + 50)
-           .attr("text-anchor", "end")
-           .text(`+ ${additionalFields} more fields with missing values`);
-      }
+    //  if (additionalFields > 0) {
+    //    svg.append("text")
+    //        .attr("x", width - margin.right) 
+    //        .attr("y", height - margin.bottom + 50)
+    //        .attr("text-anchor", "end")
+    //        .text(`+ ${additionalFields} more fields with missing values`);
+    //      }
     });
   }
 }
