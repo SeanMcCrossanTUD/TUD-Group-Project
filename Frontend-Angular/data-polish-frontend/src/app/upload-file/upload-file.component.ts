@@ -33,9 +33,8 @@ export class UploadFileComponent {
 
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Your File has been uploaded' });
           this.dropdown.clear();         
-          this.CookieService.set('jobsid',respose.jobID);  
-       
-          this.router.navigate([2]);
+          this.CookieService.set('jobsid',respose.jobID);         
+ 
               
       },(err)=>{
 
