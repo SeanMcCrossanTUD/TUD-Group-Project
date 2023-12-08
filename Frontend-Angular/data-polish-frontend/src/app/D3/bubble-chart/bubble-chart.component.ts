@@ -63,10 +63,10 @@ export class BubbleChartComponent implements OnInit {
       .domain([0, d3.max(data, d => d.value) ?? 0])
       .range([20, 80]);
 
-    const simulation = d3.forceSimulation(data)
+    const simulation = d3.forceSimulation(data as BubbleDataItem[]) // Cast data to BubbleDataItem[]
       .force('charge', d3.forceManyBody().strength(50))
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
-      .force('collision', d3.forceCollide().radius(d => radiusScale(d.value) + 1));
+      .force('collision', d3.forceCollide().radius(d => radiusScale((d as BubbleDataItem).value) + 1)); // Cast d to BubbleDataItem
 
     const tooltip = d3.select('body').append('div')
       .attr('class', 'bubble-tooltip')
