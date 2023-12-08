@@ -63,14 +63,19 @@ export class BubbleChartComponent implements OnInit {
       .domain([0, d3.max(data, d => d.value) ?? 0])
       .range([20, 80]);
 
-    const simulation = d3.forceSimulation(data as BubbleDataItem[]) // Cast data to BubbleDataItem[]
+    const simulation = d3.forceSimulation(data)
       .force('charge', d3.forceManyBody().strength(50))
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
-      .force('collision', d3.forceCollide().radius(d => radiusScale((d as BubbleDataItem).value) + 1)); // Cast d to BubbleDataItem
+      .force('collision', d3.forceCollide().radius(d => radiusScale((d as BubbleDataItem).value) + 1));
 
     const tooltip = d3.select('body').append('div')
       .attr('class', 'bubble-tooltip')
-      .style('opacity', 0);
+      .style('opacity', 0)
+      .style('position', 'absolute')
+      .style('background', 'white')
+      .style('border', '1px solid black')
+      .style('padding', '5px')
+      .style('pointer-events', 'none');
 
     const bubbles = svg.selectAll('.bubble')
       .data(data)
@@ -78,8 +83,8 @@ export class BubbleChartComponent implements OnInit {
       .attr('class', 'bubble')
       .attr('r', d => radiusScale(d.value))
       .attr('fill', 'lightblue')
-      .style("stroke", "black") // Hard border
-      .style("stroke-width", "2px") // Border width
+      .style("stroke", "black")
+      .style("stroke-width", "2px")
       .on('mouseover', (event, d) => {
         tooltip.transition().duration(200).style('opacity', 0.9);
         tooltip.html(`Key: ${d.key}<br/>Value: ${d.value}`)
@@ -91,21 +96,23 @@ export class BubbleChartComponent implements OnInit {
         tooltip.remove();
       });
 
-    simulation.on('tick', () => {
-      bubbles.attr('cx', d => d.x ?? 0).attr('cy', d => d.y ?? 0);
-    });
-  }
+    // Adding labels to bubbles
+    svg.selectAll('.bubble-label')
+      .data(data)
+      .enter().append('text')
+      .attr('class', 'bubble-label')
+      .style('text-anchor', 'middle')
+      .style('fill', 'black')
+      .text(d => d.key)
+      .style('pointer-events', 'none');
 
-  private getRandomColor(): string {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  private getWidth(text: string): number {
-    return text.length * 6;
+      simulation.on('tick', () => {
+        bubbles.attr('cx', d => (d as BubbleDataItem).x ?? 0)
+               .attr('cy', d => (d as BubbleDataItem).y ?? 0);
+      
+        svg.selectAll('.bubble-label')
+           .attr('x', d => (d as BubbleDataItem).x ?? 0)
+           .attr('y', d => ((d as BubbleDataItem).y ?? 0) + 5); // Adjust y position to align text in the center of the bubble
+      });
   }
 }
