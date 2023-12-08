@@ -37,6 +37,12 @@
         "EXAMPLE":"A numeric column can have its values put in specific sub ranges and categorized e.g. 'bins': [0,50,100], 'labels': [ 'Low','High']"
         },
 
+    "Column Type Conversion":{
+        "WHAT":"To change the data type of a specific column in a DataFrame to a new, specified type.",
+        "WHY":"Allows change of datatype to enable type specific column cleaning opeations to be used",
+        "EXAMPLE":"Change a column from numeric to text and unlock text cleaning features"
+    },
+
     
 
 
