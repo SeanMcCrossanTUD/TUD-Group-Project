@@ -77,9 +77,9 @@
         
  
     },
-    "":{
-        "WHAT":"",
-        "HOW TO IMPOROVE":""
+    "uniqueness-metric":{
+        "WHAT":"Displays the level of unique data entries, highlighting potential redundancy in the dataset.",
+        "HOW TO IMPOROVE":"Apply 'Collapse Rare Categories' to reduce overfitting in machine learning models and simplify analysis."
         
  
     },
