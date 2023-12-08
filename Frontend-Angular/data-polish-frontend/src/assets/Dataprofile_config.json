@@ -65,6 +65,24 @@
         
  
     },
+    "outliers-scatter-plot":{
+        "WHAT":"Identifies outlier data points in a dataset.",
+        "WHY":"Pinpoints outliers for removal or further examination."
+        
+ 
+    },
+    "":{
+        "WHAT":"",
+        "WHY":""
+        
+ 
+    },
+    "":{
+        "WHAT":"",
+        "WHY":""
+        
+ 
+    },
     "":{
         "WHAT":"",
         "WHY":""
