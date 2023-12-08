@@ -1,7 +1,7 @@
 {
     "NUMBEROFFIELDS":{
         "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
+        "WHY":"In order to understand the Dataset field quantity and distribution"
         
         
     },
@@ -11,15 +11,15 @@
         
         
     },
-    "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
+    "NUMBEROFRECORDS":{
+        "WHAT":"Displays the count of Records in the dataset.",
+        "WHY":"In order to understand the Dataset size"
         
         
     },
-    "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
+    "bubble-chart":{
+        "WHAT":"Visualises the categorical features within a column as bubbles.",
+        "WHY":"Use to identify categorical distribution. Large bubbles may indicate asimetric data points needing normalisation."
         
         
     },
