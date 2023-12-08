@@ -1,8 +1,9 @@
 {
     "Rename Column":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":"",
+        "WHAT":"To rename a column in a DataFrame to a new specified name.",
+        "WHY":"Improves dataset clarity by renaming verbose, typo-ridden, or inconsistent columns, enhancing readability for users.",
         "EXAMPLE":"Intial column name 'Name', changed column name 'Full Name'"
         
-    }
+    },
+    
 }
