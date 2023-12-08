@@ -1,0 +1,8 @@
+{
+    "Rename Column":{
+        "WHAT":"Displays the count of fields in the dataset.",
+        "WHY":"",
+        "EXAMPLE":"Intial column name 'Name', changed column name 'Full Name'"
+        
+    }
+}
