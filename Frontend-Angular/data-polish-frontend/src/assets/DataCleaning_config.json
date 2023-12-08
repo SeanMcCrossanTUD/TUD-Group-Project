@@ -88,11 +88,27 @@
 
     "Regular Expression Operations":{
         "WHAT":"To apply regex operations such as 'replace' or 'extract' on a text column, enabling complex pattern matching and text transformations.",
-        "WHY":"Makes it easier to apply specific style changes to text columns if there in knowledge of regex operations",
+        "WHY":" Makes it easier to apply specific style changes to text columns if there in knowledge of regex operations",
         "EXAMPLE":"Apply regex operartion to text column or extract or replace string formats"
     },
 
+    "Standard Datetime format":{
+        "WHAT":"To parse and convert data in a given column into datetime objects, using a specified format or automatic format inference.",
+        "WHY":" Models that depend on time-based data, like forecasting models, require precise and correctly formatted time data. Parsing ensures that the input data meets these requirements.",
+        "EXAMPLE":"Standardizes a datetime column to one datetime style e.g. 'April 5, 2020', '06-05-2020 14:30', '01-02-2020' into '2020-04-05 00:00:00', '2020-06-05 14:30:00', '2020-01-02 00:00:00'"
+    },
+
+    "Extract Datetime Components":{
+        "WHAT":"To extract specific components like year, month, day, hour, minute, or second from a datetime column and add them as new columns in the DataFrame.",
+        "WHY":"Breaks down datetime objects into components (year, month, day, etc.), enabling more detailed analysis of time-based patterns and trends.",
+        "EXAMPLE":"A datetime column can have specic datetime elements extracted to other columns"
+    },
+
     
+
+
+
+
 
 
 
