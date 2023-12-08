@@ -58,7 +58,7 @@ export class DataTypesChartComponent implements OnInit {
         .style('padding', '2px')
         .style('font', '12px sans-serif')
         .style('background', 'lightsteelblue')
-        .style('border', '0px')
+        .style('border', '20px')
         .style('border-radius', '8px')
         .style('pointer-events', 'none');
     }
