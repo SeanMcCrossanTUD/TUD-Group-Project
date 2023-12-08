@@ -1,5 +1,5 @@
 <div class="bubble-chart">
-  <h2 class="chart-heading">Most prevalent values for {{selectedCategory}}</h2>
+  <h2 class="chart-heading">Most Prevalent Instances for {{selectedCategory}}</h2>
   <select #categorySelect (change)="onCategoryChange(categorySelect.value)">
     <option *ngFor="let category of categories" [value]="category">{{category}}</option>
   </select>
