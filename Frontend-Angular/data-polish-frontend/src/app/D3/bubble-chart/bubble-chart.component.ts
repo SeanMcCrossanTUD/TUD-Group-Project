@@ -18,14 +18,14 @@ export class BubbleChartComponent implements OnInit {
   private width = 600 - this.margin.left - this.margin.right;
   private height = 400 - this.margin.top - this.margin.bottom;
   categories: string[] = [];
-  selectedCategory: string = ''; // Add a property for the selected category
+  selectedCategory: string = '';
 
   constructor(private D3DashboardService: D3DashboardService) { }
 
   ngOnInit(): void {
     this.D3DashboardService.getBubbleChart().subscribe(data => {
       this.categories = Object.keys(data.value_counts);
-      this.selectedCategory = this.categories[0]; // Set the default category
+      this.selectedCategory = this.categories[0];
       const bubbleData = this.transformData(data.value_counts[this.selectedCategory]);
       this.createBubbleChart(bubbleData);
     }, error => {
@@ -34,7 +34,7 @@ export class BubbleChartComponent implements OnInit {
   }
 
   onCategoryChange(category: string): void {
-    this.selectedCategory = category; // Update the selected category
+    this.selectedCategory = category;
     if (category) {
       this.D3DashboardService.getBubbleChart().subscribe(data => {
         const bubbleData = this.transformData(data.value_counts[category]);
@@ -61,36 +61,36 @@ export class BubbleChartComponent implements OnInit {
 
     const radiusScale = d3.scaleSqrt()
       .domain([0, d3.max(data, d => d.value) ?? 0])
-      .range([20, 80]); 
+      .range([20, 80]);
 
     const simulation = d3.forceSimulation(data)
       .force('charge', d3.forceManyBody().strength(50))
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
-      .force('collision', d3.forceCollide().radius(d => {
-        const item = d as BubbleDataItem; // Cast to BubbleDataItem
-        return radiusScale(item.value) + 1;
-      }));
+      .force('collision', d3.forceCollide().radius(d => radiusScale(d.value) + 1));
+
+    const tooltip = d3.select('body').append('div')
+      .attr('class', 'bubble-tooltip')
+      .style('opacity', 0);
 
     const bubbles = svg.selectAll('.bubble')
       .data(data)
       .enter().append('circle')
       .attr('class', 'bubble')
       .attr('r', d => radiusScale(d.value))
-      .attr('fill', this.getRandomColor());
-
-    const labels = svg.selectAll('.label')
-      .data(data)
-      .enter().append('text')
-      .attr('class', 'label')
-      .attr('text-anchor', 'middle')
-      .attr('fill', 'black')
-      .text(d => d.key)
-      .style('font-size', d => `${Math.max(20, Math.min(2 * radiusScale(d.value), (2 * radiusScale(d.value) - 8) / this.getWidth(d.key)))}px`)
-      .style('pointer-events', 'none');
+      .attr('fill', this.getRandomColor())
+      .on('mouseover', (event, d) => {
+        tooltip.transition().duration(200).style('opacity', 0.9);
+        tooltip.html(`Key: ${d.key}<br/>Value: ${d.value}`)
+          .style('left', (event.pageX + 10) + 'px')
+          .style('top', (event.pageY - 28) + 'px');
+      })
+      .on('mouseout', () => {
+        tooltip.transition().duration(500).style('opacity', 0);
+        tooltip.remove();
+      });
 
     simulation.on('tick', () => {
       bubbles.attr('cx', d => d.x ?? 0).attr('cy', d => d.y ?? 0);
-      labels.attr('x', d => d.x ?? 0).attr('y', d => (d.y ?? 0) + 5);
     });
   }
 
