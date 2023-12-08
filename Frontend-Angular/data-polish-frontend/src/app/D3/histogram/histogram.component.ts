@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
+
 interface HistogramDataPoint {
   value: number;
 }
@@ -10,43 +11,54 @@ interface HistogramDataPoint {
   templateUrl: './histogram.component.html',
   styleUrls: ['./histogram.component.css']
 })
-export class HistogramComponent implements OnInit {
+export class HistogramComponent implements OnInit, AfterViewInit {
   private rawData: any;
   private data: HistogramDataPoint[] = []; 
   public fields: string[] = []; 
   public selectedField: string = ''; 
 
+  constructor(private D3DashboardService: D3DashboardService) {}
+
   ngOnInit() {
     this.loadData();
   }
-  constructor(private D3DashboardService:D3DashboardService){
 
+  ngAfterViewInit() {
+    // This ensures the chart is created after the view is fully initialized
+    if (this.fields.length > 0) {
+      this.selectedField = this.fields[0];
+      this.updateDataAndCreateHistogram();
+    }
   }
+
   loadData() {
     this.D3DashboardService.getoutlier().subscribe(
       (data: any) => {
-        console.log(data)
-      this.rawData = data.outliers;
-      this.fields = data.fields;
+        this.rawData = data.outliers;
+        this.fields = data.fields;
 
-      if (this.fields.length > 0) {
-        this.selectedField = this.fields[0];
-        this.createHistogram();
-      } else {
-        console.error('No fields found');
+        if (this.fields.length > 0 && !this.selectedField) {
+          this.selectedField = this.fields[0];
+        }
+      }, (error) => {
+        console.error('Error loading data:', error);
       }
-    },(error)=>{
-      console.error('Error loading data:', error);
-    }
     );
   }
 
+  updateDataAndCreateHistogram(): void {
+    this.data = this.rawData[this.selectedField]
+                  .filter((d: any) => d.value !== undefined)
+                  .map((d: any) => ({ value: d.value }));
+    this.createHistogram();
+  }
+
+  
   createHistogram(): void {
-    if (!this.selectedField) {
+    if (!this.selectedField || this.data.length === 0) {
+      console.error('No data available for histogram');
       return;
     }
-
-
     
     this.data = this.rawData[this.selectedField]
                   .filter((d: any) => d.value !== undefined)
@@ -115,35 +127,62 @@ export class HistogramComponent implements OnInit {
       .text(d => d.label);
 
 
-    svg.selectAll("rect")
-      .data(bins)
-      .enter()
-      .append("rect")
-        .attr("x", 1)
-        .attr("transform", d => `translate(${x(d.x0 as number)}, ${y(d.length)})`)
-        .attr("width", d => x(d.x1 as number) - x(d.x0 as number) - 1)
-        .attr("height", d => height - y(d.length))
-        .style("fill", "#69b3a2");
-    // Normal distribution curve
-    const mean = d3.mean(this.data, d => d.value) as number;
-    const deviation = d3.deviation(this.data, d => d.value) as number;
-    const normalLine = d3.line<HistogramDataPoint>()
-      .curve(d3.curveBasis)
-      .x(d => x(d.value))
-      .y(d => {
-        const pdf = (1 / (deviation * Math.sqrt(2 * Math.PI))) *
-                    Math.exp(-0.5 * Math.pow((d.value - mean) / deviation, 2));
-        return y(pdf * height); // Adjust pdf value to fit histogram's y scale
-      });
+  // Create a tooltip
+  const tooltip = d3.select('body').append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0)
+    .style('position', 'absolute')
+    .style('background', 'white')
+    .style('border', 'solid')
+    .style('border-width', '1px')
+    .style('border-radius', '5px')
+    .style('padding', '5px');
 
-    const normalData = x.ticks(100).map(val => ({ value: val }));
+  // Create bars for the histogram
+  svg.selectAll("rect")
+    .data(bins)
+    .enter().append("rect")
+    .attr("x", 1)
+    .attr("transform", d => `translate(${x(d.x0 as number)}, ${y(d.length)})`)
+    .attr("width", d => x(d.x1 as number) - x(d.x0 as number) - 1)
+    .attr("height", d => height - y(d.length))
+    .style("fill", "#69b3a2")
+    .on('mouseover', (event, d) => {
+      tooltip.transition()
+        .duration(200)
+        .style('opacity', 0.9);
+      tooltip.html(`Count: ${d.length}`)
+        .style('left', (event.pageX + 10) + 'px')
+        .style('top', (event.pageY - 28) + 'px');
+    })
+    .on('mouseout', () => {
+      tooltip.transition()
+        .duration(500)
+        .style('opacity', 0);
+    });
 
-    svg.append("path")
-      .datum(normalData)
-      .attr("fill", "none")
-      .attr("stroke", "green")
-      .attr("stroke-width", 2)
-      .attr("d", normalLine);
+  // Normal distribution curve
+  const mean = d3.mean(this.data, d => d.value) as number;
+  const deviation = d3.deviation(this.data, d => d.value) as number;
+
+  const normalLine = d3.line<HistogramDataPoint>()
+    .curve(d3.curveBasis)
+    .x(d => x(d.value))
+    .y(d => {
+      const pdf = (1 / (deviation * Math.sqrt(2 * Math.PI))) *
+                  Math.exp(-0.5 * Math.pow((d.value - mean) / deviation, 2));
+      return y(pdf * height); // Adjust pdf value to fit histogram's y scale
+    });
+
+  const normalData = x.ticks(100).map(val => ({ value: val }));
+
+  svg.append("path")
+    .datum(normalData)
+    .attr("fill", "none")
+    .attr("stroke", "green")
+    .attr("stroke-width", 2)
+    .attr("d", normalLine);
+
 
         const line = d3.line<d3.Bin<HistogramDataPoint, number>>()
         .curve(d3.curveBasis)
@@ -158,7 +197,8 @@ export class HistogramComponent implements OnInit {
         .attr("d", line);
   }
 
-  public onFieldChange(): void {
-    this.createHistogram();
+  public onFieldChange(newField: string): void {
+    this.selectedField = newField;
+    this.updateDataAndCreateHistogram();
   }
 }

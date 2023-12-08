@@ -8,17 +8,17 @@ import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
   styleUrls: ['./data-types-chart.component.css']
 })
 export class DataTypesChartComponent implements OnInit {
-  dataAvailable: boolean = false; // Property to track if data is available
+  dataAvailable: boolean = false;
 
   constructor(private D3DashboardService: D3DashboardService) {}
 
   ngOnInit() {
     this.D3DashboardService.getData().subscribe((data: any) => {
       if (data && Object.keys(data.data_type_profile).length > 0) {
-        this.dataAvailable = true; // Set to true if data is available
+        this.dataAvailable = true;
         this.createChart(data);
       } else {
-        this.dataAvailable = false; // Set to false if no data
+        this.dataAvailable = false;
       }
     });
   }
@@ -45,6 +45,24 @@ export class DataTypesChartComponent implements OnInit {
     x.domain([0, d3.max(sortedData, d => d[1]) || 0]);
     y.domain(sortedData.map(d => d[0]));
 
+    // Tooltip setup
+    let tooltip = d3.select('body').select<HTMLElement>('.tooltip');
+    if (tooltip.empty()) {
+      tooltip = d3.select('body').append<HTMLElement>('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0)
+        .style('position', 'absolute')
+        .style('text-align', 'center')
+        .style('width', '120px')
+        .style('height', '28px')
+        .style('padding', '2px')
+        .style('font', '12px sans-serif')
+        .style('background', 'lightsteelblue')
+        .style('border', '20px')
+        .style('border-radius', '8px')
+        .style('pointer-events', 'none');
+    }
+
     svg.selectAll(".bar")
         .data(sortedData)
         .enter().append("rect")
@@ -52,7 +70,20 @@ export class DataTypesChartComponent implements OnInit {
         .attr("x", 0)
         .attr("y", d => y(d[0]) || 0)
         .attr("width", d => x(d[1]))
-        .attr("height", y.bandwidth());
+        .attr("height", y.bandwidth())
+        .on("mouseover", function(event, d) {
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+          tooltip.html(`${d[0]}: ${d[1]}`)
+            .style("left", `${event.pageX}px`)
+            .style("top", `${event.pageY - 28}px`);
+        })
+        .on("mouseout", function() {
+          tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+        });
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)

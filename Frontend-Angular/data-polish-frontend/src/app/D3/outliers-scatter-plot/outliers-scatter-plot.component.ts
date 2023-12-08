@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
+
 interface OutlierDataPoint {
   row: number;
   value: number;
@@ -18,24 +19,27 @@ export class OutliersScatterPlotComponent implements OnInit {
   public fields: string[] = [];
   public selectedField: string = '';
 
+  constructor(private D3DashboardService: D3DashboardService) {}
+
   ngOnInit() {
     this.loadData();
   }
-  constructor(private D3DashboardService:D3DashboardService){
 
-  }
   loadData() {
     this.D3DashboardService.getoutlier().subscribe(
       (data: any) => {
-        console.log(data)
-        this.data=data;
-      this.fields = data.fields;
-      this.selectedField = this.fields[0];
-      this.createScatterPlot(this.selectedField);
-    });
-  
+        this.data = data;
+        this.fields = data.fields;
+        if (this.fields.length > 0) {
+          this.selectedField = this.fields[0];
+          this.createScatterPlot(this.selectedField);
+        }
+      },
+      (error) => {
+        console.error('Error loading data:', error);
+      }
+    );
   }
-
 
   createScatterPlot(field: string): void {
     d3.select('#scatter-plot').selectAll('*').remove();
@@ -83,30 +87,25 @@ export class OutliersScatterPlotComponent implements OnInit {
       .attr('class', 'dot')
       .attr('r', 5)
       .attr('cx', d => x(d.row))
-      .attr('cy', height)
+      .attr('cy', d => y(d.value))
       .style('fill', d => d.is_outlier ? 'lightcoral' : 'lightblue')
       .style('stroke', 'black')
       .style('stroke-width', '1px')
-      .transition()
-      .duration(1000)
-      .attr('cy', d => y(d.value));
-
-    svg.selectAll('.dot')
       .on('mouseover', function(event, d) {
         const outlierPoint = d as OutlierDataPoint;
-        const [px, py] = d3.pointer(event);
         tooltip.transition()
           .duration(200)
           .style('opacity', .9);
         tooltip.html(`Row: ${outlierPoint.row}<br/>Value: ${outlierPoint.value}<br/>Z-Score: ${outlierPoint.z_score}`)
-          .style('left', `${px + window.scrollX + 10}px`)
-          .style('top', `${py + window.scrollY - 28}px`);
+          .style('left', (event.pageX + 10) + 'px')
+          .style('top', (event.pageY - 28) + 'px');
+        d3.select(this).style('fill', 'lightyellow');
       })
-      .on('mouseout', () => {
+      .on('mouseout', function(d) {
         tooltip.transition()
           .duration(500)
           .style('opacity', 0);
-        tooltip.remove();
+        d3.select(this).style('fill', d.is_outlier ? 'lightcoral' : 'lightblue');
       });
 
     // Adding legend
