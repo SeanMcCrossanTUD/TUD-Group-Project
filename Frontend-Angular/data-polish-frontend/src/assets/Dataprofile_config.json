@@ -89,11 +89,11 @@
         
  
     },
-    "":{
-        "WHAT":"",
-        "HOW TO IMPOROVE":""
+    "consistency-metric":{
+        "WHAT":"Evaluates how consistently data is presented across the dataset.",
+        "HOW TO IMPOROVE":"Correct inconsistencies by 'Changing Column Type', 'Renaming Columns', and using 'Regex' to standardize formats."
         
- 
+
     }
 
 }
