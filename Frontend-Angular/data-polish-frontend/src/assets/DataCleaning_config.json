@@ -67,6 +67,12 @@
         "EXAMPLE":"A text column can have different case styles in the UI applied to it"
         },
 
+    "Remove Stopwords":{
+        "WHAT":"To remove stopwords from a text column in a DataFrame, a common preprocessing step in natural language processing tasks",
+        "WHY":"By eliminating stop words, the text data size is reduced, which can accelerate the processing of various NLP tasks such as text classification, sentiment analysis, and topic modeling.",
+        "EXAMPLE":"A text column will have all different stopwords removed "
+    },
+
     
 
 
