@@ -70,7 +70,20 @@ export class DataTypesChartComponent implements OnInit {
         .attr("x", 0)
         .attr("y", d => y(d[0]) || 0)
         .attr("width", d => x(d[1]))
-        .attr("height", y.bandwidth());
+        .attr("height", y.bandwidth())
+        .on("mouseover", function(event, d) {
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+          tooltip.html(`${d[0]}: ${d[1]}`)
+            .style("left", `${event.pageX}px`)
+            .style("top", `${event.pageY - 28}px`);
+        })
+        .on("mouseout", function() {
+          tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+        });
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
