@@ -127,35 +127,62 @@ export class HistogramComponent implements OnInit, AfterViewInit {
       .text(d => d.label);
 
 
-    svg.selectAll("rect")
-      .data(bins)
-      .enter()
-      .append("rect")
-        .attr("x", 1)
-        .attr("transform", d => `translate(${x(d.x0 as number)}, ${y(d.length)})`)
-        .attr("width", d => x(d.x1 as number) - x(d.x0 as number) - 1)
-        .attr("height", d => height - y(d.length))
-        .style("fill", "#69b3a2");
-    // Normal distribution curve
-    const mean = d3.mean(this.data, d => d.value) as number;
-    const deviation = d3.deviation(this.data, d => d.value) as number;
-    const normalLine = d3.line<HistogramDataPoint>()
-      .curve(d3.curveBasis)
-      .x(d => x(d.value))
-      .y(d => {
-        const pdf = (1 / (deviation * Math.sqrt(2 * Math.PI))) *
-                    Math.exp(-0.5 * Math.pow((d.value - mean) / deviation, 2));
-        return y(pdf * height); // Adjust pdf value to fit histogram's y scale
-      });
+  // Create a tooltip
+  const tooltip = d3.select('body').append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0)
+    .style('position', 'absolute')
+    .style('background', 'white')
+    .style('border', 'solid')
+    .style('border-width', '1px')
+    .style('border-radius', '5px')
+    .style('padding', '5px');
 
-    const normalData = x.ticks(100).map(val => ({ value: val }));
+  // Create bars for the histogram
+  svg.selectAll("rect")
+    .data(bins)
+    .enter().append("rect")
+    .attr("x", 1)
+    .attr("transform", d => `translate(${x(d.x0 as number)}, ${y(d.length)})`)
+    .attr("width", d => x(d.x1 as number) - x(d.x0 as number) - 1)
+    .attr("height", d => height - y(d.length))
+    .style("fill", "#69b3a2")
+    .on('mouseover', (event, d) => {
+      tooltip.transition()
+        .duration(200)
+        .style('opacity', 0.9);
+      tooltip.html(`Count: ${d.length}`)
+        .style('left', (event.pageX + 10) + 'px')
+        .style('top', (event.pageY - 28) + 'px');
+    })
+    .on('mouseout', () => {
+      tooltip.transition()
+        .duration(500)
+        .style('opacity', 0);
+    });
 
-    svg.append("path")
-      .datum(normalData)
-      .attr("fill", "none")
-      .attr("stroke", "green")
-      .attr("stroke-width", 2)
-      .attr("d", normalLine);
+  // Normal distribution curve
+  const mean = d3.mean(this.data, d => d.value) as number;
+  const deviation = d3.deviation(this.data, d => d.value) as number;
+
+  const normalLine = d3.line<HistogramDataPoint>()
+    .curve(d3.curveBasis)
+    .x(d => x(d.value))
+    .y(d => {
+      const pdf = (1 / (deviation * Math.sqrt(2 * Math.PI))) *
+                  Math.exp(-0.5 * Math.pow((d.value - mean) / deviation, 2));
+      return y(pdf * height); // Adjust pdf value to fit histogram's y scale
+    });
+
+  const normalData = x.ticks(100).map(val => ({ value: val }));
+
+  svg.append("path")
+    .datum(normalData)
+    .attr("fill", "none")
+    .attr("stroke", "green")
+    .attr("stroke-width", 2)
+    .attr("d", normalLine);
+
 
         const line = d3.line<d3.Bin<HistogramDataPoint, number>>()
         .curve(d3.curveBasis)
