@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as d3 from 'd3';
 import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 
@@ -17,10 +17,21 @@ export class HistogramComponent implements OnInit {
   public fields: string[] = []; 
   public selectedField: string = ''; 
 
-  constructor(private D3DashboardService: D3DashboardService) {}
+  constructor(
+    private D3DashboardService: D3DashboardService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.loadData();
+  }
+
+  ngAfterViewInit() {
+    // Ensures the view is fully initialized
+    if (this.fields.length > 0) {
+      this.selectedField = this.fields[0];
+      this.updateDataAndCreateHistogram();
+    }
   }
 
   loadData() {
@@ -30,11 +41,12 @@ export class HistogramComponent implements OnInit {
         this.fields = data.fields;
 
         if (this.fields.length > 0) {
-          this.selectedField = this.fields[0]; // Select the first field
-          this.updateDataAndCreateHistogram(); // Prepare data and create histogram
+          this.selectedField = this.fields[0];
+          this.updateDataAndCreateHistogram();
         } else {
           console.error('No fields found');
         }
+        this.cdr.detectChanges(); // Manually trigger change detection
       }, (error) => {
         console.error('Error loading data:', error);
       }
