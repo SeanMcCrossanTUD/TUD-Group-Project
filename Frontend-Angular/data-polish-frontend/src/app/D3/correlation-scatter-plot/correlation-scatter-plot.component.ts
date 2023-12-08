@@ -115,16 +115,16 @@ export class CorrelationScatterPlotComponent implements OnInit {
       .duration(1000)
       .attr("cx", d => x(d.predictor));
 
-    circles.on("mouseover", (event, d) => {
-      tooltip.transition().duration(200).style("opacity", 0.9);
-      tooltip.html(`Predictor: ${d.predictor}<br/>Target: ${d.target}`)
-        .style("left", (event.pageX + 10) + "px")
-        .style("top", (event.pageY - 28) + "px");
-    })
-    .on("mouseout", () => {
-      tooltip.transition().duration(500).style("opacity", 0);
-      tooltip.remove();
-    });
+      circles.on("mouseover", (event, d) => {
+        tooltip.transition().duration(200).style("opacity", 0.9);
+        tooltip.html(`Predictor: ${d.predictor}<br/>Target: ${d.target}`)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 28) + "px");
+      })
+      .on("mouseout", () => {
+        tooltip.transition().duration(500).style("opacity", 0);
+        
+      });
   }
 
   public onFieldChange(): void {
