@@ -121,7 +121,7 @@ class DataQualityChecker:
 
         return outliers
 
-    def count_unique_value_frequencies_in_text_fields(self, max_unique_values=10) -> dict:
+    def count_unique_value_frequencies_in_text_fields(self, max_unique_values=15) -> dict:
         result = {'text_fields': [], 'value_counts': {}}
 
         for col in self.dataset.select_dtypes(include='object').columns:
