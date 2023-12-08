@@ -1,7 +1,7 @@
 .landing-page {
   text-align: center;
   margin-top: 50px;
-  background-image: url('assets/background-image.jpg');  /* Replace 'background-image.jpg' with your actual image file*/
+  background-image: url('~assets/background.jpg');  
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
