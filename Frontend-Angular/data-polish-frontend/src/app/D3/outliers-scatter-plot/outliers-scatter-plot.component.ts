@@ -99,8 +99,8 @@ export class OutliersScatterPlotComponent implements OnInit {
           .duration(200)
           .style('opacity', .9);
         tooltip.html(`Row: ${outlierPoint.row}<br/>Value: ${outlierPoint.value}<br/>Z-Score: ${outlierPoint.z_score}`)
-          .style('left', `${px + window.scrollX + 10}px`)
-          .style('top', `${py + window.scrollY - 28}px`);
+          .style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 28) + "px");
       })
       .on('mouseout', () => {
         tooltip.transition()
