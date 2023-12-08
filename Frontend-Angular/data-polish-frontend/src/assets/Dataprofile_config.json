@@ -29,11 +29,59 @@
         
         
     },
-    "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
         
+ 
+    },
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
         
+ 
+    },
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
+        
+ 
+    },
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
+        
+ 
+    },
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
+        
+ 
+    },
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
+        
+ 
+    },
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
+        
+ 
+    },
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
+        
+ 
+    },
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
+        
+ 
     }
 
 }
