@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
+
 interface HistogramDataPoint {
   value: number;
 }
@@ -16,29 +17,36 @@ export class HistogramComponent implements OnInit {
   public fields: string[] = []; 
   public selectedField: string = ''; 
 
+  constructor(private D3DashboardService: D3DashboardService) {}
+
   ngOnInit() {
     this.loadData();
   }
-  constructor(private D3DashboardService:D3DashboardService){
 
-  }
   loadData() {
     this.D3DashboardService.getoutlier().subscribe(
       (data: any) => {
-        console.log(data)
-      this.rawData = data.outliers;
-      this.fields = data.fields;
+        console.log(data);
+        this.rawData = data.outliers;
+        this.fields = data.fields;
 
-      if (this.fields.length > 0) {
-        this.selectedField = this.fields[0];
-        this.createHistogram();
-      } else {
-        console.error('No fields found');
+        if (this.fields.length > 0) {
+          this.selectedField = this.fields[0];
+          this.updateDataAndCreateHistogram();
+        } else {
+          console.error('No fields found');
+        }
+      }, (error) => {
+        console.error('Error loading data:', error);
       }
-    },(error)=>{
-      console.error('Error loading data:', error);
-    }
     );
+  }
+
+  updateDataAndCreateHistogram(): void {
+    this.data = this.rawData[this.selectedField]
+                  .filter((d: any) => d.value !== undefined)
+                  .map((d: any) => ({ value: d.value }));
+    this.createHistogram();
   }
 
   createHistogram(): void {
@@ -159,6 +167,6 @@ export class HistogramComponent implements OnInit {
   }
 
   public onFieldChange(): void {
-    this.createHistogram();
+    this.updateDataAndCreateHistogram();
   }
 }
