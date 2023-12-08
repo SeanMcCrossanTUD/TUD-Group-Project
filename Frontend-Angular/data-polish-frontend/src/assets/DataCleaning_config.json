@@ -104,7 +104,15 @@
         "EXAMPLE":"A datetime column can have specic datetime elements extracted to other columns"
     },
 
+    "Label Encoding":{
+        "WHAT":" To convert categorical values in a specified column of a DataFrame into numerical labels.",
+        "WHY":"Converts categorical data into numerical values, making it compatible with machine learning algorithms that require numerical input.",
+        "EXAMPLE":"A category column with values 'apple', 'banana', 'orange', 'apple', 'banana' will be encoded as '0', '1', '2', '0', '1'"
+    },
     
+
+
+
 
 
 
