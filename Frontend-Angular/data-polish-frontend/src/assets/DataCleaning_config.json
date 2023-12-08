@@ -60,7 +60,16 @@
         "WHY":"Standardizes textual variations in datasets by replacing specific substrings, addressing inconsistencies in representations of words or phrases.",
         "EXAMPLE":"Replaces a string with another string e.g. 'old_substring': 'dog' , 'new_substring': 'cat' "
     }, 
+
+    "Text Case Adjustment":{
+        "WHAT":"To adjust the case of text in a specified column to either upper case, lower case, or title case.",
+        "WHY":"To ensure consistency in formatting if necessary",
+        "EXAMPLE":"A text column can have different case styles in the UI applied to it"
+        },
+
     
+
+
 
 
         
