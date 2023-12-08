@@ -83,9 +83,9 @@
         
  
     },
-    "":{
-        "WHAT":"",
-        "HOW TO IMPOROVE":""
+    "readability-metric":{
+        "WHAT":"Assesses the ease with which data can be read and interpreted by users or processing systems.",
+        "HOW TO IMPOROVE":"Utilize 'Trim Whitespace', 'Replace Substrings', and 'Adjust Text Case' to enhance data readability."
         
  
     },
