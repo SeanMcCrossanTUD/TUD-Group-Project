@@ -77,7 +77,9 @@ export class BubbleChartComponent implements OnInit {
       .enter().append('circle')
       .attr('class', 'bubble')
       .attr('r', d => radiusScale(d.value))
-      .attr('fill', this.getRandomColor())
+      .attr('fill', 'lightblue')
+      .style("stroke", "black") // Hard border
+      .style("stroke-width", "2px") // Border width
       .on('mouseover', (event, d) => {
         tooltip.transition().duration(200).style('opacity', 0.9);
         tooltip.html(`Key: ${d.key}<br/>Value: ${d.value}`)
