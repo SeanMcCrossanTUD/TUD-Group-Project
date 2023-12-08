@@ -68,15 +68,16 @@ export class BubbleChartComponent implements OnInit {
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
       .force('collision', d3.forceCollide().radius(d => radiusScale((d as BubbleDataItem).value) + 1));
 
-    const tooltip = d3.select('body').append('div')
+      const tooltip = d3.select('body').append('div')
       .attr('class', 'bubble-tooltip')
       .style('opacity', 0)
       .style('position', 'absolute')
       .style('background', 'white')
       .style('border', '1px solid black')
       .style('padding', '5px')
-      .style('pointer-events', 'none');
-
+      .style('pointer-events', 'none')
+      .style('z-index', '10'); // Ensure tooltip is on top
+    
     const bubbles = svg.selectAll('.bubble')
       .data(data)
       .enter().append('circle')
@@ -93,8 +94,9 @@ export class BubbleChartComponent implements OnInit {
       })
       .on('mouseout', () => {
         tooltip.transition().duration(500).style('opacity', 0);
-        tooltip.remove();
+        
       });
+    
 
     // Adding labels to bubbles
     svg.selectAll('.bubble-label')
