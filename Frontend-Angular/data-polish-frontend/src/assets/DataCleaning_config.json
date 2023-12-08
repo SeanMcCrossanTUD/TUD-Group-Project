@@ -5,5 +5,10 @@
         "EXAMPLE":"Intial column name 'Name', changed column name 'Full Name'"
         
     },
-    
+    "Drop Column":{
+        "WHAT":"To remove one or more specified columns from a DataFrame.",
+        "WHY":"Essential for removing non-contributory columns from large datasets, simplifying the model and potentially improving performance by addressing the curse of dimensionality.",
+        "EXAMPLE":"Column specified in the DataFrame titled 'Calories' can be removed from the DataFrame"
+         }
+
 }
