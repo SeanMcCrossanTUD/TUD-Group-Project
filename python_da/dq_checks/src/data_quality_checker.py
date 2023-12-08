@@ -131,7 +131,7 @@ class DataQualityChecker:
             if len(value_counts) > max_unique_values:
                 top_values = value_counts.head(max_unique_values)
                 other_count = value_counts.iloc[max_unique_values:].sum()
-                value_counts = top_values.append(pd.Series({'other values': other_count}))
+                # value_counts = top_values.append(pd.Series({'other values': other_count}))
 
             result['value_counts'][col] = value_counts.to_dict()
 
