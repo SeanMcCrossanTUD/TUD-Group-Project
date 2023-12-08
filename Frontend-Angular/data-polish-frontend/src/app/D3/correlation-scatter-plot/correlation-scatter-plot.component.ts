@@ -106,8 +106,7 @@ export class CorrelationScatterPlotComponent implements OnInit {
       .attr("r", 5)
       .attr("cx", 0) // Start from the left
       .attr("cy", d => y(d.target))
-      // .style("fill", "lightblue") // Lighter fill color
-      .style("fill",primarycolor)
+      .style("fill", "lightblue") // Lighter fill color
       .style("stroke", "black") // Hard border
       .style("stroke-width", "2px"); // Border width
 
