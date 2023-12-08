@@ -106,7 +106,6 @@ export class OutliersScatterPlotComponent implements OnInit {
         tooltip.transition()
           .duration(500)
           .style('opacity', 0);
-        tooltip.remove();
       });
 
     // Adding legend
