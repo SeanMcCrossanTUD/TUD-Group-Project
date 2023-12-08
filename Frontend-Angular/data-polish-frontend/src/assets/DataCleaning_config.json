@@ -49,7 +49,19 @@
         "EXAMPLE":"A column with special characters like '@,.#!&' and more will have them removed"
     },
 
+    "Trim Whitespace":{
+        "WHAT":"To clean a text column in a DataFrame by trimming any leading and trailing whitespace.",
+        "WHY":"Trimming whitespace reduces noise and potential errors in data processing and analysis, enhancing the overall data quality.",
+        "EXAMPLE":"A text column with whitespace will have the whitespace removed"
+        },
+
     
+
+
+
+
+
+
 
 
         
