@@ -23,9 +23,9 @@
         
         
     },
-    "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
+    "cardinality":{
+        "WHAT":"Shows the uniqueness of data by representing the number of distinct values in a column.",
+        "WHY":"Helpful for understanding when to collapse rare categories or when binning might be necessary for numeric to categorical conversions."
         
         
     },
