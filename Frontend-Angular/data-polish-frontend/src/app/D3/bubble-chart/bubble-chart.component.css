@@ -1,0 +1,9 @@
+.tooltip {
+    position: absolute;
+    background-color: rgb(156, 64, 64);
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 5px;
+    pointer-events: none;
+    
+}
