@@ -43,7 +43,18 @@
         "EXAMPLE":"Change a column from numeric to text and unlock text cleaning features"
     },
 
+    "Special Character Removal":{
+        "WHAT":"To clean a text column in a DataFrame by removing any special characters, leaving only alphanumeric characters and spaces.",
+        "WHY":"Improves dataset clarity by renaming verbose, typo-ridden, or inconsistent columns, enhancing readability for users.",
+        "EXAMPLE":"A column with special characters like '@,.#!&' and more will have them removed"
+    },
+
     
+
+
+        
+
+
 
 
 
