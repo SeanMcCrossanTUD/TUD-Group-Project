@@ -49,20 +49,23 @@ export class SpiderChartComponent implements OnInit {
                   .append('g')
                   .attr('transform', `translate(${width / 2 + margin.left},${height / 2 + margin.top})`);
 
-    // Create labels
-    const labels = svg.selectAll(".axisLabel")
-                      .data(data)
-                      .enter().append("g")
-                      .attr("class", "axisLabel");
-                   
-    labels.append("text")
-          .attr("class", "legend")
-          .style("font-size", "12px")
-          .attr("text-anchor", "middle")
-          .attr("dy", "0.35em")
-          .attr("x", (d, i) => (rScale(100) + 20) * Math.cos(angleSlice * i - Math.PI / 2))
-          .attr("y", (d, i) => (rScale(100) + 20) * Math.sin(angleSlice * i - Math.PI / 2))
-          .text(d => d.axis);
+  // Define an offset for the labels
+  const labelOffset = 10; // Adjust this value as needed
+
+  // Create labels
+  const labels = svg.selectAll(".axisLabel")
+                    .data(data)
+                    .enter().append("g")
+                    .attr("class", "axisLabel");
+                 
+  labels.append("text")
+        .attr("class", "legend")
+        .style("font-size", "12px")
+        .attr("text-anchor", "middle")
+        .attr("dy", "0.35em")
+        .attr("x", (d, i) => (rScale(100) + labelOffset) * Math.cos(angleSlice * i - Math.PI / 2))
+        .attr("y", (d, i) => (rScale(100) + labelOffset) * Math.sin(angleSlice * i - Math.PI / 2))
+        .text(d => d.axis);
 
     // Create grid circles
     svg.selectAll(".grid-circle")
