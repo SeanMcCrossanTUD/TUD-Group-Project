@@ -114,5 +114,5 @@ sup:hover{
   font-family:"Verdana";
   text-align: center;
 }
-html, body { height: 100%; }
-body { margin: 0;}
+/* html { height: 100vh; } */
+ body { margin: 0;} 
