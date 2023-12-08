@@ -78,23 +78,28 @@ export class BubbleChartComponent implements OnInit {
       .style('pointer-events', 'none')
       .style('z-index', '10'); // Ensure tooltip is on top
     
-    const bubbles = svg.selectAll('.bubble')
+      const bubbles = svg.selectAll('.bubble')
       .data(data)
       .enter().append('circle')
       .attr('class', 'bubble')
       .attr('r', d => radiusScale(d.value))
-      .attr('fill', 'lightblue')
+      .attr('fill', 'lightblue') // Original color
       .style("stroke", "black")
       .style("stroke-width", "2px")
       .on('mouseover', (event, d) => {
+        d3.select(event.currentTarget) // Select the current bubble
+          .attr('fill', 'lightcoral'); // Change color to light red on hover
+  
         tooltip.transition().duration(200).style('opacity', 0.9);
         tooltip.html(`Key: ${d.key}<br/>Value: ${d.value}`)
           .style('left', (event.pageX + 10) + 'px')
           .style('top', (event.pageY - 28) + 'px');
       })
-      .on('mouseout', () => {
+      .on('mouseout', (event) => {
+        d3.select(event.currentTarget) // Select the current bubble
+          .attr('fill', 'lightblue'); // Revert color back to light blue
+  
         tooltip.transition().duration(500).style('opacity', 0);
-        
       });
     
 
