@@ -78,7 +78,25 @@
         "WHY":"Machine learning models can become overly complex when dealing with a large number of categories, some of which are rarely represented. Simplifying the number of categories can improve model performance and generalizability.",
         "EXAMPLE":"A category column with a categories having an occurrence percentage less than a given threshold set by a user is put into a category called 'Other'"
     },
+
+     "Text Tokenisation":{
+        "WHAT":"To tokenize the contents of a text column, splitting text into individual words or meaningful elements",
+        "WHY":"In text analytics, tokenization is a precursor to vectorization methods like Bag of Words or TF-IDF, which transform text data into numerical formats that machine learning algorithms can process.",
+        "EXAMPLE":"A text column will have each individual element separated with '' "
+        
+    },
+
+    "Regular Expression Operations":{
+        "WHAT":"To apply regex operations such as 'replace' or 'extract' on a text column, enabling complex pattern matching and text transformations.",
+        "WHY":"Makes it easier to apply specific style changes to text columns if there in knowledge of regex operations",
+        "EXAMPLE":"Apply regex operartion to text column or extract or replace string formats"
+    },
+
     
+
+
+
+
         
 
 
