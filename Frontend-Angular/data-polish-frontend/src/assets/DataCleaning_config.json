@@ -55,7 +55,17 @@
         "EXAMPLE":"A text column with whitespace will have the whitespace removed"
         },
 
+    "Replace Substrings":{
+        "WHAT":"To replace occurrences of a specific substring with a new substring within a text column of a DataFrame.",
+        "WHY":"Standardizes textual variations in datasets by replacing specific substrings, addressing inconsistencies in representations of words or phrases.",
+        "EXAMPLE":"Replaces a string with another string e.g. 'old_substring': 'dog' , 'new_substring': 'cat' "
+    }, 
     
+
+
+        
+
+
 
 
 
