@@ -71,21 +71,27 @@
         
  
     },
-    "":{
-        "WHAT":"",
-        "WHY":""
+    "completeness-metric":{
+        "WHAT":"Measures the proportion of non-missing entries in the dataset to assess data completeness.",
+        "HOW TO IMPOROVE":"to improve the score, look into the 'Fill Missing Values' function."
         
  
     },
     "":{
         "WHAT":"",
-        "WHY":""
+        "HOW TO IMPOROVE":""
         
  
     },
     "":{
         "WHAT":"",
-        "WHY":""
+        "HOW TO IMPOROVE":""
+        
+ 
+    },
+    "":{
+        "WHAT":"",
+        "HOW TO IMPOROVE":""
         
  
     }
