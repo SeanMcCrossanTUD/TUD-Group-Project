@@ -50,11 +50,10 @@ export class HistogramComponent implements OnInit {
   }
 
   createHistogram(): void {
-    if (!this.selectedField) {
+    if (!this.selectedField || this.data.length === 0) {
+      console.error('No data available for histogram');
       return;
     }
-
-
     
     this.data = this.rawData[this.selectedField]
                   .filter((d: any) => d.value !== undefined)
@@ -166,7 +165,8 @@ export class HistogramComponent implements OnInit {
         .attr("d", line);
   }
 
-  public onFieldChange(): void {
+  public onFieldChange(newField: string): void {
+    this.selectedField = newField;
     this.updateDataAndCreateHistogram();
   }
 }
