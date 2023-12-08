@@ -73,7 +73,15 @@
         "EXAMPLE":"A text column will have all different stopwords removed "
     },
 
+    "Combine Rare Categopries":{
+        "WHAT":"To collapse categories within a categorical column that fall below a specified percentage threshold into an 'Other' category, simplifying the data and potentially improving analysis.",
+        "WHY":"Machine learning models can become overly complex when dealing with a large number of categories, some of which are rarely represented. Simplifying the number of categories can improve model performance and generalizability.",
+        "EXAMPLE":"A category column with a categories having an occurrence percentage less than a given threshold set by a user is put into a category called 'Other'"
+    },
     
+        
+
+
 
 
 
