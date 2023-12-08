@@ -53,9 +53,9 @@
         
  
     },
-    "":{
-        "WHAT":"",
-        "WHY":""
+    "histogram":{
+        "WHAT":"Represents the distribution of numerical data.",
+        "WHY":"Analyze the distribution of values to inform normalization."
         
  
     },
