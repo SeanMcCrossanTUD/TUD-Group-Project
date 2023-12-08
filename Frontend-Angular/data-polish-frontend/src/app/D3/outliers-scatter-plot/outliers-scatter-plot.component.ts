@@ -134,5 +134,5 @@ export class OutliersScatterPlotComponent implements OnInit {
     const target = event.target as HTMLSelectElement;
     this.selectedField = target.value;
     this.createScatterPlot(this.selectedField);
-  }
+  }  
 }
