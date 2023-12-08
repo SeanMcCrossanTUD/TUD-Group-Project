@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
-import { HttpClient } from '@angular/common/http';
 import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
+
 interface BubbleDataItem extends d3.SimulationNodeDatum {
   key: string;
   value: number;
@@ -18,22 +18,23 @@ export class BubbleChartComponent implements OnInit {
   private width = 600 - this.margin.left - this.margin.right;
   private height = 400 - this.margin.top - this.margin.bottom;
   categories: string[] = [];
+  selectedCategory: string = ''; // Add a property for the selected category
 
-  constructor(private http: HttpClient,
-    private D3DashboardService:D3DashboardService) { }
+  constructor(private D3DashboardService: D3DashboardService) { }
 
   ngOnInit(): void {
     this.D3DashboardService.getBubbleChart().subscribe(data => {
       this.categories = Object.keys(data.value_counts);
-      const bubbleData = this.transformData(data.value_counts[this.categories[0]]);
+      this.selectedCategory = this.categories[0]; // Set the default category
+      const bubbleData = this.transformData(data.value_counts[this.selectedCategory]);
       this.createBubbleChart(bubbleData);
     }, error => {
       console.error('Error loading json data:', error);
     });
   }
 
-  // Add the onCategoryChange method
   onCategoryChange(category: string): void {
+    this.selectedCategory = category; // Update the selected category
     if (category) {
       this.D3DashboardService.getBubbleChart().subscribe(data => {
         const bubbleData = this.transformData(data.value_counts[category]);
