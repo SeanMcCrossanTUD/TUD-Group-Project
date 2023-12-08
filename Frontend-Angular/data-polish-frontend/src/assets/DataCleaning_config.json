@@ -5,10 +5,21 @@
         "EXAMPLE":"Intial column name 'Name', changed column name 'Full Name'"
         
     },
+
     "Drop Column":{
         "WHAT":"To remove one or more specified columns from a DataFrame.",
         "WHY":"Essential for removing non-contributory columns from large datasets, simplifying the model and potentially improving performance by addressing the curse of dimensionality.",
         "EXAMPLE":"Column specified in the DataFrame titled 'Calories' can be removed from the DataFrame"
-         }
+         },
+
+    "Data Normalization":{
+        "WHAT":"To normalize data in a specified DataFrame column using min-max scaling or z-score normalization.",
+        "WHY":"Crucial for addressing performance issues in machine learning algorithms caused by numerically diverse attribute scales.",
+        "EXAMPLE":"Reduce a numerical column with diverse range of values into a 0-1 scale for min-max or deviations above or below the mean for z score scaling"
+        
+    },
+    
+
+
 
 }
