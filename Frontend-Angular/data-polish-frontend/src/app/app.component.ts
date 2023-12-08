@@ -48,6 +48,9 @@ export class AppComponent {
   ngOnInit() {
     var loc=String(window.location);
     this.currentpage=Number(loc.charAt(loc.length-1))
+    if(isNaN(this.currentpage) || this.currentpage==undefined){
+      this.currentpage=1;
+    }
     console.log(this.currentpage)
     let login:string = this.cookieService.get('LOGIN');
     if(login=='TRUE'){
@@ -238,12 +241,12 @@ movenext(){
      
       this.toggleLine(42);
     }
-    if(this.currentpage!=1){
-      this.backStyle='visibility: visible;'
-    }
-    if(this.currentpage==5){
-      this.nextStyle='visibility: collapse;'
-    }
+    // if(this.currentpage!=1){
+    //   this.backStyle='visibility: visible;'
+    // }
+    // if(this.currentpage==5){
+    //   this.nextStyle='visibility: collapse;'
+    // }
     
   }
   
@@ -253,12 +256,12 @@ moveback(){
   if(this.currentpage>1){
     this.currentpage--;
     this.router.navigate([this.currentpage]);
-    if(this.currentpage==1){
-      this.backStyle='visibility: collapse;'
-    }
-    if(this.currentpage!=5){
-      this.nextStyle='visibility: visible;'
-    }
+    // if(this.currentpage==1){
+    //   this.backStyle='visibility: collapse;'
+    // }
+    // if(this.currentpage!=5){
+    //   this.nextStyle='visibility: visible;'
+    // }
     if(this.currentpage==4){
       this.toggleLine(41);
     }

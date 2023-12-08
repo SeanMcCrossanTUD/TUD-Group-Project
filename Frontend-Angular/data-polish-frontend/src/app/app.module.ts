@@ -68,7 +68,7 @@ import { TokenInterceptor } from './Services/token.interceptor';
 import { SliderModule } from 'primeng/slider';
 import { MultiSelectModule } from 'primeng/multiselect';
 const routes: Routes = [
-    {path:'',component:UploadFileComponent},
+    {path:'',redirectTo:'/1',pathMatch:'full'},
     {path:'newjob',component:SetpsHomeComponent},
     {path:'1',component:UploadFileComponent},
     {path:'2',component:DataPreviewComponent},
