@@ -26,13 +26,12 @@ export class HistogramComponent implements OnInit {
   loadData() {
     this.D3DashboardService.getoutlier().subscribe(
       (data: any) => {
-        console.log(data);
         this.rawData = data.outliers;
         this.fields = data.fields;
 
         if (this.fields.length > 0) {
-          this.selectedField = this.fields[0];
-          this.updateDataAndCreateHistogram();
+          this.selectedField = this.fields[0]; // Select the first field
+          this.updateDataAndCreateHistogram(); // Prepare data and create histogram
         } else {
           console.error('No fields found');
         }
@@ -46,7 +45,7 @@ export class HistogramComponent implements OnInit {
     this.data = this.rawData[this.selectedField]
                   .filter((d: any) => d.value !== undefined)
                   .map((d: any) => ({ value: d.value }));
-    this.createHistogram();
+    this.createHistogram(); // Create histogram with the selected field's data
   }
 
   createHistogram(): void {
