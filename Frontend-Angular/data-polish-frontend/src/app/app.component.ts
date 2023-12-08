@@ -19,7 +19,7 @@ import { LoginServiceService } from './Services/login/login-service.service';
 })
 export class AppComponent {
   
-  currentpage=1;
+  currentpage:any;
   title = 'dataPolish';
   items: any | null;
   radius:any =100;
@@ -46,6 +46,9 @@ export class AppComponent {
   line4:any
   linecolor:any='white';
   ngOnInit() {
+    var loc=String(window.location);
+    this.currentpage=Number(loc.charAt(loc.length-1))
+    console.log(this.currentpage)
     let login:string = this.cookieService.get('LOGIN');
     if(login=='TRUE'){
       this.isLoggedin = true;
