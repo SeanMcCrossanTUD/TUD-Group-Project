@@ -1,0 +1,30 @@
+.landing-page {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .logo {
+    max-width: 100px;
+    max-height: 100px;
+  }
+  
+  h1 {
+    font-size: 2em;
+    margin-top: 20px;
+  }
+  
+  p {
+    font-size: 1.2em;
+    margin-top: 10px;
+  }
+  
+  .buttons {
+    margin-top: 20px;
+  }
+  
+  button {
+    font-size: 1em;
+    margin-right: 10px;
+    padding: 10px 20px;
+  }
+  
