@@ -77,34 +77,20 @@ export class BubbleChartComponent implements OnInit {
       .attr('r', d => radiusScale(d.value))
       .attr('fill', this.getRandomColor());
 
-      const labels = svg.selectAll('.label')
+    const labels = svg.selectAll('.label')
       .data(data)
       .enter().append('text')
       .attr('class', 'label')
       .attr('text-anchor', 'middle')
       .attr('fill', 'black')
-      .text(d => this.getFittedText(d.key, radiusScale(d.value)))
-      .style('font-size', d => `${this.getFontSize(d.key, radiusScale(d.value))}px`)
-      .style('pointer-events', 'none');  
+      .text(d => d.key)
+      .style('font-size', d => `${Math.max(20, Math.min(2 * radiusScale(d.value), (2 * radiusScale(d.value) - 8) / this.getWidth(d.key)))}px`)
+      .style('pointer-events', 'none');
 
     simulation.on('tick', () => {
       bubbles.attr('cx', d => d.x ?? 0).attr('cy', d => d.y ?? 0);
       labels.attr('x', d => d.x ?? 0).attr('y', d => (d.y ?? 0) + 5);
     });
-
-    labels.attr('x', d => d.x ?? 0)
-        .attr('y', d => (d.y ?? 0) + (radiusScale(d.value) / 4));
-    
-  }
-  private getFontSize(text: string, radius: number): number {
-    const maxFontSize = 20;
-    const scalingFactor = 2;
-    let fontSize = Math.min(maxFontSize, scalingFactor * radius / text.length);
-    return Math.max(fontSize, 8);
-  }
-  private getFittedText(text: string, radius: number): string {
-    const maxLength = Math.floor(2 * Math.PI * radius / 6);
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
 
   private getRandomColor(): string {
