@@ -16,7 +16,7 @@
   margin-left: 10%;
 }
 .landing-page * {
-  animation: slideUp 1s ease-out; /* Apply animation to all elements within .landing-page */
+  animation: slideUp 1.5s ease-in-out; /* Apply animation to all elements within .landing-page */
 }
 
 .logo {
