@@ -90,10 +90,9 @@ def handle_renaming_and_dropping_columns(prep, json_config):
         prep.remove_columns(columns_to_remove)
         logger.info(f"Dropped columns: {', '.join(columns_to_remove)}")
 
-def apply_dataset_actions(dataset, json_config):
+def apply_dataset_actions(prep, json_config):
     # Check if dataset_actions key exists in the configuration
 
-    prep = DataPrep(dataset)
     if 'dataset_actions' in json_config:
         for action in json_config['dataset_actions']:
             if action == "remove_duplicates":
@@ -311,8 +310,6 @@ def main(test_iterations=None):
                 else:
                     logger.error(f'Invalid file type for {filename}. Only CSV and Excel files are supported.')
                     continue
-
-                data = apply_dataset_actions(data, json_rules)
 
                 result = apply_configured_transformations(json_config=json_rules, dataset=data)
                 
