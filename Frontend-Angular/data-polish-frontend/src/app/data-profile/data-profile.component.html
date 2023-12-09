@@ -6,68 +6,79 @@
 <app-cardinality/> -->
 
 <div class="dashboard">
+    <mat-tab-group  
+    mat-stretch-tabs="true" mat-align-tabs="start"
+    style="border: 1px white solid;"
+        >
 
-    <div class="row1">
-        
-        <div class="stat div1">
-           
-            <div>
-                Total NO. Fields
-                <sup (click)="openHelpText('NUMBEROFFIELDS')">
-                    <span class="material-icons">
-                        help
-                        </span>
-                </sup>
-            </div>
-            <app-number-fields-chart/>
-        </div>
-        <div class="stat div2">
-            <div>
-                Total NO. Records 
-                <sup>
-                    <span class="material-icons">
-                        help
-                        </span>
-                </sup>
-            </div>
-            
-           <app-records-chart/>
-        </div>
-        <div class="stat div3">
-            <div>
-                Number of Duplicates 
-                <sup>
-                    <span class="material-icons">
-                        help
-                        </span>
-                </sup>
-            </div>
-           
-            <app-duplicate-chart/>
-        </div>
-        <div class="stat div4 dq-all">
-            <div style="display: flex;">
-                <div style="
-                flex-basis: 90%;
-                justify-content: center;
-                align-items: center;
-                gap: 5px;
-                ">
-                <p>
-                    Data Quality Score
-                </p>
-               
-                
-                    <app-data-quality-metric/>
+        <mat-tab > 
+            <ng-template mat-tab-label>
+                <div style="color: white;">
+                    Data Profile
                 </div>
-                <div style="flex-basis: 5%; display: flex; flex-direction: column; justify-content: space-between;">
-                    <sup>
+                </ng-template>  
+                <ng-template matTabContent>
+                <div class="tabs">
+                    <div class="stat div1 help-text-parent" >
+           
+                        <div>
+                            Total NO. Fields
+                            <sup (click)="openHelpText('NUMBEROFFIELDS')" class="help-text-child">
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                            </sup>
+                        </div>
+                        <app-number-fields-chart/>
+                    </div>
+                    <div class="stat div2">
+                        <div>
+                            Total NO. Records 
+                            <sup>
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                            </sup>
+                        </div>
                         
-                    
-                        <span class="material-icons">
-                            help
-                            </span>
-                        </sup>
+                       <app-records-chart/>
+                    </div>
+                    <div class="chart-background"><app-cardinality/></div>
+                    <div class="chart-background"><app-data-types-chart/></div>
+                    <!-- tab-1 -->
+                </div>
+                </ng-template>
+        </mat-tab>
+        <mat-tab > 
+            <ng-template mat-tab-label>
+                <div style="color: white;">
+                    Data Quality
+                </div>
+                </ng-template>  
+                <ng-template matTabContent>
+                <div class="tabs">
+                 
+                  
+                    <div class="stat div3">
+                        <div>
+                            Number of Duplicates 
+                            <sup>
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                            </sup>
+                        </div>
+                       
+                        <app-duplicate-chart/>
+                    </div>
+          
+                      <div class="chart-background"
+                        style="flex-direction: column;"
+                      >
+                        <p>
+                            Data Quality Score
+                        </p>
+                        <app-data-quality-metric/>
                         <sup>
                             Expand
                         <span class="material-icons" (click)="showMore()" title="Show More">
@@ -75,63 +86,77 @@
                             expand_circle_down
                             </span>
                         </sup>
-                </div>
+                      </div>
+
+               
               
-            </div>
-           
-        </div>
-        
-    </div>
-    <div 
-    class="row1"
-    *ngIf="!hide_more">
-        <div class="stat">
-            <app-completeness-metric/>
-        </div>
-        <div class="stat">
-            <app-consistency-metric/>
-        </div>
-        <div class="stat">
-            <app-uniqueness-metric/>
-        </div>
-        <div class="stat">
-            <app-readability-metric/>
-        </div>
-    </div>
-    
-    <div class="grid-container">
-        <div style="display: flex;
-        justify-content: space-around;
-        gap:0px">
-         
-            <app-spider-chart style="max-width: 80%;"/>
-            <sup (click)="openHelpText('SPIDERCHART')"
-                style="flex-basis: 40%; display: flex; flex-direction: column;
-                 justify-content: 
-                 flex-start;
-                 min-height: 100%;">
-                <span class="material-icons">
-                    help
-                    </span>
-                    <span>&nbsp;</span>
-            </sup>
-        </div>
+                   
+                 
 
-        
-        <div><app-histogram/></div> 
+                    <div 
+                    class="row1"
+                    *ngIf="!hide_more">
+                        <div class="stat">
+                            <app-completeness-metric/>
+                        </div>
+                        <div class="stat">
+                            <app-consistency-metric/>
+                        </div>
+                        </div>  
+                        <div 
+                    class="row1"
+                    *ngIf="!hide_more">
+                        <div class="stat">
+                            <app-uniqueness-metric/>
+                        </div>
+                        <div class="stat">
+                            <app-readability-metric/>
+                        </div>
+                    </div>
+                        
+                    <div class="chart-background">
+                     
+                        <app-spider-chart style="max-width: 80%;"/>
+                        <sup (click)="openHelpText('SPIDERCHART')"
+                            style="flex-basis: 40%; display: flex; flex-direction: column;
+                             justify-content: 
+                             flex-start;
+                             min-height: 100%;">
+                            <span class="material-icons">
+                                help
+                                </span>
+                                <span>&nbsp;</span>
+                        </sup>
+                    </div>
+                    <div class="chart-background"> <app-missing-values-chart />  </div>
+                    
+                    <!-- tabs-2 -->
+                </div>
+                      
+            </ng-template>
+        </mat-tab>
+        <mat-tab  > 
+            <ng-template mat-tab-label>
+                <div style="color: white;">
+                    Data Exploration
+                </div>
+                </ng-template>  
+                <ng-template matTabContent>
+                    <div class="tabs">
+                        <div class="chart-background"><app-histogram/></div> 
+                    <div class="chart-background"><app-correlation-scatter-plot/></div>
+                    <div class="chart-background"><app-bubble-chart/></div>
+                    <div class="chart-background"> <app-outliers-scatter-plot/> </div> 
+                    </div>
+                    
+                    </ng-template>
 
-        <div><app-cardinality/></div>
-        <div><app-correlation-scatter-plot/></div>
-
-        <div><app-data-types-chart/></div>
-        <div>
-            <app-bubble-chart/>
-        </div>
-         
-        <div> <app-outliers-scatter-plot/> </div> 
-        <div > <app-missing-values-chart />  </div>
-         
-    </div>
+                    <!-- tab-3 -->
+    </mat-tab>
+        </mat-tab-group>
+  
+   
+   
 </div>
 <p-dialog 
 header="Help"
