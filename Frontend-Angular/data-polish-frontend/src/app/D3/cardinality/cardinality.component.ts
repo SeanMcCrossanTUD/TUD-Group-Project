@@ -58,16 +58,18 @@ export class CardinalityComponent implements OnInit {
         tooltip = d3.select('body').append<HTMLElement>('div')
           .attr('class', 'tooltip')
           .style('opacity', 0)
-          .style('position', 'absolute')
-          .style('text-align', 'center')
-          .style('width', '120px')
-          .style('height', '28px')
-          .style('padding', '2px')
-          .style('font', '12px sans-serif')
-          .style('background', 'lightsteelblue')
-          .style('border', '0px')
-          .style('border-radius', '8px')
-          .style('pointer-events', 'none');
+          // .style('position', 'absolute')
+          // .style('text-align', 'center')
+          // .style('width', '120px')
+          // .style('height', '28px')
+          .style('z-index',5);
+          
+          // .style('padding', '2px')
+          // .style('font', '12px sans-serif')
+          // .style('background', 'lightsteelblue')
+          // .style('border', '0px')
+          // .style('border-radius', '8px')
+          // .style('pointer-events', 'none');
       }
       x.domain(sortedData.map(d => d[0]));
       y.domain([0, d3.max(sortedData, d => d[1]) || 0]);
