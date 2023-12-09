@@ -73,3 +73,12 @@
     overflow: scroll;
     max-height: 80vh
 }
+
+.help-text-parent{
+    position: relative;
+}
+.help-text-child{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
