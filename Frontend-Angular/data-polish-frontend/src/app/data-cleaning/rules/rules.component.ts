@@ -84,7 +84,7 @@ export class RulesComponent {
      
         this.DataPreviewDataService.getJsonData(Response).subscribe(
           (r2:any)=>{  
-            console.log(r2);         
+                  
             this.makedata(r2.columnNames,r2.datatype);
           
             
