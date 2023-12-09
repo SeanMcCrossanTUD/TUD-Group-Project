@@ -34,6 +34,7 @@ def attempt_convert_to_dates(df):
             # Check if conversion was successful (non-NaT values should exist)
             if converted_col.notna().any():
                 df[col] = converted_col
+                print(f"{col} converted to datetime: {e}")
         except Exception as e:
             print(f"Could not convert column {col} to datetime: {e}")
     return df
