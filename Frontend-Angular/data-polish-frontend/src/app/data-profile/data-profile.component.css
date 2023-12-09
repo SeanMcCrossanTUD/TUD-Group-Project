@@ -70,4 +70,6 @@
     grid-template-columns: 1fr 1fr;
     gap: 5px;
     padding-top: 10px;
+    overflow: scroll;
+    max-height: 80vh
 }
