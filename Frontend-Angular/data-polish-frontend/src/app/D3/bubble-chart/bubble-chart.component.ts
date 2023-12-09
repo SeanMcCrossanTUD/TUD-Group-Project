@@ -19,6 +19,7 @@ export class BubbleChartComponent implements OnInit {
   private height = 400 - this.margin.top - this.margin.bottom;
   categories: string[] = [];
   selectedCategory: string = '';
+  public numberOfInstances: number = 0;
 
   constructor(private D3DashboardService: D3DashboardService) { }
 
@@ -53,6 +54,7 @@ export class BubbleChartComponent implements OnInit {
   private createBubbleChart(data: BubbleDataItem[]): void {
     d3.select(this.chartContainer.nativeElement).select('svg').remove();
     const element = this.chartContainer.nativeElement;
+    this.numberOfInstances = data.length;
     const svg = d3.select(element).append('svg')
       .attr('width', this.width + this.margin.left + this.margin.right)
       .attr('height', this.height + this.margin.top + this.margin.bottom)
