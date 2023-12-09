@@ -15,15 +15,13 @@
     </div>
   </div>
 
-  
-  <h2 *ngIf="selectedTarget && selectedPredictor">{{ selectedTarget }} vs {{ selectedPredictor }} Correlation</h2>
+  <h2 *ngIf="selectedTarget && selectedPredictor">{{ selectedTarget }} vs {{ selectedPredictor }} Correlation Chart</h2>
 
-  
   <div id="correlation-plot"></div>
 </div>
 
 <ng-template #noDataTemplate>
   <div class="no-data-message">
-    <h2>No Numeric Data Available To Profile</h2>
+    <h2>No Numeric Data Available To Populate Correlation Chart</h2>
   </div>
 </ng-template>

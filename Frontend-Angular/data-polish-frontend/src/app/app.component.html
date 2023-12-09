@@ -73,10 +73,10 @@
   </div>
   
   <div class="bottom-bar">
-    <div (click)="moveback()" [style]="backStyle">
+    <div (click)="moveback()"  *ngIf="currentpage>1">
       Back
     </div>
-    <div (click)="movenext()" [style]="nextStyle">
+    <div (click)="movenext()" class="nextButton"  *ngIf="currentpage<5">
       Next
     </div>
   </div>

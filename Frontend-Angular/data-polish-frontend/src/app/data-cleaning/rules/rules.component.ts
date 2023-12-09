@@ -163,6 +163,7 @@ export class RulesComponent {
       this.DataCleaningService.saveData(this.rules,jobid).subscribe(
         (res)=>{
           this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Your rules has been saved' })
+          this.CookieService.set('RULESSAVED','TRUE')
         },
         (err)=>{
           alert(err);

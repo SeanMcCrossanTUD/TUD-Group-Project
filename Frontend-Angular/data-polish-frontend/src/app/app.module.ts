@@ -67,8 +67,9 @@ import { constants } from './Const/config';
 import { TokenInterceptor } from './Services/token.interceptor';
 import { SliderModule } from 'primeng/slider';
 import { MultiSelectModule } from 'primeng/multiselect';
+import {MatTabsModule} from '@angular/material/tabs';
 const routes: Routes = [
-    {path:'',component:UploadFileComponent},
+    {path:'',redirectTo:'/1',pathMatch:'full'},
     {path:'newjob',component:SetpsHomeComponent},
     {path:'1',component:UploadFileComponent},
     {path:'2',component:DataPreviewComponent},
@@ -132,6 +133,7 @@ const routes: Routes = [
     FormsModule,
     MultiSelectModule,
     TabViewModule,
+    MatTabsModule,
     StepsModule,
     SliderModule,
     SpeedDialModule,
