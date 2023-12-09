@@ -63,13 +63,12 @@ export class BubbleChartComponent implements OnInit {
     const chartLayer = svg.append('g')
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
-      const zoom = d3.zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.5, 5]) // Limit the scale range
+    const zoom = d3.zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.5, 5])
       .on('zoom', (event) => {
         chartLayer.attr('transform', event.transform);
       });
   
-    // Apply the zoom behavior to the SVG element
     svg.call(zoom as any);
 
     const radiusScale = d3.scaleSqrt()
@@ -98,38 +97,65 @@ export class BubbleChartComponent implements OnInit {
       .attr('r', d => radiusScale(d.value))
       .attr('fill', 'lightblue')
       .style("stroke", "black")
-      .style("stroke-width", "2px")
-      .on('mouseover', (event, d) => {
-        d3.select(event.currentTarget)
-          .attr('fill', 'lightcoral');
+      .style("stroke-width", "2px");
 
-        tooltip.transition().duration(200).style('opacity', 0.9);
-        tooltip.html(`Key: ${d.key}<br/>Value: ${d.value}`)
-          .style('left', (event.pageX + 10) + 'px')
-          .style('top', (event.pageY - 28) + 'px');
-      })
-      .on('mouseout', (event) => {
-        d3.select(event.currentTarget)
-          .attr('fill', 'lightblue');
-
-        tooltip.transition().duration(500).style('opacity', 0);
-      });
-
-    svg.selectAll('.bubble-label')
+    const labels = chartLayer.selectAll('.bubble-label')
       .data(data)
       .enter().append('text')
       .attr('class', 'bubble-label')
       .style('text-anchor', 'middle')
       .style('fill', 'black')
       .text(d => d.key)
-      .style('pointer-events', 'none');
+      .style('pointer-events', 'none')
+      .attr('dy', '0.35em'); // Adjust for vertical centering
+
+    simulation.on('tick', () => {
+      bubbles.attr('cx', d => (d as BubbleDataItem).x ?? 0)
+             .attr('cy', d => (d as BubbleDataItem).y ?? 0);
+
+      labels.attr('x', d => (d as BubbleDataItem).x ?? 0)
+            .attr('y', d => (d as BubbleDataItem).y ?? 0);
+    });
+
+    bubbles.on('mouseover', (event, d) => {
+      d3.select(event.currentTarget)
+        .attr('fill', 'lightcoral');
+
+      tooltip.transition().duration(200).style('opacity', 0.9);
+      tooltip.html(`Key: ${d.key}<br/>Value: ${d.value}`)
+        .style('left', (event.pageX + 10) + 'px')
+        .style('top', (event.pageY - 28) + 'px');
+    })
+    .on('mouseout', (event) => {
+      d3.select(event.currentTarget)
+        .attr('fill', 'lightblue');
+
+      tooltip.transition().duration(500).style('opacity', 0);
+    });
+
+
+      svg.selectAll('.bubble-label')
+      .data(data)
+      .enter().append('text')
+      .attr('class', 'bubble-label')
+      .style('text-anchor', 'middle')
+      .style('fill', 'black')
+      .text(d => d.key)
+      .style('pointer-events', 'none')
+      .attr('dy', '.3em') // Vertically center align
+      .each(function(d) {
+        const node = d3.select(this);
+        const radius = radiusScale(d.value);
+        node.attr('x', d.x ?? 0)
+            .attr('y', d.y ?? 0);
+      });
 
     simulation.on('tick', () => {
       bubbles.attr('cx', d => (d as BubbleDataItem).x ?? 0)
              .attr('cy', d => (d as BubbleDataItem).y ?? 0);
       svg.selectAll('.bubble-label')
          .attr('x', d => (d as BubbleDataItem).x ?? 0)
-         .attr('y', d => ((d as BubbleDataItem).y ?? 0) + 5);
+         .attr('y', d => ((d as BubbleDataItem).y ?? 0));
     });
-  }
+}
 }
