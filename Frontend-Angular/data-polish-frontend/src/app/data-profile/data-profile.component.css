@@ -19,28 +19,29 @@
 
 .row1 {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
    gap: 10px;
     }
     
-    /* .div1 { grid-area: 1 / 1 / 2 / 1; }
-    .div2 { grid-area: 1 / 3 / 3 / 1; }
-    .div3 { grid-area: 1 / 5 / 3 / 1; }
-    .div4 { grid-area: 1 / 7 / 3 / 1; } */
+
 
 .stat{
     background-color: white;
-    /* border-radius: 5px; */
-    border: black 2px solid;
     height:100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 2vw;
-    padding: 0.5vw;
+    padding: 1vw;
 }
-
+.chart-background{
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+}
 
 
 /***** grid*/
@@ -64,5 +65,9 @@
     
 }
 
-
-  
+.tabs{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    padding-top: 10px;
+}
