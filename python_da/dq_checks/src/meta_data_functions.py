@@ -49,6 +49,14 @@ def dataframe_metadata_to_json(df):
     Returns:
     str: JSON string with metadata.
     """
+    # Mapping from Python data types to user-friendly types
+    type_mapping = {
+        'object': 'Text',
+        'float64': 'Numeric',
+        'int64': 'Numeric',
+        'bool': 'Boolean'
+    }
+
     # Does not exceed the number of rows in the data
     sample_size = min(500, len(df))
 
@@ -58,7 +66,7 @@ def dataframe_metadata_to_json(df):
 
     metadata = {
         "columnNames": list(df.columns),
-        "datatype": [str(df[col].dtype) for col in df.columns],
+        "datatype": [type_mapping.get(str(df[col].dtype), str(df[col].dtype)) for col in df.columns],
         "data": data_dict,
         "type_conversion": {col: possible_conversions(str(df[col].dtype)) for col in df.columns}
     }
