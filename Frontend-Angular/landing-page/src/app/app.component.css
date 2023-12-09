@@ -12,8 +12,11 @@
 
 .landing-page {
   text-align: left;
-  margin-top: 12%;
+  margin-top: 15%;
   margin-left: 10%;
+}
+.landing-page * {
+  animation: slideUp 1s ease-out; /* Apply animation to all elements within .landing-page */
 }
 
 .logo {
@@ -41,7 +44,7 @@ p {
 }
 
 .buttons {
-  margin-top: 8%;
+  margin-top: 5%;
 }
 
 /*button {
@@ -68,4 +71,13 @@ button {
 button:hover {
   background-color: white;
   color: black; /* Change text color when hovered */
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
