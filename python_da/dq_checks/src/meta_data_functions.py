@@ -50,7 +50,7 @@ def dataframe_metadata_to_json(df):
     str: JSON string with metadata.
     """
     # Does not exceed the number of rows in the data
-    sample_size = min(200, len(df))
+    sample_size = min(500, len(df))
 
     df_filtered = df.head(sample_size).fillna(value="")
 
