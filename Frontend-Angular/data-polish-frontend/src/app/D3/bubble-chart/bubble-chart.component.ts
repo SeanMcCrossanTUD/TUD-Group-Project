@@ -28,6 +28,7 @@ export class BubbleChartComponent implements OnInit {
       this.categories = Object.keys(data.value_counts);
       this.selectedCategory = this.categories[0];
       const bubbleData = this.transformData(data.value_counts[this.selectedCategory]);
+      this.calculateTotalValue(bubbleData);
       this.createBubbleChart(bubbleData);
     }, error => {
       console.error('Error loading json data:', error);
@@ -50,6 +51,12 @@ export class BubbleChartComponent implements OnInit {
       value: value as number
     }));
   }
+
+  private totalValue: number = 0;
+
+  private calculateTotalValue(data: BubbleDataItem[]): void {
+    this.totalValue = data.reduce((acc, item) => acc + item.value, 0);
+}
 
   private createBubbleChart(data: BubbleDataItem[]): void {
     d3.select(this.chartContainer.nativeElement).select('svg').remove();
@@ -120,16 +127,19 @@ export class BubbleChartComponent implements OnInit {
     bubbles.on('mouseover', (event, d) => {
       d3.select(event.currentTarget)
         .attr('fill', 'lightcoral');
-
+    
+      // Calculate relative value (e.g., as a percentage)
+      const relativeValue = (d.value / this.totalValue) * 100;
+    
       tooltip.transition().duration(200).style('opacity', 0.9);
-      tooltip.html(`Key: ${d.key}<br/>Value: ${d.value}`)
+      tooltip.html(`Key: ${d.key}<br/>Absolute Value: ${d.value}<br/>Relative Value: ${relativeValue.toFixed(2)}%`)
         .style('left', (event.pageX + 10) + 'px')
         .style('top', (event.pageY - 28) + 'px');
     })
     .on('mouseout', (event) => {
       d3.select(event.currentTarget)
         .attr('fill', 'lightblue');
-
+    
       tooltip.transition().duration(500).style('opacity', 0);
     });
 
