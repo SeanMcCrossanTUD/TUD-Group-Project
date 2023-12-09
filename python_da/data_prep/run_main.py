@@ -283,7 +283,7 @@ def main(test_iterations=None):
 
         # Check Azure queue for a new message
         try:
-            time.sleep(5)
+            time.sleep(15)
             msg = receive_message_from_queue(SERVICE_BUS_CONNECTION_STRING, SERVICE_BUS_QUEUE_NAME)
             logger.info(msg)
             if msg is not None:
