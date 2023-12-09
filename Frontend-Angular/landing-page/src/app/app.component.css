@@ -19,6 +19,15 @@
   animation: slideUp 1.5s ease-in-out; /* Apply animation to all elements within .landing-page */
 }
 
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 .logo {
   width: 13%; 
   max-width: 170px; 
@@ -73,11 +82,8 @@ button:hover {
   color: black; /* Change text color when hovered */
 }
 
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+.tutorial-section {
+  margin-top: 22%;
 }
+
+
