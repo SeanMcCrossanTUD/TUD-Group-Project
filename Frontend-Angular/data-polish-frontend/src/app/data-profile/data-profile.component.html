@@ -144,8 +144,11 @@
                 </div>
                 </ng-template>  
                 <ng-template matTabContent>
-
-                    <div class="chart-background"><app-histogram/></div> 
+                    <div class="tabs">
+                        <div class="chart-background"><app-histogram/></div> 
+                    <div class="chart-background"><app-correlation-scatter-plot/></div>
+                    </div>
+                    
                     </ng-template>
 
                     <!-- tab-3 -->
@@ -160,7 +163,7 @@
        
 
        
-        <div><app-correlation-scatter-plot/></div>
+       
         
         <div>
             <app-bubble-chart/>
