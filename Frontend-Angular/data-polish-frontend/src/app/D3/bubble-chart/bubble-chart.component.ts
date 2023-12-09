@@ -19,6 +19,7 @@ export class BubbleChartComponent implements OnInit {
   private height = 400 - this.margin.top - this.margin.bottom;
   categories: string[] = [];
   selectedCategory: string = '';
+  public numberOfInstances: number = 0;
 
   constructor(private D3DashboardService: D3DashboardService) { }
 
@@ -53,11 +54,24 @@ export class BubbleChartComponent implements OnInit {
   private createBubbleChart(data: BubbleDataItem[]): void {
     d3.select(this.chartContainer.nativeElement).select('svg').remove();
     const element = this.chartContainer.nativeElement;
+    this.numberOfInstances = data.length;
+
     const svg = d3.select(element).append('svg')
       .attr('width', this.width + this.margin.left + this.margin.right)
-      .attr('height', this.height + this.margin.top + this.margin.bottom)
-      .append('g')
+      .attr('height', this.height + this.margin.top + this.margin.bottom);
+
+    const chartLayer = svg.append('g')
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+
+    // Define the zoom behavior
+    const zoom = d3.zoom()
+      .scaleExtent([0.5, 5]) // Limit the scale range
+      .on('zoom', (event) => {
+        chartLayer.attr('transform', event.transform);
+      });
+
+    // Apply the zoom behavior to the SVG element
+    svg.call(zoom);
 
     const radiusScale = d3.scaleSqrt()
       .domain([0, d3.max(data, d => d.value) ?? 0])
@@ -68,7 +82,7 @@ export class BubbleChartComponent implements OnInit {
       .force('center', d3.forceCenter(this.width / 2, this.height / 2))
       .force('collision', d3.forceCollide().radius(d => radiusScale((d as BubbleDataItem).value) + 1));
 
-      const tooltip = d3.select('body').append('div')
+    const tooltip = d3.select('body').append('div')
       .attr('class', 'bubble-tooltip')
       .style('opacity', 0)
       .style('position', 'absolute')
@@ -76,34 +90,32 @@ export class BubbleChartComponent implements OnInit {
       .style('border', '1px solid black')
       .style('padding', '5px')
       .style('pointer-events', 'none')
-      .style('z-index', '10'); // Ensure tooltip is on top
-    
-      const bubbles = svg.selectAll('.bubble')
+      .style('z-index', '10');
+
+    const bubbles = chartLayer.selectAll('.bubble')
       .data(data)
       .enter().append('circle')
       .attr('class', 'bubble')
       .attr('r', d => radiusScale(d.value))
-      .attr('fill', 'lightblue') // Original color
+      .attr('fill', 'lightblue')
       .style("stroke", "black")
       .style("stroke-width", "2px")
       .on('mouseover', (event, d) => {
-        d3.select(event.currentTarget) // Select the current bubble
-          .attr('fill', 'lightcoral'); // Change color to light red on hover
-  
+        d3.select(event.currentTarget)
+          .attr('fill', 'lightcoral');
+
         tooltip.transition().duration(200).style('opacity', 0.9);
         tooltip.html(`Key: ${d.key}<br/>Value: ${d.value}`)
           .style('left', (event.pageX + 10) + 'px')
           .style('top', (event.pageY - 28) + 'px');
       })
       .on('mouseout', (event) => {
-        d3.select(event.currentTarget) // Select the current bubble
-          .attr('fill', 'lightblue'); // Revert color back to light blue
-  
+        d3.select(event.currentTarget)
+          .attr('fill', 'lightblue');
+
         tooltip.transition().duration(500).style('opacity', 0);
       });
-    
 
-    // Adding labels to bubbles
     svg.selectAll('.bubble-label')
       .data(data)
       .enter().append('text')
@@ -113,13 +125,12 @@ export class BubbleChartComponent implements OnInit {
       .text(d => d.key)
       .style('pointer-events', 'none');
 
-      simulation.on('tick', () => {
-        bubbles.attr('cx', d => (d as BubbleDataItem).x ?? 0)
-               .attr('cy', d => (d as BubbleDataItem).y ?? 0);
-      
-        svg.selectAll('.bubble-label')
-           .attr('x', d => (d as BubbleDataItem).x ?? 0)
-           .attr('y', d => ((d as BubbleDataItem).y ?? 0) + 5); // Adjust y position to align text in the center of the bubble
-      });
+    simulation.on('tick', () => {
+      bubbles.attr('cx', d => (d as BubbleDataItem).x ?? 0)
+             .attr('cy', d => (d as BubbleDataItem).y ?? 0);
+      svg.selectAll('.bubble-label')
+         .attr('x', d => (d as BubbleDataItem).x ?? 0)
+         .attr('y', d => ((d as BubbleDataItem).y ?? 0) + 5);
+    });
   }
 }

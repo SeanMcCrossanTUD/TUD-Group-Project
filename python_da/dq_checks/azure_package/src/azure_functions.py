@@ -152,7 +152,7 @@ def upload_results_to_azure(data, connection_string, job_id, result_container_na
         blob_client.upload_blob(result_json, overwrite=True)
         # blob_client.upload_blob(io.BytesIO(result_bytes), blob_type="BlockBlob", overwrite=True)
 
-        update_rds_data_profile(result_blob_name, job_id)
+        update_rds_data_profile(result_blob_name, job_id, result_container_name)
         logger.info(f'Successfully uploaded {result_blob_name} to {result_container_name} in Azure Blob Storage')
 
     except AzureError as ae:

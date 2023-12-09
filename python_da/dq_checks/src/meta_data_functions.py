@@ -18,6 +18,26 @@ def convert_numpy_to_python(data):
     else:
         return data
 
+def attempt_convert_to_dates(df):
+    """
+    Attempts to convert DataFrame fields to dates.
+
+    Parameters:
+    df (pd.DataFrame): DataFrame to process.
+
+    Returns:
+    pd.DataFrame: DataFrame with converted date fields where possible.
+    """
+    for col in df.columns:
+        try:
+            converted_col = pd.to_datetime(df[col], errors='coerce')
+            # Check if conversion was successful (non-NaT values should exist)
+            if converted_col.notna().any():
+                df[col] = converted_col
+                print(f"{col} converted to datetime: {e}")
+        except Exception as e:
+            print(f"Could not convert column {col} to datetime: {e}")
+    return df
 
 def dataframe_metadata_to_json(df):
     """
@@ -29,8 +49,16 @@ def dataframe_metadata_to_json(df):
     Returns:
     str: JSON string with metadata.
     """
+    # Mapping from Python data types to user-friendly types
+    type_mapping = {
+        'object': 'Text',
+        'float64': 'Numeric',
+        'int64': 'Numeric',
+        'bool': 'Boolean'
+    }
+
     # Does not exceed the number of rows in the data
-    sample_size = min(200, len(df))
+    sample_size = min(500, len(df))
 
     df_filtered = df.head(sample_size).fillna(value="")
 
@@ -38,7 +66,7 @@ def dataframe_metadata_to_json(df):
 
     metadata = {
         "columnNames": list(df.columns),
-        "datatype": [str(df[col].dtype) for col in df.columns],
+        "datatype": [type_mapping.get(str(df[col].dtype), str(df[col].dtype)) for col in df.columns],
         "data": data_dict,
         "type_conversion": {col: possible_conversions(str(df[col].dtype)) for col in df.columns}
     }

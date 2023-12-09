@@ -255,7 +255,7 @@ def main(test_iterations=None):
     counter = 0
 
     while True:
-        time.sleep(5)
+        time.sleep(15)
         logger.info("sleep finished")
         # If test_iterations is set and counter has reached it, break the loop
         if test_iterations and counter >= test_iterations:
@@ -306,7 +306,7 @@ def main(test_iterations=None):
                 upload_results_to_azure(dq_score, connection_string, jobID, DATA_QUALITY_SCORE_CONTAINER)
                 logger.info("Data quality score results uploaded successfully for  {filename} - {jobID}")
 
-                unique_values_count = run_count_unique_values(data=data, max_unique_values=50)
+                unique_values_count = run_count_unique_values(data=data, max_unique_values=10)
                 logger.info("Number of unique values counted")
 
                 upload_results_to_azure(unique_values_count, connection_string, jobID, BUBBLE_CHART_CONTAINER)
