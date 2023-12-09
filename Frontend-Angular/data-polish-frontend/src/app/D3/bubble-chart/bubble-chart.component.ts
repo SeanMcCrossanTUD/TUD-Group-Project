@@ -63,15 +63,14 @@ export class BubbleChartComponent implements OnInit {
     const chartLayer = svg.append('g')
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
-    // Define the zoom behavior
-    const zoom = d3.zoom()
+      const zoom = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.5, 5]) // Limit the scale range
       .on('zoom', (event) => {
         chartLayer.attr('transform', event.transform);
       });
-
+  
     // Apply the zoom behavior to the SVG element
-    svg.call(zoom);
+    svg.call(zoom as any);
 
     const radiusScale = d3.scaleSqrt()
       .domain([0, d3.max(data, d => d.value) ?? 0])
