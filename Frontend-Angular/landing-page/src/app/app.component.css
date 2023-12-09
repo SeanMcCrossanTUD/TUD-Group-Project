@@ -27,6 +27,7 @@
 
 h3 {
   font-size: 1em;
+  font-family: Verdana;
   margin-top: 20px;
   color: rgb(129, 137, 137);
 }
@@ -34,16 +35,18 @@ h3 {
 p {
   font-size: 2.2em;
   font-family: Verdana;
+  font-weight: bolder;
   margin-top: 10px;
-  color: rgb(225, 239, 239);
+  color: rgb(237, 244, 244);
 }
 
 .buttons {
-  margin-top: 7%;
+  margin-top: 5%;
 }
 
 button {
   font-size: 1em;
+  font-family: Verdana;
   margin-right: 10px;
   padding: 10px 20px;
 }
