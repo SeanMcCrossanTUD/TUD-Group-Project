@@ -8,9 +8,7 @@
 <div class="dashboard">
     <mat-tab-group  
     mat-stretch-tabs="true" mat-align-tabs="start"
-    style=" padding: 10px;
-    border: 1px white solid;
-    min-height: 100%;"
+    style="border: 1px white solid;"
         >
 
         <mat-tab > 
@@ -21,11 +19,11 @@
                 </ng-template>  
                 <ng-template matTabContent>
                 <div class="tabs">
-                    <div class="stat div1">
+                    <div class="stat div1 help-text-parent" >
            
                         <div>
                             Total NO. Fields
-                            <sup (click)="openHelpText('NUMBEROFFIELDS')">
+                            <sup (click)="openHelpText('NUMBEROFFIELDS')" class="help-text-child">
                                 <span class="material-icons">
                                     help
                                     </span>
