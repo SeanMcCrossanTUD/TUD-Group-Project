@@ -82,6 +82,17 @@ button:hover {
   color: black; /* Change text color when hovered */
 }
 
+/*below two parts for the Tutorial button*/
+button a {
+  text-decoration: none;
+  color: white;
+}
+
+button a:hover {
+  background-color: white;
+  color: black; /* Change text color when hovered */
+}
+
 .tutorial-section {
   margin-top: 22%;
 }
