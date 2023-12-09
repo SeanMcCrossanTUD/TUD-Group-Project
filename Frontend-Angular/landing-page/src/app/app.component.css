@@ -25,14 +25,14 @@
   left: 0;
 }
 
-h1 {
-  font-size: 2em;
+h4 {
+  font-size: 0.8em;
   margin-top: 20px;
-  color: rgb(206, 234, 234);
+  color: rgb(131, 138, 138);
 }
 
 p {
-  font-size: 1.2em;
+  font-size: 1.5em;
   margin-top: 10px;
   color: rgb(206, 234, 234);
 }
