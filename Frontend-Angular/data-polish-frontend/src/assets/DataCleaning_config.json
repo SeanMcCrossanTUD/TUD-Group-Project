@@ -1,8 +1,154 @@
 {
     "Rename Column":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":"",
+        "WHAT":"To rename a column in a DataFrame to a new specified name.",
+        "WHY":"Improves dataset clarity by renaming verbose, typo-ridden, or inconsistent columns, enhancing readability for users.",
         "EXAMPLE":"Intial column name 'Name', changed column name 'Full Name'"
         
-    }
+    },
+
+    "Drop Column":{
+        "WHAT":"To remove one or more specified columns from a DataFrame.",
+        "WHY":"Essential for removing non-contributory columns from large datasets, simplifying the model and potentially improving performance by addressing the curse of dimensionality.",
+        "EXAMPLE":"Column specified in the DataFrame titled 'Calories' can be removed from the DataFrame"
+         },
+
+    "Data Normalization":{
+        "WHAT":"To normalize data in a specified DataFrame column using min-max scaling or z-score normalization.",
+        "WHY":"Crucial for addressing performance issues in machine learning algorithms caused by numerically diverse attribute scales.",
+        "EXAMPLE":"Reduce a numerical column with diverse range of values into a 0-1 scale for min-max or deviations above or below the mean for z score scaling"
+        
+    },
+
+    "Missing Value Imputation":{
+        "WHAT":"To fill or remove missing values in a specified column of the DataFrame.",
+        "WHY":"Integrates missing value treatment efficiently into the data preprocessing pipeline, enhancing workflow efficiency and reducing errors.",
+        "EXAMPLE":"A column with missing values will have those missing values updated with the options presented in the UI"
+    },
+ 
+    "Outlier Managament":{
+        "WHAT":"To remove or modify outliers in all numeric columns of a DataFrame based on standard deviation",
+        "WHY":"Essential for mitigating the impact of outliers on model performance, particularly in algorithms sensitive to data distribution like linear regression or clustering.",
+        "EXAMPLE":"A column with outliers will habe those outliers removed based on the S.D. option presented in the UI"
+    },
+
+    "Numerical Column Binning":{
+        "WHAT":"To categorize numeric data by binning it into specified ranges, transforming a numeric column into a categorical one.",
+        "WHY":"Enables the identification of non-linear relationships in data, beneficial for models, especially linear ones, that assume linear feature-target relationships.",
+        "EXAMPLE":"A numeric column can have its values put in specific sub ranges and categorized e.g. 'bins': [0,50,100], 'labels': [ 'Low','High']"
+        },
+
+    "Column Type Conversion":{
+        "WHAT":"To change the data type of a specific column in a DataFrame to a new, specified type.",
+        "WHY":"Allows change of datatype to enable type specific column cleaning opeations to be used",
+        "EXAMPLE":"Change a column from numeric to text and unlock text cleaning features"
+    },
+
+    "Special Character Removal":{
+        "WHAT":"To clean a text column in a DataFrame by removing any special characters, leaving only alphanumeric characters and spaces.",
+        "WHY":"Improves dataset clarity by renaming verbose, typo-ridden, or inconsistent columns, enhancing readability for users.",
+        "EXAMPLE":"A column with special characters like '@,.#!&' and more will have them removed"
+    },
+
+    "Trim Whitespace":{
+        "WHAT":"To clean a text column in a DataFrame by trimming any leading and trailing whitespace.",
+        "WHY":"Trimming whitespace reduces noise and potential errors in data processing and analysis, enhancing the overall data quality.",
+        "EXAMPLE":"A text column with whitespace will have the whitespace removed"
+        },
+
+    "Replace Substrings":{
+        "WHAT":"To replace occurrences of a specific substring with a new substring within a text column of a DataFrame.",
+        "WHY":"Standardizes textual variations in datasets by replacing specific substrings, addressing inconsistencies in representations of words or phrases.",
+        "EXAMPLE":"Replaces a string with another string e.g. 'old_substring': 'dog' , 'new_substring': 'cat' "
+    }, 
+
+    "Text Case Adjustment":{
+        "WHAT":"To adjust the case of text in a specified column to either upper case, lower case, or title case.",
+        "WHY":"To ensure consistency in formatting if necessary",
+        "EXAMPLE":"A text column can have different case styles in the UI applied to it"
+        },
+
+    "Remove Stopwords":{
+        "WHAT":"To remove stopwords from a text column in a DataFrame, a common preprocessing step in natural language processing tasks",
+        "WHY":"By eliminating stop words, the text data size is reduced, which can accelerate the processing of various NLP tasks such as text classification, sentiment analysis, and topic modeling.",
+        "EXAMPLE":"A text column will have all different stopwords removed "
+    },
+
+    "Combine Rare Categopries":{
+        "WHAT":"To collapse categories within a categorical column that fall below a specified percentage threshold into an 'Other' category, simplifying the data and potentially improving analysis.",
+        "WHY":"Machine learning models can become overly complex when dealing with a large number of categories, some of which are rarely represented. Simplifying the number of categories can improve model performance and generalizability.",
+        "EXAMPLE":"A category column with a categories having an occurrence percentage less than a given threshold set by a user is put into a category called 'Other'"
+    },
+
+     "Text Tokenisation":{
+        "WHAT":"To tokenize the contents of a text column, splitting text into individual words or meaningful elements",
+        "WHY":"In text analytics, tokenization is a precursor to vectorization methods like Bag of Words or TF-IDF, which transform text data into numerical formats that machine learning algorithms can process.",
+        "EXAMPLE":"A text column will have each individual element separated with '' "
+        
+    },
+
+    "Regular Expression Operations":{
+        "WHAT":"To apply regex operations such as 'replace' or 'extract' on a text column, enabling complex pattern matching and text transformations.",
+        "WHY":" Makes it easier to apply specific style changes to text columns if there in knowledge of regex operations",
+        "EXAMPLE":"Apply regex operartion to text column or extract or replace string formats"
+    },
+
+    "Standard Datetime format":{
+        "WHAT":"To parse and convert data in a given column into datetime objects, using a specified format or automatic format inference.",
+        "WHY":" Models that depend on time-based data, like forecasting models, require precise and correctly formatted time data. Parsing ensures that the input data meets these requirements.",
+        "EXAMPLE":"Standardizes a datetime column to one datetime style e.g. 'April 5, 2020', '06-05-2020 14:30', '01-02-2020' into '2020-04-05 00:00:00', '2020-06-05 14:30:00', '2020-01-02 00:00:00'"
+    },
+
+    "Extract Datetime Components":{
+        "WHAT":"To extract specific components like year, month, day, hour, minute, or second from a datetime column and add them as new columns in the DataFrame.",
+        "WHY":"Breaks down datetime objects into components (year, month, day, etc.), enabling more detailed analysis of time-based patterns and trends.",
+        "EXAMPLE":"A datetime column can have specic datetime elements extracted to other columns"
+    },
+
+    "Label Encoding":{
+        "WHAT":" To convert categorical values in a specified column of a DataFrame into numerical labels.",
+        "WHY":"Converts categorical data into numerical values, making it compatible with machine learning algorithms that require numerical input.",
+        "EXAMPLE":"A category column with values 'apple', 'banana', 'orange', 'apple', 'banana' will be encoded as '0', '1', '2', '0', '1'"
+    },
+    
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
 }
