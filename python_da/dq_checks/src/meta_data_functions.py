@@ -18,6 +18,25 @@ def convert_numpy_to_python(data):
     else:
         return data
 
+def attempt_convert_to_dates(df):
+    """
+    Attempts to convert DataFrame fields to dates.
+
+    Parameters:
+    df (pd.DataFrame): DataFrame to process.
+
+    Returns:
+    pd.DataFrame: DataFrame with converted date fields where possible.
+    """
+    for col in df.columns:
+        try:
+            converted_col = pd.to_datetime(df[col], errors='coerce')
+            # Check if conversion was successful (non-NaT values should exist)
+            if converted_col.notna().any():
+                df[col] = converted_col
+        except Exception as e:
+            print(f"Could not convert column {col} to datetime: {e}")
+    return df
 
 def dataframe_metadata_to_json(df):
     """
