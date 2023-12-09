@@ -1,10 +1,4 @@
 {
-    "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":"In order to understand the Dataset field quantity and distribution"
-        
-        
-    },
     "SPIDERCHART":{
         "WHAT":"A radial chart that shows data in terms of multiple variables. decribe what it does more.   ",
         "WHY":"Evaluate multiple metrics for a single record to determine data quality and consistency."
@@ -25,13 +19,13 @@
     },
     "cardinality":{
         "WHAT":"Shows the uniqueness of data by representing the number of distinct values in a column.",
-        "WHY":"Helpful for understanding when to collapse rare categories or when binning might be necessary for numeric to categorical conversions."
+        "WHY":"High cardinality can introduce the curse of dimensionailty, columns may need to be encoded before using them as a predictor variable in Machine Learning."
         
         
     },
     "correlation-scatter-plot":{
         "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
-        "WHY":"Use to determine if fields are redundant (high correlation) or if PCA might be useful for dimensionality reduction."
+        "WHY":"Use to determine if fields are redundant (high correlation)."
         
  
     },
@@ -49,7 +43,7 @@
     },
     "duplicate-chart":{
         "WHAT":"Visualizes the frequency of duplicate records in a dataset.",
-        "WHY":"shows duplicate records to be removed or merged."
+        "WHY":"shows duplicate records to be removed."
         
  
     },
@@ -66,8 +60,8 @@
  
     },
     "outliers-scatter-plot":{
-        "WHAT":"Identifies outlier data points in a dataset.",
-        "WHY":"Pinpoints outliers for removal or further examination."
+        "WHAT":"Identifies outlier data points in a dataset using the Z-score method.",
+        "WHY":"Calculates Z-scores and flags data points exceeding a threshold of 3 standard deviation points, aiding in outlier identification for enhanced data analysis."
         
  
     },
@@ -78,8 +72,8 @@
  
     },
     "uniqueness-metric":{
-        "WHAT":"Displays the level of unique data entries, highlighting potential redundancy in the dataset.",
-        "HOW TO IMPOROVE":"Apply 'Collapse Rare Categories' to reduce overfitting in machine learning models and simplify analysis."
+        "WHAT":"Displays the level of unique data entries, highlighting potential redundancy and indicating the curse of dimensionality in the dataset.",
+        "HOW TO IMPOROVE":"Assesses the impact of high dimensionality from excessive unique entries, crucial for preventing overfitting and complexity in data analysis."
         
  
     },
