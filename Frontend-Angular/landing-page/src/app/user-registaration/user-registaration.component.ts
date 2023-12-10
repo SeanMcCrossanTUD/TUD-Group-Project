@@ -61,7 +61,7 @@ export class UserRegistarationComponent {
             'OTP': otp
           }).subscribe(
             (res) => {
-              this.showMessage=true;
+              this.showMessage=false;
             },
             (error) => {
               this.messageService.add({ severity: 'error', summary: 'Check your details', detail: 'something went wrong' });
