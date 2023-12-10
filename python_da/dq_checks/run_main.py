@@ -306,7 +306,7 @@ def main(test_iterations=None):
                 upload_results_to_azure(dq_score, connection_string, jobID, DATA_QUALITY_SCORE_CONTAINER)
                 logger.info("Data quality score results uploaded successfully for  {filename} - {jobID}")
 
-                unique_values_count = run_count_unique_values(data=data, max_unique_values=10)
+                unique_values_count = run_count_unique_values(data=data, max_unique_values=24)
                 logger.info("Number of unique values counted")
 
                 upload_results_to_azure(unique_values_count, connection_string, jobID, BUBBLE_CHART_CONTAINER)
