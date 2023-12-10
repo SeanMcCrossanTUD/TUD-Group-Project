@@ -43,8 +43,14 @@ public class SetPasswordService {
 
                 return ResponseEntity.status(HttpStatus.OK).body("Password successfully updated");
 
-            }
-            else {
+            } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("OTP is invalid");
             }
+        } catch (EmptyResultDataAccessException e) {
+            // Handle the case where the email is not found in the 'users' table
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        } catch (Exception e) {
+            // Handle other exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
 }
