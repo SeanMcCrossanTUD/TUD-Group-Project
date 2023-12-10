@@ -12,15 +12,7 @@ export class UserRegistarationComponent {
     ){
   }
   ngOnInit(){
-    // this.http
-    // .post('https://prod-46.northeurope.logic.azure.com:443/workflows/643dcc1efa6a41908dd2846b226a0ffd/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9LE2z3sTd7ucTVWRYu2K-TuRPi1MT1pk_LLR5KSjIo8',{
-    //   'EMAILID':'d22124491@mytudublin.ie',
-    //   'OTP':'1234'
-    // }).subscribe(
-    //   (res)=>{
-    //     console.log(res);
-    //   }
-    // )
+    
   }
   userName:any;
   email:any;
@@ -44,7 +36,59 @@ export class UserRegistarationComponent {
         return;
       }
 
+
       
 
-  }
+    // this.http.post(
+    //   'http://localhost:8090/user-register',{
+    //     "fullName":this.userName,
+    //     "email":this.email
+
+    //   }
+    // ).subscribe(
+    //   (res1:any)=>{
+    //     this.http
+    // .post('https://prod-46.northeurope.logic.azure.com:443/workflows/643dcc1efa6a41908dd2846b226a0ffd/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9LE2z3sTd7ucTVWRYu2K-TuRPi1MT1pk_LLR5KSjIo8',{
+    //   'EMAILID':this.email,
+    //   'OTP':res1
+    // }).subscribe(
+    //   (res)=>{
+    //     console.log(res);
+    //   }
+    // )
+    //   },(erroe1)=>{
+    //     console.log(erroe1)
+    //   }
+    // )
+
+
+ 
+      // Make the first HTTP POST request to 'http://localhost:8090/user-register'
+      this.http.post('http://localhost:8090/user-register?fullName='+this.userName+"&email="+this.email,{}).subscribe(
+        (res1: any) => {
+          // Assuming 'res1' contains the OTP, adjust the property accordingly
+          const otp = res1;
+  
+          // Make the second HTTP POST request to the Azure Logic App
+          this.http.post('https://prod-46.northeurope.logic.azure.com:443/workflows/643dcc1efa6a41908dd2846b226a0ffd/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9LE2z3sTd7ucTVWRYu2K-TuRPi1MT1pk_LLR5KSjIo8', {
+            'EMAILID': this.email,
+            'OTP': otp
+          }).subscribe(
+            (res) => {
+              
+            },
+            (error) => {
+              this.messageService.add({ severity: 'error', summary: 'Check your details', detail: 'something went wrong' });
+            }
+          );
+        },
+        (error1) => {
+          this.messageService.add({ severity: 'error', summary: 'Check your details', detail: 'something went wrong' });
+        }
+      );
+    }
+
+      
+
+  
 }
