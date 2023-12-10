@@ -184,7 +184,8 @@
                                 help
                                 </span>
                                 <span>&nbsp;</span>
-                        </sup>  </div>
+                        </sup> 
+                     </div>
                     
                     <!-- tabs-2 -->
                 </div>
@@ -199,10 +200,34 @@
                 </ng-template>  
                 <ng-template matTabContent>
                     <div class="tabs">
-                        <div class="chart-background"><app-histogram/></div> 
-                    <div class="chart-background"><app-correlation-scatter-plot/></div>
-                    <div class="chart-background"><app-bubble-chart/></div>
-                    <div class="chart-background"> <app-outliers-scatter-plot/> </div> 
+                        <div class="chart-background help-text-parent"><app-histogram/> <sup (click)="openHelpText('histogram')"
+                            class="help-text-child">
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                                    <span>&nbsp;</span>
+                            </sup> </div> 
+                        <div class="chart-background help-text-parent"><app-correlation-scatter-plot/><sup (click)="openHelpText('correlation-scatter-plot')"
+                            class="help-text-child">
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                                    <span>&nbsp;</span>
+                            </sup> </div>
+                        <div class="chart-background help-text-parent"><app-bubble-chart/><sup (click)="openHelpText('bubble-chart')"
+                            class="help-text-child">
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                                    <span>&nbsp;</span>
+                            </sup> </div>
+                        <div class="chart-background help-text-parent"> <app-outliers-scatter-plot/><sup (click)="openHelpText('outliers-scatter-plot')"
+                            class="help-text-child">
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                                    <span>&nbsp;</span>
+                            </sup>  </div> 
                     </div>
                     
                     </ng-template>
