@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
+import { delay } from 'rxjs';
 import { D3DashboardService } from 'src/app/Services/D3/d3-dashboard.service';
 
 interface HistogramDataPoint {
@@ -11,7 +12,7 @@ interface HistogramDataPoint {
   templateUrl: './histogram.component.html',
   styleUrls: ['./histogram.component.css']
 })
-export class HistogramComponent implements OnInit, AfterViewInit {
+export class HistogramComponent implements OnInit {
   private rawData: any;
   private data: HistogramDataPoint[] = []; 
   public fields: string[] = []; 
@@ -19,19 +20,7 @@ export class HistogramComponent implements OnInit, AfterViewInit {
 
   constructor(private D3DashboardService: D3DashboardService) {}
 
-  ngOnInit() {
-    this.loadData();
-  }
-
-  ngAfterViewInit() {
-    // This ensures the chart is created after the view is fully initialized
-    if (this.fields.length > 0) {
-      this.selectedField = this.fields[0];
-      this.updateDataAndCreateHistogram();
-    }
-  }
-
-  loadData() {
+   ngOnInit() {
     this.D3DashboardService.getoutlier().subscribe(
       (data: any) => {
         this.rawData = data.outliers;
@@ -39,12 +28,20 @@ export class HistogramComponent implements OnInit, AfterViewInit {
 
         if (this.fields.length > 0 && !this.selectedField) {
           this.selectedField = this.fields[0];
+         
         }
+        
       }, (error) => {
         console.error('Error loading data:', error);
       }
     );
   }
+
+  ngAfterContentInit(){
+    this.createHistogram();
+  }
+
+  
 
   updateDataAndCreateHistogram(): void {
     this.data = this.rawData[this.selectedField]
@@ -131,6 +128,7 @@ export class HistogramComponent implements OnInit, AfterViewInit {
   const tooltip = d3.select('body').append('div')
     .attr('class', 'tooltip')
     .style('opacity', 0)
+      .style('z-index',5)
     .style('position', 'absolute')
     .style('background', 'white')
     .style('border', 'solid')

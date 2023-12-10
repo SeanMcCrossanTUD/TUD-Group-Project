@@ -91,6 +91,7 @@ export class CorrelationScatterPlotComponent implements OnInit {
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
       .style('opacity', 70)
+      .style('z-index',5)
       .style('position', 'absolute')
       .style('background', 'white')
       .style('border', '1px solid black')

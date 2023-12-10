@@ -66,6 +66,7 @@ export class MissingValuesChartComponent implements OnInit {
 
       let tooltip = d3.select('body').append('div')
         .attr('class', 'tooltip')
+        .style('z-index',5)
         .style('opacity', 0);
 
       svg.selectAll(".bar")
@@ -73,18 +74,22 @@ export class MissingValuesChartComponent implements OnInit {
           .enter().append("rect")
           .attr("class", "bar")
           .attr("x", d => x(d.key) || 0)
-          .attr("y", d => y(d.value))
+          .attr("y", d => y(d.value))      
           .attr("width", x.bandwidth())
           .attr("height", d => height - y(d.value))
-          .style("fill", primarycolor)
+          .style("fill", "#69b3a2")
           .on('mouseover', function (event, d) {
+            d3.select(event.currentTarget) 
+            .style("fill", "lightcoral"); 
             tooltip.transition().duration(200).style('opacity', 0.9);
             tooltip.html(`Field: ${d.key}<br/>Missing: ${d.value} (${d.percentage.toFixed(2)}%)`)
               .style('left', (event.pageX) + 'px')
               .style('top', (event.pageY - 28) + 'px');
           })
-          .on('mouseout', function () {
+          .on('mouseout', function (event) {
             tooltip.transition().duration(500).style('opacity', 0);
+            d3.select(event.currentTarget) 
+          .style("fill", "#69b3a2"); 
           });
 
       svg.append("g")

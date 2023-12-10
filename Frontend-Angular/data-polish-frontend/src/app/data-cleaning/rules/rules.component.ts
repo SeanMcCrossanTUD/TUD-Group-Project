@@ -39,6 +39,11 @@ export class RulesComponent {
      filter: true,
      sortable: true,
   },
+  {field:"Data Type",
+  width: 200,
+   filter: true,
+   sortable: true,
+},
     // {field:"Data Type"},
     {
       field:"Keep column",
@@ -78,8 +83,10 @@ export class RulesComponent {
       (Response)=>{
      
         this.DataPreviewDataService.getJsonData(Response).subscribe(
-          (r2:any)=>{           
-            this.makedata(r2.columnNames);
+          (r2:any)=>{  
+                  
+            this.makedata(r2.columnNames,r2.datatype);
+          
             
           }
         )
@@ -97,17 +104,28 @@ export class RulesComponent {
   
   }
 
-  makedata(columnNames:any){
+  makedata(columnNames:any,dtypes:any){
     var temp:any=[];
-    columnNames.forEach((item:any)=>{
+    for(var i=0;i<columnNames.length;i++){
+      console.log(dtypes[i]);
       temp.push(
         {
-          "Field Names":item,
+          "Field Names":columnNames[i],          
+          "Data Type":dtypes[i],
           "Keep column":true,
-          "cleaning options":item
+          "cleaning options":columnNames[i]
         }
       )
-    })
+    }
+    // columnNames.forEach((item:any)=>{
+    //   temp.push(
+    //     {
+    //       "Field Names":item,
+    //       "Keep column":true,
+    //       "cleaning options":item
+    //     }
+    //   )
+    // })
     this.rowData=temp;
 
   }
@@ -524,8 +542,7 @@ setNumerical_Column_Binning(x:any){
 
 
   // column type conversion
-  options_Column_Type_Conversion:any=[
-    {types:'Object'},
+  options_Column_Type_Conversion:any=[    
     {types:'Text'},
     {types:'Numerical'}
   ]
