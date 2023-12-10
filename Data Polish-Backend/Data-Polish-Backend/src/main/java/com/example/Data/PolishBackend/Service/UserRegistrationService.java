@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Random;
+import org.springframework.web.client.RestTemplate;
 
 /*
 * take fullName, email from user
@@ -76,6 +77,34 @@ public class UserRegistrationService {
         Random random = new Random();
         int otp = 1000 + random.nextInt(9000);
         return String.valueOf(otp);
+    }
+
+    private void sendToLogicApp(String otp, String email) {
+        // Create a RestTemplate
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Set headers for the HTTP request
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Create a map for the request body
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("otp", otp);
+        requestBody.put("email", email);
+
+        // Create the HTTP entity with headers and body
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        // Make the HTTP POST request to the Logic App URL
+        ResponseEntity<String> responseEntity = restTemplate.exchange(logicAppUrl, HttpMethod.POST, requestEntity, String.class);
+
+        // Handle the response if needed
+        HttpStatus statusCode = responseEntity.getStatusCode();
+        if (statusCode == HttpStatus.OK || statusCode == HttpStatus.CREATED) {
+            System.out.println("Successfully sent to Logic App");
+        } else {
+            System.out.println("Failed to send to Logic App. Status code: " + statusCode);
+        }
     }
 }
 
