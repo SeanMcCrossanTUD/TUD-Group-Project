@@ -49,7 +49,7 @@
     },
     "duplicate-chart":{
         "WHAT":"Visualizes the frequency of duplicate records in a dataset.",
-        "WHY":"shows duplicate records to be removed."
+        "WHY":"Shows whether dataset contains duplicate records that need to be removed."
         
  
     },
