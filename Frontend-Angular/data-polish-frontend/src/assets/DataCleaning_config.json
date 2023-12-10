@@ -34,7 +34,7 @@
     "Numerical Column Binning":{
         "WHAT":"To categorize numeric data by binning it into specified ranges, transforming a numeric column into a categorical one.",
         "WHY":"Enables the identification of non-linear relationships in data, beneficial for models, especially linear ones, that assume linear feature-target relationships.",
-        "EXAMPLE":"A numeric column can have its values put in specific sub ranges and categorized e.g. 'bins': [0,50,100], 'labels': [ 'Low','High']"
+        "EXAMPLE":"A numeric column can have its values put in specific sub ranges and categorized e.g. 'bins': [0,50,100], 'labels': [ '0-50','50-100']"
         },
 
     "Column Type Conversion":{
