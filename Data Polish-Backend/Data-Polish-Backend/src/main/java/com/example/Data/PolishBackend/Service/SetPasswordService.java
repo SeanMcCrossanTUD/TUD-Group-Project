@@ -28,8 +28,11 @@ public class SetPasswordService {
             // Retrieve the 'encodedOTP' from the 'users' table for the given email
             String encodedOTP = jdbcTemplate.queryForObject(
                     "SELECT password FROM users WHERE email = ?",
-                    new Object[]{email},
-                    String.class
+                    String.class,
+                    email
             );
+
+            // Decode the 'encodedOTP' value
+            String decodedOTP = passwordEncoder.decode(encodedOTP);
         }
 }
