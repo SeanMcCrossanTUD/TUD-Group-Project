@@ -24,4 +24,6 @@ public class ForgetPasswordService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-}
+    public ResponseEntity<String> forgetPassword(String email) {
+
+    }
