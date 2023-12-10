@@ -26,7 +26,7 @@
     },
  
     "Outlier Managament":{
-        "WHAT":"To remove or modify outliers in all numeric columns of a DataFrame based on standard deviation",
+        "WHAT":"To remove or modify outliers in all numeric columns of a DataFrame based on standard deviation, uses Z-Score to calculate outliers.",
         "WHY":"Essential for mitigating the impact of outliers on model performance, particularly in algorithms sensitive to data distribution like linear regression or clustering.",
         "EXAMPLE":"A column with outliers will habe those outliers removed based on the S.D. option presented in the UI"
     },
