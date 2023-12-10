@@ -6,11 +6,14 @@ display: flex;
 justify-content: center;
 align-items: center;
 
-">
+"
+
+> 
 <div 
     style="
         min-height: 70%;
         padding: 20px;"
+        *ngIf="showMessage"
 >
 <div
 
@@ -46,6 +49,35 @@ gap: 20px;">
        
 </div>
 </div>
+
+
+<div *ngIf="!showMessage" 
+    style="min-width: 30vw;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;"
+>
+    User has been created sucessfully. check your Email for further instructions.
+    <div style="min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;">
+    <div style="border: 1px black solid;
+    padding: 10px;"
+    class="go-home"
+    
+    (click)="goHome()">
+        Go Home
+    </div>
+        
+    </div>
+
+</div>
 </div>
 
 <p-toast position="bottom-left"></p-toast>
+
