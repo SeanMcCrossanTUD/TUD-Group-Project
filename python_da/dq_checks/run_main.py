@@ -255,7 +255,7 @@ def main(test_iterations=None):
     counter = 0
 
     while True:
-        time.sleep(15)
+        time.sleep(30)
         logger.info("sleep finished")
         # If test_iterations is set and counter has reached it, break the loop
         if test_iterations and counter >= test_iterations:
