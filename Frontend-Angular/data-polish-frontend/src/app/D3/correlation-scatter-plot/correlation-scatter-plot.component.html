@@ -1,4 +1,6 @@
 <div *ngIf="fields && fields.length > 0; else noDataTemplate">
+  <h2 *ngIf="selectedTarget && selectedPredictor">{{ selectedTarget }} vs {{ selectedPredictor }} Correlation Chart</h2>
+
   <div class="dropdown-container">
     <div class="dropdown">
       <label for="target-variable">Target Variable:</label>
@@ -14,8 +16,6 @@
       </select>
     </div>
   </div>
-
-  <h2 *ngIf="selectedTarget && selectedPredictor">{{ selectedTarget }} vs {{ selectedPredictor }} Correlation Chart</h2>
 
   <div id="correlation-plot"></div>
 </div>
