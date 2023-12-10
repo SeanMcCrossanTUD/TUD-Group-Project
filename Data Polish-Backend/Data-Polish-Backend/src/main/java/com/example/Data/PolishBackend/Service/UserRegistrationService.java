@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Random;
 
 /*
 * take fullName, email from user
@@ -24,6 +25,12 @@ public class UserRegistrationService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public ResponseEntity<String> registerUser(String fullName, String email, String password) {
+        // Generate a random 4-digit OTP
+        String otp = generateRandomOTP();
+
+        // Encrypt the OTP
+        String encryptedOTP = passwordEncoder.encode(otp);
+
        /* // Validate email format
        if (!isValidEmail(email)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email address");
@@ -61,6 +68,13 @@ public class UserRegistrationService {
         // Check if the email already exists in the 'users' table
         String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, email) > 0;
+    }
+
+    private String generateRandomOTP() {
+        // Generate a random 4-digit OTP
+        Random random = new Random();
+        int otp = 1000 + random.nextInt(9000);
+        return String.valueOf(otp);
     }
 }
 
