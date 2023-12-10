@@ -37,12 +37,12 @@
     },
     "data-quality-metric":{
         "WHAT":"Evaluates data quality across four dimensions: completeness, uniqueness, readability, and consistency, providing a comprehensive overview of data health.",
-        "WHY":"Used as a Estimate to determine the readiness of the dataset before machine learning."
+        "WHY":"Used as an estimate to determine the readiness of the dataset before machine learning."
         
  
     },
     "data-types-chart":{
-        "WHAT":"Categorizes data into different types (numeric, categorical, etc.).",
+        "WHAT":"Categorizes data into different types (numeric, text, etc.).",
         "WHY":"Allows for a better fundemental understanding of data type distribution"
         
  
