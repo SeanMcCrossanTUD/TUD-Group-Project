@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'app-landing-page',
-  standalone: true,
-  imports: [],
+  selector: 'app-landing-page',  
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
 })
@@ -20,7 +18,5 @@ export class LandingPageComponent {
     window.location.replace(url);
     // Add logic to navigate to the get started page or perform other actions
   }
-  navigateToAnotherPage() {
-   
-  }
+
 }
