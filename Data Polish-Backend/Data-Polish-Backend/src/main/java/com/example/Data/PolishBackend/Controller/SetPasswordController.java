@@ -1,5 +1,6 @@
 package com.example.Data.PolishBackend.Controller;
 
+import com.example.Data.PolishBackend.Service.SetPasswordService;
 import com.example.Data.PolishBackend.Service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,17 +9,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = {"http://16.170.150.247:9000", "http://localhost:4200"})
-//@RequestMapping("/user-register")
-public class UserRegistrationController {
+
+public class SetPasswordController {
 
     @Autowired
-    private UserRegistrationService userRegistrationService;
+    private SetPasswordService setPasswordService;
 
-    @PostMapping("/user-register")
+    @GetMapping("/set-password")
     public ResponseEntity<String> registerUser(
-            @RequestParam String fullName,
-            @RequestParam String email
+            @RequestParam String email,
+            @RequestParam String otp,
+            @RequestParam String newPassword
     ) {
-        return userRegistrationService.registerUser(fullName, email);
+        return setPasswordService.setPassword(email,otp,newPassword);
     }
 }
