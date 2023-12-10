@@ -30,9 +30,18 @@ class DataQualityChecker:
     
     def data_type_profile(self) -> dict:
         data_type_count = {}
+        type_mapping = {
+            'object': 'Text',
+            'int64': 'Numeric',
+            'float64': 'Numeric'
+        }
+
         for col in self.dataset.columns:
             dtype = str(self.dataset[col].dtype)
-            data_type_count[dtype] = data_type_count.get(dtype, 0) + 1
+            
+            user_friendly_dtype = type_mapping.get(dtype, dtype)
+            data_type_count[user_friendly_dtype] = data_type_count.get(user_friendly_dtype, 0) + 1
+
         return data_type_count
 
     def z_score_outliers(self, threshold: float = 3.0) -> dict:
