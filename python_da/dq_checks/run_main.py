@@ -129,7 +129,7 @@ def run_outliers_result(data, threshold=3.0):
 
     return outliers_result
 
-def run_count_unique_values(data, max_unique_values=15):
+def run_count_unique_values(data, max_unique_values=25):
     # Drop rows with NaN values in text columns
     text_columns = data.select_dtypes(include='object').columns
     data_cleaned = data.dropna(subset=text_columns)
@@ -255,7 +255,7 @@ def main(test_iterations=None):
     counter = 0
 
     while True:
-        time.sleep(15)
+        time.sleep(30)
         logger.info("sleep finished")
         # If test_iterations is set and counter has reached it, break the loop
         if test_iterations and counter >= test_iterations:
