@@ -37,6 +37,9 @@ public class ForgetPasswordService {
             jdbcTemplate.update(sql, encodedOTP, email);
             // Return the unencrypted OTP to the frontend
             return ResponseEntity.status(HttpStatus.OK).body(otp);
+        } catch (DataIntegrityViolationException e) {
+            // Handle potential data integrity violation (e.g., user not found)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
 
