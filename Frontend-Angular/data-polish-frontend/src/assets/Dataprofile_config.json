@@ -25,7 +25,7 @@
     },
     "cardinality":{
         "WHAT":"Shows the uniqueness of data by representing the number of distinct values in a column.",
-        "WHY":"High cardinality can introduce the curse of dimensionailty, columns may need to be encoded before using them as a predictor variable in Machine Learning."
+        "WHY":"High cardinality can introduce the curse of dimensionailty, columns may need to be encoded or removed before using them as a predictor variable in Machine Learning."
         
         
     },
