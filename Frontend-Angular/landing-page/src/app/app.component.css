@@ -126,6 +126,11 @@ p {
   color:aliceblue;
 }
 
+.step2-text {
+  font-size: 1em;
+  font-family: Verdana;
+  color:aliceblue;
+}
 .step-1-SS {
   margin-left: 15%;
   width: 70%;
