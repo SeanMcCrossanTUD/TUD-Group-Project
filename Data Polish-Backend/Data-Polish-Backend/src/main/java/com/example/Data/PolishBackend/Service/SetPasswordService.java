@@ -34,5 +34,9 @@ public class SetPasswordService {
 
             // Decode the 'encodedOTP' value
             String decodedOTP = passwordEncoder.decode(encodedOTP);
-        }
+            if (decodedOTP.equals(otp)) {
+                // Hash the new password
+                String hashedPassword = passwordEncoder.encode(newPassword);
+
+            }
 }
