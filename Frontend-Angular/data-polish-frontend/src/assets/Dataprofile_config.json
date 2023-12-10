@@ -67,25 +67,25 @@
     },
     "completeness-metric":{
         "WHAT":"Measures the proportion of non-missing entries in the dataset to assess data completeness.",
-        "HOW TO IMPOROVE":"to improve the score, look into the 'Fill Missing Values' function."
+        "WHY":"to improve the score, look into the 'Fill Missing Values' function."
         
  
     },
     "uniqueness-metric":{
         "WHAT":"Displays the level of unique data entries, highlighting potential redundancy and indicating the curse of dimensionality in the dataset.",
-        "HOW TO IMPOROVE":"Assesses the impact of high dimensionality from excessive unique entries, crucial for preventing overfitting and complexity in data analysis."
+        "WHY":"Assesses the impact of high dimensionality from excessive unique entries, crucial for preventing overfitting and complexity in data analysis."
         
  
     },
     "readability-metric":{
         "WHAT":"Assesses the ease with which data can be read and interpreted by users or processing systems.",
-        "HOW TO IMPOROVE":"Utilize 'Trim Whitespace', 'Replace Substrings', and 'Adjust Text Case' to enhance data readability."
+        "WHY":"Utilize 'Trim Whitespace', 'Replace Substrings', and 'Adjust Text Case' to enhance data readability."
         
  
     },
     "consistency-metric":{
         "WHAT":"Evaluates how consistently data is presented across the dataset.",
-        "HOW TO IMPOROVE":"Correct inconsistencies by 'Changing Column Type', 'Renaming Columns', and using 'Regex' to standardize formats."
+        "WHY":"Correct inconsistencies by 'Changing Column Type', 'Renaming Columns', and using 'Regex' to standardize formats."
         
 
     }
