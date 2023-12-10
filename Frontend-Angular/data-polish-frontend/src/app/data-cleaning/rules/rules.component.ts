@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppSettings, constants } from 'src/app/Const/config';
 import { DataCleaningService } from 'src/app/Services/Datacleaning/data-cleaning.service';
 import { FileUpload } from 'primeng/fileupload';
+import { constants2 } from 'src/app/Const/config';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -27,7 +28,8 @@ export class RulesComponent {
     private http: HttpClient,
     private CookieService:CookieService,
     private MessageService:MessageService,
-    private DataCleaningService:DataCleaningService
+    private DataCleaningService:DataCleaningService,
+    private constants2:constants2
     ){
 
   }
@@ -622,9 +624,7 @@ setNumerical_Column_Binning(x:any){
 
 
 
-  openHelpText(){
-  
-  }
+
   Visibledatasetactions=false;
   dataSetActions(){
     this.Visibledatasetactions=true;
@@ -679,6 +679,20 @@ setNumerical_Column_Binning(x:any){
   }
   onUploadFile(e:any){
     this.uploadedFiles=[]
+  }
+
+  visibleHelpText=false;
+  WHAT:any;
+  WHY:any;
+  EXAMPLE:any;
+
+  openHelpText(element:any){
+    console.log(this.constants2.config)
+     this.WHAT=this.constants2.config[element].WHAT;
+     this.WHY=this.constants2.config[element].WHY;
+     this.EXAMPLE=this.constants2.config[element].EXAMPLE;
+    this.visibleHelpText=true;
+    
   }
   //// end of class
 }

@@ -44,7 +44,25 @@ export class constants{
         )
     }
    config:any;
-//   'EXAMPLE':'example'
 
 }
 
+
+@Injectable({
+    providedIn: 'root'
+  })
+export class constants2{
+    constructor(private http:HttpClient){
+        http.get('assets/DataCleaning_config.json').subscribe(
+            (res)=>{
+                this.config=res;
+            },
+            (err)=>{
+                alert('erre');
+                console.log(err);
+            }
+        )
+    }
+   config:any;
+
+}

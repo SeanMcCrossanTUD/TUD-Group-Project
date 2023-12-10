@@ -23,7 +23,7 @@
            
                         <div>
                             Total NO. Fields
-                            <sup (click)="openHelpText('NUMBEROFFIELDS')" class="help-text-child">
+                            <sup (click)="openHelpText('NUMBEROFRECORDS')" class="help-text-child">
                                 <span class="material-icons">
                                     help
                                     </span>
@@ -31,10 +31,10 @@
                         </div>
                         <app-number-fields-chart/>
                     </div>
-                    <div class="stat div2">
+                    <div class="stat  help-text-parent">
                         <div>
                             Total NO. Records 
-                            <sup>
+                            <sup (click)="openHelpText('NUMBEROFRECORDS')"  class="help-text-child">
                                 <span class="material-icons">
                                     help
                                     </span>
@@ -43,8 +43,21 @@
                         
                        <app-records-chart/>
                     </div>
-                    <div class="chart-background"><app-cardinality/></div>
-                    <div class="chart-background"><app-data-types-chart/></div>
+                    <div class="chart-background help-text-parent">
+                        <sup (click)="openHelpText('cardinality')"  class="help-text-child">
+                            <span class="material-icons">
+                                help
+                                </span>
+                        </sup>
+                        <app-cardinality/>
+                    </div>
+                    <div class="chart-background help-text-parent">
+                        <sup (click)="openHelpText('data-types-chart')"  class="help-text-child">
+                            <span class="material-icons">
+                                help
+                                </span>
+                        </sup>
+                        <app-data-types-chart/></div>
                     <!-- tab-1 -->
                 </div>
                 </ng-template>
@@ -59,10 +72,11 @@
                 <div class="tabs">
                  
                   
-                    <div class="stat div3">
+                    <div class="stat div3 help-text-parent">
                         <div>
                             Number of Duplicates 
-                            <sup>
+                            <sup class="help-text-child"
+                            (click)="openHelpText('duplicate-chart')">
                                 <span class="material-icons">
                                     help
                                     </span>
@@ -72,19 +86,33 @@
                         <app-duplicate-chart/>
                     </div>
           
-                      <div class="chart-background"
+                      <div class="chart-background help-text-parent"
                         style="flex-direction: column;"
                       >
                         <p>
                             Data Quality Score
                         </p>
                         <app-data-quality-metric/>
-                        <sup>
+                        <sup style="position: absolute;
+                                    bottom: 5px;
+                                    right: 5px;          
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                        "
+                        (click)="showMore()" >
+                        
                             Expand
-                        <span class="material-icons" (click)="showMore()" title="Show More">
+                        <span class="material-icons" title="Show More">
                             <!-- more_vert -->
                             expand_circle_down
                             </span>
+                        </sup>
+                        <sup class="help-text-child"
+                        (click)="openHelpText('data-quality-metric')">
+                            <span class="material-icons">
+                                help
+                                </span>
                         </sup>
                       </div>
 
@@ -96,39 +124,68 @@
                     <div 
                     class="row1"
                     *ngIf="!hide_more">
-                        <div class="stat">
+                        <div class="stat help-text-parent">
                             <app-completeness-metric/>
+                            <sup class="help-text-child"
+                        (click)="openHelpText('completeness-metric')">
+                            <span class="material-icons">
+                                help
+                                </span>
+                        </sup>
                         </div>
-                        <div class="stat">
+                        <div class="stat help-text-parent">
                             <app-consistency-metric/>
+                            <sup class="help-text-child"
+                        (click)="openHelpText('consistency-metric')">
+                            <span class="material-icons">
+                                help
+                                </span>
+                        </sup>
                         </div>
                         </div>  
                         <div 
                     class="row1"
                     *ngIf="!hide_more">
-                        <div class="stat">
+                        <div class="stat help-text-parent">
                             <app-uniqueness-metric/>
+                            <sup class="help-text-child"
+                        (click)="openHelpText('uniqueness-metric')">
+                            <span class="material-icons">
+                                help
+                                </span>
+                        </sup>
                         </div>
-                        <div class="stat">
+                        <div class="stat help-text-parent">
                             <app-readability-metric/>
+                            <sup class="help-text-child"
+                        (click)="openHelpText('readability-metric')">
+                            <span class="material-icons">
+                                help
+                                </span>
+                        </sup>
                         </div>
                     </div>
                         
-                    <div class="chart-background">
+                    <div class="chart-background  help-text-parent">
                      
-                        <app-spider-chart style="max-width: 80%;"/>
+                        <app-spider-chart />
                         <sup (click)="openHelpText('SPIDERCHART')"
-                            style="flex-basis: 40%; display: flex; flex-direction: column;
-                             justify-content: 
-                             flex-start;
-                             min-height: 100%;">
+                        class="help-text-child">
                             <span class="material-icons">
                                 help
                                 </span>
                                 <span>&nbsp;</span>
                         </sup>
                     </div>
-                    <div class="chart-background"> <app-missing-values-chart />  </div>
+                    <div class="chart-background help-text-parent"> <app-missing-values-chart />
+                        <sup (click)="openHelpText('missing-values-chart')"
+                        class="help-text-child">
+                            <span class="material-icons">
+                                help
+                                </span>
+                                <span>&nbsp;</span>
+                        </sup> 
+                     </div>
                     
                     <!-- tabs-2 -->
                 </div>
@@ -143,10 +200,34 @@
                 </ng-template>  
                 <ng-template matTabContent>
                     <div class="tabs">
-                        <div class="chart-background"><app-histogram/></div> 
-                    <div class="chart-background"><app-correlation-scatter-plot/></div>
-                    <div class="chart-background"><app-bubble-chart/></div>
-                    <div class="chart-background"> <app-outliers-scatter-plot/> </div> 
+                        <div class="chart-background help-text-parent"><app-histogram/> <sup (click)="openHelpText('histogram')"
+                            class="help-text-child">
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                                    <span>&nbsp;</span>
+                            </sup> </div> 
+                        <div class="chart-background help-text-parent"><app-correlation-scatter-plot/><sup (click)="openHelpText('correlation-scatter-plot')"
+                            class="help-text-child">
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                                    <span>&nbsp;</span>
+                            </sup> </div>
+                        <div class="chart-background help-text-parent"><app-bubble-chart/><sup (click)="openHelpText('bubble-chart')"
+                            class="help-text-child">
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                                    <span>&nbsp;</span>
+                            </sup> </div>
+                        <div class="chart-background help-text-parent"> <app-outliers-scatter-plot/><sup (click)="openHelpText('outliers-scatter-plot')"
+                            class="help-text-child">
+                                <span class="material-icons">
+                                    help
+                                    </span>
+                                    <span>&nbsp;</span>
+                            </sup>  </div> 
                     </div>
                     
                     </ng-template>
