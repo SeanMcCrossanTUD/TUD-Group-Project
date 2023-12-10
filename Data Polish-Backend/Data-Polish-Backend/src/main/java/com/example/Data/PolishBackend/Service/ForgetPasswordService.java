@@ -36,7 +36,7 @@ public class ForgetPasswordService {
         try {
             jdbcTemplate.update(sql, encodedOTP, email);
             // Return the unencrypted OTP to the frontend
-            
+            return ResponseEntity.status(HttpStatus.OK).body(otp);
         }
     }
 
