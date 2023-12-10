@@ -37,14 +37,14 @@
   left: 0;
 }
 
-h3 {
+h4 {
   font-size: 0.8em;
   font-family: Verdana;
   margin-top: 20px;
   color: rgb(129, 137, 137);
 }
 
-p {
+.description {
   font-size: 2.2em;
   font-family: Verdana;
   font-weight: 530;
@@ -104,4 +104,24 @@ button a:hover {
   font-family: Verdana;
 }
 
+h1{
+  font-family: Verdana;
+  color: rgb(237, 244, 244);
+}
+
+h2 {
+  font-family: Verdana;
+  color: aliceblue;
+}
+
+h3 {
+  font-family: Verdana;
+  color: aliceblue;
+}
+
+p {
+  font-size: 1em;
+  font-family: Verdana;
+  color:aliceblue;
+}
 
