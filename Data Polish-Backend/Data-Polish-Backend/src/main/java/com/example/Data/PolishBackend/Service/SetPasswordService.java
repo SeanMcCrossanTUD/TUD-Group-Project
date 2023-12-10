@@ -25,7 +25,7 @@ public class SetPasswordService {
 
     public ResponseEntity<String> setPassword(String email, String otp, String newPassword) {
         try {
-            // Retrieve the 'encodedOTP' value from the 'users' table for the given email
+            // Retrieve the 'encodedOTP' from the 'users' table for the given email
             String encodedOTP = jdbcTemplate.queryForObject(
                     "SELECT password FROM users WHERE email = ?",
                     new Object[]{email},
