@@ -183,9 +183,9 @@ def apply_transformations(prep, json_config):
                 logger.info(f"Tokenized text in column: {col}")
 
         # Extract datetime components
-        for datetime_extraction in json_config.get('extract_datetime_components', []):
-            if col in datetime_extraction:
-                components = datetime_extraction[col]
+        for col in prep.dataframe.columns:
+            if col in json_config.get('extract_datetime_components', {}) and pd.api.types.is_datetime64_any_dtype(prep.dataframe[col]):
+                components = json_config['extract_datetime_components'][col]
                 prep.extract_datetime_components(col, components)
                 logger.info(f"Extracted datetime components from column: {col}")
 
