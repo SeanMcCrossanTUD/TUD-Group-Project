@@ -44,4 +44,7 @@ public class SetPasswordService {
                 return ResponseEntity.status(HttpStatus.OK).body("Password successfully updated");
 
             }
+            else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("OTP is invalid");
+            }
 }
