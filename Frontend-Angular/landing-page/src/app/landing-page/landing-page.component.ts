@@ -14,8 +14,9 @@ export class LandingPageComponent {
   }
 
   getStarted() {
-    var url=window.location+'user-registration'
-    window.location.replace(url);
+    // var url=window.location+'user-registration'
+    // window.location.replace(url);
+    this.router.navigate(["/user-registration"]);
     // Add logic to navigate to the get started page or perform other actions
   }
 
