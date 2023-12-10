@@ -680,6 +680,11 @@ setNumerical_Column_Binning(x:any){
   onUploadFile(e:any){
     this.uploadedFiles=[]
   }
+
+  visibleHelpText=false;
+  WHAT:any;
+  WHY:any;
+  EXAMPLE:any;
   //// end of class
 }
 
