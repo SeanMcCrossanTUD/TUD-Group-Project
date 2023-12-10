@@ -14,11 +14,13 @@
         "WHY": "Crucial for addressing performance issues in machine learning algorithms caused by numerically diverse attribute scales.",
         "EXAMPLE": "Reduce a numerical column with diverse range of values into a 0-1 scale for min-max or deviations above or below the mean for z score scaling"
     },
+
     "Missing Value Imputation": {
         "WHAT": "To fill or remove missing values in a specified column of the DataFrame.",
         "WHY": "Integrates missing value treatment efficiently into the data preprocessing pipeline, enhancing workflow efficiency and reducing errors.",
         "EXAMPLE": "A column with missing values will have those missing values updated with the options presented in the UI"
-    },
+    }, 
+  
     "Outlier Managament": {
         "WHAT": "To remove or modify outliers in all numeric columns of a DataFrame based on standard deviation",
         "WHY": "Essential for mitigating the impact of outliers on model performance, particularly in algorithms sensitive to data distribution like linear regression or clustering.",

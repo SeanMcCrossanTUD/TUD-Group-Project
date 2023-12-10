@@ -11,15 +11,21 @@
         
         
     },
+    "NUMBEROFFIELDS":{
+        "WHAT":"Displays the count of Columns in the dataset.",
+        "WHY":"In order to understand the Dataset size"
+        
+        
+    },
     "bubble-chart":{
         "WHAT":"Visualises the categorical features within a column as bubbles.",
-        "WHY":"Use to identify categorical distribution. Large bubbles may indicate asimetric data points needing normalisation."
+        "WHY":"Uses to identify the most prevelant values in a selected column. Large bubbles may indicate asimetric data points needing normalisation."
         
         
     },
     "cardinality":{
         "WHAT":"Shows the uniqueness of data by representing the number of distinct values in a column.",
-        "WHY":"High cardinality can introduce the curse of dimensionailty, columns may need to be encoded before using them as a predictor variable in Machine Learning."
+        "WHY":"High cardinality can introduce the curse of dimensionailty, columns may need to be encoded or removed before using them as a predictor variable in Machine Learning."
         
         
     },
@@ -31,19 +37,19 @@
     },
     "data-quality-metric":{
         "WHAT":"Evaluates data quality across four dimensions: completeness, uniqueness, readability, and consistency, providing a comprehensive overview of data health.",
-        "WHY":"Used as a Estimate to determine the readiness of the dataset before machine learning."
+        "WHY":"Used as an estimate to determine the readiness of the dataset before machine learning."
         
  
     },
     "data-types-chart":{
-        "WHAT":"Categorizes data into different types (numeric, categorical, etc.).",
+        "WHAT":"Categorizes data into different types (numeric, text, etc.).",
         "WHY":"Allows for a better fundemental understanding of data type distribution"
         
  
     },
     "duplicate-chart":{
         "WHAT":"Visualizes the frequency of duplicate records in a dataset.",
-        "WHY":"shows duplicate records to be removed."
+        "WHY":"Shows if dataset contains duplicate records that need to be removed."
         
  
     },
