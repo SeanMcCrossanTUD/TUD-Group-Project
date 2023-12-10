@@ -32,9 +32,8 @@ public class SetPasswordService {
                     email
             );
 
-            // Decode the 'encodedOTP' value
-            String decodedOTP = passwordEncoder.decode(encodedOTP);
-            if (decodedOTP.equals(otp)) {
+            // Check if the raw OTP matches the encoded password
+            if (passwordEncoder.matches(otp, encodedOTP)) {
                 // Hash the new password
                 String hashedPassword = passwordEncoder.encode(newPassword);
 
@@ -42,7 +41,6 @@ public class SetPasswordService {
                 jdbcTemplate.update("UPDATE users SET password = ? WHERE email = ?", hashedPassword, email);
 
                 return ResponseEntity.status(HttpStatus.OK).body("Password successfully updated");
-
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("OTP is invalid");
             }
@@ -53,4 +51,5 @@ public class SetPasswordService {
             // Handle other exceptions
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
 }
