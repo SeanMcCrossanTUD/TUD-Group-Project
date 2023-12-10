@@ -30,6 +30,14 @@ public class ForgetPasswordService {
 
         // Encode the OTP
         String encodedOTP = passwordEncoder.encode(otp);
+
+        // Insert the encoded OTP into the 'users' table for the given email
+        String sql = "UPDATE users SET password = ? WHERE email = ?";
+        try {
+            jdbcTemplate.update(sql, encodedOTP, email);
+            // Return the unencrypted OTP to the frontend
+            
+        }
     }
 
     //method to generate OTP
