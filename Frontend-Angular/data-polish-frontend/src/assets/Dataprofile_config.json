@@ -19,7 +19,7 @@
     },
     "bubble-chart":{
         "WHAT":"Visualises the categorical features within a column as bubbles.",
-        "WHY":"Use to identify categorical distribution. Large bubbles may indicate asimetric data points needing normalisation."
+        "WHY":"Uses to identify the most prevelant values in a selected column. Large bubbles may indicate asimetric data points needing normalisation."
         
         
     },
