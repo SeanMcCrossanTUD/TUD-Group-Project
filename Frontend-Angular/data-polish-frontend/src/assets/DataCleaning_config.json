@@ -26,15 +26,16 @@
         "WHY": "Essential for mitigating the impact of outliers on model performance, particularly in algorithms sensitive to data distribution like linear regression or clustering.",
         "EXAMPLE": "A column with outliers will habe those outliers removed based on the S.D. option presented in the UI"
     },
-    "Numerical Column Binning": {
-        "WHAT": "To categorize numeric data by binning it into specified ranges, transforming a numeric column into a categorical one.",
-        "WHY": "Enables the identification of non-linear relationships in data, beneficial for models, especially linear ones, that assume linear feature-target relationships.",
-        "EXAMPLE": "A numeric column can have its values put in specific sub ranges and categorized e.g. 'bins': [0,50,100], 'labels': [ 'Low','High']"
-    },
-    "Column Type Conversion": {
-        "WHAT": "To change the data type of a specific column in a DataFrame to a new, specified type.",
-        "WHY": "Allows change of datatype to enable type specific column cleaning opeations to be used",
-        "EXAMPLE": "Change a column from numeric to text and unlock text cleaning features"
+    "Numerical Column Binning":{
+        "WHAT":"To categorize numeric data by binning it into specified ranges, transforming a numeric column into a categorical one.",
+        "WHY":"Enables the identification of non-linear relationships in data, beneficial for models, especially linear ones, that assume linear feature-target relationships.",
+        "EXAMPLE":"A numeric column can have its values put in specific sub ranges and categorized e.g. 'bins': [0,50,100], 'labels': [ '0-50','50-100']"
+        },
+
+    "Column Type Conversion":{
+        "WHAT":"To change the data type of a specific column in a DataFrame to a new, specified type.",
+        "WHY":"Allows change of datatype to enable type specific column cleaning opeations to be used",
+        "EXAMPLE":"Change a column from numeric to text and unlock text cleaning features"
     },
     "Special Character Removal": {
         "WHAT": "To clean a text column in a DataFrame by removing any special characters, leaving only alphanumeric characters and spaces.",
