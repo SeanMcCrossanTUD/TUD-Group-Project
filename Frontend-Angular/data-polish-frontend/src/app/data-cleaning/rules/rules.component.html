@@ -79,7 +79,7 @@
                 <div>
                   <div>
                     Rename Column
-                     <sup>
+                     <sup (click)="openHelpText('Column Type Conversion')">
                        <span class="material-icons">
                          help
                        </span>
@@ -159,7 +159,7 @@
                 <div>
                   <div>
                     Remove Special characters
-                    <sup (click)="openHelpText()">
+                    <sup (click)="openHelpText('Rename Column')">
                       <span class="material-icons">
                         help
                       </span>
@@ -605,3 +605,19 @@
     </div>
 
   </p-dialog>
+
+
+  <p-dialog 
+header="Help"
+[(visible)]="visibleHelpText" 
+[modal]="true" 
+[style]="{ width: '50vw' }" 
+[draggable]="true" 
+[resizable]="false">
+   <h2>What is it ... 🤔 ?</h2>
+   <p>{{WHAT}}</p>
+   <h2>How it is useful ... 🧐 ?</h2>
+   <p>{{WHY}}</p>
+   <h2>Example</h2>
+   <p>{{EXAMPLE}}</p>
+</p-dialog>
