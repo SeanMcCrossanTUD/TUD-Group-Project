@@ -1,27 +1,51 @@
+<div style="
+background: rgb(24,21,60);
+background: linear-gradient(172deg, rgba(24,21,60,1) 19%, rgba(20,176,159,1) 100%);
+min-height: 98vh;
+display: flex;
+justify-content: center;
+align-items: center;
 
-<div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
-    <div class="text-center mb-5">
-        
-        <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
-        <span class="text-600 font-medium line-height-3">Don't have an account?</span>
-        <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
-    </div>
+">
+<div 
+    style="
+        min-height: 70%;
+        padding: 20px;"
+>
+<div
 
-    <div>
-        <label for="email1" class="block text-900 font-medium mb-2">Email</label>
-        <input id="email1" type="text" placeholder="Email address" pInputText class="w-full mb-3">
-
-        <label for="password1" class="block text-900 font-medium mb-2">Password</label>
-        <input id="password1" type="password" placeholder="Password" pInputText class="w-full mb-3">
-
-        <div class="flex align-items-center justify-content-between mb-6">
-            <div class="flex align-items-center">
-               
-                <label for="rememberme1" class="text-900">Remember me</label>
+style="display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+gap: 20px;">
+    
+   
+            <!-- <div>
+                
+                <label for="name">Full Name</label>&nbsp;
+                <input  name='name' placeholder="Enter your Full name">
             </div>
-            <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
-        </div>
-
-        <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full"></button>
-    </div>
+            <div>
+                <label for="email">Email</label>&nbsp;
+                <input name="email" placeholder="Enter your email address">
+            </div>
+            
+            <div class="create-user">Create User</div> -->
+            <form (ngSubmit)="onSubmit()" #registrationForm="ngForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" [(ngModel)]="userName" required>
+        
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" [(ngModel)]="email" required>        
+                
+        
+                <button type="submit">Register</button>
+            </form>
+           
+       
 </div>
+</div>
+</div>
+
+<p-toast position="bottom-left"></p-toast>
