@@ -8,6 +8,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/*
+* take fullName, email from user
+* create a random 4 digit OTP
+* encrypt the OTP and store all these in DB
+* send the unencrypted OTP, email to logic app
+* return the 201 to frontend
+* */
 @Service
 public class UserRegistrationService {
 
