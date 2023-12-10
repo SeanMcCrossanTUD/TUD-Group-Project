@@ -24,7 +24,7 @@ import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
 import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
 import { DataTypesChartComponent } from './D3/data-types-chart/data-types-chart.component';
-import { AppSettings } from './Const/config';
+import { AppSettings, constants2 } from './Const/config';
 import { NewHomeComponent } from './new-home/new-home.component';
 import { SetpsHomeComponent } from './setps-home/setps-home.component';
 import { NavigatationService } from './Services/navigate/navigatation.service';
@@ -155,6 +155,7 @@ const routes: Routes = [
     NavigatationService,
     D3DashboardService,
     constants,
+    constants2,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
