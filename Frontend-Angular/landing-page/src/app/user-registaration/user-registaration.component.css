@@ -42,3 +42,9 @@ button:hover {
 button:active{
     transform: translateY(5px);
 }
+
+.go-home:hover{
+    cursor: pointer;
+    background-color: black;
+    color: white;
+}
