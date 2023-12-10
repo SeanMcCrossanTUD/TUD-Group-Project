@@ -23,7 +23,7 @@
            
                         <div>
                             Total NO. Fields
-                            <sup (click)="openHelpText('NUMBEROFFIELDS')" class="help-text-child">
+                            <sup (click)="openHelpText('NUMBEROFRECORDS')" class="help-text-child">
                                 <span class="material-icons">
                                     help
                                     </span>
@@ -31,10 +31,10 @@
                         </div>
                         <app-number-fields-chart/>
                     </div>
-                    <div class="stat div2">
+                    <div class="stat  help-text-parent">
                         <div>
                             Total NO. Records 
-                            <sup>
+                            <sup (click)="openHelpText('NUMBEROFRECORDS')"  class="help-text-child">
                                 <span class="material-icons">
                                     help
                                     </span>
@@ -43,8 +43,21 @@
                         
                        <app-records-chart/>
                     </div>
-                    <div class="chart-background"><app-cardinality/></div>
-                    <div class="chart-background"><app-data-types-chart/></div>
+                    <div class="chart-background help-text-parent">
+                        <sup (click)="openHelpText('cardinality')"  class="help-text-child">
+                            <span class="material-icons">
+                                help
+                                </span>
+                        </sup>
+                        <app-cardinality/>
+                    </div>
+                    <div class="chart-background help-text-parent">
+                        <sup (click)="openHelpText('data-types-chart')"  class="help-text-child">
+                            <span class="material-icons">
+                                help
+                                </span>
+                        </sup>
+                        <app-data-types-chart/></div>
                     <!-- tab-1 -->
                 </div>
                 </ng-template>
