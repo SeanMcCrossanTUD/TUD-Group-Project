@@ -25,7 +25,11 @@ public class ForgetPasswordService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public ResponseEntity<String> forgetPassword(String email) {
+        // Generate a random 4-digit OTP
+        String otp = generateRandomOTP();
 
+        // Encode the OTP
+        String encodedOTP = passwordEncoder.encode(otp);
     }
 
     //method to generate OTP
