@@ -38,5 +38,10 @@ public class SetPasswordService {
                 // Hash the new password
                 String hashedPassword = passwordEncoder.encode(newPassword);
 
+                // Update the 'password' column with the new hashed password
+                jdbcTemplate.update("UPDATE users SET password = ? WHERE email = ?", hashedPassword, email);
+
+                return ResponseEntity.status(HttpStatus.OK).body("Password successfully updated");
+
             }
 }
