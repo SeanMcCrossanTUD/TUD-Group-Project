@@ -27,3 +27,12 @@ public class ForgetPasswordService {
     public ResponseEntity<String> forgetPassword(String email) {
 
     }
+
+    //method to generate OTP
+    private String generateRandomOTP() {
+        // Generate a random 4-digit OTP
+        Random random = new Random();
+        int otp = 1000 + random.nextInt(9000);
+        return String.valueOf(otp);
+    }
+}
