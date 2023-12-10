@@ -17,7 +17,7 @@ export class SetPasswordComponent {
   password1:any;
   password2:any;
   onSubmit(){
-    if(!(this.password1!==this.password2 && this.password1!=null && this.password1 !==undefined)){
+    if(!(this.password1==this.password2 && this.password1!=null && this.password1 !==undefined)){
       this.messageService.add({ severity: 'error', summary: 'Check your password', detail: 'make sure to enter same passwords in both box' });
       return;
     }
@@ -26,7 +26,23 @@ export class SetPasswordComponent {
       return;
     }
 
+      this.http.get('http://localhost:8090/set-password?email='+this.email+"&otp="+this.otp+"&newPassword="+this.password1,
+      {responseType:'text'})
+      .subscribe(
+        (res)=>{
+          alert('Password has been updated');
+          this.showMessage=false;
+        },(err)=>{
+          console.log(err)
+          alert('Invalid OTP')
+        }
+      )
     console.log()
+
+  }
+
+  showMessage=true;
+  navigateToLogin(){
 
   }
 }
