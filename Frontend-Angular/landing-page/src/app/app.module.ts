@@ -3,17 +3,21 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { Routes,RouterModule } from '@angular/router';
 import { LandingPageComponent } from './landing-page/landing-page.component';
-
+import { HttpClientModule } from '@angular/common/http';
 import {StyleClassModule} from 'primeng/styleclass';
 import { ButtonModule } from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { UserRegistarationComponent } from './user-registaration/user-registaration.component';
-
+import { FormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+import { SetPasswordComponent } from './set-password/set-password.component';
 // import { HomeComponent } from './home/home.component';
 const routes: Routes = [
     {path:'',component:LandingPageComponent},
-    {path:'user-registration',component:UserRegistarationComponent}
+    {path:'user-registration',component:UserRegistarationComponent},
+    {path:'set-password',component:SetPasswordComponent}
 
 
 ];
@@ -21,19 +25,23 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LandingPageComponent,
-    UserRegistarationComponent
+    UserRegistarationComponent,
+    SetPasswordComponent
     // HomeComponent
   ],
   imports: [
     StyleClassModule,
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     BrowserModule,
     ButtonModule,
     InputNumberModule,
+    ToastModule,
+    FormsModule,
     RouterModule.forRoot(routes,{useHash: true}),
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
