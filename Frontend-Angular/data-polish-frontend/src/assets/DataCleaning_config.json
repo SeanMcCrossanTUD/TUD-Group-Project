@@ -88,5 +88,11 @@
         "WHAT": " To convert categorical values in a specified column of a DataFrame into numerical labels.",
         "WHY": "Converts categorical data into numerical values, making it compatible with machine learning algorithms that require numerical input.",
         "EXAMPLE": "A category column with values 'apple', 'banana', 'orange', 'apple', 'banana' will be encoded as '0', '1', '2', '0', '1'"
+    },
+    "REMOVEDUPLICATE":{
+        "WHAT": "Removes dublicate records",
+        "WHY": "duplicate removeal will increase dq",
+        "EXAMPLE": "records which are identical will be removed"
+
     }
 }
