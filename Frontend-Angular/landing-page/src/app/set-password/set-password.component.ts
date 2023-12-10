@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-set-password', 
@@ -7,7 +8,9 @@ import { MessageService } from 'primeng/api';
   styleUrl: './set-password.component.css'
 })
 export class SetPasswordComponent {
-  constructor( private messageService:MessageService){}
+  constructor( private messageService:MessageService,
+    
+    private http:HttpClient){}
 
   email:any;
   otp:any;
