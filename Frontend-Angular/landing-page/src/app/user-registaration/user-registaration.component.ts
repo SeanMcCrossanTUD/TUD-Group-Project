@@ -50,7 +50,7 @@ export class UserRegistarationComponent {
 
  
       // Make the first HTTP POST request to 'http://localhost:8090/user-register'
-      this.http.post('http://localhost:8090/user-register?fullName='+this.userName+"&email="+this.email,{}).subscribe(
+      this.http.post('http://16.170.150.247:8090/user-register?fullName='+this.userName+"&email="+this.email,{}).subscribe(
         (res1: any) => {
           // Assuming 'res1' contains the OTP, adjust the property accordingly
           const otp = res1;
@@ -66,7 +66,7 @@ export class UserRegistarationComponent {
             (error) => {
               this.messageService.add({ severity: 'error', summary: 'Check your details', detail: 'something went wrong' });
             }
-          );
+          )
         },
         (error1) => {
           this.messageService.add({ severity: 'error', summary: 'Check your details', detail: 'something went wrong' });

@@ -21,9 +21,18 @@ export class LandingPageComponent {
     this.router.navigate(["/user-registration"]);
     // Add logic to navigate to the get started page or perform other actions
   }
+
   openUserManual(){
     window.open('assets/user-manual.pdf','_blank')
-    
+
+  moveTOSection(){
+    var x:any=document.getElementById("tutorial-section");
+    x.scrollIntoView({behavior: 'smooth'});
+  }
+  moveToTop(){
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
 
   }
 }

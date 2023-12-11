@@ -5,7 +5,8 @@
       <img src="assets/images/logo.png" alt="Image" height="100" class="mb-3">
       <div class="text-900 text-3xl font-medium mb-3">Sign In</div>
       <span class="text-600 font-medium line-height-3">Don't have an account?</span>
-      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
+      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" 
+      (click)="navigateToLandingPage('user-registration')">Create today!</a>
   </div>
 
   <div>
@@ -32,7 +33,7 @@
               <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
               <label for="rememberme1" class="text-900">Remember me</label>
           </div> -->
-          <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
+          <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer" (click)="navigateToLandingPage('forget-password')">Forgot password?</a>
       </div>
 
       <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full"
@@ -155,9 +156,9 @@
             DataPolish
           </div>
           <ul>
-            <li><a href="#">Tasks</a></li>
+            <!-- <li><a href="#">Tasks</a></li> -->
             <li><a href="#">New Task </a></li>
-            <li (click)="logout()"><a>Log Out</a></li>
+            <li id="logout" (click)="logout()">Log Out</li>
             <!-- <li><a href="#">Contact</a></li> -->
           </ul>
         </div>

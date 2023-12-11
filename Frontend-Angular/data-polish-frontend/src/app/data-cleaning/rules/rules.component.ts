@@ -694,6 +694,19 @@ setNumerical_Column_Binning(x:any){
     this.visibleHelpText=true;
     
   }
+
+
+  startDataCleaning(){
+    var jid=this.CookieService.get('jobsid');
+    var url=AppSettings.getBaseURL()+'trigger-cleaning?jobID='+jid;
+    this.http.get(url).subscribe(
+      (res)=>{
+        this.messageService.add({ severity: 'success', summary: 'Cleaning Started with Template', detail: 'Template file uploaded will be used for cleaning dataset.' });
+      },(error)=>{
+        this.messageService.add({ severity: 'error', summary: 'Something went wrong', detail: 'Your File not uploaded' });
+      }
+    )
+  }
   //// end of class
 }
 
