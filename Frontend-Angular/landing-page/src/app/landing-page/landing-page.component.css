@@ -98,7 +98,7 @@
   /*below two parts for the Tutorial button*/
   button a {
     text-decoration: none;
-    color: white;
+    color:white;
   }
   
   button a:hover {
@@ -112,6 +112,10 @@
   left: 50%;
   margin-left: 0%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .scroll-down-arrow {

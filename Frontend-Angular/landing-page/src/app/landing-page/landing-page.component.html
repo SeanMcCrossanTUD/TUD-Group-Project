@@ -10,12 +10,12 @@
   <h4>WELCOME TO DATAPOLISH</h4>
   <p class="description">Ultimate tool for seamless<br>and effective Data Cleaning.</p>
   <div class="buttons">
-    <button><a href="#tutorial-section">Tutorial</a></button>
+    <button (click)="moveTOSection()">Tutorial</button>
     <button (click)="getStarted()">Get Started</button>
   </div>
 </div>
 
-<div class="scroll-down-container">
+<div class="scroll-down-container" (click)="moveTOSection()">
   <div class="scroll-down-arrow"></div>
   <p class="scroll-down-text">Scroll down</p>
 </div>
