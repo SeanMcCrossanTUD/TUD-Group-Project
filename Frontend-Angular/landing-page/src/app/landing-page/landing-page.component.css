@@ -105,6 +105,34 @@
     background-color: white;
     color: black; /* Change text color when hovered */
   }
+
+.scroll-down-container {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.scroll-down-arrow {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 20px solid white; /* You can adjust the color */
+}
+
+.scroll-down-text {
+  margin-top: 5px;
+  color: white;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease; /* Add a smooth transition effect */
+}
+
+.scroll-down-container:hover .scroll-down-text {
+  opacity: 1; /* Show text on hover */
+}
+
   
   .tutorial-section {
     margin-top: 22%;
