@@ -4,7 +4,7 @@
 <!-- <img src="assets/Logo.png" alt="Data Polish Logo" class="logo"> -->
 <img src="assets/top-corner-logo.png" alt="Data Polish Logo" class="logo">
 
-<button class="signin-button">Sign In</button>
+<button class="signin-button" (click)="navToMainApp()">Sign In</button>
 
 <div class="landing-page">
   <h4>WELCOME TO DATAPOLISH</h4>
@@ -115,7 +115,7 @@
     cleaned data tailored to your specifications.</p> <br>
     <img src="assets/data download.png" class="step-5-SS">
     <br> <br>
-    <div class="scroll-up-container">
+    <div class="scroll-up-container" (click)="moveToTop()">
       <span class="arrow">&#9650;</span>
       <span class="tooltip">Scroll up</span>
     </div>
