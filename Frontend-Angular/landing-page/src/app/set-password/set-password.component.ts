@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-set-password', 
@@ -9,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SetPasswordComponent {
   constructor( private messageService:MessageService,
-    
+    private router:Router,
     private http:HttpClient){}
 
   email:any;
@@ -43,6 +44,6 @@ export class SetPasswordComponent {
 
   showMessage=true;
   navigateToLogin(){
-
+    window.location.href="http://16.170.150.247:9000/datapolish/#/1";
   }
 }
