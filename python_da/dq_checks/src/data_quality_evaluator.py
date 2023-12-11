@@ -26,8 +26,18 @@ class AdvancedDataQualityEvaluator:
         return np.average(list(completeness_scores), weights=list(self.weights.values()))
 
     def uniqueness(self):
-        unique_scores = (self.df[col].nunique() / len(self.df[col]) for col in self.df.columns)
-        return np.average(list(unique_scores), weights=list(self.weights.values()))
+        # Filter only object type (text) columns
+        text_columns = [col for col in self.df.columns if self.df[col].dtype == 'object']
+
+        # Calculate uniqueness score for each text column
+        unique_scores = [self.df[col].nunique() / len(self.df[col]) for col in text_columns]
+
+        # Calculate the weighted average if there are any text columns
+        if unique_scores:
+            return np.average(unique_scores, weights=[self.weights.get(col, 1) for col in text_columns])
+        else:
+            return 1
+
 
     def consistency(self):
         consistency_scores = []
