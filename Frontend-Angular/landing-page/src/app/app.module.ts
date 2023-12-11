@@ -13,11 +13,14 @@ import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import { SetPasswordComponent } from './set-password/set-password.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 // import { HomeComponent } from './home/home.component';
 const routes: Routes = [
-    {path:'',component:LandingPageComponent},
+    
     {path:'user-registration',component:UserRegistarationComponent},
-    {path:'set-password',component:SetPasswordComponent}
+    {path:'set-password',component:SetPasswordComponent},
+    {path:'forget-password',component:ForgetPasswordComponent},
+    {path:'',component:LandingPageComponent}
 
 
 ];
@@ -26,7 +29,8 @@ const routes: Routes = [
     AppComponent,
     LandingPageComponent,
     UserRegistarationComponent,
-    SetPasswordComponent
+    SetPasswordComponent,
+    ForgetPasswordComponent
     // HomeComponent
   ],
   imports: [

@@ -26,7 +26,7 @@ export class SetPasswordComponent {
       return;
     }
 
-      this.http.get('http://localhost:8090/set-password?email='+this.email+"&otp="+this.otp+"&newPassword="+this.password1,
+      this.http.get('http://16.170.150.247:8090/set-password?email='+this.email+"&otp="+this.otp+"&newPassword="+this.password1,
       {responseType:'text'})
       .subscribe(
         (res)=>{
