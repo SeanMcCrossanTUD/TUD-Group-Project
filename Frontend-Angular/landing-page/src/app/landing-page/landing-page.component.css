@@ -50,6 +50,14 @@
     cursor: pointer;
   }
 
+  .user-manual {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+  }
+
   h4 {
     font-size: 0.8em;
     font-family: Verdana;
@@ -147,6 +155,7 @@
     border-radius: 10px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Optional: Add a subtle box shadow */
     font-family: Verdana;
+    position: relative;
   }
   
   h1{
@@ -187,3 +196,63 @@
     width: 70%;
     height: auto;
   }
+
+  .step-3-1-SS {
+    margin-left: 15%;
+    width: 70%;
+    height: auto;
+  }
+
+  .step-3-2-SS {
+    margin-left: 15%;
+    width: 70%;
+    height: auto;
+  }
+
+  .step-3-3-SS {
+    margin-left: 15%;
+    width: 70%;
+    height: auto;
+  }
+
+  .step-4-SS {
+    margin-left: 15%;
+    width: 70%;
+    height: auto;
+  }
+
+  .step-5-SS {
+    margin-left: 15%;
+    width: 70%;
+    height: auto;
+  }
+
+  .scroll-up-container {
+    position: absolute;
+    bottom: 1%;
+    right: -3%;
+    cursor: pointer;
+  }
+  
+  .arrow {
+    font-size: 24px;
+    color: #fff;
+    display: block;
+  }
+  
+  .tooltip {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    bottom: 30px;
+    right: 50%;
+    transform: translateX(50%);
+  }
+  
+  .scroll-up-container:hover .tooltip {
+    display: block;
+  }
+  
