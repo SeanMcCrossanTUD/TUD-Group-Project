@@ -17,9 +17,8 @@ public class UserRegistrationController {
     @PostMapping("/user-register")
     public ResponseEntity<String> registerUser(
             @RequestParam String fullName,
-            @RequestParam String email,
-            @RequestParam String password
+            @RequestParam String email
     ) {
-        return userRegistrationService.registerUser(fullName, email, password);
+        return userRegistrationService.registerUser(fullName, email);
     }
 }

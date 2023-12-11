@@ -1,0 +1,101 @@
+<img src="assets/top-corner-logo.png" alt="Data Polish Logo"
+(click)="goHome()"
+class="logo">
+<div style="
+background: rgb(24,21,60);
+background: linear-gradient(172deg, rgba(24,21,60,1) 19%, rgba(20,176,159,1) 100%);
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+width: 100%;
+position: fixed;
+    top: 0;
+    left: 0;
+
+"
+
+> 
+<div 
+    style="
+        min-height: 70%;
+        padding: 20px;
+        display: flex;
+justify-content: center;
+align-items: center;"
+        *ngIf="showMessage"
+>
+<div
+
+style="display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+gap: 10px;">
+    
+   
+
+    <div
+    style="background-color: white;
+    padding: 10px; width: 100%;
+    text-align: center;
+    border-radius: 5px;"    >
+    <div style=" font-size: large;">
+        User Registration
+    </div>
+    <div style="font-style: italic;
+    font-size: smaller;">
+        <sub>Take the first step towards 
+            simplified data cleaning</sub>
+    </div>
+ 
+        
+    </div>
+            <form (ngSubmit)="onSubmit()" #registrationForm="ngForm">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter Your Name"
+                [(ngModel)]="userName" required>
+        
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter Your Email"
+                 [(ngModel)]="email" required>        
+                
+        
+                <button type="submit">Register</button>
+            </form>
+           
+       
+</div>
+</div>
+
+
+<div *ngIf="!showMessage" 
+    style="min-width: 30vw;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;"
+>
+    User has been created sucessfully. check your Email for further instructions.
+    <div style="min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;">
+    <div style="border: 1px black solid;
+    padding: 10px;"
+    class="go-home"
+    
+    (click)="goHome()">
+        Go Home
+    </div>
+        
+    </div>
+
+</div>
+</div>
+
+<p-toast position="bottom-left"></p-toast>
+

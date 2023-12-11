@@ -31,7 +31,7 @@ RDS_TABLE = config["RDS_TABLE"]
 RDS_COLUMN_DATA_PROFILE = config["RDS_COLUMN_DATA_PROFILE"]
 RDS_COLUMN_DATA_PREVIEW = config["RDS_COLUMN_DATA_PREVIEW"]
 
-def update_rds_data_profile(filename, job_id):
+def update_rds_data_profile(filename, job_id, container_name):
     """Updates a filename in the AWS RDS table based on job_id."""
     connection = None
     try:
@@ -45,7 +45,7 @@ def update_rds_data_profile(filename, job_id):
         cursor = connection.cursor()
 
         # Construct the update query
-        update_query = f"UPDATE {RDS_TABLE} SET {RDS_COLUMN_DATA_PROFILE} = %s WHERE jobid = %s;"
+        update_query = f"UPDATE {RDS_TABLE} SET {container_name} = %s WHERE jobid = %s;"
         
         cursor.execute(update_query, (filename, job_id))
         connection.commit()

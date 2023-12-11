@@ -38,10 +38,17 @@ class AdvancedDataQualityEvaluator:
         return np.average(consistency_scores, weights=list(self.weights.values()))
 
 
-    def readability(self, column):
+    def readability(self, column, sample_size=100):
         if column in self.df.columns and self.df[column].dtype == 'object':
+            # Use a smaller sample if the dataframe is large
+            if len(self.df) > sample_size:
+                sample_df = self.df[column].sample(n=sample_size, random_state=1).astype(str)
+            else:
+                sample_df = self.df[column].astype(str)
+
             vectorizer = TfidfVectorizer()
-            tfidf_matrix = vectorizer.fit_transform(self.df[column].astype(str))
+            tfidf_matrix = vectorizer.fit_transform(sample_df)
             cosine_sim = cosine_similarity(tfidf_matrix)
             return np.mean(cosine_sim.diagonal())
+
         return 1

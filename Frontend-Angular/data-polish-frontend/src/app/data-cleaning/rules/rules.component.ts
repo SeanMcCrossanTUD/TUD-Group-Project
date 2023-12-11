@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppSettings, constants } from 'src/app/Const/config';
 import { DataCleaningService } from 'src/app/Services/Datacleaning/data-cleaning.service';
 import { FileUpload } from 'primeng/fileupload';
+import { constants2 } from 'src/app/Const/config';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -27,7 +28,8 @@ export class RulesComponent {
     private http: HttpClient,
     private CookieService:CookieService,
     private MessageService:MessageService,
-    private DataCleaningService:DataCleaningService
+    private DataCleaningService:DataCleaningService,
+    private constants2:constants2
     ){
 
   }
@@ -39,6 +41,11 @@ export class RulesComponent {
      filter: true,
      sortable: true,
   },
+  {field:"Data Type",
+  width: 200,
+   filter: true,
+   sortable: true,
+},
     // {field:"Data Type"},
     {
       field:"Keep column",
@@ -78,8 +85,10 @@ export class RulesComponent {
       (Response)=>{
      
         this.DataPreviewDataService.getJsonData(Response).subscribe(
-          (r2:any)=>{           
-            this.makedata(r2.columnNames);
+          (r2:any)=>{  
+                  
+            this.makedata(r2.columnNames,r2.datatype);
+          
             
           }
         )
@@ -97,17 +106,28 @@ export class RulesComponent {
   
   }
 
-  makedata(columnNames:any){
+  makedata(columnNames:any,dtypes:any){
     var temp:any=[];
-    columnNames.forEach((item:any)=>{
+    for(var i=0;i<columnNames.length;i++){
+      console.log(dtypes[i]);
       temp.push(
         {
-          "Field Names":item,
+          "Field Names":columnNames[i],          
+          "Data Type":dtypes[i],
           "Keep column":true,
-          "cleaning options":item
+          "cleaning options":columnNames[i]
         }
       )
-    })
+    }
+    // columnNames.forEach((item:any)=>{
+    //   temp.push(
+    //     {
+    //       "Field Names":item,
+    //       "Keep column":true,
+    //       "cleaning options":item
+    //     }
+    //   )
+    // })
     this.rowData=temp;
 
   }
@@ -163,6 +183,7 @@ export class RulesComponent {
       this.DataCleaningService.saveData(this.rules,jobid).subscribe(
         (res)=>{
           this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Your rules has been saved' })
+          this.CookieService.set('RULESSAVED','TRUE')
         },
         (err)=>{
           alert(err);
@@ -523,8 +544,7 @@ setNumerical_Column_Binning(x:any){
 
 
   // column type conversion
-  options_Column_Type_Conversion:any=[
-    {types:'Object'},
+  options_Column_Type_Conversion:any=[    
     {types:'Text'},
     {types:'Numerical'}
   ]
@@ -604,9 +624,7 @@ setNumerical_Column_Binning(x:any){
 
 
 
-  openHelpText(){
-  
-  }
+
   Visibledatasetactions=false;
   dataSetActions(){
     this.Visibledatasetactions=true;
@@ -661,6 +679,33 @@ setNumerical_Column_Binning(x:any){
   }
   onUploadFile(e:any){
     this.uploadedFiles=[]
+  }
+
+  visibleHelpText=false;
+  WHAT:any;
+  WHY:any;
+  EXAMPLE:any;
+
+  openHelpText(element:any){
+    console.log(this.constants2.config)
+     this.WHAT=this.constants2.config[element].WHAT;
+     this.WHY=this.constants2.config[element].WHY;
+     this.EXAMPLE=this.constants2.config[element].EXAMPLE;
+    this.visibleHelpText=true;
+    
+  }
+
+
+  startDataCleaning(){
+    var jid=this.CookieService.get('jobsid');
+    var url=AppSettings.getBaseURL()+'trigger-cleaning?jobID='+jid;
+    this.http.get(url).subscribe(
+      (res)=>{
+        this.messageService.add({ severity: 'success', summary: 'Cleaning Started with Template', detail: 'Template file uploaded will be used for cleaning dataset.' });
+      },(error)=>{
+        this.messageService.add({ severity: 'error', summary: 'Something went wrong', detail: 'Your File not uploaded' });
+      }
+    )
   }
   //// end of class
 }

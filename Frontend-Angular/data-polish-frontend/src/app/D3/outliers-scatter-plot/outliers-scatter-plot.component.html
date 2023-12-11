@@ -1,19 +1,20 @@
 <div *ngIf="fields && fields.length > 0; else noDataTemplate">
   <div class="chart-container">
-    <select [(ngModel)]="selectedField" (change)="onFieldChange($event)">
-      <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
-    </select>
-
+    <div class="header">
+      <h2 class="plot-title" *ngIf="selectedField">{{ selectedField }} Outlier Scatter Plot</h2>
+      <div class="dropdown-container">
+        <select id="field-select" [(ngModel)]="selectedField" (change)="onFieldChange($event)">
+          <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
+        </select>
+      </div>
+    </div>
     
-    <h2 class="plot-title" *ngIf="selectedField">{{ selectedField }} Outlier Scatter Plot</h2>
-
     <div id="scatter-plot"></div>
   </div>
 </div>
 
-
 <ng-template #noDataTemplate>
   <div class="no-data-message">
-    <h2>No Numeric Data Available To Profile</h2>
+    <h2>No Numeric Data Available For Outlier Plot to Populate</h2>
   </div>
 </ng-template>

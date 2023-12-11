@@ -91,6 +91,7 @@ export class CorrelationScatterPlotComponent implements OnInit {
     const tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
       .style('opacity', 70)
+      .style('z-index',5)
       .style('position', 'absolute')
       .style('background', 'white')
       .style('border', '1px solid black')
@@ -106,25 +107,30 @@ export class CorrelationScatterPlotComponent implements OnInit {
       .attr("r", 5)
       .attr("cx", 0) // Start from the left
       .attr("cy", d => y(d.target))
-      .style("fill", "lightblue") // Lighter fill color
-      .style("stroke", "black") // Hard border
-      .style("stroke-width", "2px"); // Border width
+      .style("fill", "lightblue") 
+      .style("stroke", "black") 
+      .style("stroke-width", "2px"); 
 
     // Transition for moving from the left to the right
     circles.transition()
       .duration(1000)
       .attr("cx", d => x(d.predictor));
 
-    circles.on("mouseover", (event, d) => {
-      tooltip.transition().duration(200).style("opacity", 0.9);
-      tooltip.html(`Predictor: ${d.predictor}<br/>Target: ${d.target}`)
-        .style("left", (event.pageX + 10) + "px")
-        .style("top", (event.pageY - 28) + "px");
-    })
-    .on("mouseout", () => {
-      tooltip.transition().duration(500).style("opacity", 0);
-      tooltip.remove();
-    });
+      circles.on("mouseover", (event, d) => {
+        d3.select(event.currentTarget) 
+          .style("fill", "lightcoral"); 
+      
+        tooltip.transition().duration(200).style("opacity", 0.9);
+        tooltip.html(`Predictor: ${d.predictor}<br/>Target: ${d.target}`)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 28) + "px");
+      })
+      .on("mouseout", (event) => {
+        d3.select(event.currentTarget) 
+          .style("fill", "lightblue"); 
+      
+        tooltip.transition().duration(500).style("opacity", 0);
+      });
   }
 
   public onFieldChange(): void {

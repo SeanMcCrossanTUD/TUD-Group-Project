@@ -1,4 +1,6 @@
 <div *ngIf="fields && fields.length > 0; else noDataTemplate">
+  <h2 *ngIf="selectedTarget && selectedPredictor">{{ selectedTarget }} vs {{ selectedPredictor }} Correlation Chart</h2>
+
   <div class="dropdown-container">
     <div class="dropdown">
       <label for="target-variable">Target Variable:</label>
@@ -15,15 +17,11 @@
     </div>
   </div>
 
-  
-  <h2 *ngIf="selectedTarget && selectedPredictor">{{ selectedTarget }} vs {{ selectedPredictor }} Correlation</h2>
-
-  
   <div id="correlation-plot"></div>
 </div>
 
 <ng-template #noDataTemplate>
   <div class="no-data-message">
-    <h2>No Numeric Data Available To Profile</h2>
+    <h2>No Numeric Data Available To Populate Correlation Chart</h2>
   </div>
 </ng-template>

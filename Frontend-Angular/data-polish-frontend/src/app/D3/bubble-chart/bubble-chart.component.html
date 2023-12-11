@@ -1,7 +1,12 @@
 <div class="bubble-chart">
-  <h2 class="chart-heading">Bubble Chart</h2>
-  <select #categorySelect (change)="onCategoryChange(categorySelect.value)">
-    <option *ngFor="let category of categories" [value]="category">{{category}}</option>
-  </select>
+  <div class="chart-header">
+    <h2 class="chart-heading" *ngIf="numberOfInstances == 25">Top {{ numberOfInstances }} Instances for {{ selectedCategory }}</h2>
+    <h2 class="chart-heading" *ngIf="numberOfInstances < 25">Most Prevalent Instances for {{ selectedCategory }}</h2>
+    <div class="dropdown-container">
+      <select id="category-select" #categorySelect (change)="onCategoryChange(categorySelect.value)">
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </select>
+    </div>
+  </div>
   <div #bubbleChart></div>
 </div>

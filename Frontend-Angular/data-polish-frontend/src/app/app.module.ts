@@ -24,7 +24,7 @@ import { DockModule } from 'primeng/dock';
 import { FormsModule } from '@angular/forms';
 import { MissingValuesChartComponent } from './D3/missing-values-chart/missing-values-chart.component';
 import { DataTypesChartComponent } from './D3/data-types-chart/data-types-chart.component';
-import { AppSettings } from './Const/config';
+import { AppSettings, constants2 } from './Const/config';
 import { NewHomeComponent } from './new-home/new-home.component';
 import { SetpsHomeComponent } from './setps-home/setps-home.component';
 import { NavigatationService } from './Services/navigate/navigatation.service';
@@ -67,8 +67,9 @@ import { constants } from './Const/config';
 import { TokenInterceptor } from './Services/token.interceptor';
 import { SliderModule } from 'primeng/slider';
 import { MultiSelectModule } from 'primeng/multiselect';
+import {MatTabsModule} from '@angular/material/tabs';
 const routes: Routes = [
-    {path:'',component:UploadFileComponent},
+    {path:'',redirectTo:'/1',pathMatch:'full'},
     {path:'newjob',component:SetpsHomeComponent},
     {path:'1',component:UploadFileComponent},
     {path:'2',component:DataPreviewComponent},
@@ -116,7 +117,7 @@ const routes: Routes = [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes,{useHash: true}),
     ButtonModule,
     DialogModule,
     BrowserAnimationsModule,
@@ -132,6 +133,7 @@ const routes: Routes = [
     FormsModule,
     MultiSelectModule,
     TabViewModule,
+    MatTabsModule,
     StepsModule,
     SliderModule,
     SpeedDialModule,
@@ -153,6 +155,7 @@ const routes: Routes = [
     NavigatationService,
     D3DashboardService,
     constants,
+    constants2,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

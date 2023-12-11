@@ -1,17 +1,17 @@
 <div *ngIf="fields && fields.length > 0; else noDataTemplate">
-  <div class="filter">
-    <label for="field-select">Select Variable:</label>
-    <select id="field-select" [(ngModel)]="selectedField" (change)="onFieldChange()">
-      <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
-    </select>
+  <div class="chart-header">
+    <h2 *ngIf="selectedField">{{ selectedField }} Distribution</h2>
+    <div class="dropdown-container">
+      <select id="field-select" [(ngModel)]="selectedField" (change)="onFieldChange(selectedField)">
+        <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
+      </select>
+    </div>
   </div>
-
-  <h2 *ngIf="selectedField">{{ selectedField }} Distribution</h2>
   <div id="histogram"></div>
 </div>
 
 <ng-template #noDataTemplate>
   <div class="no-data-message">
-    <h2>No Numeric Data Available To Profile</h2>
+    <h2>No Numeric Data Available For the Distribution Chart to Populate</h2>
   </div>
 </ng-template>

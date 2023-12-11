@@ -19,7 +19,7 @@ import { LoginServiceService } from './Services/login/login-service.service';
 })
 export class AppComponent {
   
-  currentpage=1;
+  currentpage:any;
   title = 'dataPolish';
   items: any | null;
   radius:any =100;
@@ -46,6 +46,12 @@ export class AppComponent {
   line4:any
   linecolor:any='white';
   ngOnInit() {
+    var loc=String(window.location);
+    this.currentpage=Number(loc.charAt(loc.length-1))
+    if(isNaN(this.currentpage) || this.currentpage==undefined){
+      this.currentpage=1;
+    }
+    console.log(this.currentpage)
     let login:string = this.cookieService.get('LOGIN');
     if(login=='TRUE'){
       this.isLoggedin = true;
@@ -205,9 +211,24 @@ accessibilityset(){
 
 
 /******** */
-backStyle='visibility: collapse;'
-nextStyle='visibility: visible;'
+// backStyle='visibility: collapse;'
+// nextStyle='visibility: visible;'
 movenext(){
+  if(this.currentpage==1){
+    var condition=this.cookieService.get('FILEUPLOAD');
+    if(condition!='TRUE'){
+      this.messageService.add({ severity: 'error', summary: 'Dataset Not Uploaded', detail: 'Please Upload file to continue' });
+      return;
+    }
+  }
+  if(this.currentpage==4){
+    var condition=this.cookieService.get('RULESSAVED');
+    if(condition!='TRUE'){
+      this.messageService.add({ severity: 'error', summary: 'Cleaning Rules Not Saved', detail: 'Please Save Datacleaning rules to start cleaning the dataset' });
+      return;
+    }
+  }
+  
   if(this.currentpage<5){
     this.currentpage++;
     this.router.navigate([this.currentpage]);
@@ -235,12 +256,12 @@ movenext(){
      
       this.toggleLine(42);
     }
-    if(this.currentpage!=1){
-      this.backStyle='visibility: visible;'
-    }
-    if(this.currentpage==5){
-      this.nextStyle='visibility: collapse;'
-    }
+    // if(this.currentpage!=1){
+    //   this.backStyle='visibility: visible;'
+    // }
+    // if(this.currentpage==5){
+    //   this.nextStyle='visibility: collapse;'
+    // }
     
   }
   
@@ -250,12 +271,12 @@ moveback(){
   if(this.currentpage>1){
     this.currentpage--;
     this.router.navigate([this.currentpage]);
-    if(this.currentpage==1){
-      this.backStyle='visibility: collapse;'
-    }
-    if(this.currentpage!=5){
-      this.nextStyle='visibility: visible;'
-    }
+    // if(this.currentpage==1){
+    //   this.backStyle='visibility: collapse;'
+    // }
+    // if(this.currentpage!=5){
+    //   this.nextStyle='visibility: visible;'
+    // }
     if(this.currentpage==4){
       this.toggleLine(41);
     }
@@ -345,6 +366,10 @@ moveback(){
     this.cookieService.set('LOGIN','FALSE')
     location.reload();
 
+  }
+
+  navigateToLandingPage(x:any){
+    window.location.href='http://16.170.150.247:9000/v2/#/'+x
   }
 }
 

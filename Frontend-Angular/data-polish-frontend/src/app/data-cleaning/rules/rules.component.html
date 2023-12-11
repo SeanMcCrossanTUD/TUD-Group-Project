@@ -79,7 +79,7 @@
                 <div>
                   <div>
                     Rename Column
-                     <sup>
+                     <sup (click)="openHelpText('Rename Column')">
                        <span class="material-icons">
                          help
                        </span>
@@ -99,7 +99,7 @@
                 <div>
                   <div>
                     Column Type Conversion
-                          <sup>
+                          <sup (click)="openHelpText('Column Type Conversion')">
                             <span class="material-icons">
                               help
                             </span>
@@ -122,7 +122,7 @@
                 <div>
                   <div>
                     Missing Value Imputation
-                    <sup>
+                    <sup (click)="openHelpText('Missing Value Imputation')">
                       <span class="material-icons">
                         help
                       </span>
@@ -159,7 +159,7 @@
                 <div>
                   <div>
                     Remove Special characters
-                    <sup (click)="openHelpText()">
+                    <sup (click)="openHelpText('Special Character Removal')">
                       <span class="material-icons">
                         help
                       </span>
@@ -201,7 +201,7 @@
                 <div>
                   <div>
                     Trim Whitespace      
-                  <sup>
+                  <sup (click)="openHelpText('Trim Whitespace')">
                     <span class="material-icons">
                       help
                     </span>
@@ -216,7 +216,7 @@
                 <div>
                   <div>
                     Adjust Text Case 
-                          <sup>
+                          <sup (click)="openHelpText('Text Case Adjustment')">
                             <span class="material-icons">
                               help
                             </span>
@@ -237,7 +237,7 @@
                 <div>
                   <div>
                     Remove Stopwords
-                          <sup>
+                          <sup (click)="openHelpText('Remove Stopwords')">
                             <span class="material-icons">
                               help
                             </span>
@@ -253,7 +253,7 @@
                 <div>
                   <div>
                     Label Encoding
-                          <sup>
+                          <sup (click)="openHelpText('Label Encoding')">
                             <span class="material-icons">
                               help
                             </span>
@@ -267,7 +267,7 @@
                 <div>
                   <div>
                     Text Tokenisation
-                          <sup>
+                          <sup (click)="openHelpText('Text Tokenisation')">
                             <span class="material-icons">
                               help
                             </span>
@@ -282,7 +282,7 @@
                 <div>
                   <div>
                     Replace Substrings
-                          <sup>
+                          <sup (click)="openHelpText('Replace Substrings')">
                             <span class="material-icons">
                               help
                             </span>
@@ -320,7 +320,7 @@
                 <div>
                   <div>
                     Collapse Rare Categories
-                          <sup>
+                          <sup (click)="openHelpText('Combine Rare Categopries')">
                             <span class="material-icons">
                               help
                             </span>
@@ -346,7 +346,7 @@
                 <div>
                   <div>
                     Regular Expression Operations
-                          <sup>
+                          <sup (click)="openHelpText('Regular Expression Operations')">
                             <span class="material-icons">
                               help
                             </span>
@@ -386,7 +386,7 @@
                 <div>
                   <div>
                     Data Normalization
-                    <sup>
+                    <sup (click)="openHelpText('Data Normalization')">
                       <span class="material-icons">
                         help
                       </span>
@@ -407,7 +407,7 @@
                 <div>
                   <div>
                     Outlier Management
-                    <sup>
+                    <sup (click)="openHelpText('Outlier Managament')">
                       <span class="material-icons">
                         help
                       </span>
@@ -430,7 +430,7 @@
                 <div>
                   <div>
                     Numerical Column Binning
-                     <sup>
+                     <sup (click)="openHelpText('Numerical Column Binning')">
                        <span class="material-icons">
                          help
                        </span>
@@ -468,7 +468,7 @@
                 <div>
                   <div>
                     Standard Datetime format
-                          <sup>
+                          <sup (click)="openHelpText('Standard Datetime format')">
                             <span class="material-icons">
                               help
                             </span>
@@ -491,7 +491,7 @@
                 <div>
                   <div>
                     Extract Datetime Components
-                          <sup>
+                          <sup (click)="openHelpText('Extract Datetime Components')">
                             <span class="material-icons">
                               help
                             </span>
@@ -555,7 +555,7 @@
     <div>
       <div>
         Remove Duplicate
-              <sup>
+              <sup (click)="openHelpText('REMOVEDUPLICATE')">
                 <span class="material-icons">
                   help
                 </span>
@@ -601,7 +601,23 @@
     </div>
     <br/>
     <div class="save-button">
-      <div (click)="saveDatasetCleaning()">Start Cleaning</div>
+      <div (click)="startDataCleaning()">Start Cleaning</div>
     </div>
 
   </p-dialog>
+
+
+  <p-dialog 
+header="Help"
+[(visible)]="visibleHelpText" 
+[modal]="true" 
+[style]="{ width: '50vw' }" 
+[draggable]="true" 
+[resizable]="false">
+   <h2>What is it ... 🤔 ?</h2>
+   <p>{{WHAT}}</p>
+   <h2>How it is useful ... 🧐 ?</h2>
+   <p>{{WHY}}</p>
+   <h2>Example</h2>
+   <p>{{EXAMPLE}}</p>
+</p-dialog>

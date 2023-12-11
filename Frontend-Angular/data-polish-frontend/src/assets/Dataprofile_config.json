@@ -1,39 +1,99 @@
 {
-    "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
-        
-        
-    },
     "SPIDERCHART":{
         "WHAT":"A radial chart that shows data in terms of multiple variables. decribe what it does more.   ",
         "WHY":"Evaluate multiple metrics for a single record to determine data quality and consistency."
         
         
     },
-    "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
+    "NUMBEROFRECORDS":{
+        "WHAT":"Displays the count of Records in the dataset.",
+        "WHY":"In order to understand the Dataset size"
         
         
     },
     "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
+        "WHAT":"Displays the count of Columns in the dataset.",
+        "WHY":"In order to understand the Dataset size"
         
         
     },
-    "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
+    "bubble-chart":{
+        "WHAT":"Visualises the categorical features within a column as bubbles.",
+        "WHY":"Uses to identify the most prevelant values in a selected column. Large bubbles may indicate asimetric data points needing normalisation."
         
         
     },
-    "NUMBEROFFIELDS":{
-        "WHAT":"Displays the count of fields in the dataset.",
-        "WHY":""
+    "cardinality":{
+        "WHAT":"Shows the uniqueness of data by representing the number of distinct values in a column.",
+        "WHY":"High cardinality can introduce the curse of dimensionailty, columns may need to be encoded or removed before using them as a predictor variable in Machine Learning."
         
         
+    },
+    "correlation-scatter-plot":{
+        "WHAT":"Illustrates the relationship between two variables and their correlation coefficient.",
+        "WHY":"Use to determine if fields are redundant (high correlation)."
+        
+ 
+    },
+    "data-quality-metric":{
+        "WHAT":"Evaluates data quality across four dimensions: completeness, uniqueness, readability, and consistency, providing a comprehensive overview of data health.",
+        "WHY":"Used as an estimate to determine the readiness of the dataset before machine learning."
+        
+ 
+    },
+    "data-types-chart":{
+        "WHAT":"Categorizes data into different types (numeric, text, etc.).",
+        "WHY":"Allows for a better fundemental understanding of data type distribution"
+        
+ 
+    },
+    "duplicate-chart":{
+        "WHAT":"Visualizes the frequency of duplicate records in a dataset.",
+        "WHY":"Shows if dataset contains duplicate records that need to be removed."
+        
+ 
+    },
+    "histogram":{
+        "WHAT":"Represents the distribution of numerical data.",
+        "WHY":"Analyze the distribution of values to inform normalization."
+        
+ 
+    },
+    "missing-values-chart":{
+        "WHAT":"Highlights the number of missing values within a column in a dataset.",
+        "WHY":"Directs where to fill missing values or to decide if a column with too many missing values should be removed."
+        
+ 
+    },
+    "outliers-scatter-plot":{
+        "WHAT":"Identifies outlier data points in a dataset using the Z-score method.",
+        "WHY":"Calculates Z-scores and flags data points exceeding a threshold of 3 standard deviation points, aiding in outlier identification for enhanced data analysis."
+        
+ 
+    },
+    "completeness-metric":{
+        "WHAT":"Measures the proportion of non-missing entries in the dataset to assess data completeness.",
+        "WHY":"to improve the score, look into the 'Fill Missing Values' function."
+        
+ 
+    },
+    "uniqueness-metric":{
+        "WHAT":"Displays the level of unique data entries, highlighting potential redundancy and indicating the curse of dimensionality in the dataset.",
+        "WHY":"Assesses the impact of high dimensionality from excessive unique entries, crucial for preventing overfitting and complexity in data analysis."
+        
+ 
+    },
+    "readability-metric":{
+        "WHAT":"Assesses the ease with which data can be read and interpreted by users or processing systems.",
+        "WHY":"Utilize 'Trim Whitespace', 'Replace Substrings', and 'Adjust Text Case' to enhance data readability."
+        
+ 
+    },
+    "consistency-metric":{
+        "WHAT":"Evaluates how consistently data is presented across the dataset.",
+        "WHY":"Correct inconsistencies by 'Changing Column Type', 'Renaming Columns', and using 'Regex' to standardize formats."
+        
+
     }
 
 }

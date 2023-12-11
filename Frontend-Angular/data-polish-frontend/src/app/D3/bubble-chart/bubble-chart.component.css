@@ -1,0 +1,48 @@
+/* Bubble Chart Header */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  /* Chart Heading Style */
+  .chart-heading {
+    margin: 0;
+    flex-grow: 1;
+    text-align: left;
+  }
+  
+  /* Dropdown Container */
+  .dropdown-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  /* Dropdown and Label Style */
+  #category-select {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+  }
+  
+  label[for="category-select"] {
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  
+  /* Tooltip Style */
+  .tooltip {
+    position: absolute;
+    background-color: rgb(156, 64, 64);
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 5px;
+    pointer-events: none;
+  }
+  
+
+  

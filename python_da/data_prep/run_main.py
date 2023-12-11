@@ -92,6 +92,7 @@ def handle_renaming_and_dropping_columns(prep, json_config):
 
 def apply_dataset_actions(prep, json_config):
     # Check if dataset_actions key exists in the configuration
+
     if 'dataset_actions' in json_config:
         for action in json_config['dataset_actions']:
             if action == "remove_duplicates":
@@ -180,6 +181,13 @@ def apply_transformations(prep, json_config):
             if col in text_tokenisation and pd.api.types.is_string_dtype(prep.dataframe[col]):
                 prep.tokenize_text(col)
                 logger.info(f"Tokenized text in column: {col}")
+
+        # Extract datetime components
+        for col in prep.dataframe.columns:
+            if col in json_config.get('extract_datetime_components', {}) and pd.api.types.is_datetime64_any_dtype(prep.dataframe[col]):
+                components = json_config['extract_datetime_components'][col]
+                prep.extract_datetime_components(col, components)
+                logger.info(f"Extracted datetime components from column: {col}")
 
         # Column type conversion
         for conversion in json_config.get('column_type_conversion', []):
@@ -283,7 +291,7 @@ def main(test_iterations=None):
 
         # Check Azure queue for a new message
         try:
-            time.sleep(5)
+            time.sleep(30)
             msg = receive_message_from_queue(SERVICE_BUS_CONNECTION_STRING, SERVICE_BUS_QUEUE_NAME)
             logger.info(msg)
             if msg is not None:
