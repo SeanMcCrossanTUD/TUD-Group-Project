@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 @Component({
@@ -7,7 +8,8 @@ import { Router } from '@angular/router';
 })
 export class LandingPageComponent {
  
-  constructor(private router:Router){}
+  constructor(private router:Router,
+    private http:HttpClient){}
   openTutorial() {
     console.log('Opening tutorial...');
     // Add logic to navigate to the tutorial page or show a modal
@@ -19,5 +21,9 @@ export class LandingPageComponent {
     this.router.navigate(["/user-registration"]);
     // Add logic to navigate to the get started page or perform other actions
   }
+  openUserManual(){
+    window.open('assets/user-manual.pdf','_blank')
+    
 
+  }
 }
