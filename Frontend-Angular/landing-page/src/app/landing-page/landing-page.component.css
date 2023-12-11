@@ -143,6 +143,7 @@
     border-radius: 10px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Optional: Add a subtle box shadow */
     font-family: Verdana;
+    position: relative;
   }
   
   h1{
@@ -189,3 +190,33 @@
     width: 70%;
     height: auto;
   }
+
+  .scroll-up-container {
+    position: absolute;
+    bottom: 1%;
+    right: -3%;
+    cursor: pointer;
+  }
+  
+  .arrow {
+    font-size: 24px;
+    color: #fff;
+    display: block;
+  }
+  
+  .tooltip {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    bottom: 30px;
+    right: 50%;
+    transform: translateX(50%);
+  }
+  
+  .scroll-up-container:hover .tooltip {
+    display: block;
+  }
+  
