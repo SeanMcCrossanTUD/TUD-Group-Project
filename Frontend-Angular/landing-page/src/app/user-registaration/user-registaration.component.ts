@@ -66,7 +66,7 @@ export class UserRegistarationComponent {
             (error) => {
               this.messageService.add({ severity: 'error', summary: 'Check your details', detail: 'something went wrong' });
             }
-          );
+          )
         },
         (error1) => {
           this.messageService.add({ severity: 'error', summary: 'Check your details', detail: 'something went wrong' });
