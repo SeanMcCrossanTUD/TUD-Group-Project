@@ -1,12 +1,14 @@
 <div *ngIf="fields && fields.length > 0; else noDataTemplate">
   <div class="chart-container">
-    <label for="field-select">Select Variable:</label>
-    <select id="field-select" [(ngModel)]="selectedField" (change)="onFieldChange($event)">
-      <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
-    </select>
-
-    <h2 class="plot-title" *ngIf="selectedField">{{ selectedField }} Outlier Scatter Plot</h2>
-
+    <div class="header">
+      <h2 class="plot-title" *ngIf="selectedField">{{ selectedField }} Outlier Scatter Plot</h2>
+      <div class="dropdown-container">
+        <select id="field-select" [(ngModel)]="selectedField" (change)="onFieldChange($event)">
+          <option *ngFor="let field of fields" [value]="field">{{ field }}</option>
+        </select>
+      </div>
+    </div>
+    
     <div id="scatter-plot"></div>
   </div>
 </div>

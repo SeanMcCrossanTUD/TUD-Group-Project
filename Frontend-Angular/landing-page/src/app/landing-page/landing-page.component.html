@@ -4,6 +4,8 @@
 <!-- <img src="assets/Logo.png" alt="Data Polish Logo" class="logo"> -->
 <img src="assets/top-corner-logo.png" alt="Data Polish Logo" class="logo">
 
+<button class="signin-button">Sign In</button>
+
 <div class="landing-page">
   <h4>WELCOME TO DATAPOLISH</h4>
   <p class="description">Ultimate tool for seamless<br>and effective Data Cleaning.</p>
@@ -11,6 +13,11 @@
     <button><a href="#tutorial-section">Tutorial</a></button>
     <button (click)="getStarted()">Get Started</button>
   </div>
+</div>
+
+<div class="scroll-down-container">
+  <div class="scroll-down-arrow"></div>
+  <p class="scroll-down-text">Scroll down</p>
 </div>
 
 <div class="tutorial-section" id="tutorial-section">
@@ -27,35 +34,44 @@
     20MB. You can use the 'Choose' button or drag-and-drop your file, then click 'Upload' button to
     proceed. Clcik on "Next" button to navigate to second page.</p>
   <img src="assets/data upload 1.png" class="step-1-SS">
+  <br> <br>
   <h3>2. Preview Uploaded Data</h3>
   <div class="step2-text">
     <p>On this page, you can view the first 200 rows of your uploaded data.
       Enhance your viewing experience with various features including: </p>
         <ul>
           <li>Expand columns to view full content.</li>
-          <li>Auto-size individual columns or all columns using "Autosize This Column" and 
-            "Autosize All Columns" options.</li>
+          <li>Auto-size individual columns or all columns using 'Autosize This Column' and 
+            'Autosize All Columns' options.</li>
           <li>Reset columns after applying filters.</li>
           <li>Adjust column positions as needed.</li>
           <li>Pin columns to the left or right.</li>
           <li>Sort column contents in ascending or descending order.</li>
           <li>Utilize the 'Filters' option to refine the contents of each column, with the ability 
             to select, deselect, and use a search bar.</li>
-          <li>Unlock insights with the <b>Pivot table</b> feature, dynamically reorganizing and summarizing data for a customized and insightful view."</li>
-          <li></li>
-          <li></li>
+          <li>Unlock insights with the <i>Pivot table</i> feature, dynamically reorganizing and 
+            summarizing data for a customized and insightful view.</li>
+          <li>Optimize organization and analysis by implementing <i>Row Groupings</i> feature.</li>
+          <li>After implementing row groupings, apply various value aggregations such as average, 
+            count, first, last, maximum, minimum, and summation.</li>
+          <li>Further features post row groupings include 'Un-Group All', 'Group by Group', 
+            'Expand All Row Groups' and 'Collapse All Row Groups' to facilitate group management.</li>
         </ul>
   </div>
+  <br>
   <img src="assets/data preview.png" class="step-2-SS">
+  <br> <br>
   <h3>3. Data Insights Dashboard - Navigating Data Quality, Profiling, and Exploration</h3>
+  <p>
+    The Data Polish Dashboard offers a user-friendly interface designed for effectively managing 
+    and exploring data, organized into three distinct tabs.</p>
+  
   <h3>4. Perform Data Cleaning Actions</h3>
   <h3>5. Download Cleaned Data</h3>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-    aliqua. Congue nisi vitae suscipit tellus mauris. Enim sit amet venenatis urna cursus eget nunc scelerisque viverra.
-    Purus sit amet luctus venenatis lectus magna. Vel orci porta non pulvinar neque laoreet suspendisse interdum
-    consectetur. Eu augue ut lectus arcu bibendum. Aliquet nibh praesent tristique magna. Laoreet sit amet cursus sit
-    amet dictum. Imperdiet proin fermentum leo vel orci. Netus et malesuada fames ac turpis egestas sed. Sit amet
-    consectetur adipiscing elit ut aliquam purus sit. Nunc eget lorem dolor sed viverra. Turpis egestas integer eget
-    aliquet nibh praesent tristique magna sit. Porta nibh venenatis cras sed. Magna eget est lorem ipsum dolor. Est
-    ultricies integer quis auctor elit. Amet consectetur adipiscing elit pellentesque habitant morbi.</p>
+    <p>After configuring your data cleaning preferences in the preceding steps, download your refined 
+    data. Simply choose the desired file format, either CSV or Excel, from the drop-down menu. 
+    Complete the process by clicking the 'Export' button, making it hassle-free to download the 
+    cleaned data tailored to your specifications.</p> <br>
+    <img src="assets/data preview.png" class="step-2-SS">
+    <br> <br>
 </div>

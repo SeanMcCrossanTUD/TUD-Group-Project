@@ -102,12 +102,15 @@ export class OutliersScatterPlotComponent implements OnInit {
           .style('top', (event.pageY - 28) + 'px');
         d3.select(this).style('fill', 'lightyellow');
       })
-      .on('mouseout', function(d) {
+      .on('mouseout', function() {
         tooltip.transition()
           .duration(500)
           .style('opacity', 0);
-        d3.select(this).style('fill', d.is_outlier ? 'lightcoral' : 'lightblue');
+      
+        const outlierPoint = d3.select(this).datum() as OutlierDataPoint;
+        d3.select(this).style('fill', outlierPoint.is_outlier ? 'lightcoral' : 'lightblue');
       });
+      
 
     // Adding legend
     const legend = svg.append('g')

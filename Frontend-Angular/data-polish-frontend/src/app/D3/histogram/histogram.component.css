@@ -1,17 +1,40 @@
-.filter {
-    margin-bottom: 10px;
-  }
-  
-  .filter select {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
-  .no-data-message {
-    font-size: 24px; 
-    text-align: center;
-    color: #666; 
-    margin-top: 20px;
-  }
-  
+/* Chart Header */
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Chart Title Style */
+h2 {
+  margin: 0;
+  flex-grow: 1;
+  text-align: left;
+}
+
+/* Dropdown Container */
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* Dropdown Style */
+#field-select {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+}
+
+/* No Data Message Style */
+.no-data-message {
+  font-size: 24px; 
+  text-align: center;
+  color: #666; 
+  margin-top: 20px;
+}
+
+
