@@ -424,3 +424,7 @@ input:checked+.slider:before {
   font-family: logo;
   src: url('../assets/NovaSquare-Regular.ttf');
 }
+
+#logout:hover{
+  cursor: pointer;
+}

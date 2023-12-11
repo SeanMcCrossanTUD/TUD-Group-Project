@@ -32,11 +32,24 @@
     width: 13%; 
     max-width: 170px; 
     height: auto;
-    position: fixed; 
+    position: absolute;
     top: 0; 
     left: 0;
   }
-  
+
+  .signin-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+  }
+
   h4 {
     font-size: 0.8em;
     font-family: Verdana;
@@ -85,16 +98,48 @@
   /*below two parts for the Tutorial button*/
   button a {
     text-decoration: none;
-    color: white;
+    color:white;
   }
   
   button a:hover {
     background-color: white;
     color: black; /* Change text color when hovered */
   }
+
+.scroll-down-container {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  margin-left: 0%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.scroll-down-arrow {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 20px solid white; /* You can adjust the color */
+}
+
+.scroll-down-text {
+  margin-top: 5px;
+  color: white;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease; /* Add a smooth transition effect */
+}
+
+.scroll-down-container:hover .scroll-down-text {
+  opacity: 1; /* Show text on hover */
+}
+
   
   .tutorial-section {
-    margin-top: 22%;
+    margin-top: 25%;
     margin-left: 6%;
     margin-right: 6%;
     background-color: rgba(88, 86, 86, 0.605); /* White with reduced opacity */
