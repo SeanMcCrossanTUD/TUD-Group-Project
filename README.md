@@ -24,17 +24,15 @@ This is the group project developed for MSC in Computer Science at TU Dublin.
 
 # New Commer Friendly
 
-    -File Upload - After file is uploaded show a message that file has been uploaded and ask if they want 
-        to reupload the file
-    -Data Profile - auto populated the charts on load.
-    -Data Profile - Missing values "No data to profile" text is not rendering.
-    -Help Text - Improve help text
-    
+
+
 |  TECHNOLOGY |APP NAME   |PAGE NAME   |ISSUE   |
 |---|---|---|---|
 |   Angular| Landing Page  |  landing page |  Addition of sign up button on landing page. |
-|   |   |   |   |
-|   |   |   |   |
+|  Angular |  Datapolish frontend | File Upload  | After file is uploaded show a message that file has been uploaded and ask if they want to reupload the file  |
+|  Angular |  Datapolish frontend | Data Profile  |  auto populated the charts on load |
+|  Angular |  Datapolish frontend | Data Profile  |  Missing values "No data to profile" text is not rendering. |
+|  Angular |  Datapolish frontend | All pages  |  Help Text needs improvement |
     
     
 
