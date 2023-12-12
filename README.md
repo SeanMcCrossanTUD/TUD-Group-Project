@@ -4,6 +4,7 @@
 
 - [TUD-Group-Project](#tud-group-project)
 - [Demo](#tud-group-project)
+    - Website - http://16.170.150.247:9000/v2/#/
     - Intrim - https://youtu.be/YrE9eb8-xTw
     - Final - 
 - [Arhitecture](#tud-group-project)
@@ -15,8 +16,11 @@
 
 # TUD-Group-Project
 
-This is the TUD group project for creating a data quality pre processing tool.
-Future Work
+This is the group project developed for MSC in Computer Science at TU Dublin.
+<br/>
+    This Tool aids the students and professionals in data science field to clean their dataset before performing analytics or advance ML or deep leaning tasks.
+
+# Future Work
 
 # New Commer Friendly
     -Addition of sign up button on landing page.
