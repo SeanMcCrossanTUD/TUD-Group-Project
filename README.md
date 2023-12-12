@@ -8,8 +8,8 @@
     - Intrim - https://youtu.be/YrE9eb8-xTw
     - Final - 
 - [Arhitecture](#tud-group-project)
-- [Future work & Issues](#Future Work)
-    - [New Commer Friendly](#New Commer Friendly)
+- [Future work & Issues](#Future-Work)
+    - [New Commer Friendly](#New-Commer-Friendly)
     - [Advanced](#Advanced)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -20,9 +20,9 @@ This is the group project developed for MSC in Computer Science at TU Dublin.
 <br/>
     This Tool aids the students and professionals in data science field to clean their dataset before performing analytics or advance ML or deep leaning tasks.
 
-# Future Work
+# Future-Work
 
-# New Commer Friendly
+# New-Commer-Friendly
 
 
 
