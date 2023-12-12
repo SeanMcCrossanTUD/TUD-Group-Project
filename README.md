@@ -39,6 +39,10 @@ This is the group project developed for MSC in Computer Science at TU Dublin.
 |  Angular |  Datapolish frontend | All pages  |  Help Text needs improvement |
     
     
+# Intermediate 
+|  TECHNOLOGY |APP NAME   |PAGE NAME   |ISSUE   |
+|---|---|---|---|
+| ZeroMQ |||Switch from Azure service bus to zeroMQ so that user can use the application without any cloud services|
 
 # Advanced
     -Data Preview - improve UI
