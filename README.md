@@ -4,8 +4,8 @@
 
 - [TUD-Group-Project](#tud-group-project)
 - [Demo](#tud-group-project)
-    Intrim - https://youtu.be/YrE9eb8-xTw
-    Final - 
+    - Intrim - https://youtu.be/YrE9eb8-xTw
+    - Final - 
 - [Arhitecture](#tud-group-project)
 - [Issues](#tud-group-project)
     - [New Commer Friendly](#tud-group-project)
