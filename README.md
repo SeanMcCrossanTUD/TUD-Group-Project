@@ -8,7 +8,7 @@
     - Intrim - https://youtu.be/YrE9eb8-xTw
     - Final - 
 - [Arhitecture](#tud-group-project)
-- [Future work & Issues](#tud-group-project)
+- [Future work & Issues](#Future Work)
     - [New Commer Friendly](#New Commer Friendly)
     - [Advanced](#Advanced)
 
@@ -23,12 +23,20 @@ This is the group project developed for MSC in Computer Science at TU Dublin.
 # Future Work
 
 # New Commer Friendly
-    -Addition of sign up button on landing page.
+
     -File Upload - After file is uploaded show a message that file has been uploaded and ask if they want 
         to reupload the file
     -Data Profile - auto populated the charts on load.
     -Data Profile - Missing values "No data to profile" text is not rendering.
     -Help Text - Improve help text
+    
+|  TECHNOLOGY |APP NAME   |PAGE NAME   |ISSUE   |
+|---|---|---|---|
+|   Angular| Landing Page  |  landing page |  Addition of sign up button on landing page. |
+|   |   |   |   |
+|   |   |   |   |
+    
+    
 
 # Advanced
     -Data Preview - improve UI
