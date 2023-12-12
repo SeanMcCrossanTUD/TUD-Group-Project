@@ -7,7 +7,7 @@
     - Website - http://16.170.150.247:9000/v2/#/
     - Intrim - https://youtu.be/YrE9eb8-xTw
     - Final - 
-- [Arhitecture](#tud-group-project)
+- [Arhitecture](#Arhitecture)
 - [Future work & Issues](#Future-Work)
     - [New Commer Friendly](#New-Commer-Friendly)
     - [Advanced](#Advanced)
@@ -19,6 +19,10 @@
 This is the group project developed for MSC in Computer Science at TU Dublin.
 <br/>
     This Tool aids the students and professionals in data science field to clean their dataset before performing analytics or advance ML or deep leaning tasks.
+
+
+# Arhitecture
+![alt Arhitecture](https://raw.githubusercontent.com/SeanMcCrossanTUD/TUD-Group-Project/FAB-347-restructure-github/Project%20supporting%20Artifacts/Diagrams/System%20Diagram/v3.png)
 
 # Future-Work
 
