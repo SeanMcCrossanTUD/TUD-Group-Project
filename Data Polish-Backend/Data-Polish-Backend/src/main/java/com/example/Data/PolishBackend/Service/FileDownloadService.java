@@ -56,7 +56,7 @@ public class FileDownloadService {
             int lastDotIndex = cleanedFile.lastIndexOf('.');   // the index of the last dot in cleanedFile
             // Extract the substring from the beginning to the last dot
             String newCleanedFilename = cleanedFile.substring(0, lastDotIndex);
-
+            cleanedFile=cleanedFile.replace(" ","%20");
 
             if (cleanedFile == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
