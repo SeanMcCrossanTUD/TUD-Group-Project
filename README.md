@@ -35,7 +35,7 @@ This is the group project developed for MSC in Computer Science at TU Dublin.
 |  Angular |  Datapolish frontend | All pages  |  Help Text needs improvement |
     
     
-
 # Advanced
     -Data Preview - improve UI
     -Data Profile - Outlier chart negative values are not displaying properly
+
