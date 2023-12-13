@@ -1,0 +1,7 @@
+﻿Issue Type,Issue key,Issue id,Summary,Assignee,Assignee Id,Reporter,Reporter Id,Priority,Status,Resolution,Created,Updated,Due date
+Story,FAB-265,10303,Remove Stopwords,Oluwatobi Omole,712020:0e52f4c1-3ea7-463b-879b-9a6c9194e34c,Oluwatobi Omole,712020:0e52f4c1-3ea7-463b-879b-9a6c9194e34c,Medium,Done,Done,16/Nov/23 4:27 PM,20/Nov/23 12:15 PM,
+Story,FAB-264,10302,evaluation presentation,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Medium,Done,Done,16/Nov/23 1:04 PM,20/Nov/23 11:58 AM,
+Bug,FAB-263,10301,Incorrect package in requirements.txt,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Medium,Done,Done,15/Nov/23 6:22 PM,20/Nov/23 11:58 AM,
+Story,FAB-262,10300,Outlier chart,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Medium,Done,Done,15/Nov/23 6:08 PM,21/Nov/23 12:13 PM,
+Story,FAB-261,10299,cognitive walk through results,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Medium,Done,Done,15/Nov/23 11:20 AM,16/Nov/23 1:04 PM,
+Story,FAB-260,10298,Integrate data cleaning,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Sean McCrossan,712020:d98c38a5-2e70-4ce9-9ef7-357fbe4dc4b5,Medium,Done,Done,14/Nov/23 2:47 PM,22/Nov/23 5:15 PM,
