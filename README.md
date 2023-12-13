@@ -6,7 +6,7 @@
 - [Demo](#tud-group-project)
     - Website - http://16.170.150.247:9000/v2/#/
     - Intrim - https://youtu.be/YrE9eb8-xTw
-    - Final - 
+    - Final - https://youtu.be/YHotLl7szwM?feature=shared
 - [Architecture](#Architecture)
 - [Future work & Issues](#Future-Work)
     - [New Commer Friendly](#New-Commer-Friendly)
@@ -38,7 +38,7 @@ This is the group project developed for MSC in Computer Science at TU Dublin.
 |  Angular |  Datapolish frontend | Data Profile  |  Missing values "No data to profile" text is not rendering. |
 |  Angular |  Datapolish frontend | All pages  |  Help Text needs improvement |
     
-    
+
 # Intermediate 
 |  TECHNOLOGY |APP NAME   |PAGE NAME   |ISSUE   |
 |---|---|---|---|
@@ -49,4 +49,3 @@ This is the group project developed for MSC in Computer Science at TU Dublin.
     -Data Profile - Outlier chart negative values are not displaying properly
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zXmpSr4osKM?si=v6iDCdAY94j6_l5y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
