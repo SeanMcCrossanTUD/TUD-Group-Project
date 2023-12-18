@@ -1,6 +1,6 @@
 .resize-2{
     resize: vertical;
-    overflow: auto;
+    overflow: scroll;
   
     display: inline-flex;
     height: 50vh;
@@ -8,7 +8,7 @@
   }
   .resize{
     resize: vertical;
-    overflow: auto;
+    overflow: scroll;
 
     display: inline-flex;
     height: 35vh;

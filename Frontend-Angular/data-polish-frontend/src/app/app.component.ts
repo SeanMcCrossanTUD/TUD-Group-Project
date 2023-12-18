@@ -371,5 +371,10 @@ moveback(){
   navigateToLandingPage(x:any){
     window.location.href='http://16.170.150.247:9000/v2/#/'+x
   }
+
+  goToHomePage(){
+    window.location.href='http://16.170.150.247:9000/v2';
+  }
+  
 }
 

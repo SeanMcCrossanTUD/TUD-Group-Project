@@ -47,3 +47,4 @@ Frontend-Angular/data-polish-frontend/package-lock.json
 
 # Ignore deleted documents
 ~$*
+Message Queue/node_modules/

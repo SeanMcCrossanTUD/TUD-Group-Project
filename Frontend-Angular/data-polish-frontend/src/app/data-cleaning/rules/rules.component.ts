@@ -663,7 +663,7 @@ setNumerical_Column_Binning(x:any){
 
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Your File has been uploaded' });
           this.dropdown.clear();    
-          this.visibleImportRules=false;    
+          // this.visibleImportRules=false;    
           
               
       },(err)=>{
